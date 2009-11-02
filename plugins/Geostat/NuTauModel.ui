@@ -1,0 +1,282 @@
+<ui version="4.0" stdsetdef="1" >
+  <author></author>
+  <comment></comment>
+  <exportmacro></exportmacro>
+  <class>nuModel</class>
+  <widget class="QWidget" name="nuModel" >
+  <property name="AlgorithmCategory" stdset="0">
+   <string>Utilities</string>
+  </property>
+  <property name="AlgorithmDescription" stdset="0">
+   <string>Probability integration</string>
+  </property>
+    <property name="enabled" >
+      <bool>true</bool>
+    </property>
+    <property name="geometry" >
+      <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>226</width>
+        <height>657</height>
+      </rect>
+    </property>
+    <property name="windowTitle" >
+      <string>Nu Model Integration</string>
+    </property>
+    <layout class="QVBoxLayout" >
+      <item>
+        <widget class="QGroupBox" name="GroupBox3" >
+          <property name="title" >
+            <string>Object Name</string>
+          </property>
+          <layout class="QGridLayout" >
+            <property name="margin" >
+              <number>0</number>
+            </property>
+            <item row="0" column="0" >
+              <widget class="GridSelector" name="Grid" />
+            </item>
+          </layout>
+        </widget>
+      </item>
+      <item>
+        <widget class="GsTLGroupBox" name="gsTLGroupBox5" >
+          <property name="title" >
+            <string>Properties</string>
+          </property>
+          <layout class="QVBoxLayout" >
+            <item>
+              <widget class="OrderedPropertySelector" name="props" >
+                <property name="title" >
+                  <string/>
+                </property>
+              </widget>
+            </item>
+          </layout>
+        </widget>
+      </item>
+      <item>
+        <layout class="QHBoxLayout" >
+          <property name="margin" >
+            <number>0</number>
+          </property>
+          <item>
+            <widget class="QLabel" name="textLabel1" >
+              <property name="text" >
+                <string>Marginal :</string>
+              </property>
+              <property name="wordWrap" >
+                <bool>false</bool>
+              </property>
+            </widget>
+          </item>
+          <item>
+            <widget class="QLineEdit" name="marginal" />
+          </item>
+        </layout>
+      </item>
+      <item>
+        <widget class="GsTLGroupBox" name="gsTLGroupBox16" >
+          <property name="title" >
+            <string/>
+          </property>
+          <layout class="QVBoxLayout" >
+            <item>
+              <layout class="QVBoxLayout" >
+                <property name="margin" >
+                  <number>0</number>
+                </property>
+                <item>
+                  <widget class="QLabel" name="textLabel1_2" >
+                    <property name="text" >
+                      <string>Name of output property</string>
+                    </property>
+                    <property name="wordWrap" >
+                      <bool>false</bool>
+                    </property>
+                  </widget>
+                </item>
+                <item>
+                  <widget class="QLineEdit" name="redun_prop" />
+                </item>
+              </layout>
+            </item>
+          </layout>
+        </widget>
+      </item>
+      <item>
+        <widget class="QGroupBox" name="groupBox4_2" >
+          <property name="title" >
+            <string>Redundancy Model</string>
+          </property>
+          <layout class="QHBoxLayout" >
+            <property name="margin" >
+              <number>0</number>
+            </property>
+            <item>
+              <widget class="QRadioButton" name="is_nu" >
+                <property name="text" >
+                  <string>Nu Model</string>
+                </property>
+                <property name="checked" >
+                  <bool>true</bool>
+                </property>
+              </widget>
+            </item>
+            <item>
+              <widget class="QRadioButton" name="is_tau" >
+                <property name="text" >
+                  <string>Tau model</string>
+                </property>
+              </widget>
+            </item>
+          </layout>
+        </widget>
+      </item>
+      <item>
+        <widget class="QGroupBox" name="groupBox4" >
+          <property name="title" >
+            <string>Redundancy Value</string>
+          </property>
+          <layout class="QHBoxLayout" >
+            <property name="margin" >
+              <number>0</number>
+            </property>
+            <item>
+              <widget class="QRadioButton" name="redun_constant" >
+                <property name="text" >
+                  <string>Constant</string>
+                </property>
+                <property name="checked" >
+                  <bool>true</bool>
+                </property>
+              </widget>
+            </item>
+            <item>
+              <widget class="QRadioButton" name="redun_specific" >
+                <property name="text" >
+                  <string>Location specific</string>
+                </property>
+              </widget>
+            </item>
+          </layout>
+        </widget>
+      </item>
+      <item>
+        <widget class="GsTLGroupBox" name="box_nu_value" >
+          <property name="title" >
+            <string>Redundancy parameters</string>
+          </property>
+          <layout class="QHBoxLayout" >
+            <item>
+              <widget class="QLineEdit" name="redun_input" >
+                <property name="text" >
+                  <string>1</string>
+                </property>
+              </widget>
+            </item>
+          </layout>
+        </widget>
+      </item>
+      <item>
+        <widget class="GsTLGroupBox" name="box_nu0_prop" >
+          <property name="title" >
+            <string>Property with redundancy value</string>
+          </property>
+          <property name="displayed" stdset="0" >
+            <bool>false</bool>
+          </property>
+          <layout class="QVBoxLayout" >
+            <item>
+              <widget class="OrderedPropertySelector" name="redun_props" >
+                <property name="title" >
+                  <string/>
+                </property>
+              </widget>
+            </item>
+          </layout>
+        </widget>
+      </item>
+      <item>
+        <spacer name="spacer2" >
+          <property name="sizeHint" >
+            <size>
+              <width>20</width>
+              <height>20</height>
+            </size>
+          </property>
+          <property name="sizeType" >
+            <enum>Expanding</enum>
+          </property>
+          <property name="orientation" >
+            <enum>Vertical</enum>
+          </property>
+        </spacer>
+      </item>
+    </layout>
+  </widget>
+  <layoutdefault spacing="6" margin="11" />
+  <pixmapfunction>qPixmapFromMimeSource</pixmapfunction>
+  <includes>
+    <include location="local" >gridselector.h</include>
+    <include location="local" >gstlgroupbox.h</include>
+    <include location="local" >orderedpropertyselector.h</include>
+    <include location="local" >multipropertyselector.h</include>
+    <include location="local" >gstlgroupbox.h</include>
+    <include location="local" >gstlgroupbox.h</include>
+    <include location="local" >gstlgroupbox.h</include>
+    <include location="local" >orderedpropertyselector.h</include>
+    <include location="local" >multipropertyselector.h</include>
+  </includes>
+  <connections>
+    <connection>
+      <sender>Grid</sender>
+      <signal>activated(QString)</signal>
+      <receiver>props</receiver>
+      <slot>show_properties(QString)</slot>
+    </connection>
+    <connection>
+      <sender>redun_constant</sender>
+      <signal>clicked()</signal>
+      <receiver>redun_specific</receiver>
+      <slot>toggle()</slot>
+    </connection>
+    <connection>
+      <sender>redun_specific</sender>
+      <signal>clicked()</signal>
+      <receiver>redun_constant</receiver>
+      <slot>toggle()</slot>
+    </connection>
+    <connection>
+      <sender>redun_constant</sender>
+      <signal>toggled(bool)</signal>
+      <receiver>box_nu_value</receiver>
+      <slot>setShown(bool)</slot>
+    </connection>
+    <connection>
+      <sender>redun_specific</sender>
+      <signal>toggled(bool)</signal>
+      <receiver>box_nu0_prop</receiver>
+      <slot>setShown(bool)</slot>
+    </connection>
+    <connection>
+      <sender>Grid</sender>
+      <signal>activated(QString)</signal>
+      <receiver>redun_props</receiver>
+      <slot>show_properties(QString)</slot>
+    </connection>
+    <connection>
+      <sender>is_nu</sender>
+      <signal>clicked()</signal>
+      <receiver>is_tau</receiver>
+      <slot>toggle()</slot>
+    </connection>
+    <connection>
+      <sender>is_tau</sender>
+      <signal>clicked()</signal>
+      <receiver>is_nu</receiver>
+      <slot>toggle()</slot>
+    </connection>
+  </connections>
+</ui>

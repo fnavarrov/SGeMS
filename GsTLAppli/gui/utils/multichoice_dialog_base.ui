@@ -1,0 +1,119 @@
+<ui version="4.0" stdsetdef="1" >
+  <author></author>
+  <comment></comment>
+  <exportmacro></exportmacro>
+  <class>Multichoice_dialog_base</class>
+  <widget class="QDialog" name="Multichoice_dialog_base" >
+    <property name="geometry" >
+      <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>310</width>
+        <height>168</height>
+      </rect>
+    </property>
+    <property name="windowTitle" >
+      <string>Select Objects</string>
+    </property>
+    <property name="sizeGripEnabled" >
+      <bool>true</bool>
+    </property>
+    <layout class="QVBoxLayout" >
+      <item>
+        <widget class="QLabel" name="label_" >
+          <property name="sizePolicy" >
+            <sizepolicy>
+              <hsizetype>5</hsizetype>
+              <vsizetype>0</vsizetype>
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+            </sizepolicy>
+          </property>
+          <property name="text" >
+            <string>Select objects:</string>
+          </property>
+          <property name="wordWrap" >
+            <bool>false</bool>
+          </property>
+        </widget>
+      </item>
+      <item>
+        <widget class="QGroupBox" name="choice_list_box_" >
+          <property name="title" >
+            <string/>
+          </property>
+        </widget>
+      </item>
+      <item>
+        <layout class="QHBoxLayout" >
+          <property name="margin" >
+            <number>0</number>
+          </property>
+          <item>
+            <spacer name="spacer2" >
+              <property name="sizeHint" >
+                <size>
+                  <width>42</width>
+                  <height>20</height>
+                </size>
+              </property>
+              <property name="sizeType" >
+                <enum>Expanding</enum>
+              </property>
+              <property name="orientation" >
+                <enum>Horizontal</enum>
+              </property>
+            </spacer>
+          </item>
+          <item>
+            <widget class="QPushButton" name="ok_button_" >
+              <property name="text" >
+                <string>&amp;Ok</string>
+              </property>
+            </widget>
+          </item>
+          <item>
+            <spacer name="spacer3" >
+              <property name="sizeHint" >
+                <size>
+                  <width>16</width>
+                  <height>20</height>
+                </size>
+              </property>
+              <property name="sizeType" >
+                <enum>Fixed</enum>
+              </property>
+              <property name="orientation" >
+                <enum>Horizontal</enum>
+              </property>
+            </spacer>
+          </item>
+          <item>
+            <widget class="QPushButton" name="cancel_button_" >
+              <property name="text" >
+                <string>&amp;Cancel</string>
+              </property>
+            </widget>
+          </item>
+          <item>
+            <spacer name="spacer4" >
+              <property name="sizeHint" >
+                <size>
+                  <width>42</width>
+                  <height>21</height>
+                </size>
+              </property>
+              <property name="sizeType" >
+                <enum>Expanding</enum>
+              </property>
+              <property name="orientation" >
+                <enum>Horizontal</enum>
+              </property>
+            </spacer>
+          </item>
+        </layout>
+      </item>
+    </layout>
+  </widget>
+  <layoutdefault spacing="6" margin="11" />
+</ui>

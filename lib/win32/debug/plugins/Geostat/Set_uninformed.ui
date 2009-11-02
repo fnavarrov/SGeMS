@@ -1,0 +1,182 @@
+<ui version="4.0" stdsetdef="1" >
+  <author></author>
+  <comment></comment>
+  <exportmacro></exportmacro>
+  <class>Set_uniniformed</class>
+  <widget class="QWidget" name="Set_uniniformed" >
+    <property name="enabled" >
+      <bool>true</bool>
+    </property>
+    <property name="geometry" >
+      <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>266</width>
+        <height>520</height>
+      </rect>
+    </property>
+    <property name="windowTitle" >
+      <string>Set_uniniformed</string>
+    </property>
+    <layout class="QGridLayout" >
+      <item row="0" column="0" >
+        <widget class="QGroupBox" name="GroupBox3_2" >
+          <property name="title" >
+            <string>Grid</string>
+          </property>
+          <layout class="QVBoxLayout" >
+            <property name="margin" >
+              <number>0</number>
+            </property>
+            <item>
+              <widget class="GridSelector" name="Grid" />
+            </item>
+          </layout>
+        </widget>
+      </item>
+      <item row="2" column="0" >
+        <widget class="QCheckBox" name="set_uninf" >
+          <property name="text" >
+            <string>Use values (defaul use property)</string>
+          </property>
+        </widget>
+      </item>
+      <item row="1" column="0" >
+        <widget class="QGroupBox" name="GroupBox3" >
+          <property name="title" >
+            <string>Properties</string>
+          </property>
+          <layout class="QVBoxLayout" >
+            <property name="margin" >
+              <number>0</number>
+            </property>
+            <item>
+              <widget class="OrderedPropertySelector" name="props" >
+                <property name="title" >
+                  <string/>
+                </property>
+              </widget>
+            </item>
+          </layout>
+        </widget>
+      </item>
+      <item row="3" column="0" >
+        <widget class="GsTLGroupBox" name="set_prop_box" >
+          <property name="title" >
+            <string>Informed property</string>
+          </property>
+          <layout class="QGridLayout" >
+            <item row="0" column="0" >
+              <widget class="SinglePropertySelector" name="base_prop" />
+            </item>
+          </layout>
+        </widget>
+      </item>
+      <item row="4" column="0" >
+        <widget class="GsTLGroupBox" name="set_val_box" >
+          <property name="enabled" >
+            <bool>false</bool>
+          </property>
+          <property name="title" >
+            <string>Value to be set as uninformed</string>
+          </property>
+          <property name="displayed" stdset="0" >
+            <bool>true</bool>
+          </property>
+          <property name="activated" stdset="0" >
+            <bool>true</bool>
+          </property>
+          <widget class="QWidget" name="layout1" >
+            <property name="geometry" >
+              <rect>
+                <x>20</x>
+                <y>20</y>
+                <width>189</width>
+                <height>22</height>
+              </rect>
+            </property>
+            <layout class="QGridLayout" >
+              <property name="margin" >
+                <number>0</number>
+              </property>
+              <item row="0" column="1" >
+                <widget class="QLineEdit" name="uninf_val" />
+              </item>
+              <item row="0" column="0" >
+                <widget class="QComboBox" name="logical_op" >
+                  <item>
+                    <property name="text" >
+                      <string>Equal to</string>
+                    </property>
+                  </item>
+                  <item>
+                    <property name="text" >
+                      <string>Greater than</string>
+                    </property>
+                  </item>
+                  <item>
+                    <property name="text" >
+                      <string>Less than</string>
+                    </property>
+                  </item>
+                </widget>
+              </item>
+            </layout>
+          </widget>
+        </widget>
+      </item>
+      <item row="5" column="0" >
+        <spacer name="spacer1" >
+          <property name="sizeHint" >
+            <size>
+              <width>20</width>
+              <height>61</height>
+            </size>
+          </property>
+          <property name="sizeType" >
+            <enum>Expanding</enum>
+          </property>
+          <property name="orientation" >
+            <enum>Vertical</enum>
+          </property>
+        </spacer>
+      </item>
+    </layout>
+  </widget>
+  <layoutdefault spacing="6" margin="11" />
+  <pixmapfunction>qPixmapFromMimeSource</pixmapfunction>
+  <includes>
+    <include location="local" >gridselector.h</include>
+    <include location="local" >orderedpropertyselector.h</include>
+    <include location="local" >multipropertyselector.h</include>
+    <include location="local" >gstlgroupbox.h</include>
+    <include location="local" >singlepropertyselector.h</include>
+    <include location="local" >gstlgroupbox.h</include>
+  </includes>
+  <connections>
+    <connection>
+      <sender>Grid</sender>
+      <signal>activated(QString)</signal>
+      <receiver>props</receiver>
+      <slot>show_properties(QString)</slot>
+    </connection>
+    <connection>
+      <sender>Grid</sender>
+      <signal>activated(QString)</signal>
+      <receiver>base_prop</receiver>
+      <slot>show_properties(QString)</slot>
+    </connection>
+    <connection>
+      <sender>set_uninf</sender>
+      <signal>toggled(bool)</signal>
+      <receiver>set_prop_box</receiver>
+      <slot>setDisabled(bool)</slot>
+    </connection>
+    <connection>
+      <sender>set_uninf</sender>
+      <signal>toggled(bool)</signal>
+      <receiver>set_val_box</receiver>
+      <slot>setEnabled(bool)</slot>
+    </connection>
+  </connections>
+</ui>

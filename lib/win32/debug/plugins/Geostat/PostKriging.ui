@@ -1,0 +1,582 @@
+<ui version="4.0" stdsetdef="1" >
+  <author></author>
+  <comment></comment>
+  <exportmacro></exportmacro>
+  <class>PostKriging</class>
+  <widget class="QWidget" name="PostKriging" >
+  <property name="AlgorithmCategory" stdset="0">
+   <string>Utilities</string>
+  </property>
+  <property name="AlgorithmDescription" stdset="0">
+   <string>Kriging postprocessing</string>
+  </property>
+    <property name="enabled" >
+      <bool>true</bool>
+    </property>
+    <property name="geometry" >
+      <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>369</width>
+        <height>837</height>
+      </rect>
+    </property>
+    <property name="windowTitle" >
+      <string>PostKriging</string>
+    </property>
+    <layout class="QGridLayout" >
+      <property name="margin" >
+        <number>2</number>
+      </property>
+      <item row="2" column="0" >
+        <spacer name="spacer2" >
+          <property name="sizeHint" >
+            <size>
+              <width>20</width>
+              <height>16</height>
+            </size>
+          </property>
+          <property name="sizeType" >
+            <enum>Expanding</enum>
+          </property>
+          <property name="orientation" >
+            <enum>Vertical</enum>
+          </property>
+        </spacer>
+      </item>
+      <item row="1" column="0" >
+        <spacer name="spacer15" >
+          <property name="sizeHint" >
+            <size>
+              <width>20</width>
+              <height>16</height>
+            </size>
+          </property>
+          <property name="sizeType" >
+            <enum>Expanding</enum>
+          </property>
+          <property name="orientation" >
+            <enum>Vertical</enum>
+          </property>
+        </spacer>
+      </item>
+      <item row="0" column="0" >
+        <widget class="QTabWidget" name="tabWidget6" >
+          <widget class="QWidget" name="tab" >
+            <attribute name="title" >
+              <string>Distribution</string>
+            </attribute>
+            <layout class="QGridLayout" >
+              <property name="margin" >
+                <number>0</number>
+              </property>
+              <item rowspan="1" row="0" column="0" colspan="2" >
+                <widget class="QGroupBox" name="GroupBox3" >
+                  <property name="title" >
+                    <string>Object Name</string>
+                  </property>
+                  <layout class="QGridLayout" >
+                    <property name="margin" >
+                      <number>0</number>
+                    </property>
+                    <item row="0" column="0" >
+                      <widget class="GridSelector" name="Hard_Data" />
+                    </item>
+                  </layout>
+                </widget>
+              </item>
+              <item row="1" column="0" >
+                <widget class="QRadioButton" name="is_non_param_cdf" >
+                  <property name="text" >
+                    <string>Non-parametric</string>
+                  </property>
+                  <property name="checked" >
+                    <bool>true</bool>
+                  </property>
+                </widget>
+              </item>
+              <item row="1" column="1" >
+                <widget class="QRadioButton" name="is_gaussian" >
+                  <property name="text" >
+                    <string>Gaussian</string>
+                  </property>
+                </widget>
+              </item>
+              <item rowspan="1" row="3" column="0" colspan="2" >
+                <widget class="GsTLGroupBox" name="gaussian_box" >
+                  <property name="enabled" >
+                    <bool>true</bool>
+                  </property>
+                  <property name="title" >
+                    <string>Properties for Gaussian distribution</string>
+                  </property>
+                  <property name="displayed" stdset="0" >
+                    <bool>false</bool>
+                  </property>
+                  <property name="activated" stdset="0" >
+                    <bool>true</bool>
+                  </property>
+                  <layout class="QGridLayout" >
+                    <item row="2" column="0" >
+                      <widget class="QLabel" name="textLabel1_3" >
+                        <property name="text" >
+                          <string>Variance</string>
+                        </property>
+                        <property name="wordWrap" >
+                          <bool>false</bool>
+                        </property>
+                      </widget>
+                    </item>
+                    <item row="3" column="0" >
+                      <widget class="SinglePropertySelector" name="gaussian_var_prop" />
+                    </item>
+                    <item row="1" column="0" >
+                      <widget class="SinglePropertySelector" name="gaussian_mean_prop" />
+                    </item>
+                    <item row="0" column="0" >
+                      <widget class="QLabel" name="textLabel1" >
+                        <property name="text" >
+                          <string>Mean</string>
+                        </property>
+                        <property name="wordWrap" >
+                          <bool>false</bool>
+                        </property>
+                      </widget>
+                    </item>
+                  </layout>
+                </widget>
+              </item>
+              <item row="4" column="1" >
+                <spacer name="spacer13" >
+                  <property name="sizeHint" >
+                    <size>
+                      <width>20</width>
+                      <height>160</height>
+                    </size>
+                  </property>
+                  <property name="sizeType" >
+                    <enum>Expanding</enum>
+                  </property>
+                  <property name="orientation" >
+                    <enum>Vertical</enum>
+                  </property>
+                </spacer>
+              </item>
+              <item rowspan="1" row="2" column="0" colspan="2" >
+                <widget class="GsTLGroupBox" name="non_param_box" >
+                  <property name="title" >
+                    <string>Properties for non-parametric distribution</string>
+                  </property>
+                  <layout class="QGridLayout" >
+                    <item row="0" column="0" >
+                      <widget class="OrderedPropertySelector" name="props" >
+                        <property name="title" >
+                          <string/>
+                        </property>
+                      </widget>
+                    </item>
+                    <item row="2" column="0" >
+                      <widget class="QLineEdit" name="marginals" />
+                    </item>
+                    <item row="1" column="0" >
+                      <widget class="QLabel" name="textLabel2" >
+                        <property name="text" >
+                          <string>Thresholds (e.g. -2 3 5 10 )</string>
+                        </property>
+                        <property name="wordWrap" >
+                          <bool>false</bool>
+                        </property>
+                      </widget>
+                    </item>
+                    <item row="3" column="0" >
+                      <widget class="GsTLGroupBox" name="gsTLGroupBox13" >
+                        <property name="title" >
+                          <string>Lower tail extrapolation</string>
+                        </property>
+                        <layout class="QGridLayout" >
+                          <item row="0" column="0" >
+                            <widget class="LowerTailCdfInput" name="lowerTailCdf" />
+                          </item>
+                        </layout>
+                      </widget>
+                    </item>
+                    <item row="4" column="0" >
+                      <widget class="GsTLGroupBox" name="gsTLGroupBox12" >
+                        <property name="title" >
+                          <string>Upper tail extrapolation</string>
+                        </property>
+                        <layout class="QGridLayout" >
+                          <item row="0" column="0" >
+                            <widget class="UpperTailCdfInput" name="upperTailCdf" />
+                          </item>
+                        </layout>
+                      </widget>
+                    </item>
+                  </layout>
+                </widget>
+              </item>
+            </layout>
+          </widget>
+          <widget class="QWidget" name="tab" >
+            <attribute name="title" >
+              <string>Statistics</string>
+            </attribute>
+            <layout class="QGridLayout" >
+              <property name="margin" >
+                <number>0</number>
+              </property>
+              <item rowspan="1" row="0" column="0" colspan="2" >
+                <widget class="QCheckBox" name="mean" >
+                  <property name="text" >
+                    <string>Conditional mean</string>
+                  </property>
+                </widget>
+              </item>
+              <item rowspan="1" row="2" column="0" colspan="2" >
+                <widget class="QCheckBox" name="cond_var" >
+                  <property name="text" >
+                    <string>Conditional variance</string>
+                  </property>
+                </widget>
+              </item>
+              <item rowspan="1" row="3" column="0" colspan="2" >
+                <widget class="GsTLGroupBox" name="cond_var_box" >
+                  <property name="enabled" >
+                    <bool>false</bool>
+                  </property>
+                  <property name="title" >
+                    <string>Conditional Variance</string>
+                  </property>
+                  <layout class="QGridLayout" >
+                    <item row="0" column="0" >
+                      <widget class="QLabel" name="textLabel1_2_2" >
+                        <property name="text" >
+                          <string>Name for conditional variance property</string>
+                        </property>
+                        <property name="wordWrap" >
+                          <bool>false</bool>
+                        </property>
+                      </widget>
+                    </item>
+                    <item row="1" column="0" >
+                      <widget class="QLineEdit" name="cond_var_prop" />
+                    </item>
+                  </layout>
+                </widget>
+              </item>
+              <item rowspan="1" row="4" column="0" colspan="2" >
+                <widget class="QCheckBox" name="iqr" >
+                  <property name="text" >
+                    <string>Interquartile range</string>
+                  </property>
+                </widget>
+              </item>
+              <item rowspan="1" row="5" column="0" colspan="2" >
+                <widget class="GsTLGroupBox" name="iqr_box" >
+                  <property name="enabled" >
+                    <bool>false</bool>
+                  </property>
+                  <property name="title" >
+                    <string>Interquartile range</string>
+                  </property>
+                  <layout class="QGridLayout" >
+                    <item row="0" column="0" >
+                      <widget class="QLabel" name="textLabel1_2_2_2" >
+                        <property name="text" >
+                          <string>Name for iqr property</string>
+                        </property>
+                        <property name="wordWrap" >
+                          <bool>false</bool>
+                        </property>
+                      </widget>
+                    </item>
+                    <item row="1" column="0" >
+                      <widget class="QLineEdit" name="iqr_prop" />
+                    </item>
+                  </layout>
+                </widget>
+              </item>
+              <item row="6" column="0" >
+                <widget class="QCheckBox" name="quantile" >
+                  <property name="text" >
+                    <string>Quantile</string>
+                  </property>
+                </widget>
+              </item>
+              <item rowspan="1" row="7" column="0" colspan="2" >
+                <widget class="GsTLGroupBox" name="mean_above_box" >
+                  <property name="enabled" >
+                    <bool>false</bool>
+                  </property>
+                  <property name="title" >
+                    <string>Quantile</string>
+                  </property>
+                  <layout class="QGridLayout" >
+                    <item row="0" column="0" >
+                      <widget class="QLabel" name="textLabel1_2_2_2_2" >
+                        <property name="text" >
+                          <string>Base name</string>
+                        </property>
+                        <property name="wordWrap" >
+                          <bool>false</bool>
+                        </property>
+                      </widget>
+                    </item>
+                    <item row="1" column="0" >
+                      <widget class="QLineEdit" name="quantile_prop" />
+                    </item>
+                    <item row="2" column="0" >
+                      <widget class="QLabel" name="textLabel1_2_2_2_2_2" >
+                        <property name="text" >
+                          <string>Quantile (e.g. 0.3 0.56 0. 9)</string>
+                        </property>
+                        <property name="wordWrap" >
+                          <bool>false</bool>
+                        </property>
+                      </widget>
+                    </item>
+                    <item row="3" column="0" >
+                      <widget class="QLineEdit" name="quantile_vals" />
+                    </item>
+                  </layout>
+                </widget>
+              </item>
+              <item rowspan="1" row="8" column="0" colspan="2" >
+                <widget class="QCheckBox" name="prob_above" >
+                  <property name="text" >
+                    <string>Probability above thresholds</string>
+                  </property>
+                </widget>
+              </item>
+              <item rowspan="1" row="9" column="0" colspan="2" >
+                <widget class="GsTLGroupBox" name="prob_above_box" >
+                  <property name="enabled" >
+                    <bool>false</bool>
+                  </property>
+                  <property name="title" >
+                    <string>Probability below thresholds</string>
+                  </property>
+                  <layout class="QGridLayout" >
+                    <item row="2" column="0" >
+                      <widget class="QLabel" name="textLabel1_2_2_2_2_2_3" >
+                        <property name="text" >
+                          <string>Thresholds (e.g. 0.1 0.3 0.6 0.8 )</string>
+                        </property>
+                        <property name="wordWrap" >
+                          <bool>false</bool>
+                        </property>
+                      </widget>
+                    </item>
+                    <item row="3" column="0" >
+                      <widget class="QLineEdit" name="prob_above_vals" />
+                    </item>
+                    <item row="1" column="0" >
+                      <widget class="QLineEdit" name="prob_above_prop" />
+                    </item>
+                    <item row="0" column="0" >
+                      <widget class="QLabel" name="textLabel1_2_2_2_2_4" >
+                        <property name="text" >
+                          <string>Base name</string>
+                        </property>
+                        <property name="wordWrap" >
+                          <bool>false</bool>
+                        </property>
+                      </widget>
+                    </item>
+                  </layout>
+                </widget>
+              </item>
+              <item rowspan="1" row="10" column="0" colspan="2" >
+                <widget class="QCheckBox" name="prob_below" >
+                  <property name="text" >
+                    <string>probability below thresholds</string>
+                  </property>
+                </widget>
+              </item>
+              <item rowspan="1" row="11" column="0" colspan="2" >
+                <widget class="GsTLGroupBox" name="prob_below_box" >
+                  <property name="enabled" >
+                    <bool>false</bool>
+                  </property>
+                  <property name="title" >
+                    <string>Probability above thresholds</string>
+                  </property>
+                  <layout class="QGridLayout" >
+                    <item row="0" column="0" >
+                      <widget class="QLabel" name="textLabel1_2_2_2_2_3_2" >
+                        <property name="text" >
+                          <string>Base name</string>
+                        </property>
+                        <property name="wordWrap" >
+                          <bool>false</bool>
+                        </property>
+                      </widget>
+                    </item>
+                    <item row="1" column="0" >
+                      <widget class="QLineEdit" name="prob_below_prop" />
+                    </item>
+                    <item row="2" column="0" >
+                      <widget class="QLabel" name="textLabel1_2_2_2_2_2_2_2" >
+                        <property name="text" >
+                          <string>Thresholds (e.g. 0.1 0.3 0.7 )</string>
+                        </property>
+                        <property name="wordWrap" >
+                          <bool>false</bool>
+                        </property>
+                      </widget>
+                    </item>
+                    <item row="3" column="0" >
+                      <widget class="QLineEdit" name="prob_below_vals" />
+                    </item>
+                  </layout>
+                </widget>
+              </item>
+              <item row="12" column="1" >
+                <spacer name="spacer12" >
+                  <property name="sizeHint" >
+                    <size>
+                      <width>20</width>
+                      <height>31</height>
+                    </size>
+                  </property>
+                  <property name="sizeType" >
+                    <enum>Expanding</enum>
+                  </property>
+                  <property name="orientation" >
+                    <enum>Vertical</enum>
+                  </property>
+                </spacer>
+              </item>
+              <item rowspan="1" row="1" column="0" colspan="2" >
+                <widget class="GsTLGroupBox" name="etype_box" >
+                  <property name="enabled" >
+                    <bool>false</bool>
+                  </property>
+                  <property name="title" >
+                    <string>E-type</string>
+                  </property>
+                  <layout class="QGridLayout" >
+                    <item row="0" column="0" >
+                      <widget class="QLabel" name="textLabel1_2" >
+                        <property name="text" >
+                          <string>Name for E-type property</string>
+                        </property>
+                        <property name="wordWrap" >
+                          <bool>false</bool>
+                        </property>
+                      </widget>
+                    </item>
+                    <item row="1" column="0" >
+                      <widget class="QLineEdit" name="mean_prop" />
+                    </item>
+                  </layout>
+                </widget>
+              </item>
+            </layout>
+          </widget>
+        </widget>
+      </item>
+    </layout>
+  </widget>
+  <layoutdefault spacing="6" margin="11" />
+  <pixmapfunction>qPixmapFromMimeSource</pixmapfunction>
+  <includes>
+    <include location="local" >gridselector.h</include>
+    <include location="local" >gstlgroupbox.h</include>
+    <include location="local" >singlepropertyselector.h</include>
+    <include location="local" >singlepropertyselector.h</include>
+    <include location="local" >gstlgroupbox.h</include>
+    <include location="local" >orderedpropertyselector.h</include>
+    <include location="local" >multipropertyselector.h</include>
+    <include location="local" >gstlgroupbox.h</include>
+    <include location="local" >lowertailcdfinput.h</include>
+    <include location="local" >gstlgroupbox.h</include>
+    <include location="local" >uppertailcdfinput.h</include>
+    <include location="local" >gstlgroupbox.h</include>
+    <include location="local" >gstlgroupbox.h</include>
+    <include location="local" >gstlgroupbox.h</include>
+    <include location="local" >gstlgroupbox.h</include>
+    <include location="local" >gstlgroupbox.h</include>
+    <include location="local" >gstlgroupbox.h</include>
+  </includes>
+  <connections>
+    <connection>
+      <sender>Hard_Data</sender>
+      <signal>activated(QString)</signal>
+      <receiver>props</receiver>
+      <slot>show_properties(QString)</slot>
+    </connection>
+    <connection>
+      <sender>Hard_Data</sender>
+      <signal>activated(QString)</signal>
+      <receiver>gaussian_mean_prop</receiver>
+      <slot>show_properties(QString)</slot>
+    </connection>
+    <connection>
+      <sender>Hard_Data</sender>
+      <signal>activated(QString)</signal>
+      <receiver>gaussian_var_prop</receiver>
+      <slot>show_properties(QString)</slot>
+    </connection>
+    <connection>
+      <sender>mean</sender>
+      <signal>toggled(bool)</signal>
+      <receiver>etype_box</receiver>
+      <slot>setEnabled(bool)</slot>
+    </connection>
+    <connection>
+      <sender>cond_var</sender>
+      <signal>toggled(bool)</signal>
+      <receiver>cond_var_box</receiver>
+      <slot>setEnabled(bool)</slot>
+    </connection>
+    <connection>
+      <sender>iqr</sender>
+      <signal>toggled(bool)</signal>
+      <receiver>iqr_box</receiver>
+      <slot>setEnabled(bool)</slot>
+    </connection>
+    <connection>
+      <sender>quantile</sender>
+      <signal>toggled(bool)</signal>
+      <receiver>mean_above_box</receiver>
+      <slot>setEnabled(bool)</slot>
+    </connection>
+    <connection>
+      <sender>prob_above</sender>
+      <signal>toggled(bool)</signal>
+      <receiver>prob_above_box</receiver>
+      <slot>setEnabled(bool)</slot>
+    </connection>
+    <connection>
+      <sender>prob_below</sender>
+      <signal>toggled(bool)</signal>
+      <receiver>prob_below_box</receiver>
+      <slot>setEnabled(bool)</slot>
+    </connection>
+    <connection>
+      <sender>is_non_param_cdf</sender>
+      <signal>toggled(bool)</signal>
+      <receiver>gaussian_box</receiver>
+      <slot>setHidden(bool)</slot>
+    </connection>
+    <connection>
+      <sender>is_non_param_cdf</sender>
+      <signal>toggled(bool)</signal>
+      <receiver>non_param_box</receiver>
+      <slot>setShown(bool)</slot>
+    </connection>
+    <connection>
+      <sender>is_gaussian</sender>
+      <signal>clicked()</signal>
+      <receiver>is_non_param_cdf</receiver>
+      <slot>toggle()</slot>
+    </connection>
+    <connection>
+      <sender>is_non_param_cdf</sender>
+      <signal>clicked()</signal>
+      <receiver>is_gaussian</receiver>
+      <slot>toggle()</slot>
+    </connection>
+  </connections>
+</ui>

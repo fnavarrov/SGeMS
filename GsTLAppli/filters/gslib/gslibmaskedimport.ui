@@ -1,0 +1,787 @@
+<ui version="4.0" stdsetdef="1" >
+  <author></author>
+  <comment></comment>
+  <exportmacro></exportmacro>
+  <class>GslibMaskedImport</class>
+  <widget class="QWidget" name="GslibMaskedImport" >
+    <property name="geometry" >
+      <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>338</width>
+        <height>789</height>
+      </rect>
+    </property>
+    <property name="windowTitle" >
+      <string>Grid with inactive cells</string>
+    </property>
+    <widget class="QWidget" name="Layout8" >
+      <property name="geometry" >
+        <rect>
+          <x>11</x>
+          <y>11</y>
+          <width>316</width>
+          <height>25</height>
+        </rect>
+      </property>
+      <layout class="QHBoxLayout" >
+        <property name="margin" >
+          <number>0</number>
+        </property>
+        <property name="spacing" >
+          <number>6</number>
+        </property>
+        <item>
+          <widget class="QLabel" name="TextLabel4_4" >
+            <property name="sizePolicy" >
+              <sizepolicy>
+                <hsizetype>0</hsizetype>
+                <vsizetype>5</vsizetype>
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+              </sizepolicy>
+            </property>
+            <property name="text" >
+              <string>Grid name</string>
+            </property>
+            <property name="wordWrap" >
+              <bool>false</bool>
+            </property>
+          </widget>
+        </item>
+        <item>
+          <widget class="QLineEdit" name="name_" >
+            <property name="toolTip" stdset="0" >
+              <string>name of new grid</string>
+            </property>
+          </widget>
+        </item>
+      </layout>
+    </widget>
+    <widget class="QLabel" name="TextLabel1_2_2_2_2" >
+      <property name="geometry" >
+        <rect>
+          <x>11</x>
+          <y>434</y>
+          <width>102</width>
+          <height>17</height>
+        </rect>
+      </property>
+      <property name="sizePolicy" >
+        <sizepolicy>
+          <hsizetype>0</hsizetype>
+          <vsizetype>0</vsizetype>
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+        </sizepolicy>
+      </property>
+      <property name="font" >
+        <font>
+          <bold>true</bold>
+        </font>
+      </property>
+      <property name="text" >
+        <string>No Data Value</string>
+      </property>
+      <property name="wordWrap" >
+        <bool>false</bool>
+      </property>
+    </widget>
+    <widget class="Line" name="Line1_2_2_2_2" >
+      <property name="geometry" >
+        <rect>
+          <x>129</x>
+          <y>441</y>
+          <width>198</width>
+          <height>16</height>
+        </rect>
+      </property>
+      <property name="sizePolicy" >
+        <sizepolicy>
+          <hsizetype>1</hsizetype>
+          <vsizetype>0</vsizetype>
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+        </sizepolicy>
+      </property>
+      <property name="frameShape" >
+        <enum>QFrame::HLine</enum>
+      </property>
+      <property name="frameShadow" >
+        <enum>QFrame::Sunken</enum>
+      </property>
+    </widget>
+    <widget class="QSpinBox" name="_maskcol" >
+      <property name="geometry" >
+        <rect>
+          <x>247</x>
+          <y>405</y>
+          <width>80</width>
+          <height>23</height>
+        </rect>
+      </property>
+      <property name="sizePolicy" >
+        <sizepolicy>
+          <hsizetype>4</hsizetype>
+          <vsizetype>0</vsizetype>
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+        </sizepolicy>
+      </property>
+      <property name="maximumSize" >
+        <size>
+          <width>80</width>
+          <height>32767</height>
+        </size>
+      </property>
+      <property name="maximum" >
+        <number>100000000</number>
+      </property>
+      <property name="minimum" >
+        <number>1</number>
+      </property>
+    </widget>
+    <widget class="QLabel" name="TextLabel4_5" >
+      <property name="geometry" >
+        <rect>
+          <x>11</x>
+          <y>405</y>
+          <width>88</width>
+          <height>23</height>
+        </rect>
+      </property>
+      <property name="sizePolicy" >
+        <sizepolicy>
+          <hsizetype>0</hsizetype>
+          <vsizetype>5</vsizetype>
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+        </sizepolicy>
+      </property>
+      <property name="text" >
+        <string>Col. # for mask</string>
+      </property>
+      <property name="wordWrap" >
+        <bool>false</bool>
+      </property>
+    </widget>
+    <widget class="QGroupBox" name="_ps" >
+      <property name="enabled" >
+        <bool>false</bool>
+      </property>
+      <property name="geometry" >
+        <rect>
+          <x>11</x>
+          <y>239</y>
+          <width>316</width>
+          <height>124</height>
+        </rect>
+      </property>
+      <property name="title" >
+        <string>Point set</string>
+      </property>
+      <widget class="QLabel" name="TextLabel4_3" >
+        <property name="geometry" >
+          <rect>
+            <x>43</x>
+            <y>80</y>
+            <width>137</width>
+            <height>23</height>
+          </rect>
+        </property>
+        <property name="sizePolicy" >
+          <sizepolicy>
+            <hsizetype>0</hsizetype>
+            <vsizetype>5</vsizetype>
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+          </sizepolicy>
+        </property>
+        <property name="text" >
+          <string>Col. # for Z coordinates</string>
+        </property>
+        <property name="wordWrap" >
+          <bool>false</bool>
+        </property>
+      </widget>
+      <widget class="QLabel" name="TextLabel4" >
+        <property name="geometry" >
+          <rect>
+            <x>43</x>
+            <y>22</y>
+            <width>137</width>
+            <height>23</height>
+          </rect>
+        </property>
+        <property name="sizePolicy" >
+          <sizepolicy>
+            <hsizetype>0</hsizetype>
+            <vsizetype>5</vsizetype>
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+          </sizepolicy>
+        </property>
+        <property name="text" >
+          <string>Col. # for X coordinates</string>
+        </property>
+        <property name="wordWrap" >
+          <bool>false</bool>
+        </property>
+      </widget>
+      <widget class="QLabel" name="TextLabel4_2" >
+        <property name="geometry" >
+          <rect>
+            <x>43</x>
+            <y>51</y>
+            <width>138</width>
+            <height>23</height>
+          </rect>
+        </property>
+        <property name="sizePolicy" >
+          <sizepolicy>
+            <hsizetype>0</hsizetype>
+            <vsizetype>5</vsizetype>
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+          </sizepolicy>
+        </property>
+        <property name="text" >
+          <string>Col. # for Y coordinates</string>
+        </property>
+        <property name="wordWrap" >
+          <bool>false</bool>
+        </property>
+      </widget>
+      <widget class="QSpinBox" name="X_col_" >
+        <property name="geometry" >
+          <rect>
+            <x>187</x>
+            <y>22</y>
+            <width>80</width>
+            <height>23</height>
+          </rect>
+        </property>
+        <property name="sizePolicy" >
+          <sizepolicy>
+            <hsizetype>4</hsizetype>
+            <vsizetype>0</vsizetype>
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+          </sizepolicy>
+        </property>
+        <property name="maximumSize" >
+          <size>
+            <width>80</width>
+            <height>32767</height>
+          </size>
+        </property>
+        <property name="maximum" >
+          <number>100000000</number>
+        </property>
+        <property name="minimum" >
+          <number>1</number>
+        </property>
+      </widget>
+      <widget class="QSpinBox" name="Y_col_" >
+        <property name="geometry" >
+          <rect>
+            <x>187</x>
+            <y>51</y>
+            <width>80</width>
+            <height>23</height>
+          </rect>
+        </property>
+        <property name="sizePolicy" >
+          <sizepolicy>
+            <hsizetype>4</hsizetype>
+            <vsizetype>0</vsizetype>
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+          </sizepolicy>
+        </property>
+        <property name="maximumSize" >
+          <size>
+            <width>80</width>
+            <height>32767</height>
+          </size>
+        </property>
+        <property name="maximum" >
+          <number>1000000000</number>
+        </property>
+        <property name="minimum" >
+          <number>1</number>
+        </property>
+        <property name="value" >
+          <number>2</number>
+        </property>
+      </widget>
+      <widget class="QSpinBox" name="Z_col_" >
+        <property name="geometry" >
+          <rect>
+            <x>187</x>
+            <y>80</y>
+            <width>80</width>
+            <height>23</height>
+          </rect>
+        </property>
+        <property name="sizePolicy" >
+          <sizepolicy>
+            <hsizetype>4</hsizetype>
+            <vsizetype>0</vsizetype>
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+          </sizepolicy>
+        </property>
+        <property name="maximumSize" >
+          <size>
+            <width>80</width>
+            <height>32767</height>
+          </size>
+        </property>
+        <property name="specialValueText" >
+          <string>NA (2d)</string>
+        </property>
+        <property name="maximum" >
+          <number>1000000000</number>
+        </property>
+        <property name="minimum" >
+          <number>0</number>
+        </property>
+        <property name="value" >
+          <number>0</number>
+        </property>
+      </widget>
+    </widget>
+    <widget class="QGroupBox" name="buttonGroup1" >
+      <property name="geometry" >
+        <rect>
+          <x>11</x>
+          <y>42</y>
+          <width>316</width>
+          <height>58</height>
+        </rect>
+      </property>
+      <property name="title" >
+        <string/>
+      </property>
+      <widget class="QRadioButton" name="_isps" >
+        <property name="geometry" >
+          <rect>
+            <x>180</x>
+            <y>19</y>
+            <width>70</width>
+            <height>21</height>
+          </rect>
+        </property>
+        <property name="text" >
+          <string>point set</string>
+        </property>
+      </widget>
+      <widget class="QRadioButton" name="_isregular" >
+        <property name="geometry" >
+          <rect>
+            <x>20</x>
+            <y>19</y>
+            <width>101</width>
+            <height>21</height>
+          </rect>
+        </property>
+        <property name="text" >
+          <string>regular grid</string>
+        </property>
+        <property name="checked" >
+          <bool>true</bool>
+        </property>
+      </widget>
+    </widget>
+    <widget class="QGroupBox" name="_rgrid" >
+      <property name="enabled" >
+        <bool>true</bool>
+      </property>
+      <property name="geometry" >
+        <rect>
+          <x>11</x>
+          <y>106</y>
+          <width>316</width>
+          <height>127</height>
+        </rect>
+      </property>
+      <property name="title" >
+        <string>Bounding box</string>
+      </property>
+      <widget class="QLabel" name="textLabel1_2_2" >
+        <property name="geometry" >
+          <rect>
+            <x>111</x>
+            <y>23</y>
+            <width>36</width>
+            <height>23</height>
+          </rect>
+        </property>
+        <property name="text" >
+          <string>DimY</string>
+        </property>
+        <property name="wordWrap" >
+          <bool>false</bool>
+        </property>
+      </widget>
+      <widget class="QLabel" name="textLabel1_2" >
+        <property name="geometry" >
+          <rect>
+            <x>11</x>
+            <y>23</y>
+            <width>35</width>
+            <height>23</height>
+          </rect>
+        </property>
+        <property name="text" >
+          <string>DimX</string>
+        </property>
+        <property name="wordWrap" >
+          <bool>false</bool>
+        </property>
+      </widget>
+      <widget class="QLabel" name="sizeXLabel" >
+        <property name="geometry" >
+          <rect>
+            <x>11</x>
+            <y>52</y>
+            <width>35</width>
+            <height>23</height>
+          </rect>
+        </property>
+        <property name="text" >
+          <string>SizeX</string>
+        </property>
+        <property name="wordWrap" >
+          <bool>false</bool>
+        </property>
+      </widget>
+      <widget class="QLabel" name="sizeXLabel_2" >
+        <property name="geometry" >
+          <rect>
+            <x>11</x>
+            <y>81</y>
+            <width>35</width>
+            <height>23</height>
+          </rect>
+        </property>
+        <property name="text" >
+          <string>OX</string>
+        </property>
+        <property name="wordWrap" >
+          <bool>false</bool>
+        </property>
+      </widget>
+      <widget class="QLabel" name="sizeX_2_3" >
+        <property name="geometry" >
+          <rect>
+            <x>111</x>
+            <y>81</y>
+            <width>36</width>
+            <height>23</height>
+          </rect>
+        </property>
+        <property name="text" >
+          <string>OY</string>
+        </property>
+        <property name="wordWrap" >
+          <bool>false</bool>
+        </property>
+      </widget>
+      <widget class="QLabel" name="sizeX_2_2_2" >
+        <property name="geometry" >
+          <rect>
+            <x>211</x>
+            <y>81</y>
+            <width>35</width>
+            <height>23</height>
+          </rect>
+        </property>
+        <property name="text" >
+          <string>OZ</string>
+        </property>
+        <property name="wordWrap" >
+          <bool>false</bool>
+        </property>
+      </widget>
+      <widget class="QLabel" name="sizeX_2" >
+        <property name="geometry" >
+          <rect>
+            <x>111</x>
+            <y>52</y>
+            <width>36</width>
+            <height>23</height>
+          </rect>
+        </property>
+        <property name="lineWidth" >
+          <number>1</number>
+        </property>
+        <property name="text" >
+          <string>SizeY</string>
+        </property>
+        <property name="wordWrap" >
+          <bool>false</bool>
+        </property>
+      </widget>
+      <widget class="QLineEdit" name="xmn_" >
+        <property name="geometry" >
+          <rect>
+            <x>52</x>
+            <y>81</y>
+            <width>53</width>
+            <height>23</height>
+          </rect>
+        </property>
+        <property name="text" >
+          <string>0</string>
+        </property>
+      </widget>
+      <widget class="QLineEdit" name="ymn_" >
+        <property name="geometry" >
+          <rect>
+            <x>153</x>
+            <y>81</y>
+            <width>52</width>
+            <height>23</height>
+          </rect>
+        </property>
+        <property name="text" >
+          <string>0</string>
+        </property>
+      </widget>
+      <widget class="QLineEdit" name="zmn_" >
+        <property name="geometry" >
+          <rect>
+            <x>252</x>
+            <y>81</y>
+            <width>53</width>
+            <height>23</height>
+          </rect>
+        </property>
+        <property name="text" >
+          <string>0</string>
+        </property>
+      </widget>
+      <widget class="QLabel" name="sizeX_2_2" >
+        <property name="geometry" >
+          <rect>
+            <x>211</x>
+            <y>52</y>
+            <width>35</width>
+            <height>23</height>
+          </rect>
+        </property>
+        <property name="text" >
+          <string>SizeZ</string>
+        </property>
+        <property name="wordWrap" >
+          <bool>false</bool>
+        </property>
+      </widget>
+      <widget class="QLineEdit" name="x_size_" >
+        <property name="geometry" >
+          <rect>
+            <x>52</x>
+            <y>52</y>
+            <width>53</width>
+            <height>23</height>
+          </rect>
+        </property>
+        <property name="text" >
+          <string>1</string>
+        </property>
+      </widget>
+      <widget class="QLineEdit" name="y_size_" >
+        <property name="geometry" >
+          <rect>
+            <x>153</x>
+            <y>52</y>
+            <width>52</width>
+            <height>23</height>
+          </rect>
+        </property>
+        <property name="text" >
+          <string>1</string>
+        </property>
+      </widget>
+      <widget class="QLineEdit" name="z_size_" >
+        <property name="geometry" >
+          <rect>
+            <x>252</x>
+            <y>52</y>
+            <width>53</width>
+            <height>23</height>
+          </rect>
+        </property>
+        <property name="text" >
+          <string>1</string>
+        </property>
+      </widget>
+      <widget class="QLabel" name="textLabel1_2_3" >
+        <property name="geometry" >
+          <rect>
+            <x>211</x>
+            <y>23</y>
+            <width>35</width>
+            <height>23</height>
+          </rect>
+        </property>
+        <property name="text" >
+          <string>DimZ</string>
+        </property>
+        <property name="wordWrap" >
+          <bool>false</bool>
+        </property>
+      </widget>
+      <widget class="QLineEdit" name="ny_" >
+        <property name="geometry" >
+          <rect>
+            <x>153</x>
+            <y>23</y>
+            <width>52</width>
+            <height>23</height>
+          </rect>
+        </property>
+        <property name="text" >
+          <string>0</string>
+        </property>
+      </widget>
+      <widget class="QLineEdit" name="nz_" >
+        <property name="geometry" >
+          <rect>
+            <x>252</x>
+            <y>23</y>
+            <width>53</width>
+            <height>23</height>
+          </rect>
+        </property>
+        <property name="text" >
+          <string>0</string>
+        </property>
+      </widget>
+      <widget class="QLineEdit" name="nx_" >
+        <property name="geometry" >
+          <rect>
+            <x>52</x>
+            <y>23</y>
+            <width>53</width>
+            <height>23</height>
+          </rect>
+        </property>
+        <property name="text" >
+          <string>0</string>
+        </property>
+      </widget>
+    </widget>
+    <widget class="QGroupBox" name="groupBox5" >
+      <property name="geometry" >
+        <rect>
+          <x>11</x>
+          <y>457</y>
+          <width>316</width>
+          <height>125</height>
+        </rect>
+      </property>
+      <property name="title" >
+        <string/>
+      </property>
+      <widget class="QCheckBox" name="use_no_data_value_" >
+        <property name="geometry" >
+          <rect>
+            <x>87</x>
+            <y>12</y>
+            <width>142</width>
+            <height>22</height>
+          </rect>
+        </property>
+        <property name="text" >
+          <string>Use No-Data-Value</string>
+        </property>
+      </widget>
+      <widget class="QGroupBox" name="_edit" >
+        <property name="enabled" >
+          <bool>false</bool>
+        </property>
+        <property name="geometry" >
+          <rect>
+            <x>9</x>
+            <y>44</y>
+            <width>291</width>
+            <height>70</height>
+          </rect>
+        </property>
+        <property name="title" >
+          <string/>
+        </property>
+        <widget class="QLabel" name="textLabel1" >
+          <property name="geometry" >
+            <rect>
+              <x>10</x>
+              <y>15</y>
+              <width>90</width>
+              <height>31</height>
+            </rect>
+          </property>
+          <property name="text" >
+            <string>No-data-value</string>
+          </property>
+          <property name="wordWrap" >
+            <bool>false</bool>
+          </property>
+        </widget>
+        <widget class="QLineEdit" name="no_data_value_edit_" >
+          <property name="geometry" >
+            <rect>
+              <x>110</x>
+              <y>15</y>
+              <width>161</width>
+              <height>31</height>
+            </rect>
+          </property>
+        </widget>
+      </widget>
+    </widget>
+  </widget>
+  <layoutdefault spacing="6" margin="11" />
+  <pixmapfunction>qPixmapFromMimeSource</pixmapfunction>
+  <tabstops>
+    <tabstop>name_</tabstop>
+    <tabstop>_isregular</tabstop>
+    <tabstop>nx_</tabstop>
+    <tabstop>ny_</tabstop>
+    <tabstop>nz_</tabstop>
+    <tabstop>x_size_</tabstop>
+    <tabstop>y_size_</tabstop>
+    <tabstop>z_size_</tabstop>
+    <tabstop>xmn_</tabstop>
+    <tabstop>ymn_</tabstop>
+    <tabstop>zmn_</tabstop>
+    <tabstop>X_col_</tabstop>
+    <tabstop>Y_col_</tabstop>
+    <tabstop>Z_col_</tabstop>
+    <tabstop>_maskcol</tabstop>
+    <tabstop>use_no_data_value_</tabstop>
+    <tabstop>no_data_value_edit_</tabstop>
+  </tabstops>
+  <connections>
+    <connection>
+      <sender>_isps</sender>
+      <signal>toggled(bool)</signal>
+      <receiver>_ps</receiver>
+      <slot>setEnabled(bool)</slot>
+    </connection>
+    <connection>
+      <sender>use_no_data_value_</sender>
+      <signal>toggled(bool)</signal>
+      <receiver>_edit</receiver>
+      <slot>setEnabled(bool)</slot>
+    </connection>
+    <connection>
+      <sender>_isps</sender>
+      <signal>toggled(bool)</signal>
+      <receiver>_maskcol</receiver>
+      <slot>setDisabled(bool)</slot>
+    </connection>
+  </connections>
+</ui>

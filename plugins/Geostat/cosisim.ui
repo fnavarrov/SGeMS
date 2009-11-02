@@ -1,0 +1,870 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>cosisim</class>
+ <widget class="QWidget" name="cosisim">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>301</width>
+    <height>1343</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Cosisim</string>
+  </property>
+  <property name="AlgorithmCategory" stdset="0">
+   <string>Simulation</string>
+  </property>
+  <property name="AlgorithmDescription" stdset="0">
+   <string>Sequential indicator co-simulation</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout_7">
+   <item>
+    <widget class="QTabWidget" name="tabWidget3">
+     <property name="currentIndex">
+      <number>1</number>
+     </property>
+     <widget class="QWidget" name="tab">
+      <attribute name="title">
+       <string>General</string>
+      </attribute>
+      <layout class="QVBoxLayout" name="verticalLayout_3">
+       <item>
+        <widget class="QGroupBox" name="SimulationGrid">
+         <property name="maximumSize">
+          <size>
+           <width>32767</width>
+           <height>140</height>
+          </size>
+         </property>
+         <property name="title">
+          <string>Simulation Grid</string>
+         </property>
+         <layout class="QVBoxLayout" name="verticalLayout">
+          <item>
+           <widget class="GridSelector" name="Grid_Name">
+            <property name="tabShape">
+             <enum>QTabWidget::Rounded</enum>
+            </property>
+            <property name="currentIndex">
+             <number>0</number>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="TextLabel2">
+            <property name="text">
+             <string>Property Name Prefix</string>
+            </property>
+            <property name="wordWrap">
+             <bool>false</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLineEdit" name="Property_Name"/>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <layout class="QHBoxLayout">
+         <property name="spacing">
+          <number>6</number>
+         </property>
+         <property name="margin">
+          <number>0</number>
+         </property>
+         <item>
+          <widget class="QLabel" name="TextLabel2_2_2_2_3">
+           <property name="text">
+            <string>Nb of realizations</string>
+           </property>
+           <property name="wordWrap">
+            <bool>false</bool>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QSpinBox" name="Nb_Realizations">
+           <property name="minimum">
+            <number>1</number>
+           </property>
+           <property name="maximum">
+            <number>10000</number>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QHBoxLayout">
+         <property name="spacing">
+          <number>6</number>
+         </property>
+         <property name="margin">
+          <number>0</number>
+         </property>
+         <item>
+          <widget class="QLabel" name="TextLabel2_2_2_2_2">
+           <property name="text">
+            <string>Seed</string>
+           </property>
+           <property name="wordWrap">
+            <bool>false</bool>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QSpinBox" name="Seed">
+           <property name="maximum">
+            <number>99999999</number>
+           </property>
+           <property name="value">
+            <number>14071789</number>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <widget class="QGroupBox" name="GroupBox4">
+         <property name="title">
+          <string>Indicator Parameters</string>
+         </property>
+         <layout class="QGridLayout">
+          <property name="margin">
+           <number>11</number>
+          </property>
+          <property name="spacing">
+           <number>6</number>
+          </property>
+          <item row="0" column="0">
+           <widget class="QCheckBox" name="Categorical_Variable_Flag">
+            <property name="text">
+             <string>Categorical variable</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <layout class="QHBoxLayout">
+            <property name="spacing">
+             <number>6</number>
+            </property>
+            <property name="margin">
+             <number>0</number>
+            </property>
+            <item>
+             <widget class="QLabel" name="TextLabel1_4">
+              <property name="text">
+               <string>Number of Thresholds/Classes</string>
+              </property>
+              <property name="wordWrap">
+               <bool>false</bool>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QSpinBox" name="Nb_Indicators">
+              <property name="minimum">
+               <number>1</number>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item row="2" column="0">
+           <spacer>
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeType">
+             <enum>QSizePolicy::Expanding</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>16</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item row="3" column="0">
+           <widget class="QLabel" name="TextLabel1_3">
+            <property name="text">
+             <string>Threshold Values / Classes</string>
+            </property>
+            <property name="wordWrap">
+             <bool>false</bool>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="0">
+           <widget class="QLineEdit" name="Thresholds"/>
+          </item>
+          <item row="5" column="0">
+           <widget class="QLabel" name="TextLabel2_2">
+            <property name="text">
+             <string>Corresponding marginal probabilities
+i.e. I (Z&lt;zk) or  I (G=k)</string>
+            </property>
+            <property name="wordWrap">
+             <bool>false</bool>
+            </property>
+           </widget>
+          </item>
+          <item row="6" column="0">
+           <widget class="QLineEdit" name="Marginal_Probabilities"/>
+          </item>
+          <item row="7" column="0">
+           <widget class="GsTLGroupBox" name="lowerTailBox">
+            <property name="title">
+             <string>Lower tail extrapolation</string>
+            </property>
+            <layout class="QGridLayout">
+             <item row="0" column="0">
+              <widget class="LowerTailCdfInput" name="lowerTailCdf"/>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item row="8" column="0">
+           <widget class="GsTLGroupBox" name="upperTailBox">
+            <property name="title">
+             <string>Upper tail extrapolation</string>
+            </property>
+            <layout class="QGridLayout">
+             <item row="0" column="0">
+              <widget class="UpperTailCdfInput" name="upperTailCdf"/>
+             </item>
+            </layout>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QComboBox" name="Kriging_Type">
+         <item>
+          <property name="text">
+           <string>Simple Kriging</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Ordinary Kriging</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="textLabel1_2_2">
+         <property name="text">
+          <string>Kriging Type:</string>
+         </property>
+         <property name="wordWrap">
+          <bool>false</bool>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QGroupBox" name="ButtonGroup1">
+         <property name="title">
+          <string/>
+         </property>
+         <layout class="QVBoxLayout">
+          <property name="spacing">
+           <number>6</number>
+          </property>
+          <property name="margin">
+           <number>11</number>
+          </property>
+          <item>
+           <widget class="QRadioButton" name="Median_Ik_Flag">
+            <property name="text">
+             <string>Median IK</string>
+            </property>
+            <property name="checked">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QRadioButton" name="Full_Ik_Flag">
+            <property name="text">
+             <string>Full Ik</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <spacer>
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeType">
+          <enum>QSizePolicy::Expanding</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>41</width>
+           <height>483</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="tab">
+      <attribute name="title">
+       <string>Data</string>
+      </attribute>
+      <layout class="QVBoxLayout" name="verticalLayout_6">
+       <item>
+        <widget class="QGroupBox" name="GroupBox3">
+         <property name="title">
+          <string>Hard Data</string>
+         </property>
+         <layout class="QVBoxLayout">
+          <property name="spacing">
+           <number>6</number>
+          </property>
+          <property name="margin">
+           <number>11</number>
+          </property>
+          <item>
+           <widget class="QLabel" name="TextLabel1_2">
+            <property name="text">
+             <string>Grid</string>
+            </property>
+            <property name="wordWrap">
+             <bool>false</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="GridSelector" name="Primary_Harddata_Grid"/>
+          </item>
+          <item>
+           <widget class="OrderedPropertySelector" name="Primary_Indicators">
+            <property name="title">
+             <string>Indicator Properties</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QGroupBox" name="GroupBox9">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="title">
+          <string>Search Ellipsoid</string>
+         </property>
+         <layout class="QVBoxLayout" name="verticalLayout_5">
+          <item>
+           <layout class="QHBoxLayout">
+            <property name="spacing">
+             <number>6</number>
+            </property>
+            <property name="margin">
+             <number>0</number>
+            </property>
+            <item>
+             <widget class="QLabel" name="TextLabel2_2_2_2_3_2">
+              <property name="text">
+               <string>Max conditioning data</string>
+              </property>
+              <property name="wordWrap">
+               <bool>false</bool>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QSpinBox" name="Max_Conditioning_Data_Primary">
+              <property name="minimum">
+               <number>0</number>
+              </property>
+              <property name="maximum">
+               <number>200</number>
+              </property>
+              <property name="value">
+               <number>12</number>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <widget class="EllipsoidInput" name="Search_Ellipsoid_Primary">
+            <property name="title" stdset="0">
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="AdvancedNeighborhoodInput" name="AdvancedSearch_Primary"/>
+          </item>
+          <item>
+           <spacer>
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeType">
+             <enum>QSizePolicy::Expanding</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>16</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QGroupBox" name="GroupBox3_2">
+         <property name="title">
+          <string>Soft Data</string>
+         </property>
+         <layout class="QVBoxLayout">
+          <property name="margin">
+           <number>0</number>
+          </property>
+          <item>
+           <widget class="QLabel" name="TextLabel1_2_3_2">
+            <property name="text">
+             <string>Grid</string>
+            </property>
+            <property name="wordWrap">
+             <bool>false</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="GridSelector" name="Secondary_Harddata_Grid"/>
+          </item>
+          <item>
+           <widget class="OrderedPropertySelector" name="Secondary_Indicators">
+            <property name="title">
+             <string>Indicator Properties</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="GsTLGroupBox" name="gsTLGroupBox4">
+         <property name="title">
+          <string>Markov Bayes model parameters</string>
+         </property>
+         <layout class="QVBoxLayout" name="verticalLayout_4">
+          <item>
+           <widget class="QLabel" name="markovBayesText">
+            <property name="text">
+             <string>B(z,Ik) for each indicator:</string>
+            </property>
+            <property name="wordWrap">
+             <bool>false</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLineEdit" name="Bz_Values"/>
+          </item>
+          <item>
+           <widget class="QGroupBox" name="GroupBox9_2">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="title">
+             <string>Search Ellipsoid</string>
+            </property>
+            <layout class="QVBoxLayout" name="verticalLayout_2">
+             <item>
+              <layout class="QHBoxLayout">
+               <property name="spacing">
+                <number>6</number>
+               </property>
+               <property name="margin">
+                <number>0</number>
+               </property>
+               <item>
+                <widget class="QLabel" name="TextLabel2_2_2_2_3_3">
+                 <property name="text">
+                  <string>Max conditioning data</string>
+                 </property>
+                 <property name="wordWrap">
+                  <bool>false</bool>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QSpinBox" name="Max_Conditioning_Data_Secondary">
+                 <property name="minimum">
+                  <number>0</number>
+                 </property>
+                 <property name="maximum">
+                  <number>200</number>
+                 </property>
+                 <property name="value">
+                  <number>12</number>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <widget class="EllipsoidInput" name="Search_Ellipsoid_Secondary">
+               <property name="title" stdset="0">
+                <string/>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="AdvancedNeighborhoodInput" name="AdvancedSearch_Secondary"/>
+             </item>
+             <item>
+              <spacer name="verticalSpacer">
+               <property name="orientation">
+                <enum>Qt::Vertical</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>20</width>
+                 <height>17</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+            </layout>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <spacer>
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeType">
+          <enum>QSizePolicy::Expanding</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="TabPage">
+      <attribute name="title">
+       <string>Variograms</string>
+      </attribute>
+      <layout class="QGridLayout">
+       <property name="margin">
+        <number>0</number>
+       </property>
+       <item row="4" column="0">
+        <widget class="CloneGroupBox" name="FullIkGroup">
+         <property name="title">
+          <string/>
+         </property>
+         <property name="displayed" stdset="0">
+          <bool>false</bool>
+         </property>
+         <layout class="QVBoxLayout">
+          <property name="spacing">
+           <number>6</number>
+          </property>
+          <property name="margin">
+           <number>11</number>
+          </property>
+          <item>
+           <widget class="VariogramInput" name="Variogram_Full_Ik"/>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item row="5" column="0">
+        <spacer>
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeType">
+          <enum>QSizePolicy::Expanding</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item row="3" column="0">
+        <widget class="GsTLGroupBox" name="MedianIkGroup">
+         <property name="title">
+          <string/>
+         </property>
+         <layout class="QVBoxLayout">
+          <property name="spacing">
+           <number>6</number>
+          </property>
+          <property name="margin">
+           <number>11</number>
+          </property>
+          <item>
+           <widget class="VariogramInput" name="Variogram_Median_Ik"/>
+          </item>
+         </layout>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <pixmapfunction>qPixmapFromMimeSource</pixmapfunction>
+ <customwidgets>
+  <customwidget>
+   <class>OrderedPropertySelector</class>
+   <extends>GsTLGroupBox</extends>
+   <header>GsTLAppli/extra/qtplugins/selectors.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>VariogramInput</class>
+   <extends>QWidget</extends>
+   <header>GsTLAppli/extra/qtplugins/variogram_input.h</header>
+  </customwidget>
+  <customwidget>
+   <class>GsTLGroupBox</class>
+   <extends>QGroupBox</extends>
+   <header>GsTLAppli/extra/qtplugins/selectors.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>EllipsoidInput</class>
+   <extends>QWidget</extends>
+   <header>GsTLAppli/extra/qtplugins/ellipsoid_input.h</header>
+  </customwidget>
+  <customwidget>
+   <class>UpperTailCdfInput</class>
+   <extends>QWidget</extends>
+   <header>GsTLAppli/extra/qtplugins/non_param_cdf_input.h</header>
+  </customwidget>
+  <customwidget>
+   <class>LowerTailCdfInput</class>
+   <extends>QWidget</extends>
+   <header>GsTLAppli/extra/qtplugins/non_param_cdf_input.h</header>
+  </customwidget>
+  <customwidget>
+   <class>CloneGroupBox</class>
+   <extends>GsTLGroupBox</extends>
+   <header>GsTLAppli/extra/qtplugins/selectors.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>GridSelector</class>
+   <extends>QTabWidget</extends>
+   <header>GsTLAppli/extra/qtplugins/selectors.h</header>
+  </customwidget>
+  <customwidget>
+   <class>AdvancedNeighborhoodInput</class>
+   <extends>QWidget</extends>
+   <header>GsTLAppli/extra/qtplugins/neighborhood_filter_input.h</header>
+  </customwidget>
+ </customwidgets>
+ <includes>
+  <include location="local">gridselector.h</include>
+  <include location="local">gstlgroupbox.h</include>
+  <include location="local">lowertailcdfinput.h</include>
+  <include location="local">gstlgroupbox.h</include>
+  <include location="local">uppertailcdfinput.h</include>
+  <include location="local">gridselector.h</include>
+  <include location="local">orderedpropertyselector.h</include>
+  <include location="local">multipropertyselector.h</include>
+  <include location="local">ellipsoidinput.h</include>
+  <include location="local">gstl_table.h</include>
+  <include location="local">gstl_table.h</include>
+  <include location="local">gridselector.h</include>
+  <include location="local">orderedpropertyselector.h</include>
+  <include location="local">multipropertyselector.h</include>
+  <include location="local">gstlgroupbox.h</include>
+  <include location="local">ellipsoidinput.h</include>
+  <include location="local">gstl_table.h</include>
+  <include location="local">gstl_table.h</include>
+  <include location="local">clonegroupbox.h</include>
+  <include location="local">variograminput.h</include>
+  <include location="local">gstlgroupbox.h</include>
+  <include location="local">variograminput.h</include>
+ </includes>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>Median_Ik_Flag</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>MedianIkGroup</receiver>
+   <slot>setVisible(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>Full_Ik_Flag</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>FullIkGroup</receiver>
+   <slot>setVisible(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>Nb_Indicators</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>FullIkGroup</receiver>
+   <slot>set_count(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>Primary_Harddata_Grid</sender>
+   <signal>activated(QString)</signal>
+   <receiver>Primary_Indicators</receiver>
+   <slot>show_properties(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>Secondary_Harddata_Grid</sender>
+   <signal>activated(QString)</signal>
+   <receiver>Secondary_Indicators</receiver>
+   <slot>show_properties(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>Primary_Indicators</sender>
+   <signal>selected_count(int)</signal>
+   <receiver>FullIkGroup</receiver>
+   <slot>set_count(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>Categorical_Variable_Flag</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>Thresholds</receiver>
+   <slot>setDisabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>Categorical_Variable_Flag</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>lowerTailBox</receiver>
+   <slot>setDisabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>Categorical_Variable_Flag</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>upperTailBox</receiver>
+   <slot>setDisabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>

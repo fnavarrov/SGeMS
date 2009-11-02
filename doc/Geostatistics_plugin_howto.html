@@ -1,0 +1,661 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <meta http-equiv="content-type"
+ content="text/html; charset=ISO-8859-1">
+  <title>Geostatistics plugin howto</title>
+  <meta name="author" content="Hans Steiner">
+</head>
+<body>
+<h1>Adding a new geostatistics plug-in<br>
+</h1>
+New (geostatistics) algorithms can be added by writing a plug-in. The
+plug-in is composed of two elements: a shared library ( ".so" file on
+Unix, ".dll" file on Windows) and a textual description of the graphical
+interface used to prompt for parameters (".ui" file). <br>
+Defining a plug-in involves two steps:<br>
+<ul>
+  <li>deriving a new class from Geostat_algo and redefining the
+necessary virtual functions</li>
+  <li>writing the .ui description file, either directly in a text
+editor or using the Qt Designer software (the latter is certainly the
+prefered solution). <br>
+  </li>
+</ul>
+The first step in writing an algorithm plugin is to define a new class
+deriving from class Geostat_algo and to redefine the three virtual
+functions <span style="font-style: italic;">initialize</span>, <span
+ style="font-style: italic;">execute</span> and <span
+ style="font-style: italic;">name</span>. The <span
+ style="font-style: italic;">initialize </span>function receives the
+parameters input by the user and initializes the parameters of the
+algorithm. These parameters are usually stored as member variables of
+the algorithm class. The <span style="font-style: italic;">execute </span>function
+runs the algorithm using the parameters&nbsp; previously initialized.
+The <span style="font-style: italic;">name</span> function specifies the
+name of the algorithm.<br>
+Experience has shown that it is more practical to proceed in the
+following order:<br>
+<ul>
+  <li>write the <span style="font-style: italic;">execute </span>function:
+this is the function that implements the algorithm. Writing the <span
+ style="font-style: italic;">execute </span>function first allows to
+easily identified the parameters required by the algorithm. New
+parameters are declared as member variables as they are identified.</li>
+  <li>Define the graphical user interface (".ui" file): set-up the
+fields necessary to input values for the parameters identified at the
+previous step.<br>
+  </li>
+  <li>write the <span style="font-style: italic;">initialize </span>function:
+parse the user's input and initialize the parameters used by the
+execute function. The way the parameters are arranged depends on the
+type of widgets used in the graphical interface(".ui" file). Hence it is
+better to first define the user interface and then write the <span
+ style="font-style: italic;">initialize </span>function.</li>
+  <li>write the <span style="font-style: italic;">name</span> function:
+return the name of the algorithm</li>
+  <li>Define a static member function called <span
+ style="font-style: italic;">create_new_interface</span>. The function
+has the following signature: <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Named_interface*
+create_new_interface( std::string&amp; )<br>
+  </li>
+</ul>
+Throughout this text the example of a moving average algorithm will be
+used. The class for the moving average algorithm is defined as follows:<br>
+<br>
+<br>
+<br>
+<br style="font-family: courier new,courier,monospace;">
+<table cellpadding="2" cellspacing="2" border="0"
+ style="text-align: left; width: 90%; margin-left: auto; margin-right: auto;">
+  <tbody>
+    <tr>
+      <td style="vertical-align: top;"><code></code>
+      <hr style="width: 100%; height: 2px;"><code>#include
+&lt;GsTLAppli/geostat/geostat_algo.h&gt;<br>
+      <br>
+class MovingAverage : public Geostat_algo {<br>
+&nbsp;public:<br>
+&nbsp; virtual bool initialize( const Parameters_handler* parameters,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Error_messages_handler* errors );<br>
+      <br>
+&nbsp; <span style="color: rgb(51, 102, 255);">// Runs the algorithm.</span> <br>
+&nbsp; virtual int execute() ;<br>
+&nbsp; <br>
+&nbsp; <span style="color: rgb(51, 102, 255);">// Tells the name of
+the algorithm</span><br>
+&nbsp; virtual std::string name() const { return "moving_average"; }<br>
+      </code><code><br>
+&nbsp;public:<br>
+&nbsp; static Named_interface* create_new_interface(std::string&amp;);<br>
+      </code><code><br>
+&nbsp; <br>
+&nbsp;private:<br>
+&nbsp; <span style="color: rgb(51, 102, 255);">// declare here all the
+parameters used by the algorithm<br>
+&nbsp; // (i.e. the execute function)<br>
+      </span>};</code><br>
+      <hr style="width: 100%; height: 2px;"><br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<br>
+<br>
+<br>
+<h2>The <span style="font-style: italic;">execute</span> function</h2>
+The execute function implements the algorithm itself. It returns an
+integer indicating whether the algorithm succeeded (returns 0) or failed
+(returns any value different from 0). <br>
+The moving average algorithm proceeds as follows:<br>
+<ol>
+  <li>Loop through all the nodes of the grid. <br>
+  </li>
+  <li>At each node <span style="font-weight: bold;">u</span>:</li>
+  <ol>
+    <li>retrive the neighbors of <span style="font-weight: bold;">u</span></li>
+    <li>compute the average of all the neighbors</li>
+    <li>store the result and proceed to the next node<br>
+    </li>
+  </ol>
+</ol>
+A possible implementation of this algorithm could be:<br>
+<br>
+<br>
+<table cellpadding="2" cellspacing="2" border="0"
+ style="text-align: left; width: 90%; margin-left: auto; margin-right: auto;">
+  <tbody>
+    <tr>
+      <td style="vertical-align: top;"><span
+ style="font-family: monospace;"></span>
+      <hr style="width: 100%; height: 2px;"><span
+ style="font-family: monospace;">int MovingAverage::execute() {<br>
+&nbsp; grid_-&gt;select_property( new_prop_name_ );<br>
+&nbsp; neighborhood_-&gt;select_property( prop_name_ );<br>
+      <br style="font-family: monospace;">
+      </span><span style="font-family: monospace;">&nbsp; <span
+ style="color: rgb(51, 102, 255);">// iterate through the grid</span></span><br
+ style="font-family: monospace;">
+      <span style="font-family: monospace;">&nbsp; for(
+Geostat_grid::iterator current_node_ptr = grid_-&gt;begin() ; </span><br
+ style="font-family: monospace;">
+      <span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+current_node_ptr != grid_-&gt;end() ; ++current_node_ptr ) {</span><br
+ style="font-family: monospace;">
+      <br style="font-family: monospace;">
+      <span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; <span
+ style="color: rgb(51, 102, 255);">// find the neighbors of the current
+node</span></span><br style="font-family: monospace;">
+      <span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;
+neighborhood_-&gt;find_neighbors( *current_node_ptr );</span><br
+ style="font-family: monospace;">
+      <span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; </span><br
+ style="font-family: monospace;">
+      <span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; <span
+ style="color: rgb(51, 102, 255);">// if the current node has no
+neighbors, skip it</span></span><br style="font-family: monospace;">
+      <span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; if(
+neighborhood_-&gt;is_empty() ) continue;</span><br
+ style="font-family: monospace;">
+      <br style="font-family: monospace;">
+      <br style="font-family: monospace;">
+      <span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; <span
+ style="color: rgb(51, 102, 255);">// compute the average of the
+neighboring values.</span></span><br style="font-family: monospace;">
+      <span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; float
+sum = 0.0;</span><br style="font-family: monospace;">
+      <span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; for(
+Neighborhood::iterator neighbor_ptr = neighborhood_-&gt;begin();</span><br
+ style="font-family: monospace;">
+      <span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+neighbor_ptr != neighborhood_-&gt;end() ; ++neighbor_ptr ) {</span><br
+ style="font-family: monospace;">
+      <span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+sum += neighbor_ptr-&gt;property_value();</span><br
+ style="font-family: monospace;">
+      <span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; }</span><br
+ style="font-family: monospace;">
+      <br style="font-family: monospace;">
+      <span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; <span
+ style="color: rgb(51, 102, 255);">// compute the average: divide the
+sum by the number of values</span></span><br
+ style="font-family: monospace;">
+      <span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; sum /=
+static_cast&lt;float&gt;( neighborhood_-&gt;size() );</span><br
+ style="font-family: monospace;">
+      <br style="font-family: monospace;">
+      <span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; <span
+ style="color: rgb(51, 102, 255);">// assign the computed average to
+the current node</span></span><br style="font-family: monospace;">
+      <span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;
+current_node_ptr-&gt;set_property_value( sum );</span><br
+ style="font-family: monospace;">
+      <span style="font-family: monospace;">&nbsp; }</span><br
+ style="font-family: monospace;">
+      <span style="font-family: monospace;">&nbsp; return 0;</span><br
+ style="font-family: monospace;">
+      <span style="font-family: monospace;">}<br>
+      </span>
+      <hr style="width: 100%; height: 2px;"><span
+ style="font-family: monospace;"><br>
+      </span></td>
+    </tr>
+  </tbody>
+</table>
+<br>
+<span style="font-family: monospace;"></span><span
+ style="font-family: monospace;"></span><br>
+<br>
+In writing this function the following parameters are identified: <br>
+<ul>
+  <li>grid_ : it represents the grid the algorithm is applied to</li>
+  <li>neighborhood_ : the object that will retrieve the neighbors of a
+given grid node. The user will have to provide the size of the
+neighborhood (three parameters in 3D).</li>
+  <li>prop_name_ : the moving average will be applied to this property</li>
+  <li>new_prop_name_ : the result of the moving average will be stored
+into a new property called "new_prop_name_"</li>
+</ul>
+These parameters are declared as member variable to the MovingAverage
+class (the changes are highlighted in red):<br>
+<br>
+<br>
+<table cellpadding="8" cellspacing="2" border="0"
+ style="text-align: left; margin-left: auto; margin-right: auto; width: 90%;">
+  <tbody>
+    <tr>
+      <td style="vertical-align: top;"><small><span
+ style="font-family: courier new,courier,monospace;"></span></small>
+      <hr style="width: 100%; height: 2px;"><small><span
+ style="font-family: courier new,courier,monospace;">#include
+&lt;GsTLAppli/geostat/geostat_algo.h&gt;<br>
+      <span style="color: rgb(255, 0, 0);">#include
+&lt;GsTL/utils/smartptr.h&gt;</span><br>
+      <br>
+      <span style="color: rgb(255, 0, 0);">#include &lt;string&gt;</span><br>
+      <br>
+      <span style="color: rgb(255, 0, 0);">class Geostat_grid;</span><br
+ style="color: rgb(255, 0, 0);">
+      <span style="color: rgb(255, 0, 0);">class Neighborhood;</span><br>
+      <br>
+      </span></small><span style="font-family: monospace;">class
+MovingAverage : public Geostat_algo {</span><br
+ style="font-family: monospace;">
+      <span style="font-family: monospace;"> public:</span><br
+ style="font-family: monospace;">
+      <span style="font-family: monospace;"> &nbsp; </span><span
+ style="color: rgb(51, 102, 255); font-family: monospace;">//
+initializes the parameters of the algorithm</span><br
+ style="font-family: monospace;">
+      <span style="font-family: monospace;"> &nbsp; virtual bool
+initialize( const Parameters_handler* parameters,</span><br
+ style="font-family: monospace;">
+      <span style="font-family: monospace;">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Error_messages_handler* errors );</span><br
+ style="font-family: monospace;">
+      <br style="font-family: monospace;">
+      <span style="font-family: monospace;"> &nbsp; </span><span
+ style="color: rgb(51, 102, 255); font-family: monospace;">// Runs the
+algorithm. </span><br style="font-family: monospace;">
+      <span style="font-family: monospace;"> &nbsp; virtual int
+execute() ;</span><br style="font-family: monospace;">
+      <br style="font-family: monospace;">
+      <span style="font-family: monospace;"> &nbsp; </span><span
+ style="color: rgb(51, 102, 255); font-family: monospace;">// Tells the
+name of the algorithm</span><br style="font-family: monospace;">
+      <span style="font-family: monospace;"> &nbsp; virtual std::string
+name() const { return "moving_average"; }</span><br
+ style="font-family: monospace;">
+      <br style="font-family: monospace;">
+      <span style="font-family: monospace;"> public:</span><br
+ style="font-family: monospace;">
+      <span style="font-family: monospace;"> &nbsp; static
+Named_interface* create_new_interface(std::string&amp;);</span><br
+ style="font-family: monospace;">
+      <big style="font-family: monospace;"><br>
+      </big> <small><big style="font-family: monospace;">private:<br>
+&nbsp; <span style="color: rgb(51, 102, 255);">// declare here all the
+parameters used by the algorithm <br>
+&nbsp; // (i.e. the execute function)</span><br>
+&nbsp; <span style="color: rgb(255, 0, 0);">Geostat_grid* grid_;</span><br
+ style="color: rgb(255, 0, 0);">
+      <span style="color: rgb(255, 0, 0);">&nbsp;
+SmartPtr&lt;Neighborhood&gt; neighborhood_;</span><br
+ style="color: rgb(255, 0, 0);">
+      <span style="color: rgb(255, 0, 0);">&nbsp; std::string
+new_prop_name_;</span><br style="color: rgb(255, 0, 0);">
+      <span style="color: rgb(255, 0, 0);">&nbsp; std::string
+prop_name_;</span><br>
+};<br>
+      </big></small>
+      <hr style="width: 100%; height: 2px;"><small><span
+ style="font-family: monospace;">&nbsp;</span><br
+ style="font-family: courier new,courier,monospace;">
+      </small></td>
+    </tr>
+  </tbody>
+</table>
+<br>
+<br>
+<br>
+<h2>Defining the user interface</h2>
+The most convenient solution to define the user interface is to use the
+Qt Designer. Refer to the <a href="http://www.trolltech.com">Qt
+documentation</a> for a user's manual to Designer. <br>
+In GEMS, parameters for an algorithm are characterized by a keyword and
+one or several attributes. The developer of the algorithm is free to
+choose the keyword as he likes, however the name and number of
+attributes is imposed by the widgets used. <br>
+To specify the keyword for a parameter in Designer use the Name
+property of the parameter widget:<br>
+<br>
+<div style="text-align: center;"><img src="images/designer1.jpg"
+ title="" alt="" style="width: 434px; height: 432px;"><br>
+</div>
+<br>
+To define an interface for an algorithm, layout the widgets as desired
+(see the user's manual to Designer), give a keyword name to each input
+entry, and set up the signals and slots of the interface (this last step
+is optionnal). While there is no explicit rule to choose a keyword name,
+it is advisable to use a naming scheme consistent with the other
+algorithms interfaces: try to use the same keywords for the same
+parameters, e.g. Grid_Name for the grid name parameter, etc.<br>
+<br>
+<h3>GEMS-specific widgets</h3>
+GEMS defines a new set of widgets which can be helpful to design an
+interface for a new algorithm. They can be found in the GsTLWidget
+section of the Designer widgets. Following is a brief description of
+each new widget:<br>
+<ul>
+  <li>GridSelector: a combobox that will display a list of available
+grid objects. When a new grid is loaded or created in GEMS, the list of
+the GridSelector is automatically updated.&nbsp;</li>
+  <li>SinglePropertySelector: a combobox to display a list of all
+properties defined in a given grid. The user will be able to select a
+single property out of the list. This widget is usually used along with
+a GridSelector, the "show_properties" slot of the SinglePropertySelector
+being connected to the "activated" signal of the GridSelector.</li>
+  <li>MultiPropertySelector: a listbox showing a list of all properties
+defined in a given grid. The user will be able to select multiple
+properties out of the list. This widget is usually used along with a
+GridSelector, the "show_properties" slot of the MultiPropertySelector
+being connected to the "activated" signal of the GridSelector.</li>
+  <li>OrderedPropertySelector: a widget showing a list of all
+properties defined in a given grid. The user will be able to select
+multiple properties out of the list and order the selected properties.
+Use this widget instead of MultiPropertySelector when the order in which
+the selected properties are specified is important. This widget is
+usually used along with a GridSelector, the "show_properties" slot of
+the MultiPropertySelector being connected to the "activated" signal of
+the GridSelector.</li>
+  <li>PropertySelector: this widget combines a GridSelector and a
+SinglePropertySelector. <br>
+  </li>
+  <li>FileChooser: this widget is used to prompt for a file name. A
+button is available to browse the user's directories and select the file
+name.</li>
+  <li>GsTLGroupBox: a groupbox that can provides slots to hide or show
+itself. Newer versions of Qt also provide such slots, but the
+GsTLGroupBox offers more flexibility: the groupbox can be hidden when a
+signal with a specific string is sent (the string is set in property <span
+ style="font-weight: bold;">keyword</span>), and property <span
+ style="font-weight: bold;">activated</span> can be used to specify if
+the groupbox should be activated (ie visible and enabled) by default.</li>
+  <li>GsTLButtonGroup: same asGsTLGroupBox, for a QButtonGroup. <br>
+  </li>
+  <li>CloneGroupBox: on top of the functionalities offered by
+GsTLGroupBox, this widget is capable of creating replicates (clones) of
+the widget it contains. This widget is usually used with a QSpinBox, the
+"set_count" slot of the CloneGroupBox being connected to the
+"valueChanged" of the QSpinBox. Note that the CloneGroupBox is not able
+to clone complex widgets (ie widgets that contain other widgets).</li>
+  <li>VariogramInput: a widget to input the parameters characterizing a
+variogram.</li>
+</ul>
+<br>
+<h3>The <span style="font-style: italic;">algorithm</span> tag of the
+.ui file<br>
+</h3>
+To choose in which category the new algorithm will appear, add an <span
+ style="font-style: italic;">algorithm</span> tag at the top of the .ui
+file (using a text editor). The algorithm tag can have two attributes:
+category and description. The category tag contains the name of the
+section under which the new algorithm will appear in GEMS, and
+description a short description of the new algorithm. For example, to
+add the new algorithm to sub-section "smoothing" of section "Image
+Processing", with description "my new plug-in", write:<br>
+&nbsp; &lt;algorithm&nbsp;&nbsp; category="Image
+Processing/smoothing"&nbsp;&nbsp; description="my new plug-in" /&gt; <br>
+<br>
+<div style="text-align: center;"><img src="images/gems.png" title=""
+ alt="" style="width: 376px; height: 416px;"><br>
+</div>
+<br>
+<br>
+The category attribute can contain any path. If the path does not
+exist, the corresponding sub-sections will be created.<br>
+<br>
+Note that the <span style="font-style: italic;">algorithm</span> tag is
+not part of Designer, hence will be erased each time the .ui file is
+saved from Designer. <br>
+<br>
+<br>
+<h2>The <span style="font-style: italic;">initialize</span> function</h2>
+The initialize function is passed two arguments: a list of all
+parameters input by the user and an object to which errors in the
+parameters are reported. The aim of the function is to initialize the
+member variables identified when implemented the execute function.
+Errors in the parameters are reported to the errors handler object. In
+order to retrieve the value of a parameter, it is necessary to know the
+parameter keyword and attributes. The keywords were input to Designer,
+but the attribute names are imposed by the Designer widgets. For
+example, a QLineEdit parameter has a single attribute called "value". An
+InputVariogram widget has a "nb_of_structures" and a "nugget_effect"
+attribute. In order to know the attribute names, the easiest solution is
+to compile the plug-in (only the name and create_new_interface functions
+have to be defined fot the plug-in to loaded by GEMS), start GEMS,
+select the new algorithm input some parameters and save them to a file.
+The saved parameter file will contain all parameters with their
+keywords and attributes.<br>
+Once the keywords and attributes are known, it is possible to extract
+the parameter values and initialize the parameters of the algorithm. <br>
+Following is the initialize function for the MovingAverage class:<br>
+<br>
+<table cellpadding="8" cellspacing="2" border="0"
+ style="text-align: left; margin-left: auto; margin-right: auto; width: 90%;">
+  <tbody>
+    <tr>
+      <td style="vertical-align: top;"><small><span
+ style="font-family: courier new,courier,monospace;"></span></small>
+      <hr style="width: 100%; height: 2px;"><small><span
+ style="font-family: courier new,courier,monospace;">bool
+MovingAverage::initialize( const Parameters_handler* parameters,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Error_messages_handler* errors ) {<br>
+&nbsp; <br>
+&nbsp; <span style="color: rgb(51, 102, 255);">// get the name of the
+grid we will work on</span><br>
+&nbsp; std::string grid_name = <br>
+&nbsp;&nbsp;&nbsp; parameters-&gt;value( "Simul_Grid.value" );<br>
+      <br>
+&nbsp; <span style="color: rgb(51, 102, 255);">// use utility function
+"create" to initialize our grid_ pointer.</span><br
+ style="color: rgb(51, 102, 255);">
+      <span style="color: rgb(51, 102, 255);">&nbsp; // "create" will
+retrieve the address of grid "grid_name" and set pointer</span><br
+ style="color: rgb(51, 102, 255);">
+      <span style="color: rgb(51, 102, 255);">&nbsp; // grid_ to point
+to the requested grid. If the requested grid does not </span><br
+ style="color: rgb(51, 102, 255);">
+      <span style="color: rgb(51, 102, 255);">&nbsp; // exist, the
+function return false;</span><br>
+&nbsp; bool ok = geostat_utils::create( grid_, grid_name, "Simul_Grid",
+errors );<br>
+&nbsp; if( !ok ) return false;<br>
+      <br>
+&nbsp; <span style="color: rgb(51, 102, 255);">// get the name of the
+property we will work on</span><br>
+&nbsp; std::string property_name = <br>
+&nbsp;&nbsp;&nbsp; parameters-&gt;value( "Hdata_Property.value" );<br>
+&nbsp; </span></small><small><span
+ style="font-family: courier new,courier,monospace;">GsTLGridProperty*
+prop = grid_-&gt;property( property_name );<br>
+&nbsp; errors-&gt;report( prop==0, "</span></small><small><span
+ style="font-family: courier new,courier,monospace;">Hdata_Property",
+"no such property in selected grid" );<br>
+      <br>
+      </span></small><small><span
+ style="font-family: courier new,courier,monospace;">&nbsp; <span
+ style="color: rgb(51, 102, 255);">// get the name of the new property
+that will contain the result</span><br>
+&nbsp; std::string new_property_name = <br>
+&nbsp;&nbsp;&nbsp; parameters-&gt;value( "Simul_Property.value" );<br>
+&nbsp; <br>
+&nbsp; <span style="color: rgb(51, 102, 255);">// tell the grid to add
+a new property</span><br style="color: rgb(51, 102, 255);">
+      <span style="color: rgb(51, 102, 255);">&nbsp; // If the name of
+the new property is already used, the grid won't add</span><br
+ style="color: rgb(51, 102, 255);">
+      <span style="color: rgb(51, 102, 255);">&nbsp; // the new
+property. Utility function "add_property_to_grid" makes sure</span><br
+ style="color: rgb(51, 102, 255);">
+      <span style="color: rgb(51, 102, 255);">&nbsp; // that the name
+of the new property is unique (if the name input by the </span><br
+ style="color: rgb(51, 102, 255);">
+      <span style="color: rgb(51, 102, 255);">&nbsp; // user is already
+used, "add_property_to_grid" modifies that name to make</span><br
+ style="color: rgb(51, 102, 255);">
+      <span style="color: rgb(51, 102, 255);">&nbsp; // it unique).</span><br>
+&nbsp; GsTLGridProperty* new_property = <br>
+&nbsp;&nbsp;&nbsp; geostat_utils::add_property_to_grid( grid_,
+new_property_name );<br>
+      <br>
+&nbsp; <span style="color: rgb(51, 102, 255);">// get the 3 anisotropy
+ranges. The 3 numbers are in a single string and</span><br
+ style="color: rgb(51, 102, 255);">
+      <span style="color: rgb(51, 102, 255);">&nbsp; // need to be
+converted into numbers (float).</span><br>
+&nbsp; std::string ranges_str = <br>
+&nbsp;&nbsp;&nbsp; parameters-&gt;value( "Ranges.value" );<br>
+      <br>
+&nbsp; <span style="color: rgb(51, 102, 255);">// function "to_number"
+will convert the string into a vector of numbers</span><br
+ style="color: rgb(51, 102, 255);">
+      <span style="color: rgb(51, 102, 255);">&nbsp; // vector ranges
+will then contain all the number in string "ranges_str"</span><br>
+&nbsp; std::vector&lt;float&gt; ranges =
+String_Op::to_numbers&lt;float&gt;( ranges_str );<br>
+&nbsp; <br>
+&nbsp; <span style="color: rgb(51, 102, 255);">// tell the grid to
+create a new neighborhood</span><br style="color: rgb(51, 102, 255);">
+&nbsp; neighborhood_ = grid_-&gt;neighborhood( ranges[0], ranges[1],
+ranges[2],<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+0, 0, 0 );<br>
+      <br>
+&nbsp; <span style="color: rgb(51, 102, 255);">// set-up the
+neighborhood: max_size() set the maximum number of neighbors</span><br
+ style="color: rgb(51, 102, 255);">
+      <span style="color: rgb(51, 102, 255);">&nbsp; // to consider,
+select_property tells the neighborhood which property to</span><br
+ style="color: rgb(51, 102, 255);">
+      <span style="color: rgb(51, 102, 255);">&nbsp; // work on, and
+includes_center tells the neighborhood to consider the center</span><br
+ style="color: rgb(51, 102, 255);">
+      <span style="color: rgb(51, 102, 255);">&nbsp; // of the
+neighborhood as a neighbor: if we search for neighbors of node u,</span><br
+ style="color: rgb(51, 102, 255);">
+      <span style="color: rgb(51, 102, 255);">&nbsp; // u will be one
+of the neighbors of u.</span><br>
+&nbsp; neighborhood_-&gt;max_size( 100000 );<br>
+&nbsp; neighborhood_-&gt;select_property( property_name );<br>
+&nbsp; neighborhood_-&gt;includes_center( true );<br>
+      <br>
+&nbsp; <span style="color: rgb(51, 102, 255);">// tell the grid to
+work on the new property </span><br>
+&nbsp; grid_-&gt;select_property( new_property-&gt;name() );<br>
+      <br>
+&nbsp; if( !errors-&gt;empty() ) return false;<br>
+      <br>
+&nbsp; return true;<br>
+      </span></small>
+      <hr style="width: 100%; height: 2px;"><small><span
+ style="font-family: monospace;">&nbsp;</span><br
+ style="font-family: courier new,courier,monospace;">
+      </small></td>
+    </tr>
+  </tbody>
+</table>
+The initiliaze function returns true if everything was fine, false
+otherwise.<br>
+<br>
+<h2>The <span style="font-style: italic;">name</span> function</h2>
+The name function simply returns the name of the algorithm. Note that
+the ".ui" file must be the same as the algorithm name. For example, if
+the name function returns "moving_average", the interface file must be
+called "moving_average.ui".<br>
+<br>
+<br>
+<h2>The <span style="font-style: italic;">create_new_interface</span>
+function</h2>
+This is a static function that creates a new instance of the algorithm
+object. For example, in the case of MovingAverage:<br>
+<br>
+<table cellpadding="8" cellspacing="2" border="0"
+ style="text-align: left; margin-left: auto; margin-right: auto; width: 90%;">
+  <tbody>
+    <tr>
+      <td style="vertical-align: top;"><small><span
+ style="font-family: courier new,courier,monospace;"></span></small>
+      <hr style="width: 100%; height: 2px;"><small><span
+ style="font-family: courier new,courier,monospace;">Named_interface*
+MovingAverage::create_new_interface( std::string&amp; ) {<br>
+&nbsp; return new MovingAverage;<br>
+}<br>
+      </span></small><small><span
+ style="font-family: courier new,courier,monospace;"></span></small>
+      <hr style="width: 100%; height: 2px;"><small><span
+ style="font-family: monospace;"><br
+ style="font-family: courier new,courier,monospace;">
+      </span> </small></td>
+    </tr>
+  </tbody>
+</table>
+<br>
+<h2>Final Step</h2>
+The last step is to add the GEOSTAT_PLUGIN macro at the end of the
+implementation file (.cpp). The macro takes as argument the name of the
+class that defines the new algorithm:<br>
+<table cellpadding="8" cellspacing="2" border="0"
+ style="text-align: left; margin-left: auto; margin-right: auto; width: 90%;">
+  <tbody>
+    <tr>
+      <td style="vertical-align: top;"><small><span
+ style="font-family: courier new,courier,monospace;"></span></small>
+      <hr style="width: 100%; height: 2px;"><small><span
+ style="font-family: courier new,courier,monospace;">Named_interface*
+MovingAverage::create_new_interface( std::string&amp; ) {<br>
+&nbsp; return new MovingAverage;<br>
+}<br>
+      <br>
+GEOSTAT_PLUGIN(MovingAverage);<br>
+      <br>
+      </span></small><small><span
+ style="font-family: courier new,courier,monospace;"></span></small>
+      <hr style="width: 100%; height: 2px;"><small><span
+ style="font-family: monospace;"><br
+ style="font-family: courier new,courier,monospace;">
+      </span> </small></td>
+    </tr>
+  </tbody>
+</table>
+<br>
+Compile the C++ files to obtain a .so (or .dll) library file and place
+it along with the .ui file into the plugins/Geostat directory.<br>
+<br>
+<br>
+Of course, it is possible to define several algorithms into a single
+plug-in. The plug-in will then be composed of a .so (or .dll) file and
+one .ui file for each algorithm. To define several algorithms into a
+single plug-in, define a function called <span
+ style="font-style: italic;">plugin_init</span> as extern "C" in one of
+your .cpp files (this file must include all the files defining the
+algorithms to be included into the plug-in). Then use macro
+BIND_GEOSTAT_ALGO to add each algorithm. The maccro is defined in
+&lt;GsTLAppli/utils/gstl_plugins.h&gt;. For example, if we have 2
+algorithms implemented in classes <code>MovingAverage </code>and <code>CubicSmoothing</code>,
+add the following function to one of the cpp files:<br>
+<br>
+<table cellpadding="8" cellspacing="2" border="0"
+ style="text-align: left; margin-left: auto; margin-right: auto; width: 90%;">
+  <tbody>
+    <tr>
+      <td style="vertical-align: top;"><small><span
+ style="font-family: courier new,courier,monospace;"></span></small>
+      <hr style="width: 100%; height: 2px;"><small><big><span
+ style="font-family: monospace;">extern "C" int plugin_init() {</span><br
+ style="font-family: monospace;">
+      <span style="font-family: monospace;">&nbsp; BIND_GEOSTAT_ALGO(
+MovingAverage );<br>
+&nbsp;&nbsp;</span></big></small><small><big><span
+ style="font-family: monospace;">BIND_GEOSTAT_ALGO( CubicSmoothing );</span></big></small><small><big><span
+ style="font-family: monospace;"> <br>
+&nbsp; return 0;<br style="font-family: monospace;">
+      </span><span style="font-family: monospace;">}</span></big><span
+ style="font-family: courier new,courier,monospace;"><br>
+      </span></small><small><span
+ style="font-family: courier new,courier,monospace;"></span></small>
+      <hr style="width: 100%; height: 2px;"><br
+ style="font-family: courier new,courier,monospace;">
+      <small><span style="font-family: monospace;"> </span> </small></td>
+    </tr>
+  </tbody>
+</table>
+<br>
+<br>
+&nbsp;<br>
+</body>
+</html>

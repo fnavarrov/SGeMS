@@ -1,0 +1,43 @@
+#########################################################
+# This configuration file contains instructions and 
+# variables common to all .pro files (used by qmake to
+# generate Makefiles).
+#
+# Project variables GSTLHOME, GSTLAPPLIHOME, etc
+# are set in .qmake.cache
+# Need a configure script that guesses the values of those
+# variables and creates a project.conf file
+#########################################################
+
+
+# Compile with debug options, and lots of warnings
+# Replace "debug" with "release" if you want to compile in release mode
+
+CONFIG +=  release   warn_on
+
+
+
+
+
+#---------------------------------------------
+# You don't need to change anything below 
+
+#QMAKE_CXXFLAGS_WARN_ON += -Wredundant-decls -Woverloaded-virtual -Winline
+CONFIG += thread
+
+INCLUDEPATH += $$GSTLHOME $$GSTLAPPLI_HOME $$BOOST_INCLUDE
+#INCLUDEPATH += $$INVENTOR_INCLUDE
+
+DEPENDPATH += $$INCLUDEPATH
+
+LIBS += -L$$GSTLAPPLI_HOME/lib/$$CUR_PLATFORM
+
+
+# Windows specific configuration
+win32 {
+  contains( TEMPLATE, lib) {
+    CONFIG += dll
+  }
+  DEFINES += QT_DLL SOQT_DLL COIN_DLL QWT_DLL WIN32
+}
+

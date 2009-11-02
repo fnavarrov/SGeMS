@@ -1,0 +1,10 @@
+/MMakefile////*///
+/common.h////*///
+/extragui.dsp////*///
+/extragui.vcproj////*///
+/extragui_vs2003.vcproj////*///
+/gui.pro////*///
+/library_extragui_init.cpp////*///
+/library_extragui_init.h////*///
+/qt_accessors.cpp////*///
+/qt_accessors.h////*///

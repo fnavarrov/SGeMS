@@ -1,0 +1,11 @@
+Changes 
+
+2.0
+------------
+- volume explorer
+- new geostatistics algorithms
+- masked grids: masked grids are a cartesian grids with inactive
+  cells ("mask"). 
+- commands history and completion (the Up Arrow key recalls the 
+  previously run commands, Tab auto-completes)
+- cdf overlay on histogram plots  

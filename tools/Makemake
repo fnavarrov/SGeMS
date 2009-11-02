@@ -1,0 +1,177 @@
+#!/bin/sh
+#
+# Makemake - Automatically generates makefiles and dependencies
+#
+
+
+# Linux file and text utils are locale aware as required by POSIX
+# Set the locale to C to have correct behavior.
+LC_COLLATE=C
+export LC_COLLATE
+echo "begin"
+############################################################################
+# Help and usage
+############################################################################
+
+USAGE="Usage: $PROG [-h[elp]] [-l[ib]] [-a[pp]] "
+
+help() {
+    echo "
+Options:
+    -h[elp]:
+	Prints this help and exits.
+
+    -l[ib]:
+	Generates a library makefile
+
+    -a[pp]:
+        Generates an executable makefile
+
+    -qt[plugin]:
+        Generates a Qt plugin makefile
+"
+}
+
+############################################################################
+# Catch some signals.
+############################################################################
+
+exited() {
+    $RM FILES PROGS HFILES TFILES CFILES CPPFILES LFILES YFILES FFILES OBJECTS
+    $RM MOCFILES UIFILES REMOVE_DUPS UICPPFILES UIHFILES
+    $RM $MAKEFILE.bak
+    exit 0
+}
+
+aborted() {
+    echo "$PROG aborted ..."
+    $RM FILES PROGS HFILES TFILES CFILES CPPFILES LFILES YFILES FFILES OBJECTS
+    $RM MOCFILES UIFILES REMOVE_DUPS UICPPFILES UIHFILES
+    if [ -f $MAKEFILE.bak ]; then
+	$MV $MAKEFILE.bak $MAKEFILE
+    fi
+    exit 1
+}
+
+
+############################################################################
+# Create relative pathnames from $GSTLAPPLIHOME/src/lib to current directory
+############################################################################
+
+if [ x$GSTLAPPLIHOME = x ]; then
+    echo "** $PROG: environment variable GSTLAPPLIHOME is not set"
+    exit 1
+fi
+echo "GSTLAPPLIHOME is set"
+if [ $# != 1 ]
+then
+  echo $USAGE
+  help
+  exit
+fi
+
+APPLI_NAME=`basename $GSTLAPPLIHOME`
+HERE=`/bin/sh -c pwd`
+cd $GSTLAPPLIHOME
+GSTLAPPLIHOME=`/bin/sh -c pwd`
+
+GSTLAPPLIDIR=`/bin/sh -c pwd`
+GSTLAPPLIDIR=`basename $GSTLAPPLIDIR`
+cd $HERE
+
+CURDIR=`echo $HERE | sed "s|^.*$GSTLAPPLIDIR/||"`
+DIRNAME=`echo $HERE | sed "s|$GSTLAPPLIHOME/$APPLI_NAME/||"`
+
+BASENAME=`basename $HERE`
+
+############################################################################
+# Analyse arguments and create corresponding .pro file
+############################################################################
+CREATE_LINK_FLAG=0
+ADD_PLUGIN_PARAM=0
+PRO_FILE=$BASENAME.pro
+
+
+echo  "** Working on $BASENAME"
+
+case $1 in
+   -l|-lib)
+       qmake -project -t lib -r
+       TARGET_NAME="$APPLI_NAME"_"$BASENAME"
+       ;;
+   -a|-app)
+       qmake -project -t app -r
+       TARGET_NAME=$BASENAME
+       CREATE_LINK_FLAG=1
+       ;;
+    -qt|-qtplugin)
+       qmake -project -t lib -r
+       TARGET_NAME="$APPLI_NAME"_"$BASENAME"
+       ADD_PLUGIN_PARAM=1
+       ;;
+   -h|-help)
+       help;
+       exit 0
+       ;;
+   -*)
+       echo "** $PROG: unrecognized option: $1"
+       echo $USAGE
+       exit 1
+       ;;
+esac
+
+
+
+############################################################################
+# Complete the .pro file 
+############################################################################
+
+# turn absolute paths into relative path
+SED_COMMAND="s:$HERE/::g"
+sed $SED_COMMAND $PRO_FILE > .tmp
+mv .tmp $PRO_FILE
+
+echo "
+TARGET=$TARGET_NAME
+
+" >> $PRO_FILE
+
+if [ $ADD_PLUGIN_PARAM -eq 1 ]; then
+echo '
+CONFIG      += release plugin
+INCLUDEPATH += $(QTDIR)/tools/designer/interfaces
+' >> $PRO_FILE
+fi
+
+echo "
+contains( TEMPLATE, lib ) {
+    DESTDIR = \$\$GSTLAPPLI_HOME/lib/\$\$CUR_PLATFORM
+    OBJECTS_DIR = \$\$GSTLAPPLI_HOME/lib/\$\$CUR_PLATFORM/obj/$DIRNAME
+}
+contains( TEMPLATE, app ) {
+    DESTDIR += \$\$GSTLAPPLI_HOME/bin/\$\$CUR_PLATFORM
+    OBJECTS_DIR = \$\$GSTLAPPLI_HOME/bin/\$\$CUR_PLATFORM/obj/$DIRNAME
+}
+" >> $PRO_FILE
+
+echo '
+include( $$GSTLAPPLI_HOME/config.qmake )
+
+exists( MMakefile ) {
+   include( MMakefile )
+}
+' >> $PRO_FILE
+
+
+############################################################################
+# Generate a Makefile from the .pro file
+############################################################################
+
+qmake -makefile -o Makefile
+
+if [ $CREATE_LINK_FLAG -eq 1 ]; then
+echo '
+link:
+	ln -sf $(TARGET) $(QMAKE_TARGET)
+' >> Makefile
+fi

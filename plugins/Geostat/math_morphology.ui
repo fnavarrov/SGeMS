@@ -1,0 +1,305 @@
+<ui version="4.0" >
+ <class>Moving_Average</class>
+ <widget class="QWidget" name="Moving_Average" >
+  <property name="geometry" >
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>304</width>
+    <height>526</height>
+   </rect>
+  </property>
+  <property name="windowTitle" >
+   <string>Mathematical Morphology</string>
+  </property>
+  <layout class="QVBoxLayout" >
+   <item>
+    <widget class="QLabel" name="TextLabel1" >
+     <property name="text" >
+      <string>Grid</string>
+     </property>
+     <property name="wordWrap" >
+      <bool>false</bool>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="GridSelector" name="Simul_Grid" >
+     <item>
+      <property name="text" >
+       <string>&lt;- None -></string>
+      </property>
+     </item>
+    </widget>
+   </item>
+   <item>
+    <widget class="QLabel" name="TextLabel2" >
+     <property name="text" >
+      <string>Work on property:</string>
+     </property>
+     <property name="wordWrap" >
+      <bool>false</bool>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="SinglePropertySelector" name="Hdata_Property" />
+   </item>
+   <item>
+    <layout class="QGridLayout" >
+     <property name="leftMargin" >
+      <number>0</number>
+     </property>
+     <property name="topMargin" >
+      <number>0</number>
+     </property>
+     <property name="rightMargin" >
+      <number>0</number>
+     </property>
+     <property name="bottomMargin" >
+      <number>0</number>
+     </property>
+     <item row="1" column="0" >
+      <widget class="QLabel" name="TextLabel4_2" >
+       <property name="text" >
+        <string>Transformation</string>
+       </property>
+       <property name="wordWrap" >
+        <bool>false</bool>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="0" >
+      <widget class="QLabel" name="TextLabel3" >
+       <property name="text" >
+        <string>New property name</string>
+       </property>
+       <property name="wordWrap" >
+        <bool>false</bool>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="1" >
+      <widget class="QSpinBox" name="facies_category" >
+       <property name="value" >
+        <number>1</number>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1" >
+      <widget class="QComboBox" name="transformation" >
+       <item>
+        <property name="text" >
+         <string>dilation</string>
+        </property>
+       </item>
+       <item>
+        <property name="text" >
+         <string>erosion</string>
+        </property>
+       </item>
+       <item>
+        <property name="text" >
+         <string>lower filtering</string>
+        </property>
+       </item>
+       <item>
+        <property name="text" >
+         <string>upper filtering</string>
+        </property>
+       </item>
+      </widget>
+     </item>
+     <item row="2" column="0" >
+      <widget class="QLabel" name="TextLabel4" >
+       <property name="text" >
+        <string>Facies category</string>
+       </property>
+       <property name="wordWrap" >
+        <bool>false</bool>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1" >
+      <widget class="QLineEdit" name="Simul_Property" />
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="groupBox1" >
+     <property name="title" >
+      <string>Geometry</string>
+     </property>
+     <layout class="QGridLayout" >
+      <property name="leftMargin" >
+       <number>0</number>
+      </property>
+      <property name="topMargin" >
+       <number>0</number>
+      </property>
+      <property name="rightMargin" >
+       <number>0</number>
+      </property>
+      <property name="bottomMargin" >
+       <number>0</number>
+      </property>
+      <item row="0" column="0" >
+       <widget class="QComboBox" name="shape" >
+        <item>
+         <property name="text" >
+          <string>sphere</string>
+         </property>
+        </item>
+        <item>
+         <property name="text" >
+          <string>ellipsoid</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item row="1" column="0" >
+       <widget class="GsTLGroupBox" name="radius_group" >
+        <property name="title" >
+         <string>Radius</string>
+        </property>
+        <property name="keyword" stdset="0" >
+         <string>sphere</string>
+        </property>
+        <property name="displayed" stdset="0" >
+         <bool>true</bool>
+        </property>
+        <layout class="QGridLayout" >
+         <item row="0" column="0" >
+          <widget class="QLineEdit" name="radius" />
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item row="2" column="0" >
+       <widget class="GsTLGroupBox" name="ellipsoid_group" >
+        <property name="title" >
+         <string>Ellipsoid</string>
+        </property>
+        <property name="keyword" stdset="0" >
+         <string>ellipsoid</string>
+        </property>
+        <property name="displayed" stdset="0" >
+         <bool>false</bool>
+        </property>
+        <layout class="QVBoxLayout" >
+         <item>
+          <widget class="EllipsoidInput" name="Search_Ellipsoid" >
+           <property name="title" stdset="0" >
+            <string/>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <spacer>
+     <property name="orientation" >
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeType" >
+      <enum>QSizePolicy::Expanding</enum>
+     </property>
+     <property name="sizeHint" >
+      <size>
+       <width>21</width>
+       <height>50</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+  </layout>
+ </widget>
+ <layoutdefault spacing="6" margin="11" />
+ <pixmapfunction>qPixmapFromMimeSource</pixmapfunction>
+ <customwidgets>
+  <customwidget>
+   <class>GridSelector</class>
+   <extends>QComboBox</extends>
+   <header>GsTLAppli/extra/qtplugins/selectors.h</header>
+  </customwidget>
+  <customwidget>
+   <class>SinglePropertySelector</class>
+   <extends>QComboBox</extends>
+   <header>selectors.h</header>
+  </customwidget>
+  <customwidget>
+   <class>GsTLGroupBox</class>
+   <extends>QGroupBox</extends>
+   <header>selectors.h</header>
+  </customwidget>
+  <customwidget>
+   <class>EllipsoidInput</class>
+   <extends>QWidget</extends>
+   <header>ellipsoid_input.h</header>
+  </customwidget>
+ </customwidgets>
+ <includes>
+  <include location="local" >gridselector.h</include>
+  <include location="local" >singlepropertyselector.h</include>
+  <include location="local" >gstlgroupbox.h</include>
+  <include location="local" >gstlgroupbox.h</include>
+  <include location="local" >ellipsoidinput.h</include>
+  <include location="local" >gstl_table.h</include>
+  <include location="local" >gstl_table.h</include>
+ </includes>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>shape</sender>
+   <signal>activated(QString)</signal>
+   <receiver>radius_group</receiver>
+   <slot>setActivated(QString)</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>shape</sender>
+   <signal>activated(QString)</signal>
+   <receiver>ellipsoid_group</receiver>
+   <slot>setActivated(QString)</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>Simul_Grid</sender>
+   <signal>activated(QString)</signal>
+   <receiver>Hdata_Property</receiver>
+   <slot>show_properties(QString)</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>

@@ -1,0 +1,491 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<VisualStudioProject
+	ProjectType="Visual C++"
+	Version="7.10"
+	Name="GsTLwidgets"
+	ProjectGUID="{4FFD8025-2329-37F7-9D68-27456B4BB6DB}"
+	Keyword="Qt4VSv1.0">
+	<Platforms>
+		<Platform
+			Name="Win32"/>
+	</Platforms>
+	<Configurations>
+		<Configuration
+			Name="Debug|Win32"
+			OutputDirectory="."
+			IntermediateDirectory="debug\"
+			ConfigurationType="2"
+			UseOfMFC="0"
+			ATLMinimizesCRunTimeLibraryUsage="FALSE">
+			<Tool
+				Name="VCCLCompilerTool"
+				AdditionalOptions="-Zm200 -w34100 -w34189 -Zm200 -w34100 -w34189 -w34100 -w34189"
+				Optimization="4"
+				AdditionalIncludeDirectories="$(SGEMS_BUILD)\GsTL;$(SGEMS_BUILD)\GsTLAppli-qt4;&quot;$(QTDIR)\include\QtDesigner&quot;,&quot;$(QTDIR)\include\QtUiTools&quot;,&quot;$(QTDIR)\include\QtCore&quot;,&quot;$(QTDIR)\include\QtCore&quot;,&quot;$(QTDIR)\include\QtGui&quot;,&quot;$(QTDIR)\include\QtGui&quot;,&quot;$(QTDIR)\include\QtXml&quot;,&quot;$(QTDIR)\include\QtXml&quot;,&quot;$(QTDIR)\include&quot;,&quot;.&quot;,&quot;$(QTDIR)\tools\designer\interfaces&quot;,&quot;$(QTDIR)\include\ActiveQt&quot;,&quot;.moc&quot;,&quot;.&quot;,$(QTDIR)\mkspecs\win32-msvc2005"
+				PreprocessorDefinitions="_WINDOWS;UNICODE;WIN32;QT_LARGEFILE_SUPPORT;QTPLUGINS_EXPORTS;QT_DLL;QT_PLUGIN;QT_XML_LIB;QT_GUI_LIB;QT_CORE_LIB;QT_THREAD_SUPPORT;QDESIGNER_EXPORT_WIDGETS;QT_NO_DEBUG;NDEBUG;GSTLAPPLI_NDEBUG"
+				GeneratePreprocessedFile="0"
+				ExceptionHandling="TRUE"
+				RuntimeLibrary="2"
+				BufferSecurityCheck="FALSE"
+				TreatWChar_tAsBuiltInType="FALSE"
+				RuntimeTypeInfo="TRUE"
+				AssemblerListingLocation="debug\"
+				ObjectFile="debug\"
+				ProgramDataBaseFileName=".\"
+				WarningLevel="3"
+				SuppressStartupBanner="TRUE"
+				DebugInformationFormat="0"/>
+			<Tool
+				Name="VCCustomBuildTool"/>
+			<Tool
+				Name="VCLinkerTool"
+				IgnoreImportLibrary="TRUE"
+				AdditionalDependencies="GsTLAppli_utils.lib GsTLAppli_appli.lib $(QTDIR)\lib\QtXmld4.lib $(QTDIR)\lib\QtGuid4.lib $(QTDIR)\lib\QtCored4.lib $(QTDIR)\lib\QtUiToolsd.lib $(QTDIR)\lib\QtDesignerd4.lib"
+				OutputFile="$(SGEMS_BUILD)\GsTLAppli-qt4\lib\win32\debug\GsTLwidgets.dll"
+				SuppressStartupBanner="TRUE"
+				AdditionalLibraryDirectories="$(QTDIR)\lib;$(SGEMS_BUILD)\GsTLAppli-qt4\lib\win32\debug\"
+				GenerateDebugInformation="FALSE"
+				ProgramDatabaseFile=""
+				SubSystem="2"/>
+			<Tool
+				Name="VCMIDLTool"
+				WarningLevel="0"
+				DefaultCharType="0"
+				EnableErrorChecks="1"/>
+			<Tool
+				Name="VCPostBuildEventTool"/>
+			<Tool
+				Name="VCPreBuildEventTool"/>
+			<Tool
+				Name="VCPreLinkEventTool"/>
+			<Tool
+				Name="VCResourceCompilerTool"
+				PreprocessorDefinitions="_WINDOWS,UNICODE,WIN32,QT_LARGEFILE_SUPPORT,QTPLUGINS_EXPORTS,QT_DLL,QT_PLUGIN,QT_XML_LIB,QT_GUI_LIB,QT_CORE_LIB,QT_THREAD_SUPPORT,QDESIGNER_EXPORT_WIDGETS,_DEBUG"/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"/>
+			<Tool
+				Name="VCWebDeploymentTool"/>
+			<Tool
+				Name="VCManagedWrapperGeneratorTool"/>
+			<Tool
+				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
+		</Configuration>
+		<Configuration
+			Name="Release|Win32"
+			OutputDirectory="."
+			IntermediateDirectory="release\"
+			ConfigurationType="2"
+			UseOfMFC="0"
+			ATLMinimizesCRunTimeLibraryUsage="FALSE">
+			<Tool
+				Name="VCCLCompilerTool"
+				AdditionalOptions="-Zm200 -w34100 -w34189 -Zm200 -w34100 -w34189 -w34100 -w34189"
+				Optimization="2"
+				AdditionalIncludeDirectories="&quot;$(SGEMS_BUILD)\GsTL&quot;;&quot;$(SGEMS_BUILD)\GsTLAppli-qt4&quot;;$(QTDIR)\include\QtDesigner;$(QTDIR)\include\QtUiTools;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtXml;$(QTDIR)\include;.;&quot;$(QTDIR)\tools\designer\interfaces&quot;;$(QTDIR)\include\ActiveQt;.moc;&quot;$(QTDIR)\mkspecs\win32-msvc.net&quot;"
+				PreprocessorDefinitions="QT_NO_DEBUG;NDEBUG;_WINDOWS;UNICODE;WIN32;GSTLAPPLI_NDEBUG;QT_LARGEFILE_SUPPORT;QTPLUGINS_EXPORTS;QT_DLL;QT_PLUGIN;QT_THREAD_SUPPORT;QDESIGNER_EXPORT_WIDGETS"
+				GeneratePreprocessedFile="0"
+				ExceptionHandling="TRUE"
+				RuntimeLibrary="2"
+				BufferSecurityCheck="FALSE"
+				TreatWChar_tAsBuiltInType="FALSE"
+				RuntimeTypeInfo="TRUE"
+				AssemblerListingLocation="release\"
+				ObjectFile="release\"
+				ProgramDataBaseFileName=".\"
+				WarningLevel="3"
+				SuppressStartupBanner="TRUE"
+				DebugInformationFormat="0"/>
+			<Tool
+				Name="VCCustomBuildTool"/>
+			<Tool
+				Name="VCLinkerTool"
+				IgnoreImportLibrary="TRUE"
+				AdditionalDependencies="GsTLAppli_utils.lib GsTLAppli_appli.lib $(QTDIR)\lib\QtXml4.lib $(QTDIR)\lib\QtGui4.lib $(QTDIR)\lib\QtCore4.lib $(QTDIR)\lib\QtUiTools.lib QtDesigner4.lib"
+				OutputFile="$(SGEMS_BUILD)\GsTLAppli-qt4\lib\win32\GsTLwidgets.dll"
+				LinkIncremental="0"
+				SuppressStartupBanner="TRUE"
+				AdditionalLibraryDirectories="$(QTDIR)\lib;$(SGEMS_BUILD)\GsTLAppli-qt4\lib\win32"
+				GenerateDebugInformation="FALSE"
+				ProgramDatabaseFile=""
+				SubSystem="0"/>
+			<Tool
+				Name="VCMIDLTool"
+				WarningLevel="0"
+				DefaultCharType="0"
+				EnableErrorChecks="1"/>
+			<Tool
+				Name="VCPostBuildEventTool"/>
+			<Tool
+				Name="VCPreBuildEventTool"/>
+			<Tool
+				Name="VCPreLinkEventTool"/>
+			<Tool
+				Name="VCResourceCompilerTool"
+				PreprocessorDefinitions="QT_NO_DEBUG,NDEBUG,_WINDOWS,UNICODE,WIN32,QT_LARGEFILE_SUPPORT,QTPLUGINS_EXPORTS,QT_DLL,QT_NO_DEBUG,QT_PLUGIN,QT_XML_LIB,QT_GUI_LIB,QT_CORE_LIB,QT_THREAD_SUPPORT,QDESIGNER_EXPORT_WIDGETS"/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"/>
+			<Tool
+				Name="VCWebDeploymentTool"/>
+			<Tool
+				Name="VCManagedWrapperGeneratorTool"/>
+			<Tool
+				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
+		</Configuration>
+	</Configurations>
+	<References>
+	</References>
+	<Files>
+		<Filter
+			Name="Source Files"
+			Filter="cpp;c;cxx;def;odl;idl;hpj;bat;asm;asmx"
+			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}">
+			<File
+				RelativePath="ellipsoid_input.cpp">
+			</File>
+			<File
+				RelativePath="filechooser.cpp">
+			</File>
+			<File
+				RelativePath="gstl_table.cpp">
+			</File>
+			<File
+				RelativePath="gstl_widgets_plugin.cpp">
+			</File>
+			<File
+				RelativePath=".\kriging_type_selector.cpp">
+			</File>
+			<File
+				RelativePath=".\kriging_type_selector_base.cpp">
+			</File>
+			<File
+				RelativePath=".\non_param_cdf_input.cpp">
+			</File>
+			<File
+				RelativePath=".\selectors.cpp">
+			</File>
+			<File
+				RelativePath=".\variogram_input.cpp">
+			</File>
+		</Filter>
+		<Filter
+			Name="Header Files"
+			Filter="h;hpp;hxx;hm;inl;inc;xsd"
+			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}">
+			<File
+				RelativePath="common.h">
+			</File>
+			<File
+				RelativePath="ellipsoid_input.h">
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="MOC ellipsoid_input.h"
+						CommandLine="$(QTDIR)\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQTPLUGINS_EXPORTS -DQT_DLL -DQT_PLUGIN -DQT_XML_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -DQDESIGNER_EXPORT_WIDGETS -I&quot;$(QTDIR)\include\QtDesigner&quot; -I&quot;$(QTDIR)\include\QtUiTools&quot; -I&quot;$(QTDIR)\include\QtCore&quot; -I&quot;$(QTDIR)\include\QtCore&quot; -I&quot;$(QTDIR)\include\QtGui&quot; -I&quot;$(QTDIR)\include\QtGui&quot; -I&quot;$(QTDIR)\include\QtXml&quot; -I&quot;$(QTDIR)\include\QtXml&quot; -I&quot;$(QTDIR)\include&quot; -I&quot;.&quot; -I&quot;$(QTDIR)\tools\designer\interfaces&quot; -I&quot;$(QTDIR)\include\ActiveQt&quot; -I&quot;.moc&quot; -I&quot;.&quot; -I$(QTDIR)\mkspecs\win32-msvc2005 -D_MSC_VER=1400 -DWIN32 ellipsoid_input.h -o .moc\moc_ellipsoid_input.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe;ellipsoid_input.h"
+						Outputs=".moc\moc_ellipsoid_input.cpp"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="MOC ellipsoid_input.h"
+						CommandLine="$(QTDIR)\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQTPLUGINS_EXPORTS -DQT_DLL -DQT_NO_DEBUG -DQT_PLUGIN -DQT_XML_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -DQDESIGNER_EXPORT_WIDGETS -I&quot;$(QTDIR)\include\QtDesigner&quot; -I&quot;$(QTDIR)\include\QtUiTools&quot; -I&quot;$(QTDIR)\include\QtCore&quot; -I&quot;$(QTDIR)\include\QtCore&quot; -I&quot;$(QTDIR)\include\QtGui&quot; -I&quot;$(QTDIR)\include\QtGui&quot; -I&quot;$(QTDIR)\include\QtXml&quot; -I&quot;$(QTDIR)\include\QtXml&quot; -I&quot;$(QTDIR)\include&quot; -I&quot;.&quot; -I&quot;$(QTDIR)\tools\designer\interfaces&quot; -I&quot;$(QTDIR)\include\ActiveQt&quot; -I&quot;.moc&quot; -I&quot;.&quot; -I$(QTDIR)\mkspecs\win32-msvc2005 -D_MSC_VER=1400 -DWIN32 ellipsoid_input.h -o .moc\moc_ellipsoid_input.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe;ellipsoid_input.h"
+						Outputs=".moc\moc_ellipsoid_input.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="filechooser.h">
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="MOC filechooser.h"
+						CommandLine="$(QTDIR)\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQTPLUGINS_EXPORTS -DQT_DLL -DQT_PLUGIN -DQT_XML_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -DQDESIGNER_EXPORT_WIDGETS -I&quot;$(QTDIR)\include\QtDesigner&quot; -I&quot;$(QTDIR)\include\QtUiTools&quot; -I&quot;$(QTDIR)\include\QtCore&quot; -I&quot;$(QTDIR)\include\QtCore&quot; -I&quot;$(QTDIR)\include\QtGui&quot; -I&quot;$(QTDIR)\include\QtGui&quot; -I&quot;$(QTDIR)\include\QtXml&quot; -I&quot;$(QTDIR)\include\QtXml&quot; -I&quot;$(QTDIR)\include&quot; -I&quot;.&quot; -I&quot;$(QTDIR)\tools\designer\interfaces&quot; -I&quot;$(QTDIR)\include\ActiveQt&quot; -I&quot;.moc&quot; -I&quot;.&quot; -I$(QTDIR)\mkspecs\win32-msvc2005 -D_MSC_VER=1400 -DWIN32 filechooser.h -o .moc\moc_filechooser.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe;filechooser.h"
+						Outputs=".moc\moc_filechooser.cpp"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="MOC filechooser.h"
+						CommandLine="$(QTDIR)\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQTPLUGINS_EXPORTS -DQT_DLL -DQT_NO_DEBUG -DQT_PLUGIN -DQT_XML_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -DQDESIGNER_EXPORT_WIDGETS -I&quot;$(QTDIR)\include\QtDesigner&quot; -I&quot;$(QTDIR)\include\QtUiTools&quot; -I&quot;$(QTDIR)\include\QtCore&quot; -I&quot;$(QTDIR)\include\QtCore&quot; -I&quot;$(QTDIR)\include\QtGui&quot; -I&quot;$(QTDIR)\include\QtGui&quot; -I&quot;$(QTDIR)\include\QtXml&quot; -I&quot;$(QTDIR)\include\QtXml&quot; -I&quot;$(QTDIR)\include&quot; -I&quot;.&quot; -I&quot;$(QTDIR)\tools\designer\interfaces&quot; -I&quot;$(QTDIR)\include\ActiveQt&quot; -I&quot;.moc&quot; -I&quot;.&quot; -I$(QTDIR)\mkspecs\win32-msvc2005 -D_MSC_VER=1400 -DWIN32 filechooser.h -o .moc\moc_filechooser.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe;filechooser.h"
+						Outputs=".moc\moc_filechooser.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="gstl_table.h">
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="MOC gstl_table.h"
+						CommandLine="$(QTDIR)\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQTPLUGINS_EXPORTS -DQT_DLL -DQT_PLUGIN -DQT_XML_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -DQDESIGNER_EXPORT_WIDGETS -I&quot;$(QTDIR)\include\QtDesigner&quot; -I&quot;$(QTDIR)\include\QtUiTools&quot; -I&quot;$(QTDIR)\include\QtCore&quot; -I&quot;$(QTDIR)\include\QtCore&quot; -I&quot;$(QTDIR)\include\QtGui&quot; -I&quot;$(QTDIR)\include\QtGui&quot; -I&quot;$(QTDIR)\include\QtXml&quot; -I&quot;$(QTDIR)\include\QtXml&quot; -I&quot;$(QTDIR)\include&quot; -I&quot;.&quot; -I&quot;$(QTDIR)\tools\designer\interfaces&quot; -I&quot;$(QTDIR)\include\ActiveQt&quot; -I&quot;.moc&quot; -I&quot;.&quot; -I$(QTDIR)\mkspecs\win32-msvc2005 -D_MSC_VER=1400 -DWIN32 gstl_table.h -o .moc\moc_gstl_table.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe;gstl_table.h"
+						Outputs=".moc\moc_gstl_table.cpp"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="MOC gstl_table.h"
+						CommandLine="$(QTDIR)\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQTPLUGINS_EXPORTS -DQT_DLL -DQT_NO_DEBUG -DQT_PLUGIN -DQT_XML_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -DQDESIGNER_EXPORT_WIDGETS -I&quot;$(QTDIR)\include\QtDesigner&quot; -I&quot;$(QTDIR)\include\QtUiTools&quot; -I&quot;$(QTDIR)\include\QtCore&quot; -I&quot;$(QTDIR)\include\QtCore&quot; -I&quot;$(QTDIR)\include\QtGui&quot; -I&quot;$(QTDIR)\include\QtGui&quot; -I&quot;$(QTDIR)\include\QtXml&quot; -I&quot;$(QTDIR)\include\QtXml&quot; -I&quot;$(QTDIR)\include&quot; -I&quot;.&quot; -I&quot;$(QTDIR)\tools\designer\interfaces&quot; -I&quot;$(QTDIR)\include\ActiveQt&quot; -I&quot;.moc&quot; -I&quot;.&quot; -I$(QTDIR)\mkspecs\win32-msvc2005 -D_MSC_VER=1400 -DWIN32 gstl_table.h -o .moc\moc_gstl_table.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe;gstl_table.h"
+						Outputs=".moc\moc_gstl_table.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="gstl_widgets_plugin.h">
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="MOC gstl_widgets_plugin.h"
+						CommandLine="$(QTDIR)\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQTPLUGINS_EXPORTS -DQT_DLL -DQT_PLUGIN -DQT_XML_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -DQDESIGNER_EXPORT_WIDGETS -I&quot;$(QTDIR)\include\QtDesigner&quot; -I&quot;$(QTDIR)\include\QtUiTools&quot; -I&quot;$(QTDIR)\include\QtCore&quot; -I&quot;$(QTDIR)\include\QtCore&quot; -I&quot;$(QTDIR)\include\QtGui&quot; -I&quot;$(QTDIR)\include\QtGui&quot; -I&quot;$(QTDIR)\include\QtXml&quot; -I&quot;$(QTDIR)\include\QtXml&quot; -I&quot;$(QTDIR)\include&quot; -I&quot;.&quot; -I&quot;$(QTDIR)\tools\designer\interfaces&quot; -I&quot;$(QTDIR)\include\ActiveQt&quot; -I&quot;.moc&quot; -I&quot;.&quot; -I$(QTDIR)\mkspecs\win32-msvc2005 -D_MSC_VER=1400 -DWIN32 gstl_widgets_plugin.h -o .moc\moc_gstl_widgets_plugin.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe;gstl_widgets_plugin.h"
+						Outputs=".moc\moc_gstl_widgets_plugin.cpp"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="MOC gstl_widgets_plugin.h"
+						CommandLine="$(QTDIR)\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQTPLUGINS_EXPORTS -DQT_DLL -DQT_NO_DEBUG -DQT_PLUGIN -DQT_XML_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -DQDESIGNER_EXPORT_WIDGETS -I&quot;$(QTDIR)\include\QtDesigner&quot; -I&quot;$(QTDIR)\include\QtUiTools&quot; -I&quot;$(QTDIR)\include\QtCore&quot; -I&quot;$(QTDIR)\include\QtCore&quot; -I&quot;$(QTDIR)\include\QtGui&quot; -I&quot;$(QTDIR)\include\QtGui&quot; -I&quot;$(QTDIR)\include\QtXml&quot; -I&quot;$(QTDIR)\include\QtXml&quot; -I&quot;$(QTDIR)\include&quot; -I&quot;.&quot; -I&quot;$(QTDIR)\tools\designer\interfaces&quot; -I&quot;$(QTDIR)\include\ActiveQt&quot; -I&quot;.moc&quot; -I&quot;.&quot; -I$(QTDIR)\mkspecs\win32-msvc2005 -D_MSC_VER=1400 -DWIN32 gstl_widgets_plugin.h -o .moc\moc_gstl_widgets_plugin.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe;gstl_widgets_plugin.h"
+						Outputs=".moc\moc_gstl_widgets_plugin.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\kriging_type_selector.h">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						CommandLine="$(QTDIR)\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQTPLUGINS_EXPORTS -DQT_DLL -DQT_NO_DEBUG -DQT_PLUGIN -DQT_XML_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -DQDESIGNER_EXPORT_WIDGETS -I&quot;$(QTDIR)\include\QtDesigner&quot; -I&quot;$(QTDIR)\include\QtUiTools&quot; -I&quot;$(QTDIR)\include\QtCore&quot; -I&quot;$(QTDIR)\include\QtCore&quot; -I&quot;$(QTDIR)\include\QtGui&quot; -I&quot;$(QTDIR)\include\QtGui&quot; -I&quot;$(QTDIR)\include\QtXml&quot; -I&quot;$(QTDIR)\include\QtXml&quot; -I&quot;$(QTDIR)\include&quot; -I&quot;.&quot; -I&quot;$(QTDIR)\tools\designer\interfaces&quot; -I&quot;$(QTDIR)\include\ActiveQt&quot; -I&quot;.moc&quot; -I&quot;.&quot; -I$(QTDIR)\mkspecs\win32-msvc2005 -D_MSC_VER=1400 -DWIN32 kriging_type_selector.h -o .moc\moc_kriging_type_selector.cpp
+"
+						AdditionalDependencies="kriging_type_selector.h"
+						Outputs=".moc\moc_kriging_type_selector.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\kriging_type_selector_base.h">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						CommandLine="$(QTDIR)\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQTPLUGINS_EXPORTS -DQT_DLL -DQT_NO_DEBUG -DQT_PLUGIN -DQT_XML_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -DQDESIGNER_EXPORT_WIDGETS -I&quot;$(QTDIR)\include\QtDesigner&quot; -I&quot;$(QTDIR)\include\QtUiTools&quot; -I&quot;$(QTDIR)\include\QtCore&quot; -I&quot;$(QTDIR)\include\QtCore&quot; -I&quot;$(QTDIR)\include\QtGui&quot; -I&quot;$(QTDIR)\include\QtGui&quot; -I&quot;$(QTDIR)\include\QtXml&quot; -I&quot;$(QTDIR)\include\QtXml&quot; -I&quot;$(QTDIR)\include&quot; -I&quot;.&quot; -I&quot;$(QTDIR)\tools\designer\interfaces&quot; -I&quot;$(QTDIR)\include\ActiveQt&quot; -I&quot;.moc&quot; -I&quot;.&quot; -I$(QTDIR)\mkspecs\win32-msvc2005 -D_MSC_VER=1400 -DWIN32 kriging_type_selector_base.h -o .moc\moc_kriging_type_selector_base.cpp
+"
+						AdditionalDependencies="kriging_type_selector_base.h"
+						Outputs=".moc\moc_kriging_type_selector_base.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\non_param_cdf_input.h">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						CommandLine="$(QTDIR)\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQTPLUGINS_EXPORTS -DQT_DLL -DQT_NO_DEBUG -DQT_PLUGIN -DQT_XML_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -DQDESIGNER_EXPORT_WIDGETS -I&quot;$(QTDIR)\include\QtDesigner&quot; -I&quot;$(QTDIR)\include\QtUiTools&quot; -I&quot;$(QTDIR)\include\QtCore&quot; -I&quot;$(QTDIR)\include\QtCore&quot; -I&quot;$(QTDIR)\include\QtGui&quot; -I&quot;$(QTDIR)\include\QtGui&quot; -I&quot;$(QTDIR)\include\QtXml&quot; -I&quot;$(QTDIR)\include\QtXml&quot; -I&quot;$(QTDIR)\include&quot; -I&quot;.&quot; -I&quot;$(QTDIR)\tools\designer\interfaces&quot; -I&quot;$(QTDIR)\include\ActiveQt&quot; -I&quot;.moc&quot; -I&quot;.&quot; -I$(QTDIR)\mkspecs\win32-msvc2005 -D_MSC_VER=1400 -DWIN32 non_param_cdf_input.h -o .moc\moc_non_param_cdf_input.cpp
+"
+						AdditionalDependencies="non_param_cdf_input.h"
+						Outputs=".moc\moc_non_param_cdf_input.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\selectors.h">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						CommandLine="$(QTDIR)\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQTPLUGINS_EXPORTS -DQT_DLL -DQT_NO_DEBUG -DQT_PLUGIN -DQT_XML_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -DQDESIGNER_EXPORT_WIDGETS -I&quot;$(QTDIR)\include\QtDesigner&quot; -I&quot;$(QTDIR)\include\QtUiTools&quot; -I&quot;$(QTDIR)\include\QtCore&quot; -I&quot;$(QTDIR)\include\QtCore&quot; -I&quot;$(QTDIR)\include\QtGui&quot; -I&quot;$(QTDIR)\include\QtGui&quot; -I&quot;$(QTDIR)\include\QtXml&quot; -I&quot;$(QTDIR)\include\QtXml&quot; -I&quot;$(QTDIR)\include&quot; -I&quot;.&quot; -I&quot;$(QTDIR)\tools\designer\interfaces&quot; -I&quot;$(QTDIR)\include\ActiveQt&quot; -I&quot;.moc&quot; -I&quot;.&quot; -I$(QTDIR)\mkspecs\win32-msvc2005 -D_MSC_VER=1400 -DWIN32 selectors.h -o .moc\moc_selectors.cpp
+"
+						AdditionalDependencies="selectors.h"
+						Outputs=".moc\moc_selectors.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="icons\selectors_icons.h">
+			</File>
+			<File
+				RelativePath=".\variogram_input.h">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						CommandLine="$(QTDIR)\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQTPLUGINS_EXPORTS -DQT_DLL -DQT_NO_DEBUG -DQT_PLUGIN -DQT_XML_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -DQDESIGNER_EXPORT_WIDGETS -I&quot;$(QTDIR)\include\QtDesigner&quot; -I&quot;$(QTDIR)\include\QtUiTools&quot; -I&quot;$(QTDIR)\include\QtCore&quot; -I&quot;$(QTDIR)\include\QtCore&quot; -I&quot;$(QTDIR)\include\QtGui&quot; -I&quot;$(QTDIR)\include\QtGui&quot; -I&quot;$(QTDIR)\include\QtXml&quot; -I&quot;$(QTDIR)\include\QtXml&quot; -I&quot;$(QTDIR)\include&quot; -I&quot;.&quot; -I&quot;$(QTDIR)\tools\designer\interfaces&quot; -I&quot;$(QTDIR)\include\ActiveQt&quot; -I&quot;.moc&quot; -I&quot;.&quot; -I$(QTDIR)\mkspecs\win32-msvc2005 -D_MSC_VER=1400 -DWIN32 variogram_input.h -o .moc\moc_variogram_input.cpp
+"
+						AdditionalDependencies="variogram_input.h"
+						Outputs=".moc\moc_variogram_input.cpp"/>
+				</FileConfiguration>
+			</File>
+		</Filter>
+		<Filter
+			Name="Generated Files"
+			Filter="cpp;c;cxx;moc;h;def;odl;idl;res;"
+			UniqueIdentifier="{71ED8ED8-ACB9-4CE9-BBE1-E00B30144E11}">
+			<File
+				RelativePath=".moc\moc_ellipsoid_input.cpp">
+			</File>
+			<File
+				RelativePath=".moc\moc_filechooser.cpp">
+			</File>
+			<File
+				RelativePath=".moc\moc_gstl_table.cpp">
+			</File>
+			<File
+				RelativePath=".moc\moc_gstl_widgets_plugin.cpp">
+			</File>
+			<File
+				RelativePath=".\.moc\moc_kriging_type_selector.cpp">
+			</File>
+			<File
+				RelativePath=".\.moc\moc_kriging_type_selector_base.cpp">
+			</File>
+			<File
+				RelativePath=".\.moc\moc_non_param_cdf_input.cpp">
+			</File>
+			<File
+				RelativePath=".\.moc\moc_selectors.cpp">
+			</File>
+			<File
+				RelativePath=".\.moc\moc_variogram_input.cpp">
+			</File>
+			<File
+				RelativePath=".\ui_order_properties_dialog.h">
+			</File>
+			<File
+				RelativePath=".\ui_variogram_input_base.h">
+			</File>
+			<File
+				RelativePath=".\ui_variogram_structure_base.h">
+			</File>
+		</Filter>
+		<Filter
+			Name="Form Files"
+			Filter="ui"
+			UniqueIdentifier="{99349809-55BA-4b9d-BF79-8FDBB0286EB3}"
+			ParseFiles="FALSE">
+			<File
+				RelativePath=".\order_properties_dialog.ui">
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						CommandLine="$(QTDIR)\bin\uic.exe order_properties_dialog.ui -o ui_order_properties_dialog.h
+"
+						AdditionalDependencies="order_properties_dialog.ui"
+						Outputs="ui_order_properties_dialog.h"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						CommandLine="$(QTDIR)\bin\uic.exe order_properties_dialog.ui -o ui_order_properties_dialog.h
+"
+						AdditionalDependencies="order_properties_dialog.ui"
+						Outputs="ui_order_properties_dialog.h"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\variogram_input_base.ui">
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						CommandLine="$(QTDIR)\bin\uic.exe variogram_input_base.ui -o ui_variogram_input_base.h
+"
+						AdditionalDependencies="variogram_input_base.ui"
+						Outputs="ui_variogram_input_base.h"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						CommandLine="$(QTDIR)\bin\uic.exe variogram_input_base.ui -o ui_variogram_input_base.h
+"
+						AdditionalDependencies="variogram_input_base.ui"
+						Outputs="ui_variogram_input_base.h"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\variogram_structure_base.ui">
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						CommandLine="$(QTDIR)\bin\uic.exe variogram_structure_base.ui -o ui_variogram_structure_base.h
+"
+						AdditionalDependencies="variogram_structure_base.ui"
+						Outputs="ui_variogram_structure_base.h"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						CommandLine="$(QTDIR)\bin\uic.exe variogram_structure_base.ui -o ui_variogram_structure_base.h
+"
+						AdditionalDependencies="variogram_structure_base.ui"
+						Outputs="ui_variogram_structure_base.h"/>
+				</FileConfiguration>
+			</File>
+		</Filter>
+		<Filter
+			Name="Resource Files"
+			Filter="qrc;*"
+			UniqueIdentifier="{D9D6E242-F8AF-46E4-B9FD-80ECBC20BA3E}"
+			ParseFiles="FALSE">
+			<File
+				RelativePath="icons\down.png">
+			</File>
+			<File
+				RelativePath="icons.qrc">
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="RCC icons.qrc"
+						CommandLine="$(QTDIR)\bin\rcc.exe -name icons icons.qrc -o debug\qrc_icons.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\rcc.exe;icons.qrc;icons\down.png;icons\left.png;icons\right.png;icons\up.png"
+						Outputs="debug\qrc_icons.cpp"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="RCC icons.qrc"
+						CommandLine="$(QTDIR)\bin\rcc.exe -name icons icons.qrc -o release\qrc_icons.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\rcc.exe;icons.qrc;icons\down.png;icons\left.png;icons\right.png;icons\up.png"
+						Outputs="release\qrc_icons.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="icons\left.png">
+			</File>
+			<File
+				RelativePath="icons\right.png">
+			</File>
+			<File
+				RelativePath="icons\up.png">
+			</File>
+		</Filter>
+	</Files>
+	<Globals>
+	</Globals>
+</VisualStudioProject>

@@ -1,0 +1,251 @@
+<ui version="4.0" stdsetdef="1" >
+  <author></author>
+  <comment></comment>
+  <exportmacro></exportmacro>
+  <class>Snapshot_dialog_base</class>
+  <widget class="QDialog" name="Snapshot_dialog_base" >
+    <property name="geometry" >
+      <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>287</width>
+        <height>298</height>
+      </rect>
+    </property>
+    <property name="windowTitle" >
+      <string>Camera Snapshot</string>
+    </property>
+    <property name="sizeGripEnabled" >
+      <bool>true</bool>
+    </property>
+    <layout class="QVBoxLayout" >
+      <property name="margin" >
+        <number>10</number>
+      </property>
+      <item>
+        <widget class="QLabel" name="textLabel1" >
+          <property name="sizePolicy" >
+            <sizepolicy>
+              <hsizetype>5</hsizetype>
+              <vsizetype>0</vsizetype>
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+            </sizepolicy>
+          </property>
+          <property name="text" >
+            <string>Save snapshot as:</string>
+          </property>
+          <property name="alignment" >
+            <set>Qt::AlignCenter</set>
+          </property>
+          <property name="wordWrap" >
+            <bool>false</bool>
+          </property>
+        </widget>
+      </item>
+      <item>
+        <widget class="QGroupBox" name="file_chooser_box_" >
+          <property name="sizePolicy" >
+            <sizepolicy>
+              <hsizetype>5</hsizetype>
+              <vsizetype>0</vsizetype>
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+            </sizepolicy>
+          </property>
+          <property name="title" >
+            <string/>
+          </property>
+        </widget>
+      </item>
+      <item>
+        <widget class="QLabel" name="textLabel2" >
+          <property name="sizePolicy" >
+            <sizepolicy>
+              <hsizetype>5</hsizetype>
+              <vsizetype>0</vsizetype>
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+            </sizepolicy>
+          </property>
+          <property name="text" >
+            <string>Image Filter:</string>
+          </property>
+          <property name="alignment" >
+            <set>Qt::AlignCenter</set>
+          </property>
+          <property name="wordWrap" >
+            <bool>false</bool>
+          </property>
+        </widget>
+      </item>
+      <item>
+        <layout class="QHBoxLayout" >
+          <property name="margin" >
+            <number>0</number>
+          </property>
+          <item>
+            <spacer name="spacer7" >
+              <property name="sizeHint" >
+                <size>
+                  <width>41</width>
+                  <height>20</height>
+                </size>
+              </property>
+              <property name="sizeType" >
+                <enum>MinimumExpanding</enum>
+              </property>
+              <property name="orientation" >
+                <enum>Horizontal</enum>
+              </property>
+            </spacer>
+          </item>
+          <item>
+            <widget class="QComboBox" name="filter_chooser_" >
+              <property name="sizePolicy" >
+                <sizepolicy>
+                  <hsizetype>7</hsizetype>
+                  <vsizetype>0</vsizetype>
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                </sizepolicy>
+              </property>
+              <property name="minimumSize" >
+                <size>
+                  <width>150</width>
+                  <height>0</height>
+                </size>
+              </property>
+            </widget>
+          </item>
+          <item>
+            <spacer name="spacer6" >
+              <property name="sizeHint" >
+                <size>
+                  <width>40</width>
+                  <height>20</height>
+                </size>
+              </property>
+              <property name="sizeType" >
+                <enum>MinimumExpanding</enum>
+              </property>
+              <property name="orientation" >
+                <enum>Horizontal</enum>
+              </property>
+            </spacer>
+          </item>
+        </layout>
+      </item>
+      <item>
+        <spacer name="spacer5" >
+          <property name="sizeHint" >
+            <size>
+              <width>20</width>
+              <height>21</height>
+            </size>
+          </property>
+          <property name="sizeType" >
+            <enum>Fixed</enum>
+          </property>
+          <property name="orientation" >
+            <enum>Vertical</enum>
+          </property>
+        </spacer>
+      </item>
+      <item>
+        <layout class="QHBoxLayout" >
+          <property name="margin" >
+            <number>0</number>
+          </property>
+          <item>
+            <spacer name="spacer4" >
+              <property name="sizeHint" >
+                <size>
+                  <width>31</width>
+                  <height>20</height>
+                </size>
+              </property>
+              <property name="sizeType" >
+                <enum>Expanding</enum>
+              </property>
+              <property name="orientation" >
+                <enum>Horizontal</enum>
+              </property>
+            </spacer>
+          </item>
+          <item>
+            <widget class="QPushButton" name="close_button_" >
+              <property name="text" >
+                <string>&amp;Close</string>
+              </property>
+            </widget>
+          </item>
+          <item>
+            <spacer name="spacer2" >
+              <property name="sizeHint" >
+                <size>
+                  <width>16</width>
+                  <height>20</height>
+                </size>
+              </property>
+              <property name="sizeType" >
+                <enum>Fixed</enum>
+              </property>
+              <property name="orientation" >
+                <enum>Horizontal</enum>
+              </property>
+            </spacer>
+          </item>
+          <item>
+            <widget class="QPushButton" name="snapshot_button_" >
+              <property name="text" >
+                <string>Take &amp;Snapshot</string>
+              </property>
+              <property name="default" >
+                <bool>true</bool>
+              </property>
+            </widget>
+          </item>
+          <item>
+            <spacer name="spacer3" >
+              <property name="sizeHint" >
+                <size>
+                  <width>51</width>
+                  <height>21</height>
+                </size>
+              </property>
+              <property name="sizeType" >
+                <enum>Expanding</enum>
+              </property>
+              <property name="orientation" >
+                <enum>Horizontal</enum>
+              </property>
+            </spacer>
+          </item>
+        </layout>
+      </item>
+      <item>
+        <spacer name="spacer1" >
+          <property name="sizeHint" >
+            <size>
+              <width>21</width>
+              <height>2</height>
+            </size>
+          </property>
+          <property name="sizeType" >
+            <enum>Expanding</enum>
+          </property>
+          <property name="orientation" >
+            <enum>Vertical</enum>
+          </property>
+        </spacer>
+      </item>
+    </layout>
+  </widget>
+  <layoutdefault spacing="6" margin="11" />
+  <tabstops>
+    <tabstop>filter_chooser_</tabstop>
+    <tabstop>snapshot_button_</tabstop>
+    <tabstop>close_button_</tabstop>
+  </tabstops>
+</ui>

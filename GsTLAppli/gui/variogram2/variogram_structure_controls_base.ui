@@ -1,0 +1,232 @@
+<ui version="4.0" stdsetdef="1" >
+  <author></author>
+  <comment></comment>
+  <exportmacro></exportmacro>
+  <class>Variogram_structure_controls_base</class>
+  <widget class="QWidget" name="Variogram_structure_controls_base" >
+    <property name="geometry" >
+      <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>380</width>
+        <height>175</height>
+      </rect>
+    </property>
+    <property name="windowTitle" >
+      <string>Variogram Input</string>
+    </property>
+    <layout class="QVBoxLayout" >
+      <item>
+        <layout class="QHBoxLayout" >
+          <property name="margin" >
+            <number>0</number>
+          </property>
+          <property name="spacing" >
+            <number>6</number>
+          </property>
+          <item>
+            <spacer name="Spacer14" >
+              <property name="sizeHint" >
+                <size>
+                  <width>20</width>
+                  <height>20</height>
+                </size>
+              </property>
+              <property name="sizeType" >
+                <enum>Expanding</enum>
+              </property>
+              <property name="orientation" >
+                <enum>Horizontal</enum>
+              </property>
+            </spacer>
+          </item>
+          <item>
+            <widget class="QLabel" name="Sill" >
+              <property name="sizePolicy" >
+                <sizepolicy>
+                  <hsizetype>0</hsizetype>
+                  <vsizetype>5</vsizetype>
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                </sizepolicy>
+              </property>
+              <property name="text" >
+                <string>Sill (Contribution)</string>
+              </property>
+              <property name="wordWrap" >
+                <bool>false</bool>
+              </property>
+            </widget>
+          </item>
+          <item>
+            <widget class="QLineEdit" name="sill_value_" >
+              <property name="minimumSize" >
+                <size>
+                  <width>40</width>
+                  <height>0</height>
+                </size>
+              </property>
+              <property name="maximumSize" >
+                <size>
+                  <width>40</width>
+                  <height>32767</height>
+                </size>
+              </property>
+            </widget>
+          </item>
+          <item>
+            <spacer name="Spacer12" >
+              <property name="sizeHint" >
+                <size>
+                  <width>20</width>
+                  <height>20</height>
+                </size>
+              </property>
+              <property name="sizeType" >
+                <enum>Expanding</enum>
+              </property>
+              <property name="orientation" >
+                <enum>Horizontal</enum>
+              </property>
+            </spacer>
+          </item>
+        </layout>
+      </item>
+      <item>
+        <layout class="QHBoxLayout" >
+          <property name="margin" >
+            <number>0</number>
+          </property>
+          <property name="spacing" >
+            <number>6</number>
+          </property>
+          <item>
+            <spacer name="Spacer10" >
+              <property name="sizeHint" >
+                <size>
+                  <width>20</width>
+                  <height>20</height>
+                </size>
+              </property>
+              <property name="sizeType" >
+                <enum>Expanding</enum>
+              </property>
+              <property name="orientation" >
+                <enum>Horizontal</enum>
+              </property>
+            </spacer>
+          </item>
+          <item>
+            <widget class="QLabel" name="Type" >
+              <property name="sizePolicy" >
+                <sizepolicy>
+                  <hsizetype>0</hsizetype>
+                  <vsizetype>5</vsizetype>
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                </sizepolicy>
+              </property>
+              <property name="text" >
+                <string>Type</string>
+              </property>
+              <property name="wordWrap" >
+                <bool>false</bool>
+              </property>
+            </widget>
+          </item>
+          <item>
+            <widget class="QComboBox" name="model_type_" >
+              <property name="currentIndex" >
+                <number>1</number>
+              </property>
+              <item>
+                <property name="text" >
+                  <string>Spherical</string>
+                </property>
+              </item>
+              <item>
+                <property name="text" >
+                  <string>Exponential</string>
+                </property>
+              </item>
+              <item>
+                <property name="text" >
+                  <string>Gaussian</string>
+                </property>
+              </item>
+            </widget>
+          </item>
+          <item>
+            <spacer name="Spacer11" >
+              <property name="sizeHint" >
+                <size>
+                  <width>20</width>
+                  <height>20</height>
+                </size>
+              </property>
+              <property name="sizeType" >
+                <enum>Expanding</enum>
+              </property>
+              <property name="orientation" >
+                <enum>Horizontal</enum>
+              </property>
+            </spacer>
+          </item>
+        </layout>
+      </item>
+      <item>
+        <widget class="QGroupBox" name="ranges_box_" >
+          <property name="title" >
+            <string>Ranges</string>
+          </property>
+        </widget>
+      </item>
+      <item>
+        <layout class="QHBoxLayout" >
+          <property name="margin" >
+            <number>0</number>
+          </property>
+          <property name="spacing" >
+            <number>6</number>
+          </property>
+          <item>
+            <widget class="QLabel" name="Angles" >
+              <property name="text" >
+                <string>Angles</string>
+              </property>
+              <property name="wordWrap" >
+                <bool>false</bool>
+              </property>
+            </widget>
+          </item>
+          <item>
+            <widget class="QLineEdit" name="ang1_" />
+          </item>
+          <item>
+            <widget class="QLineEdit" name="ang2_" />
+          </item>
+          <item>
+            <widget class="QLineEdit" name="ang3_" />
+          </item>
+        </layout>
+      </item>
+      <item>
+        <spacer name="spacer9" >
+          <property name="sizeHint" >
+            <size>
+              <width>20</width>
+              <height>5</height>
+            </size>
+          </property>
+          <property name="sizeType" >
+            <enum>Expanding</enum>
+          </property>
+          <property name="orientation" >
+            <enum>Vertical</enum>
+          </property>
+        </spacer>
+      </item>
+    </layout>
+  </widget>
+  <layoutdefault spacing="6" margin="11" />
+</ui>

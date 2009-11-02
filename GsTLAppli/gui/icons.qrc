@@ -1,0 +1,18 @@
+<RCC version="1.0">
+  <qresource prefix="/icons">
+    <file>appli/Pixmaps/eye4.png</file>
+    <file>appli/Pixmaps/eye.png</file>
+    <file>appli/Pixmaps/eyes.png</file>
+    <file>appli/Pixmaps/home.xpm</file>
+    <file>appli/Pixmaps/noeye4.png</file>
+    <file>appli/Pixmaps/noeye.png</file>
+    <file>appli/Pixmaps/sethome.xpm</file>
+    <file>appli/Pixmaps/camera.png</file>
+    <file>appli/Pixmaps/global.png</file>
+    <file>appli/Pixmaps/home.png</file>
+    <file>appli/Pixmaps/sethome.png</file>
+    <file>appli/Pixmaps/xy.png</file>
+    <file>appli/Pixmaps/xz.png</file>
+    <file>appli/Pixmaps/yz.png</file>
+  </qresource>
+</RCC>

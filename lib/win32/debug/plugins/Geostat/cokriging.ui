@@ -1,0 +1,1171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>CoKriging_Parameters</class>
+ <widget class="QWidget" name="CoKriging_Parameters">
+  <property name="AlgorithmCategory" stdset="0">
+   <string>Estimation</string>
+  </property>
+  <property name="AlgorithmDescription" stdset="0">
+   <string>Kriging with secondary attribute</string>
+  </property>
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>271</width>
+    <height>2174</height>
+   </rect>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>500</width>
+    <height>32767</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string>Kriging Parameters</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout_5">
+   <item>
+    <widget class="QTabWidget" name="tabWidget2">
+     <property name="currentIndex">
+      <number>1</number>
+     </property>
+     <widget class="QWidget" name="tab">
+      <attribute name="title">
+       <string>General</string>
+      </attribute>
+      <layout class="QVBoxLayout" name="verticalLayout_2">
+       <item>
+        <widget class="Q3GroupBox" name="SimulationGrid">
+         <property name="maximumSize">
+          <size>
+           <width>32767</width>
+           <height>140</height>
+          </size>
+         </property>
+         <property name="title">
+          <string>Kriging Grid</string>
+         </property>
+         <property name="frameShape">
+          <enum>Q3GroupBox::Box</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>Q3GroupBox::Sunken</enum>
+         </property>
+         <layout class="QVBoxLayout" name="verticalLayout">
+          <item>
+           <widget class="GridSelector" name="Grid_Name"/>
+          </item>
+          <item>
+           <spacer name="Spacer7_5_3">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeType">
+             <enum>QSizePolicy::Expanding</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>0</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <widget class="QLabel" name="TextLabel2">
+            <property name="text">
+             <string>New Property Name</string>
+            </property>
+            <property name="wordWrap">
+             <bool>false</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLineEdit" name="Property_Name"/>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QComboBox" name="Kriging_Type">
+         <item>
+          <property name="text">
+           <string>Simple Kriging (SK)</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Ordinary Kriging (OK)</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+       <item>
+        <widget class="GsTLGroupBox" name="SKGroupBox">
+         <property name="title">
+          <string/>
+         </property>
+         <property name="keyword" stdset="0">
+          <string>Simple Kriging (SK)</string>
+         </property>
+         <layout class="QVBoxLayout">
+          <property name="spacing">
+           <number>6</number>
+          </property>
+          <property name="margin">
+           <number>11</number>
+          </property>
+          <item>
+           <widget class="QLabel" name="TextLabel1_4">
+            <property name="text">
+             <string>SK mean of Z1 and Z2</string>
+            </property>
+            <property name="wordWrap">
+             <bool>false</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLineEdit" name="SK_Means">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <layout class="QHBoxLayout">
+         <property name="spacing">
+          <number>6</number>
+         </property>
+         <property name="margin">
+          <number>0</number>
+         </property>
+         <item>
+          <widget class="QLabel" name="TextLabel1_2">
+           <property name="text">
+            <string>Cokriging Type</string>
+           </property>
+           <property name="wordWrap">
+            <bool>false</bool>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QComboBox" name="Cokriging_Type">
+           <item>
+            <property name="text">
+             <string>Full Cokriging</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Markov Model 1</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Markov Model 2</string>
+            </property>
+           </item>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <spacer name="spacer22">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeType">
+          <enum>QSizePolicy::Expanding</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>301</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="tab">
+      <attribute name="title">
+       <string>Data</string>
+      </attribute>
+      <layout class="QVBoxLayout" name="verticalLayout_4">
+       <item>
+        <widget class="Q3GroupBox" name="GroupBox3">
+         <property name="title">
+          <string>Hard Data</string>
+         </property>
+         <layout class="QVBoxLayout">
+          <property name="spacing">
+           <number>6</number>
+          </property>
+          <property name="margin">
+           <number>11</number>
+          </property>
+          <item>
+           <widget class="QLabel" name="TextLabel1_3">
+            <property name="text">
+             <string>Primary Hard Data Grid</string>
+            </property>
+            <property name="wordWrap">
+             <bool>false</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="GridSelector" name="Primary_Harddata_Grid"/>
+          </item>
+          <item>
+           <widget class="QLabel" name="TextLabel2_2">
+            <property name="text">
+             <string>Primary Property</string>
+            </property>
+            <property name="wordWrap">
+             <bool>false</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="SinglePropertySelector" name="Primary_Variable"/>
+          </item>
+          <item>
+           <widget class="QCheckBox" name="Assign_Hard_Data">
+            <property name="text">
+             <string>Assign Data to Kriging Grid</string>
+            </property>
+            <property name="checked">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer name="spacer19">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeType">
+             <enum>QSizePolicy::Fixed</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>16</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <widget class="QLabel" name="TextLabel1_3_2">
+            <property name="text">
+             <string>Secondary Hard Data Grid</string>
+            </property>
+            <property name="wordWrap">
+             <bool>false</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="GridSelector" name="Secondary_Harddata_Grid"/>
+          </item>
+          <item>
+           <widget class="QLabel" name="TextLabel2_2_2">
+            <property name="text">
+             <string>Secondary Property</string>
+            </property>
+            <property name="wordWrap">
+             <bool>false</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="SinglePropertySelector" name="Secondary_Variable"/>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="Q3GroupBox" name="GroupBox9">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="title">
+          <string>Search Ellipsoid for Primary Variable</string>
+         </property>
+         <layout class="QVBoxLayout" name="verticalLayout_3">
+          <item>
+           <widget class="Q3GroupBox" name="groupBox5">
+            <property name="title">
+             <string>Conditioning data</string>
+            </property>
+            <property name="frameShape">
+             <enum>Q3GroupBox::LineEditPanel</enum>
+            </property>
+            <layout class="QGridLayout">
+             <item row="0" column="0">
+              <layout class="QHBoxLayout">
+               <item>
+                <widget class="QLabel" name="TextLabel2_2_2_2_3">
+                 <property name="text">
+                  <string>Min</string>
+                 </property>
+                 <property name="wordWrap">
+                  <bool>false</bool>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QSpinBox" name="Min_Conditioning_Data">
+                 <property name="minimum">
+                  <number>0</number>
+                 </property>
+                 <property name="maximum">
+                  <number>200</number>
+                 </property>
+                 <property name="value">
+                  <number>0</number>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <spacer name="spacer3">
+                 <property name="orientation">
+                  <enum>Qt::Horizontal</enum>
+                 </property>
+                 <property name="sizeType">
+                  <enum>QSizePolicy::Expanding</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>31</width>
+                   <height>20</height>
+                  </size>
+                 </property>
+                </spacer>
+               </item>
+               <item>
+                <widget class="QLabel" name="TextLabel2_2_2_2_3_2_2">
+                 <property name="text">
+                  <string>Max</string>
+                 </property>
+                 <property name="wordWrap">
+                  <bool>false</bool>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QSpinBox" name="Max_Conditioning_Data">
+                 <property name="minimum">
+                  <number>0</number>
+                 </property>
+                 <property name="maximum">
+                  <number>200</number>
+                 </property>
+                 <property name="value">
+                  <number>20</number>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item>
+           <widget class="EllipsoidInput" name="Search_Ellipsoid_1">
+            <property name="title" stdset="0">
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="AdvancedNeighborhoodInput" name="AdvancedSearch_1"/>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="GsTLGroupBox" name="box_data_LMC">
+         <property name="title">
+          <string>Search Ellipsoid for Secondary Variable</string>
+         </property>
+         <property name="keyword" stdset="0">
+          <string>Full Cokriging</string>
+         </property>
+         <layout class="QGridLayout">
+          <item row="0" column="0">
+           <widget class="Q3GroupBox" name="groupBox5_2">
+            <property name="title">
+             <string>Conditioning data</string>
+            </property>
+            <property name="frameShape">
+             <enum>Q3GroupBox::LineEditPanel</enum>
+            </property>
+            <layout class="QGridLayout">
+             <item row="0" column="0">
+              <layout class="QHBoxLayout">
+               <item>
+                <widget class="QLabel" name="TextLabel2_2_2_2_3_2">
+                 <property name="text">
+                  <string>Min</string>
+                 </property>
+                 <property name="wordWrap">
+                  <bool>false</bool>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QSpinBox" name="Min_Conditioning_Data_2">
+                 <property name="minimum">
+                  <number>0</number>
+                 </property>
+                 <property name="maximum">
+                  <number>200</number>
+                 </property>
+                 <property name="value">
+                  <number>0</number>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <spacer name="spacer3_2">
+                 <property name="orientation">
+                  <enum>Qt::Horizontal</enum>
+                 </property>
+                 <property name="sizeType">
+                  <enum>QSizePolicy::Expanding</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>31</width>
+                   <height>20</height>
+                  </size>
+                 </property>
+                </spacer>
+               </item>
+               <item>
+                <widget class="QLabel" name="TextLabel2_2_2_2_3_2_3">
+                 <property name="text">
+                  <string>Max</string>
+                 </property>
+                 <property name="wordWrap">
+                  <bool>false</bool>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QSpinBox" name="Max_Conditioning_Data_2">
+                 <property name="minimum">
+                  <number>0</number>
+                 </property>
+                 <property name="maximum">
+                  <number>200</number>
+                 </property>
+                 <property name="value">
+                  <number>20</number>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="EllipsoidInput" name="Search_Ellipsoid_2">
+            <property name="title" stdset="0">
+             <string/>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <spacer name="spacer21">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeType">
+          <enum>QSizePolicy::Expanding</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>1410</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="TabPage">
+      <attribute name="title">
+       <string>Variogram</string>
+      </attribute>
+      <layout class="QVBoxLayout">
+       <item>
+        <widget class="Q3GroupBox" name="GroupBox5">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="title">
+          <string>Variogram for primary variable C11(h)</string>
+         </property>
+         <layout class="QVBoxLayout">
+          <property name="spacing">
+           <number>6</number>
+          </property>
+          <property name="margin">
+           <number>11</number>
+          </property>
+          <item>
+           <widget class="VariogramInput" name="Variogram_C11">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="GsTLGroupBox" name="LMC_group">
+         <property name="title">
+          <string/>
+         </property>
+         <property name="keyword" stdset="0">
+          <string>Full Cokriging</string>
+         </property>
+         <layout class="QVBoxLayout">
+          <property name="spacing">
+           <number>6</number>
+          </property>
+          <property name="margin">
+           <number>11</number>
+          </property>
+          <item>
+           <widget class="QLabel" name="textLabel1_2_2">
+            <property name="font">
+             <font>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="text">
+             <string>Full Cokriging Parameters</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
+            </property>
+            <property name="wordWrap">
+             <bool>false</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer name="Spacer7_3">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeType">
+             <enum>QSizePolicy::Fixed</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>16</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <widget class="QLabel" name="TextLabel3">
+            <property name="font">
+             <font>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="text">
+             <string>Cross-variogram C12(h)</string>
+            </property>
+            <property name="wordWrap">
+             <bool>false</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="VariogramInput" name="Variogram_C12"/>
+          </item>
+          <item>
+           <widget class="QLabel" name="TextLabel3_2">
+            <property name="font">
+             <font>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="text">
+             <string>Variogram of Secondary variable C22(h)</string>
+            </property>
+            <property name="wordWrap">
+             <bool>false</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="VariogramInput" name="Variogram_C22"/>
+          </item>
+          <item>
+           <spacer name="Spacer7">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeType">
+             <enum>QSizePolicy::Fixed</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>16</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="GsTLGroupBox" name="MM1_group">
+         <property name="title">
+          <string/>
+         </property>
+         <property name="keyword" stdset="0">
+          <string>Markov Model 1</string>
+         </property>
+         <property name="displayed" stdset="0">
+          <bool>false</bool>
+         </property>
+         <layout class="QVBoxLayout">
+          <property name="spacing">
+           <number>6</number>
+          </property>
+          <property name="margin">
+           <number>11</number>
+          </property>
+          <item>
+           <widget class="QLabel" name="textLabel1_2">
+            <property name="font">
+             <font>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="text">
+             <string>Markov Model 1 Parameters</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
+            </property>
+            <property name="wordWrap">
+             <bool>false</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer name="Spacer7_2_2_2">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeType">
+             <enum>QSizePolicy::Fixed</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>16</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <widget class="QLabel" name="TextLabel5">
+            <property name="text">
+             <string>Z1 is the primary variable, Z2 the secondary</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignVCenter</set>
+            </property>
+            <property name="wordWrap">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <layout class="QGridLayout">
+            <item row="0" column="2">
+             <widget class="QLineEdit" name="Correl_Z1Z2"/>
+            </item>
+            <item row="0" column="3">
+             <spacer name="Spacer12">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeType">
+               <enum>QSizePolicy::Expanding</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>95</width>
+                <height>16</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item row="1" column="0">
+             <widget class="QLabel" name="TextLabel4_2">
+              <property name="text">
+               <string>Var( Z2 )</string>
+              </property>
+              <property name="wordWrap">
+               <bool>false</bool>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="0" colspan="2">
+             <widget class="QLabel" name="TextLabel4">
+              <property name="minimumSize">
+               <size>
+                <width>160</width>
+                <height>0</height>
+               </size>
+              </property>
+              <property name="text">
+               <string>Coef. Correlation Z1,Z2</string>
+              </property>
+              <property name="wordWrap">
+               <bool>false</bool>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="1" colspan="2">
+             <widget class="QLineEdit" name="Var_Z2"/>
+            </item>
+            <item row="1" column="3">
+             <spacer name="Spacer13">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeType">
+               <enum>QSizePolicy::Expanding</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>95</width>
+                <height>16</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="GsTLGroupBox" name="MM2_group">
+         <property name="title">
+          <string/>
+         </property>
+         <property name="keyword" stdset="0">
+          <string>Markov Model 2</string>
+         </property>
+         <property name="displayed" stdset="0">
+          <bool>false</bool>
+         </property>
+         <layout class="QVBoxLayout">
+          <property name="spacing">
+           <number>6</number>
+          </property>
+          <property name="margin">
+           <number>11</number>
+          </property>
+          <item>
+           <widget class="QLabel" name="textLabel1">
+            <property name="font">
+             <font>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="text">
+             <string>Markov Model 2 Parameters</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
+            </property>
+            <property name="wordWrap">
+             <bool>false</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer name="Spacer7_2_2">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeType">
+             <enum>QSizePolicy::Fixed</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>16</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <widget class="QLabel" name="TextLabel5_2">
+            <property name="text">
+             <string>Z1 is the primary variable, Z2 the secondary</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignVCenter</set>
+            </property>
+            <property name="wordWrap">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <layout class="QHBoxLayout">
+            <item>
+             <widget class="QLabel" name="TextLabel4_3">
+              <property name="minimumSize">
+               <size>
+                <width>160</width>
+                <height>0</height>
+               </size>
+              </property>
+              <property name="text">
+               <string>Coef. Correlation Z1,Z2</string>
+              </property>
+              <property name="wordWrap">
+               <bool>false</bool>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLineEdit" name="MM2_Correl_Z1Z2"/>
+            </item>
+            <item>
+             <spacer name="Spacer12_2">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeType">
+               <enum>QSizePolicy::Expanding</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>95</width>
+                <height>16</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <spacer name="Spacer7_2">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeType">
+             <enum>QSizePolicy::Fixed</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>16</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <widget class="QLabel" name="TextLabel3_2_2">
+            <property name="font">
+             <font>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="text">
+             <string>Variogram of Secondary variable C22(h)</string>
+            </property>
+            <property name="wordWrap">
+             <bool>false</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="VariogramInput" name="MM2_Variogram_C22"/>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <spacer name="spacer19_2">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeType">
+          <enum>QSizePolicy::Expanding</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>16</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
+     </widget>
+    </widget>
+   </item>
+   <item>
+    <spacer name="spacer20">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeType">
+      <enum>QSizePolicy::Expanding</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>41</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item>
+    <spacer name="Spacer4">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeType">
+      <enum>QSizePolicy::Expanding</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>16</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+  </layout>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <pixmapfunction>qPixmapFromMimeSource</pixmapfunction>
+ <customwidgets>
+  <customwidget>
+   <class>SinglePropertySelector</class>
+   <extends>QComboBox</extends>
+   <header>GsTLAppli/extra/qtplugins/selectors.h</header>
+  </customwidget>
+  <customwidget>
+   <class>VariogramInput</class>
+   <extends>QWidget</extends>
+   <header>GsTLAppli/extra/qtplugins/variogram_input.h</header>
+  </customwidget>
+  <customwidget>
+   <class>GsTLGroupBox</class>
+   <extends>QGroupBox</extends>
+   <header>GsTLAppli/extra/qtplugins/selectors.h</header>
+  </customwidget>
+  <customwidget>
+   <class>EllipsoidInput</class>
+   <extends>QWidget</extends>
+   <header>GsTLAppli/extra/qtplugins/ellipsoid_input.h</header>
+  </customwidget>
+  <customwidget>
+   <class>GridSelector</class>
+   <extends>QTabWidget</extends>
+   <header>GsTLAppli/extra/qtplugins/selectors.h</header>
+  </customwidget>
+  <customwidget>
+   <class>AdvancedNeighborhoodInput</class>
+   <extends>QWidget</extends>
+   <header>GsTLAppli/extra/qtplugins/neighborhood_filter_input.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Q3GroupBox</class>
+   <extends>QGroupBox</extends>
+   <header>Qt3Support/Q3GroupBox</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
+ <includes>
+  <include location="local">gridselector.h</include>
+  <include location="local">gstlgroupbox.h</include>
+  <include location="local">gridselector.h</include>
+  <include location="local">singlepropertyselector.h</include>
+  <include location="local">gridselector.h</include>
+  <include location="local">singlepropertyselector.h</include>
+  <include location="local">ellipsoidinput.h</include>
+  <include location="local">gstl_table.h</include>
+  <include location="local">gstl_table.h</include>
+  <include location="local">gstlgroupbox.h</include>
+  <include location="local">ellipsoidinput.h</include>
+  <include location="local">gstl_table.h</include>
+  <include location="local">gstl_table.h</include>
+  <include location="local">variograminput.h</include>
+  <include location="local">gstlgroupbox.h</include>
+  <include location="local">variograminput.h</include>
+  <include location="local">variograminput.h</include>
+  <include location="local">gstlgroupbox.h</include>
+  <include location="local">gstlgroupbox.h</include>
+  <include location="local">variograminput.h</include>
+ </includes>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>Kriging_Type</sender>
+   <signal>activated(QString)</signal>
+   <receiver>SKGroupBox</receiver>
+   <slot>setShown(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>Primary_Harddata_Grid</sender>
+   <signal>activated(QString)</signal>
+   <receiver>Primary_Variable</receiver>
+   <slot>show_properties(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>Cokriging_Type</sender>
+   <signal>activated(QString)</signal>
+   <receiver>LMC_group</receiver>
+   <slot>setShown(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>Cokriging_Type</sender>
+   <signal>activated(QString)</signal>
+   <receiver>MM1_group</receiver>
+   <slot>setShown(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>Secondary_Harddata_Grid</sender>
+   <signal>activated(QString)</signal>
+   <receiver>Secondary_Variable</receiver>
+   <slot>show_properties(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>Cokriging_Type</sender>
+   <signal>activated(QString)</signal>
+   <receiver>MM2_group</receiver>
+   <slot>setShown(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>Cokriging_Type</sender>
+   <signal>activated(QString)</signal>
+   <receiver>box_data_LMC</receiver>
+   <slot>setShown(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>

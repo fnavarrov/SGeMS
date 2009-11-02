@@ -1,0 +1,876 @@
+<ui version="4.0" >
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow" >
+  <property name="geometry" >
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1018</width>
+    <height>836</height>
+   </rect>
+  </property>
+  <property name="windowTitle" >
+   <string>GsTLAppli</string>
+  </property>
+  <widget class="QWidget" name="widget" >
+   <layout class="QHBoxLayout" >
+    <property name="margin" >
+     <number>1</number>
+    </property>
+    <property name="spacing" >
+     <number>2</number>
+    </property>
+    <item>
+     <widget class="QSplitter" name="MainSplitter" >
+      <property name="sizePolicy" >
+       <sizepolicy>
+        <hsizetype>7</hsizetype>
+        <vsizetype>7</vsizetype>
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="orientation" >
+       <enum>Qt::Horizontal</enum>
+      </property>
+      <widget class="QFrame" name="left_panel_" >
+       <property name="sizePolicy" >
+        <sizepolicy>
+         <hsizetype>1</hsizetype>
+         <vsizetype>7</vsizetype>
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="minimumSize" >
+        <size>
+         <width>0</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="maximumSize" >
+        <size>
+         <width>340</width>
+         <height>32767</height>
+        </size>
+       </property>
+       <property name="frameShape" >
+        <enum>QFrame::Box</enum>
+       </property>
+       <property name="frameShadow" >
+        <enum>QFrame::Plain</enum>
+       </property>
+       <layout class="QHBoxLayout" >
+        <property name="margin" >
+         <number>1</number>
+        </property>
+        <property name="spacing" >
+         <number>2</number>
+        </property>
+        <item>
+         <layout class="QVBoxLayout" >
+          <property name="margin" >
+           <number>0</number>
+          </property>
+          <property name="spacing" >
+           <number>2</number>
+          </property>
+          <item>
+           <widget class="QTreeWidget" name="AlgorithmSelector" >
+            <column>
+             <property name="text" >
+              <string>Algorithm</string>
+             </property>
+            </column>
+            <column>
+             <property name="text" >
+              <string>Description</string>
+             </property>
+            </column>
+           </widget>
+          </item>
+          <item>
+           <widget class="QGroupBox" name="ExecPanelGroupBox" >
+            <property name="sizePolicy" >
+             <sizepolicy>
+              <hsizetype>7</hsizetype>
+              <vsizetype>0</vsizetype>
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="minimumSize" >
+             <size>
+              <width>0</width>
+              <height>120</height>
+             </size>
+            </property>
+            <property name="maximumSize" >
+             <size>
+              <width>32767</width>
+              <height>90</height>
+             </size>
+            </property>
+            <property name="title" >
+             <string/>
+            </property>
+            <widget class="QWidget" name="Layout3" >
+             <property name="geometry" >
+              <rect>
+               <x>10</x>
+               <y>80</y>
+               <width>310</width>
+               <height>32</height>
+              </rect>
+             </property>
+             <layout class="QHBoxLayout" >
+              <property name="margin" >
+               <number>0</number>
+              </property>
+              <property name="spacing" >
+               <number>6</number>
+              </property>
+              <item>
+               <widget class="QPushButton" name="GoStopButton" >
+                <property name="sizePolicy" >
+                 <sizepolicy>
+                  <hsizetype>0</hsizetype>
+                  <vsizetype>0</vsizetype>
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="minimumSize" >
+                 <size>
+                  <width>80</width>
+                  <height>0</height>
+                 </size>
+                </property>
+                <property name="toolTip" >
+                 <string>Run / Interrupt</string>
+                </property>
+                <property name="text" >
+                 <string>Execute</string>
+                </property>
+                <property name="flat" >
+                 <bool>false</bool>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QProgressBar" name="ProgressBar1" >
+                <property name="orientation" >
+                 <enum>Qt::Horizontal</enum>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+            <widget class="QGroupBox" name="GroupBox3" >
+             <property name="geometry" >
+              <rect>
+               <x>10</x>
+               <y>10</y>
+               <width>310</width>
+               <height>60</height>
+              </rect>
+             </property>
+             <property name="maximumSize" >
+              <size>
+               <width>32767</width>
+               <height>32767</height>
+              </size>
+             </property>
+             <property name="title" >
+              <string>Parameters</string>
+             </property>
+             <widget class="QPushButton" name="SaveParamButton" >
+              <property name="geometry" >
+               <rect>
+                <x>80</x>
+                <y>20</y>
+                <width>50</width>
+                <height>30</height>
+               </rect>
+              </property>
+              <property name="toolTip" >
+               <string>Click to save the parameters</string>
+              </property>
+              <property name="text" >
+               <string comment="Start performing the selected task" >Save</string>
+              </property>
+             </widget>
+             <widget class="QPushButton" name="LoadParamButton" >
+              <property name="geometry" >
+               <rect>
+                <x>10</x>
+                <y>20</y>
+                <width>50</width>
+                <height>30</height>
+               </rect>
+              </property>
+              <property name="toolTip" >
+               <string>Load parameters from file</string>
+              </property>
+              <property name="text" >
+               <string>Load</string>
+              </property>
+             </widget>
+             <widget class="QPushButton" name="ClearParamButton" >
+              <property name="geometry" >
+               <rect>
+                <x>240</x>
+                <y>20</y>
+                <width>60</width>
+                <height>30</height>
+               </rect>
+              </property>
+              <property name="toolTip" >
+               <string>Clear the parameters</string>
+              </property>
+              <property name="text" >
+               <string comment="Start performing the selected task" >Clear All</string>
+              </property>
+             </widget>
+            </widget>
+           </widget>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QFrame" name="right_panel_" >
+       <property name="sizePolicy" >
+        <sizepolicy>
+         <hsizetype>7</hsizetype>
+         <vsizetype>7</vsizetype>
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="minimumSize" >
+        <size>
+         <width>500</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="frameShape" >
+        <enum>QFrame::Box</enum>
+       </property>
+       <property name="frameShadow" >
+        <enum>QFrame::Plain</enum>
+       </property>
+      </widget>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menubar_" >
+   <property name="geometry" >
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>1018</width>
+     <height>29</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="fileMenu" >
+    <property name="title" >
+     <string>&amp;File</string>
+    </property>
+    <addaction name="fileParameterOpenAction" />
+    <addaction name="fileParameterSaveAction" />
+    <addaction name="fileParamterSaveAsAction" />
+    <addaction name="separator" />
+    <addaction name="filePrintAction" />
+    <addaction name="separator" />
+    <addaction name="fileExitAction" />
+   </widget>
+   <widget class="QMenu" name="editMenu" >
+    <property name="title" >
+     <string>&amp;Edit</string>
+    </property>
+    <addaction name="editUndoAction" />
+    <addaction name="editRedoAction" />
+    <addaction name="separator" />
+    <addaction name="editCopyAction" />
+    <addaction name="editCutAction" />
+    <addaction name="editPasteAction" />
+   </widget>
+   <widget class="QMenu" name="PopupMenu" >
+    <property name="title" >
+     <string>&amp;Object</string>
+    </property>
+    <addaction name="objectNewObjectAction" />
+    <addaction name="objectLoadObjectAction" />
+    <addaction name="objectSaveObjectAction" />
+    <addaction name="objectSaveAsObjectAction" />
+    <addaction name="separator" />
+    <addaction name="objectAddPropertyAction" />
+    <addaction name="objectCopyPropertyAction" />
+   </widget>
+   <widget class="QMenu" name="PopupMenu_3" >
+    <property name="title" >
+     <string>&amp;Display</string>
+    </property>
+    <addaction name="displaySnapshotAction" />
+    <addaction name="separator" />
+    <addaction name="displayToggle2d3dAction" />
+    <addaction name="separator" />
+    <addaction name="displayDisplayColormapAction" />
+    <addaction name="displayChangeColormapAction" />
+    <addaction name="displayBackgroundColorAction" />
+   </widget>
+   <widget class="QMenu" name="PopupMenu_2" >
+    <property name="title" >
+     <string>&amp;Window</string>
+    </property>
+    <addaction name="windowCommandPanelHideAction" />
+   </widget>
+   <widget class="QMenu" name="helpMenu" >
+    <property name="title" >
+     <string>&amp;Help</string>
+    </property>
+    <addaction name="helpContentsAction" />
+    <addaction name="helpIndexAction" />
+    <addaction name="separator" />
+    <addaction name="helpAboutAction" />
+   </widget>
+   <addaction name="fileMenu" />
+   <addaction name="editMenu" />
+   <addaction name="PopupMenu" />
+   <addaction name="PopupMenu_3" />
+   <addaction name="PopupMenu_2" />
+   <addaction name="helpMenu" />
+  </widget>
+  <action name="fileLoadObject" >
+   <property name="icon" >
+    <iconset/>
+   </property>
+   <property name="text" >
+    <string>&amp;Load Object</string>
+   </property>
+   <property name="iconText" >
+    <string>Load Object</string>
+   </property>
+   <property name="shortcut" >
+    <number>4194380</number>
+   </property>
+  </action>
+  <action name="fileParameterOpenAction" >
+   <property name="icon" >
+    <iconset/>
+   </property>
+   <property name="text" >
+    <string>&amp;Load Parameters...</string>
+   </property>
+   <property name="iconText" >
+    <string>Load Parameters</string>
+   </property>
+   <property name="shortcut" >
+    <number>4194383</number>
+   </property>
+  </action>
+  <action name="fileParameterSaveAction" >
+   <property name="icon" >
+    <iconset/>
+   </property>
+   <property name="text" >
+    <string>&amp;Save Parameters</string>
+   </property>
+   <property name="iconText" >
+    <string>Save Parameters</string>
+   </property>
+   <property name="shortcut" >
+    <number>4194387</number>
+   </property>
+  </action>
+  <action name="fileParamterSaveAsAction" >
+   <property name="text" >
+    <string>Save Parameters &amp;As...</string>
+   </property>
+   <property name="iconText" >
+    <string>Save Parameters As</string>
+   </property>
+   <property name="shortcut" >
+    <number>0</number>
+   </property>
+  </action>
+  <action name="filePrintAction" >
+   <property name="icon" >
+    <iconset/>
+   </property>
+   <property name="text" >
+    <string>&amp;Print...</string>
+   </property>
+   <property name="iconText" >
+    <string>Print</string>
+   </property>
+   <property name="shortcut" >
+    <number>4194384</number>
+   </property>
+  </action>
+  <action name="fileExitAction" >
+   <property name="text" >
+    <string>&amp;Quit</string>
+   </property>
+   <property name="iconText" >
+    <string>Quit</string>
+   </property>
+   <property name="shortcut" >
+    <number>4194385</number>
+   </property>
+  </action>
+  <action name="editUndoAction" >
+   <property name="icon" >
+    <iconset/>
+   </property>
+   <property name="text" >
+    <string>&amp;Undo</string>
+   </property>
+   <property name="iconText" >
+    <string>Undo</string>
+   </property>
+   <property name="shortcut" >
+    <number>4194394</number>
+   </property>
+  </action>
+  <action name="editRedoAction" >
+   <property name="icon" >
+    <iconset/>
+   </property>
+   <property name="text" >
+    <string>&amp;Redo</string>
+   </property>
+   <property name="iconText" >
+    <string>Redo</string>
+   </property>
+   <property name="shortcut" >
+    <number>4194393</number>
+   </property>
+  </action>
+  <action name="editCutAction" >
+   <property name="icon" >
+    <iconset/>
+   </property>
+   <property name="text" >
+    <string>&amp;Cut</string>
+   </property>
+   <property name="iconText" >
+    <string>Cut</string>
+   </property>
+   <property name="shortcut" >
+    <number>4194392</number>
+   </property>
+  </action>
+  <action name="editCopyAction" >
+   <property name="icon" >
+    <iconset/>
+   </property>
+   <property name="text" >
+    <string>C&amp;opy</string>
+   </property>
+   <property name="iconText" >
+    <string>Copy</string>
+   </property>
+   <property name="shortcut" >
+    <number>4194371</number>
+   </property>
+  </action>
+  <action name="editPasteAction" >
+   <property name="icon" >
+    <iconset/>
+   </property>
+   <property name="text" >
+    <string>&amp;Paste</string>
+   </property>
+   <property name="iconText" >
+    <string>Paste</string>
+   </property>
+   <property name="shortcut" >
+    <number>4194390</number>
+   </property>
+  </action>
+  <action name="editFindAction" >
+   <property name="icon" >
+    <iconset/>
+   </property>
+   <property name="text" >
+    <string>&amp;Find...</string>
+   </property>
+   <property name="iconText" >
+    <string>Find</string>
+   </property>
+   <property name="shortcut" >
+    <number>4194374</number>
+   </property>
+  </action>
+  <action name="helpContentsAction" >
+   <property name="text" >
+    <string>&amp;Contents...</string>
+   </property>
+   <property name="iconText" >
+    <string>Contents</string>
+   </property>
+   <property name="shortcut" >
+    <number>0</number>
+   </property>
+  </action>
+  <action name="helpIndexAction" >
+   <property name="text" >
+    <string>&amp;Index...</string>
+   </property>
+   <property name="iconText" >
+    <string>Index</string>
+   </property>
+   <property name="shortcut" >
+    <number>0</number>
+   </property>
+  </action>
+  <action name="helpAboutAction" >
+   <property name="text" >
+    <string>&amp;About...</string>
+   </property>
+   <property name="iconText" >
+    <string>About</string>
+   </property>
+   <property name="shortcut" >
+    <number>0</number>
+   </property>
+  </action>
+  <action name="objectNewObjectAction" >
+   <property name="text" >
+    <string>&amp;New</string>
+   </property>
+   <property name="iconText" >
+    <string>New</string>
+   </property>
+   <property name="shortcut" >
+    <number>4194382</number>
+   </property>
+  </action>
+  <action name="objectLoadObjectAction" >
+   <property name="text" >
+    <string>&amp;Load</string>
+   </property>
+   <property name="iconText" >
+    <string>Load</string>
+   </property>
+   <property name="shortcut" >
+    <number>4194380</number>
+   </property>
+  </action>
+  <action name="objectSaveObjectAction" >
+   <property name="text" >
+    <string>Save</string>
+   </property>
+   <property name="iconText" >
+    <string>Save</string>
+   </property>
+   <property name="toolTip" >
+    <string>Save Object</string>
+   </property>
+  </action>
+  <action name="objectSaveAsObjectAction" >
+   <property name="iconText" >
+    <string>Save As...</string>
+   </property>
+  </action>
+  <action name="objectAddPropertyAction" >
+   <property name="iconText" >
+    <string>Add Property</string>
+   </property>
+  </action>
+  <action name="objectCopyPropertyAction" >
+   <property name="iconText" >
+    <string>Copy Property</string>
+   </property>
+  </action>
+  <action name="displaySnapshotAction" >
+   <property name="iconText" >
+    <string>Snapshot</string>
+   </property>
+   <property name="shortcut" >
+    <number>4198448</number>
+   </property>
+  </action>
+  <action name="displayToggle2d3dAction" >
+   <property name="iconText" >
+    <string>Toggle 2d/3d</string>
+   </property>
+  </action>
+  <action name="displayChangeColormapAction" >
+   <property name="iconText" >
+    <string>Change Colormap...</string>
+   </property>
+  </action>
+  <action name="displayDisplayColormapAction" >
+   <property name="iconText" >
+    <string>Show Colormap</string>
+   </property>
+  </action>
+  <action name="displayBackgroundColorAction" >
+   <property name="iconText" >
+    <string>Background Color...</string>
+   </property>
+  </action>
+  <action name="windowCommandPanelHideAction" >
+   <property name="iconText" >
+    <string>Hide/Show Command Panel</string>
+   </property>
+   <property name="shortcut" >
+    <number>4194376</number>
+   </property>
+  </action>
+  <action name="Action" >
+   <property name="iconText" >
+    <string>Action</string>
+   </property>
+  </action>
+ </widget>
+ <layoutdefault spacing="6" margin="11" />
+ <pixmapfunction>qPixmapFromMimeSource</pixmapfunction>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>fileLoadObject</sender>
+   <signal>activated()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>fileNew()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>fileParameterOpenAction</sender>
+   <signal>activated()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>fileOpen()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>fileParameterSaveAction</sender>
+   <signal>activated()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>fileSave()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>fileParamterSaveAsAction</sender>
+   <signal>activated()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>fileSaveAs()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>filePrintAction</sender>
+   <signal>activated()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>filePrint()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>editUndoAction</sender>
+   <signal>activated()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>editUndo()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>editRedoAction</sender>
+   <signal>activated()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>editRedo()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>editCutAction</sender>
+   <signal>activated()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>editCut()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>editCopyAction</sender>
+   <signal>activated()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>editCopy()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>editPasteAction</sender>
+   <signal>activated()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>editPaste()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>editFindAction</sender>
+   <signal>activated()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>editFind()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>helpIndexAction</sender>
+   <signal>activated()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>helpIndex()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>helpContentsAction</sender>
+   <signal>activated()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>helpContents()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>helpAboutAction</sender>
+   <signal>activated()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>helpAbout()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>fileExitAction</sender>
+   <signal>activated()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>fileExit()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>
