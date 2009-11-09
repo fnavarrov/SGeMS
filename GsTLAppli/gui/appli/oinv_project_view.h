@@ -164,6 +164,7 @@ signals:
 public slots:
 	void slotItemSelected(QTreeWidgetItem * _item, int _col);
 	void onPropertyContextMenuClick(QAction* _action);
+	void onUnaryActionClick(QAction* _action);
 	void onObjectContextMenuClick(QAction* _action);
 
 };

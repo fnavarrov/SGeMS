@@ -1,8 +1,6 @@
-#include "object_tree_context_menu.h"
+#include <GsTLAppli/gui/appli/object_tree_context_menu.h>
 #include <GsTLAppli/appli/manager_repository.h>
 #include <GsTLAppli/actions/unary_action.h>
-
-#include <QTime>
 
 ObjectTreeContextMenu::ObjectTreeContextMenu(ObjectTree* _object_tree, QWidget* _parent) :
 	object_tree_(_object_tree), QMenu(_parent) {
@@ -32,8 +30,6 @@ MultiPropertyContextMenu::~MultiPropertyContextMenu() {
 }
 
 void MultiPropertyContextMenu::handleContextMenuClick(QAction* _action) {
-	QTime time = QTime::currentTime();
-	std::cout << "MultiPropertyContextMenu::handleContextMenuClick\t" << time.second() << '\t' << time.msec() << '\n';
 	object_tree_->onPropertyContextMenuClick(_action);
 }
 
@@ -61,6 +57,7 @@ SinglePropertyContextMenu::SinglePropertyContextMenu(ObjectTree* _object_tree, Q
 		action_.push_back(addSeparator());
 		QMenu* unary_action_menu = addMenu("Data transform");
 		nested_menu_.push_back(unary_action_menu);
+		QObject::connect(unary_action_menu, SIGNAL(triggered(QAction*)), this, SLOT(onUnaryActionClick(QAction*)));
 
 		Manager::type_iterator begin = manager->begin();
 		Manager::type_iterator end = manager->end();
@@ -85,9 +82,11 @@ SinglePropertyContextMenu::~SinglePropertyContextMenu() {
 }
 
 void SinglePropertyContextMenu::handleContextMenuClick(QAction* _action) {
-	QTime time = QTime::currentTime();
-	std::cout << "SinglePropertyContextMenu::handleContextMenuClick\t" << time.second() << '\t' << time.msec() << '\n';
 	object_tree_->onPropertyContextMenuClick(_action);
+}
+
+void SinglePropertyContextMenu::onUnaryActionClick(QAction* _action) {
+	object_tree_->onUnaryActionClick(_action);
 }
 
 /**
@@ -103,7 +102,5 @@ SingleObjectContextMenu::~SingleObjectContextMenu() {
 }
 
 void SingleObjectContextMenu::handleContextMenuClick(QAction* _action) {
-	QTime time = QTime::currentTime();
-	std::cout << "SingleObjectContextMenu::handleContextMenuClick\t" << time.second() << '\t' << time.msec() << '\n';
 	object_tree_->onObjectContextMenuClick(_action);
 }

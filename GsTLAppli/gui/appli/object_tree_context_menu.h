@@ -55,6 +55,9 @@ public:
 protected:
 	void handleContextMenuClick(QAction* _action);
 
+public slots:
+	void onUnaryActionClick(QAction* _action);
+
 protected:
 	std::vector<QMenu*> nested_menu_;
 };

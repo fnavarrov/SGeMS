@@ -216,7 +216,7 @@ void ObjectTree::onPropertyContextMenuClick(QAction* _action) {
 		return;
 	}
 
-	// all selected items SHOULD have the same parent gris
+	// all selected items SHOULD have the same parent grid
 	QString grid_name = selected_item_.at(0)->parent()->text(0);
 
 	QString action_name = _action->text();
@@ -239,8 +239,7 @@ void ObjectTree::onPropertyContextMenuClick(QAction* _action) {
 		for (std::vector<QTreeWidgetItem*>::iterator iter = selected_item_.begin(); iter != selected_item_.end(); ++iter) {
 			QString prop_name = (*iter)->text(0);
 			if (!delete_property(grid_name, prop_name)) {
-				QMessageBox::critical(this, "Cannot perform deletion", "Unable to delete property", QMessageBox::Ok,
-						Qt::NoButton);
+				QMessageBox::critical(this, "Cannot perform deletion", "Unable to delete property", QMessageBox::Ok, Qt::NoButton);
 			} else {
 				this->removeItemWidget(*iter, 0);
 				emit delete_property_finished(grid_name, prop_name);
@@ -282,20 +281,23 @@ void ObjectTree::onPropertyContextMenuClick(QAction* _action) {
 		emit action("SwapPropertyToRAM", params);
 	}
 
-	// handle assumed Unary Action
-	else {
-		// must have only one item selected
-		if (selected_item_.size() != 1) {
-			return;
-		}
-		QTreeWidgetItem* item = selected_item_.at(0);
-		QString prop_name = item->text(0);
-		QString new_prop_name = action_name + "(" + prop_name + ")";
-		QString params = grid_name + QString(Actions::separator.c_str()) + prop_name + QString(Actions::separator.c_str())
-				+ new_prop_name;
-		emit action(action_name, params);
+}
+
+void ObjectTree::onUnaryActionClick(QAction* _action) {
+	// must have only one item selected
+	if (selected_item_.size() != 1) {
+		return;
 	}
 
+	QString action_name = _action->text();
+
+	QTreeWidgetItem* item = selected_item_.at(0);
+	QString grid_name = item->parent()->text(0);
+
+	QString prop_name = item->text(0);
+	QString new_prop_name = action_name + "(" + prop_name + ")";
+	QString params = grid_name + QString(Actions::separator.c_str()) + prop_name + QString(Actions::separator.c_str()) + new_prop_name;
+	emit action(action_name, params);
 }
 
 void ObjectTree::onObjectContextMenuClick(QAction* _action) {
@@ -367,8 +369,7 @@ void ObjectTree::keyPressEvent(QKeyEvent* event) {
 	if (rename_in_progress_) {
 		switch (event->key()) {
 
-		case Qt::Key_Escape:
-			{
+			case Qt::Key_Escape: {
 				rename_in_progress_ = false;
 				closePersistentEditor(selected_item_.at(0), 0);
 				selected_item_.at(0)->setText(0, old_name_);
@@ -377,16 +378,14 @@ void ObjectTree::keyPressEvent(QKeyEvent* event) {
 				break;
 			}
 
-		case Qt::Key_Return:
-			{
+			case Qt::Key_Return: {
 				rename_in_progress_ = false;
 				QString n = dynamic_cast<QLineEdit*> (itemWidget(selected_item_.at(0), 0))->text();
 				QString o = selected_item_.at(0)->parent()->text(0);
 
 				if (old_name_ != n) {
 					if (!rename_property(o, old_name_, n))
-						QMessageBox::critical(this, "Cannot perform renaming", "Unable to rename property", QMessageBox::Ok,
-								Qt::NoButton);
+						QMessageBox::critical(this, "Cannot perform renaming", "Unable to rename property", QMessageBox::Ok, Qt::NoButton);
 					else {
 						selected_item_.at(0)->setText(0, n);
 					}
@@ -395,8 +394,7 @@ void ObjectTree::keyPressEvent(QKeyEvent* event) {
 				break;
 			}
 
-		default:
-			{
+			default: {
 				break;
 			}
 		}
@@ -548,8 +546,7 @@ Project_view_gui::Project_view_gui(QWidget* parent) :
 	 &displayed_objects_,
 	 pref_panel_frame_, 0 );
 	 */
-	general_pref_panel_ = new General_display_pref_panel(oinv_viewer_, colormap_root_node_, &displayed_objects_,
-			_pref_scroll->viewport(), 0);
+	general_pref_panel_ = new General_display_pref_panel(oinv_viewer_, colormap_root_node_, &displayed_objects_, _pref_scroll->viewport(), 0);
 	_pref_scroll->setWidget(general_pref_panel_);
 	general_pref_panel_->setGeometry(0, 0, 250, _pref_scroll->height());
 	_pref_scroll->show();
@@ -580,14 +577,11 @@ Project_view_gui::Project_view_gui(QWidget* parent) :
 	// Set up the connections between the different widgets
 
 
-	QObject::connect(Object_tree, SIGNAL(swap_display(QTreeWidgetItem * )), this,
-			SLOT(object_clicked_slot(QTreeWidgetItem *)));
+	QObject::connect(Object_tree, SIGNAL(swap_display(QTreeWidgetItem * )), this, SLOT(object_clicked_slot(QTreeWidgetItem *)));
 
-	QObject::connect(pref_object_selector_, SIGNAL( activated( const QString& ) ), (QObject*) this,
-			SLOT( show_preference_panel( const QString& ) ));
+	QObject::connect(pref_object_selector_, SIGNAL( activated( const QString& ) ), (QObject*) this, SLOT( show_preference_panel( const QString& ) ));
 
-	QObject::connect(info_object_selector_, SIGNAL( activated( const QString& ) ), (QObject*) this,
-			SLOT( show_info_panel( const QString& ) ));
+	QObject::connect(info_object_selector_, SIGNAL( activated( const QString& ) ), (QObject*) this, SLOT( show_info_panel( const QString& ) ));
 
 	QObject::connect((QObject*) view_all_button_, SIGNAL(clicked()), (QObject*) this, SLOT(view_all()));
 	QObject::connect((QObject*) set_home_view_button_, SIGNAL(clicked()), (QObject*) this, SLOT(set_home_view()));
@@ -936,8 +930,7 @@ void Project_view_gui::show_preference_panel(const QString& obj) {
 	// If the user wants to see the "general preferences panel"
 	if (obj == general_pref_panel_name_) {
 		if (!general_pref_panel_) {
-			general_pref_panel_ = new General_display_pref_panel(oinv_viewer_, colormap_root_node_, &displayed_objects_,
-					_pref_scroll->viewport(), NULL);
+			general_pref_panel_ = new General_display_pref_panel(oinv_viewer_, colormap_root_node_, &displayed_objects_, _pref_scroll->viewport(), NULL);
 		}
 
 		/* !! qscrollarea->setWidget() deletes the previous widget */
@@ -963,8 +956,8 @@ void Project_view_gui::show_preference_panel(const QString& obj) {
 
 		Oinv_description* description = desc_pair.second;
 
-		std::pair<Pref_Panel_Map::iterator, bool> inserted = display_pref_panels_.insert(std::make_pair(obj_name,
-				new Display_pref_panel(description, _pref_scroll->viewport(), 0)));
+		std::pair<Pref_Panel_Map::iterator, bool> inserted = display_pref_panels_.insert(std::make_pair(obj_name, new Display_pref_panel(description,
+				_pref_scroll->viewport(), 0)));
 		appli_assert(inserted.second == true);
 		it = inserted.first;
 
@@ -981,8 +974,7 @@ void Project_view_gui::show_preference_panel(const QString& obj) {
 		QObject::connect(pref_panel, SIGNAL(renderRequest()), this, SLOT(reRender()));
 
 		if (general_pref_panel_) {
-			QObject::connect(pref_panel, SIGNAL( colormap_changed( const Colormap* ) ), general_pref_panel_,
-					SLOT( update_colorbar() ));
+			QObject::connect(pref_panel, SIGNAL( colormap_changed( const Colormap* ) ), general_pref_panel_, SLOT( update_colorbar() ));
 		}
 
 	}
@@ -1030,8 +1022,7 @@ void Project_view_gui::show_info_panel(const QString& obj) {
 		return;
 	}
 
-	SmartPtr<Named_interface> desc_ni = Root::instance()->new_interface(grid_obj->classname(),
-			QtSummaryDescription_manager + "/");
+	SmartPtr<Named_interface> desc_ni = Root::instance()->new_interface(grid_obj->classname(), QtSummaryDescription_manager + "/");
 
 	QtGrid_summary* desc = dynamic_cast<QtGrid_summary*> (desc_ni.raw_ptr());
 	appli_assert(desc != 0);
@@ -1294,10 +1285,10 @@ void Oinv_view::update(std::string obj) {
 		std::vector<std::string> to_be_added(property_names.size());
 		std::vector<std::string> to_be_removed(displayed_properties.size());
 
-		String_iterator added_end = std::set_difference(property_names.begin(), property_names.end(),
-				displayed_properties.begin(), displayed_properties.end(), to_be_added.begin());
-		String_iterator removed_end = std::set_difference(displayed_properties.begin(), displayed_properties.end(),
-				property_names.begin(), property_names.end(), to_be_removed.begin());
+		String_iterator added_end = std::set_difference(property_names.begin(), property_names.end(), displayed_properties.begin(), displayed_properties.end(),
+				to_be_added.begin());
+		String_iterator removed_end = std::set_difference(displayed_properties.begin(), displayed_properties.end(), property_names.begin(),
+				property_names.end(), to_be_removed.begin());
 
 		// Add the property names that should be added
 		for (String_iterator it = to_be_added.begin(); it != added_end; ++it) {
@@ -1500,8 +1491,7 @@ std::pair<bool, Oinv_description*> Oinv_description_map::description(const std::
 		if (!grid_obj)
 			return std::make_pair(false, (Oinv_description*) 0);
 
-		SmartPtr<Named_interface> desc_ni = Root::instance()->new_interface(grid_obj->classname(), oinvDescription_manager
-				+ "/");
+		SmartPtr<Named_interface> desc_ni = Root::instance()->new_interface(grid_obj->classname(), oinvDescription_manager + "/");
 
 		Oinv_description* desc = dynamic_cast<Oinv_description*> (desc_ni.raw_ptr());
 		appli_assert(desc != 0);
@@ -1512,8 +1502,7 @@ std::pair<bool, Oinv_description*> Oinv_description_map::description(const std::
 		if (scene_root_)
 			scene_root_->addChild(desc->oinv_node());
 
-		std::pair<Desc_Map::iterator, bool> ins = available_descriptions_.insert(std::make_pair(obj_name, SmartPtr<
-				Oinv_description> (desc)));
+		std::pair<Desc_Map::iterator, bool> ins = available_descriptions_.insert(std::make_pair(obj_name, SmartPtr<Oinv_description> (desc)));
 
 		appli_assert(ins.second == true);
 		it = ins.first;
