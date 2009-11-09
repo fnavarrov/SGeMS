@@ -57,6 +57,7 @@
 #include <Inventor/Qt/SoQtRenderArea.h>
 #include <Inventor/events/SoKeyboardEvent.h>
 #include <GsTLAppli/grid/grid_model/reduced_grid.h>
+#include <GsTLAppli/gui/appli/object_tree_context_menu.h>
 
 #include <QStringList>
 #include <QListWidget>
@@ -79,8 +80,6 @@
 #include <QDragMoveEvent>
 #include <QDropEvent>
 
-#include <QTime>
-
 #include <vector>
 #include <list>
 #include <string>
@@ -102,60 +101,18 @@ SbBool eventHandler(void * data, SoEvent * e) {
 ObjectTree::ObjectTree(QWidget* parent) :
 	QTreeWidget(parent) {
 	QObject::connect(this, SIGNAL(itemClicked(QTreeWidgetItem *,int)), this, SLOT(slotItemSelected(QTreeWidgetItem*,int)));
-	clicked_mouse_button_ = Qt::NoButton;
 	rename_in_progress_ = false;
-	selected_item_ = NULL;
 
-	// create the object context menu
-	object_context_menu_ = new QMenu(this);
-	object_context_menu_->addAction("Delete");
+	mouse_event_ = 0;
 
-	QObject::connect(object_context_menu_, SIGNAL(triggered(QAction*)), this, SLOT(onObjectContextMenuClick(QAction*)));
+	// create the single object context menu
+	single_object_context_menu_ = new SingleObjectContextMenu(this, this);
 
-	// create the property context menu
-	property_context_menu_ = new QMenu(this);
+	// create the single property context menu
+	single_property_context_menu_ = new SinglePropertyContextMenu(this, this);
 
-	property_context_menu_->addAction("Rename");
-	property_context_menu_->addAction("Delete");
-
-	property_context_menu_->addSeparator();
-	property_context_menu_->addAction("Histogram");
-
-	property_context_menu_->addSeparator();
-	property_context_menu_->addAction("Swap to disk");
-	property_context_menu_->addAction("Swap to RAM");
-
-	// add unary actions
-	SmartPtr<Named_interface> ni = Root::instance()->interface(actions_manager);
-	Manager* manager = dynamic_cast<Manager*> (ni.raw_ptr());
-	if (manager) {
-		property_context_menu_->addSeparator();
-	//	unary_action_context_menu_= new QMenu(property_context_menu_);
-		unary_action_context_menu_ = property_context_menu_->addMenu("Data transform");
-
-
-		Manager::type_iterator begin = manager->begin();
-		Manager::type_iterator end = manager->end();
-		for (; begin != end; ++begin) {
-			std::string name = *begin;
-			QString menuItemName(name.c_str());
-			SmartPtr<Named_interface> instance = manager->new_interface(name, name, &name);
-			Unary_action* uaction = dynamic_cast<Unary_action*> (instance.raw_ptr());
-			if (uaction) {
-				//property_context_menu_->addAction(menuItemName);
-				unary_action_context_menu_->addAction(menuItemName);
-			}
-			manager->delete_interface(name);
-		}
-//		QAction* unary_action_menu =
-//				property_context_menu_->addMenu(unary_action_context_menu_);
-//		property_context_menu_->addAction(unary_action_menu);
-
-
-	}
-
-	QObject::connect(property_context_menu_, SIGNAL(triggered(QAction*)), this,
-			SLOT(onPropertyContextMenuClick(QAction*)));
+	// create the multi property context menu
+	multi_property_context_menu_ = new MultiPropertyContextMenu(this, this);
 }
 
 void ObjectTree::mousePressEvent(QMouseEvent* event) {
@@ -163,8 +120,11 @@ void ObjectTree::mousePressEvent(QMouseEvent* event) {
 		return;
 	}
 
-	clicked_mouse_button_ = event->button();
-	context_menu_location_ = event->globalPos();
+	if (mouse_event_) {
+		delete mouse_event_;
+	}
+
+	mouse_event_ = new QMouseEvent(*event);
 
 	QTreeWidget::mousePressEvent(event);
 }
@@ -175,83 +135,161 @@ void ObjectTree::slotItemSelected(QTreeWidgetItem* _item, int _col) {
 		return;
 	}
 
-	switch_selected_item(selected_item_, _item);
-
-	selected_item_ = NULL;
-
-	switch (clicked_mouse_button_) {
-	case Qt::LeftButton:
-		{
-			emit swap_display(_item);
-			break;
-		}
-	case Qt::RightButton:
-		{
-			// a property name
-			if (dynamic_cast<SingleSel_QListViewItem*> (_item)) {
-				selected_item_ = _item;
-				property_context_menu_->exec(context_menu_location_);
-			}
-			// a grid name
-			else if (dynamic_cast<MultiSel_QListViewItem*> (_item)) {
-				std::cout << "clicked on object\n";
-				selected_item_ = _item;
-				object_context_menu_->exec(context_menu_location_);
-			}
-			break;
-		}
-	default:
-		{
-			break;
-		}
-	}
-	clicked_mouse_button_ = Qt::NoButton;
-}
-
-void ObjectTree::onPropertyContextMenuClick(QAction* _action) {
-	if (selected_item_ == NULL) {
+	// check if the top level item was clicked
+	if (topLevelItem(0) == _item) {
 		return;
 	}
 
-	QString grid_name = selected_item_->parent()->text(0);
-	QString prop_name = selected_item_->text(0);
+	// handle left click
+	if (mouse_event_->button() == Qt::LeftButton) {
+
+		// left click + ctrl combination
+		if (mouse_event_->modifiers() & Qt::ControlModifier) {
+			// click on object
+			if (dynamic_cast<MultiSel_QListViewItem*> (_item)) {
+				selected_item_.clear();
+				selected_item_.push_back(_item);
+			}
+			// click on property
+			else if (dynamic_cast<SingleSel_QListViewItem*> (_item)) {
+				// check if last clicked item was an object
+				if ((selected_item_.size() == 1) && (dynamic_cast<MultiSel_QListViewItem*> (selected_item_.at(0)))) {
+					selected_item_.clear();
+				}
+				// also need to check that parents of items are same
+				for (std::vector<QTreeWidgetItem*>::iterator iter = selected_item_.begin(); iter != selected_item_.end(); ++iter) {
+					if ((*iter)->parent()->text(0) != _item->parent()->text(0)) {
+						selected_item_.clear();
+						break;
+					}
+				}
+
+				selected_item_.push_back(_item);
+			}
+		}
+
+		// otherwise, only a single item can be selected one
+		else {
+			selected_item_.clear();
+			selected_item_.push_back(_item);
+			emit swap_display(_item);
+		}
+
+	}
+
+	// handle right click
+	else {
+
+		// if item was not of selected items in multi-select, make this as active item
+		std::vector<QTreeWidgetItem*>::iterator iter = selected_item_.begin();
+		for (; iter != selected_item_.end(); ++iter) {
+			if ((*iter) == _item) {
+				break;
+			}
+		}
+		if (iter == selected_item_.end()) {
+			selected_item_.clear();
+			selected_item_.push_back(_item);
+			switch_selected_item();
+		}
+
+		// a property name
+		if (dynamic_cast<SingleSel_QListViewItem*> (_item)) {
+			if (selected_item_.size() == 1) {
+				single_property_context_menu_->exec(mouse_event_->globalPos());
+			} else {
+				multi_property_context_menu_->exec(mouse_event_->globalPos());
+			}
+		}
+		// a grid name
+		else if (dynamic_cast<MultiSel_QListViewItem*> (_item)) {
+			single_object_context_menu_->exec(mouse_event_->globalPos());
+		}
+
+	}
+
+	switch_selected_item();
+}
+
+void ObjectTree::onPropertyContextMenuClick(QAction* _action) {
+	if (selected_item_.empty()) {
+		return;
+	}
+
+	// all selected items SHOULD have the same parent gris
+	QString grid_name = selected_item_.at(0)->parent()->text(0);
 
 	QString action_name = _action->text();
+
 	// handle Rename
 	if ("Rename" == action_name) {
-		old_name_ = selected_item_->text(0);
-		selected_item_->setFlags(selected_item_->flags() | Qt::ItemIsEditable);
-		openPersistentEditor(selected_item_, 0);
+		// must have only one item selected
+		if (selected_item_.size() != 1) {
+			return;
+		}
+		QTreeWidgetItem* item = selected_item_.at(0);
+		old_name_ = item->text(0);
+		item->setFlags(item->flags() | Qt::ItemIsEditable);
+		openPersistentEditor(item, 0);
 		rename_in_progress_ = true;
 	}
+
 	// handle Delete
 	else if ("Delete" == action_name) {
-		if (!delete_property(grid_name, prop_name)) {
-			QMessageBox::critical(this, "Cannot perform deletion", "Unable to delete property", QMessageBox::Ok, Qt::NoButton);
-		} else {
-			this->removeItemWidget(selected_item_, 0);
-			selected_item_ = NULL;
+		for (std::vector<QTreeWidgetItem*>::iterator iter = selected_item_.begin(); iter != selected_item_.end(); ++iter) {
+			QString prop_name = (*iter)->text(0);
+			if (!delete_property(grid_name, prop_name)) {
+				QMessageBox::critical(this, "Cannot perform deletion", "Unable to delete property", QMessageBox::Ok,
+						Qt::NoButton);
+			} else {
+				this->removeItemWidget(*iter, 0);
+				emit delete_property_finished(grid_name, prop_name);
+			}
 			emit project_modified();
 		}
-		emit delete_property_finished(grid_name, prop_name);
 	}
+
 	// handle ShowHistogram
 	else if ("Histogram" == action_name) {
-		QString params = grid_name + QString(Actions::separator.c_str()) + prop_name;
+		// must have only one item selected
+		if (selected_item_.size() != 1) {
+			return;
+		}
+		QTreeWidgetItem* item = selected_item_.at(0);
+		QString params = grid_name + QString(Actions::separator.c_str()) + item->text(0);
 		emit action("ShowHistogram", params);
 	}
+
+	// handle Swap To Disk
 	else if ("Swap to disk" == action_name) {
-		QString params = grid_name + QString(Actions::separator.c_str()) + prop_name;
+		// must have only one item selected
+		if (selected_item_.size() != 1) {
+			return;
+		}
+		QTreeWidgetItem* item = selected_item_.at(0);
+		QString params = grid_name + QString(Actions::separator.c_str()) + item->text(0);
 		emit action("SwapPropertyToDisk", params);
-
 	}
+
+	// handle Swap To RAM
 	else if ("Swap to RAM" == action_name) {
-		QString params = grid_name + QString(Actions::separator.c_str()) + prop_name;
+		// must have only one item selected
+		if (selected_item_.size() != 1) {
+			return;
+		}
+		QTreeWidgetItem* item = selected_item_.at(0);
+		QString params = grid_name + QString(Actions::separator.c_str()) + item->text(0);
 		emit action("SwapPropertyToRAM", params);
-
 	}
+
 	// handle assumed Unary Action
 	else {
+		// must have only one item selected
+		if (selected_item_.size() != 1) {
+			return;
+		}
+		QTreeWidgetItem* item = selected_item_.at(0);
+		QString prop_name = item->text(0);
 		QString new_prop_name = action_name + "(" + prop_name + ")";
 		QString params = grid_name + QString(Actions::separator.c_str()) + prop_name + QString(Actions::separator.c_str())
 				+ new_prop_name;
@@ -261,20 +299,19 @@ void ObjectTree::onPropertyContextMenuClick(QAction* _action) {
 }
 
 void ObjectTree::onObjectContextMenuClick(QAction* _action) {
-	QTime time = QTime::currentTime();
-	std::cout << "ObjectTree::onObjectContextMenuClick\t" << time.second() << '\t' << time.msec() << '\n';
-
-	if (selected_item_ == NULL) {
+	if (selected_item_.empty()) {
 		return;
 	}
 
+	std::cout << "HERE\n\n";
+
 	QString action_name = _action->text();
 	if ("Delete" == action_name) {
-		QString grid_name = selected_item_->text(0);
+		QString grid_name = selected_item_.at(0)->text(0);
 		if (!delete_object(grid_name)) {
 			QMessageBox::critical(this, "Cannot perform deletion", "Unable to delete object", QMessageBox::Ok, Qt::NoButton);
 		} else {
-			selected_item_ = NULL;
+			selected_item_.clear();
 			emit delete_object_finished(grid_name);
 		}
 	}
@@ -333,8 +370,8 @@ void ObjectTree::keyPressEvent(QKeyEvent* event) {
 		case Qt::Key_Escape:
 			{
 				rename_in_progress_ = false;
-				closePersistentEditor(selected_item_, 0);
-				selected_item_->setText(0, old_name_);
+				closePersistentEditor(selected_item_.at(0), 0);
+				selected_item_.at(0)->setText(0, old_name_);
 				emit
 				project_modified();
 				break;
@@ -343,18 +380,18 @@ void ObjectTree::keyPressEvent(QKeyEvent* event) {
 		case Qt::Key_Return:
 			{
 				rename_in_progress_ = false;
-				QString n = dynamic_cast<QLineEdit*> (itemWidget(selected_item_, 0))->text();
-				QString o = selected_item_->parent()->text(0);
+				QString n = dynamic_cast<QLineEdit*> (itemWidget(selected_item_.at(0), 0))->text();
+				QString o = selected_item_.at(0)->parent()->text(0);
 
 				if (old_name_ != n) {
 					if (!rename_property(o, old_name_, n))
 						QMessageBox::critical(this, "Cannot perform renaming", "Unable to rename property", QMessageBox::Ok,
 								Qt::NoButton);
 					else {
-						selected_item_->setText(0, n);
+						selected_item_.at(0)->setText(0, n);
 					}
 				}
-				closePersistentEditor(selected_item_, 0);
+				closePersistentEditor(selected_item_.at(0), 0);
 				break;
 			}
 
@@ -369,16 +406,12 @@ void ObjectTree::keyPressEvent(QKeyEvent* event) {
 	QTreeWidget::keyPressEvent(event);
 }
 
-void ObjectTree::switch_selected_item(QTreeWidgetItem* _previous, QTreeWidgetItem* _new) {
+void ObjectTree::switch_selected_item() {
 	QBrush blackBrush(Qt::black);
 	QBrush redBrush(Qt::red);
 
-	QTreeWidgetItem* root = topLevelItem(0);
-	if (root == _new) {
-		return;
-	}
-
 	// set foreground color of all objects to black
+	QTreeWidgetItem* root = topLevelItem(0);
 	for (int index = 0; index < root->childCount(); ++index) {
 		QTreeWidgetItem* objectNode = root->child(index);
 		objectNode->setForeground(0, blackBrush);
@@ -388,8 +421,10 @@ void ObjectTree::switch_selected_item(QTreeWidgetItem* _previous, QTreeWidgetIte
 		}
 	}
 
-	// set clicked item foreground color to red
-	_new->setForeground(0, redBrush);
+	// set selected item foreground color to red
+	for (std::vector<QTreeWidgetItem*>::iterator iter = selected_item_.begin(); iter != selected_item_.end(); ++iter) {
+		(*iter)->setForeground(0, redBrush);
+	}
 }
 
 void Oinv_view::object_rename_slot(string obj, QString old, QString n) {
@@ -403,7 +438,7 @@ void Oinv_view::object_rename_slot(string obj, QString old, QString n) {
 const QString Project_view_gui::general_pref_panel_name_("< General >");
 
 Project_view_gui::Project_view_gui(QWidget* parent) :
-	QWidget(parent), current_pref_panel_(0), current_info_panel_(0), _pref_scroll(NULL), _itemBeingRenamed(NULL) {
+	QWidget(parent), current_pref_panel_(0), current_info_panel_(0), _pref_scroll(NULL) {
 
 	setupUi(this);
 	//--------------

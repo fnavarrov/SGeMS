@@ -37,6 +37,7 @@ HEADERS += common.h \
            appli/SoQtGsTLViewer.h \
            appli/splash_screen.h \
            appli/visu_actions.h \
+           appli/object_tree_context_menu.h \
            oinv_description/colormap_node.h \
            oinv_description/gstl_SoClipPlaneManip.h \
            oinv_description/gstl_SoNode.h \
@@ -131,6 +132,7 @@ SOURCES += library_gui_init.cpp \
            appli/SoQtGsTLViewer.cpp \
            appli/splash_screen.cpp \
            appli/visu_actions.cpp \
+           appli/object_tree_context_menu.cpp \
            oinv_description/colormap_node.cpp \
            oinv_description/gstl_SoClipPlaneManip.cpp \
            oinv_description/gstl_SoNode.cpp \

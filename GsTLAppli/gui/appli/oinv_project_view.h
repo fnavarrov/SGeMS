@@ -66,6 +66,7 @@ class QScrollArea;
 class QWidget;
 class GridSelectorBasic;
 class QTreeWidgetItem;
+class ObjectTreeContextMenu;
 
 /** This class is a convenience class that behaves essentially as an std::map. 
  * An Oinv_description_map is a set of descriptions of currently available 
@@ -137,24 +138,25 @@ protected:
 	virtual void keyPressEvent(QKeyEvent* event);
 
 private:
-	Qt::MouseButton clicked_mouse_button_;
+	QMouseEvent* mouse_event_;
+	std::vector<QTreeWidgetItem*> selected_item_;
+
 	bool rename_in_progress_;
-	QTreeWidgetItem* selected_item_;
 	QString old_name_;
-	QPoint context_menu_location_;
-	QMenu* property_context_menu_;
-	QMenu* object_context_menu_;
-	QMenu* unary_action_context_menu_;
+
+	ObjectTreeContextMenu* multi_property_context_menu_;
+	ObjectTreeContextMenu* single_property_context_menu_;
+	ObjectTreeContextMenu* single_object_context_menu_;
 
 	bool rename_property(QString, QString, QString);
 	bool delete_property(QString _grid_name, QString _prop_name);
 	bool delete_object(QString _grid_name);
-	void switch_selected_item(QTreeWidgetItem* _previous, QTreeWidgetItem* _new);
+	void switch_selected_item();
 
 signals:
+	void action(QString _action_name, QString _params);
 	void rename_finished(string, QString, QString);
 	void swap_display(QTreeWidgetItem*);
-	void action(QString _action_name, QString _params);
 	void project_modified();
 	void delete_property_finished(QString, QString);
 	void delete_object_finished(QString);
@@ -255,7 +257,6 @@ protected:
 
 protected:
 
-	QTreeWidgetItem * _itemBeingRenamed;
 	SoQtGsTLViewer* oinv_viewer_;
 	SoSeparator* scene_root_;
 	SoSeparator* colormap_root_node_;
