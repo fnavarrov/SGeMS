@@ -14,6 +14,9 @@ public:
 	ObjectTreeContextMenu(ObjectTree* _object_tree, QWidget* _parent);
 	virtual ~ObjectTreeContextMenu();
 
+public:
+	void setMenuItemEnable(QString _action_name, bool _enable);
+
 protected:
 	ObjectTree* object_tree_;
 	std::vector<QAction*> action_;

@@ -196,6 +196,18 @@ void ObjectTree::slotItemSelected(QTreeWidgetItem* _item, int _col) {
 		// a property name
 		if (dynamic_cast<SingleSel_QListViewItem*> (_item)) {
 			if (selected_item_.size() == 1) {
+				// enable/disable appropriate swap actions
+				std::string grid_name = qstring2string(selected_item_.at(0)->parent()->text(0));
+				std::string prop_name = qstring2string(selected_item_.at(0)->text(0));
+
+				// get reference to the grid, grid will always exist as this is executed from the object tree
+				SmartPtr<Named_interface> grid_ni = Root::instance()->interface(gridModels_manager + "/" + grid_name);
+				Geostat_grid* grid = dynamic_cast<Geostat_grid*> (grid_ni.raw_ptr());
+				GsTLGridProperty* property = grid->property(prop_name);
+
+				single_property_context_menu_->setMenuItemEnable("Swap to RAM", !property->is_in_memory());
+				single_property_context_menu_->setMenuItemEnable("Swap to disk", property->is_in_memory());
+
 				single_property_context_menu_->exec(mouse_event_->globalPos());
 			} else {
 				multi_property_context_menu_->exec(mouse_event_->globalPos());
@@ -304,8 +316,6 @@ void ObjectTree::onObjectContextMenuClick(QAction* _action) {
 	if (selected_item_.empty()) {
 		return;
 	}
-
-	std::cout << "HERE\n\n";
 
 	QString action_name = _action->text();
 	if ("Delete" == action_name) {

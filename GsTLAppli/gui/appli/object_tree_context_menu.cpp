@@ -13,6 +13,14 @@ ObjectTreeContextMenu::~ObjectTreeContextMenu() {
 	}
 }
 
+void ObjectTreeContextMenu::setMenuItemEnable(QString _action_name, bool _enable) {
+	for (std::vector<QAction*>::iterator iter = action_.begin(); iter != action_.end(); ++iter) {
+		if ((*iter)->text() == _action_name) {
+			(*iter)->setEnabled(_enable);
+		}
+	}
+}
+
 void ObjectTreeContextMenu::onContextMenuClick(QAction* _action) {
 	handleContextMenuClick(_action);
 }
