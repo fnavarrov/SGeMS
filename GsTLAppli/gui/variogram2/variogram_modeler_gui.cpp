@@ -55,6 +55,7 @@ Variogram_modeler_gui( GsTL_project* project, QWidget* parent, const char* name 
   : QDialog( parent)
 {
     setupUi(this);
+    setWindowFlags(Qt::WindowMinMaxButtonsHint);
     
     setWindowTitle( "Variogram Modeler" );
     if (name)
