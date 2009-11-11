@@ -49,6 +49,8 @@ Correlation_measure_factory::initialize() {
   add_method( "indicator-variogram", Indicator_variogram_measure::new_instance );
   add_method( "covariance", Covariance_measure::new_instance );
   add_method( "correlogram", Correlogram_measure::new_instance );
+  add_method( "madogram", Madogram_measure::new_instance );
+  add_method( "rodogram", Rodogram_measure::new_instance );
 }
 
 
@@ -173,14 +175,24 @@ correlation( const std::vector<ValPair>& head_prop_values,
     mean2 += tail_prop_values[i].second;
   }
 
-  float v1 = (total - mean1*mean2) / double( head_prop_values.size() );
-  float v2 = mean1*mean2 / double( head_prop_values.size() );
+  double n = double( head_prop_values.size());
+
+//  float v1 = (total - mean1*mean2) / double( head_prop_values.size() );
+//  float v2 = mean1*mean2 / double( head_prop_values.size() );
+  float v1 = total / n;
+  float v2 = mean1/ n *mean2 / n;
   return v1-v2;
 }
 
-double Covariance_measure::correlation() const { 
+double Covariance_measure::correlation() const {
+
+  double n = double(pair_count_);
+  double means_prod = means_.first/n * means_.second/n;
+  return accumulated_value_/n - means_prod;
+/*
   double means_prod = means_.first * means_.second;
   return (accumulated_value_ - means_prod) / double(pair_count_);
+  */
 }
 
 
@@ -219,6 +231,7 @@ double Correlogram_measure::correlation() {
   double n = pair_count_;
   means_.first /= n;
   means_.second /= n;
+
 
   vars_.first = vars_.first/n  - (means_.first*means_.first);
   vars_.second= vars_.second/n - (means_.second*means_.second);
@@ -270,3 +283,51 @@ add_pair( const ValPair& head_prop,
 }
 
 
+//----------------------------
+
+Correlation_measure* Variogram_measure_order_w::clone() const {
+  return new Variogram_measure_order_w( *this );
+}
+
+void Variogram_measure_order_w::
+set_parameters( const std::vector<double>& params ) {
+  if( params.empty() ) return;
+  w_ = params[0];
+}
+
+double Variogram_measure_order_w::
+compute_single( const ValPair& head_prop,
+                const ValPair& tail_prop ) {
+
+  return
+    0.5*std::pow(std::fabs(head_prop.first - head_prop.second),w_)
+	   *std::pow(std::fabs(tail_prop.first - tail_prop.second),w_);
+}
+
+//----------------------------
+
+Correlation_measure* Madogram_measure::clone() const {
+  return new Madogram_measure( *this );
+}
+double Madogram_measure::
+compute_single( const ValPair& head_prop,
+                const ValPair& tail_prop ) {
+
+  return
+    0.5*std::fabs(head_prop.first - head_prop.second)
+	   *std::fabs(tail_prop.first - tail_prop.second);
+}
+
+//----------------------------
+
+Correlation_measure* Rodogram_measure::clone() const {
+  return new Rodogram_measure( *this );
+}
+double Rodogram_measure::
+compute_single( const ValPair& head_prop,
+                const ValPair& tail_prop ) {
+
+  return
+  0.5*std::sqrt(std::fabs(head_prop.first - head_prop.second))
+	 *std::sqrt(std::fabs(tail_prop.first - tail_prop.second));
+}

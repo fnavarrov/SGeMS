@@ -193,6 +193,48 @@ protected:
   double tail_threshold_;
 };
 
+class MATH_DECL Variogram_measure_order_w : public Correlation_measure {
+public:
+  static Correlation_measure* new_instance() { return new Variogram_measure_order_w; }
 
+public:
+  Variogram_measure_order_w() : Correlation_measure() {}
+
+  virtual void set_parameters( const std::vector<double>& params );
+
+  virtual Correlation_measure* clone() const;
+
+protected:
+  double w_;
+  virtual double compute_single( const ValPair& head_prop,
+                                 const ValPair& tail_prop );
+};
+
+
+class MATH_DECL Madogram_measure : public Correlation_measure {
+public:
+  static Correlation_measure* new_instance() { return new Madogram_measure; }
+
+public:
+  Madogram_measure() : Correlation_measure() {}
+
+
+  virtual Correlation_measure* clone() const;
+  virtual double compute_single( const ValPair& head_prop,
+                                 const ValPair& tail_prop );
+};
+
+class MATH_DECL Rodogram_measure : public Correlation_measure {
+public:
+  static Correlation_measure* new_instance() { return new Rodogram_measure; }
+
+public:
+  Rodogram_measure() : Correlation_measure() {}
+
+
+  virtual Correlation_measure* clone() const;
+  virtual double compute_single( const ValPair& head_prop,
+                                 const ValPair& tail_prop );
+};
 
 #endif
