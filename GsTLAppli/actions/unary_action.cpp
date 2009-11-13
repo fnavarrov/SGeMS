@@ -23,8 +23,12 @@ bool Unary_action::init(std::string& _parameters, GsTL_project* _proj, Error_mes
 	this->new_property_name_ = params[2];
 
 	// get reference to the grid
-	bool ok = geostat_utils::create(this->grid_, this->grid_name_, "", _errors);
-	if (!ok) {
+//	bool ok = geostat_utils::create(this->grid_, this->grid_name_, "", _errors);
+  this->grid_ = dynamic_cast<Geostat_grid*>( 
+		Root::instance()->interface( 
+					    gridModels_manager + "/" + this->grid_name_
+					    ).raw_ptr() );
+	if (!this->grid_) {
 		_errors->report("Illegal grid name specified");
 		return false;
 	}
@@ -49,7 +53,11 @@ bool Unary_action::exec() {
 	this->grid_->select_property(this->property_name_);
 
 	// add new property to the grid
-	GsTLGridProperty* newProperty = geostat_utils::add_property_to_grid(this->grid_, this->new_property_name_);
+//	GsTLGridProperty* newProperty = 
+ //   geostat_utils::add_property_to_grid(this->grid_, this->new_property_name_);
+  GsTLGridProperty* newProperty = this->grid_->property( this->new_property_name_ );
+  if( !newProperty ) 
+    newProperty = this->grid_->add_property( this->new_property_name_ );
 
 	// get iterators for the original property and the new property
 	Geostat_grid::iterator property_begin = this->grid_->begin();
