@@ -41,7 +41,7 @@ class Oinv_colormap_node;
 class Oinv_description_map; 
 class GsTL_SoNode; 
 class SoSeparator; 
-class PropertySelector;
+class PropertySelectorNoRegion;
 class SoTranslate2Dragger;
 class SoScale2Dragger;
 class SoNode;
@@ -76,7 +76,7 @@ class GUI_DECL General_display_pref_panel : public QWidget, public Ui::General_d
   void load_colorbar();
  
  protected: 
-  PropertySelector* object_selector_;
+  PropertySelectorNoRegion* object_selector_;
 
   SoQtGsTLViewer* viewer_; 
   Oinv_description_map* descriptions_; 

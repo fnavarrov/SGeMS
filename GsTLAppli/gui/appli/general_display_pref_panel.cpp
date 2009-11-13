@@ -105,7 +105,7 @@ General_display_pref_panel( SoQtGsTLViewer* viewer,
   GroupBox3->setLayout(vbox);
   */
   
-  object_selector_ = new PropertySelector( colorbar_frame_, "object_selector_" );
+  object_selector_ = new PropertySelectorNoRegion( colorbar_frame_, "object_selector_" );
   colorbar_frame_->layout()->addWidget(object_selector_);
 
   if( viewer_ ) {
