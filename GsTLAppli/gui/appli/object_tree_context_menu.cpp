@@ -1,6 +1,7 @@
 #include <GsTLAppli/gui/appli/object_tree_context_menu.h>
 #include <GsTLAppli/appli/manager_repository.h>
 #include <GsTLAppli/actions/unary_action.h>
+#include <GsTLAppli/actions/obj_manag_actions.h>
 
 ObjectTreeContextMenu::ObjectTreeContextMenu(ObjectTree* _object_tree, QWidget* _parent) :
 	object_tree_(_object_tree), QMenu(_parent) {
@@ -8,9 +9,9 @@ ObjectTreeContextMenu::ObjectTreeContextMenu(ObjectTree* _object_tree, QWidget* 
 }
 
 ObjectTreeContextMenu::~ObjectTreeContextMenu() {
-	for (std::vector<QAction*>::iterator iter = action_.begin(); iter != action_.end(); ++iter) {
-		delete (*iter);
-	}
+//	for (std::vector<QAction*>::iterator iter = action_.begin(); iter != action_.end(); ++iter) {
+//		delete (*iter);
+//	}
 }
 
 void ObjectTreeContextMenu::setMenuItemEnable(QString _action_name, bool _enable) {
@@ -104,6 +105,20 @@ void SinglePropertyContextMenu::onUnaryActionClick(QAction* _action) {
 SingleObjectContextMenu::SingleObjectContextMenu(ObjectTree* _object_tree, QWidget* _parent) :
 	ObjectTreeContextMenu(_object_tree, _parent) {
 	action_.push_back(addAction("Delete"));
+
+	action_.push_back(addSeparator());
+	QMenu* trend_action_menu = addMenu("Create Trend");
+	nested_menu_.push_back(trend_action_menu);
+	QObject::connect(trend_action_menu, SIGNAL(triggered(QAction*)), this, SLOT(onTrendActionClick(QAction*)));
+  
+ // Create_trend trend_action();
+  std::vector<std::string> trend_functions = Create_trend().get_trend_functions();
+
+	std::vector<std::string>::iterator begin = trend_functions.begin();
+	for (; begin != trend_functions.end(); ++begin) {
+		QString menuItemName( begin->c_str() );
+		action_.push_back(trend_action_menu->addAction(menuItemName));
+	}
 }
 
 SingleObjectContextMenu::~SingleObjectContextMenu() {
@@ -111,4 +126,8 @@ SingleObjectContextMenu::~SingleObjectContextMenu() {
 
 void SingleObjectContextMenu::handleContextMenuClick(QAction* _action) {
 	object_tree_->onObjectContextMenuClick(_action);
+}
+
+void SingleObjectContextMenu::onTrendActionClick(QAction* _action) {
+	object_tree_->onTrendActionClick(_action);
 }

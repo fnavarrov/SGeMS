@@ -312,6 +312,24 @@ void ObjectTree::onUnaryActionClick(QAction* _action) {
 	emit action(action_name, params);
 }
 
+
+void ObjectTree::onTrendActionClick(QAction* _action) {
+	// must have only one item selected
+	if (selected_item_.size() != 1) {
+		return;
+	}
+
+  QString action_name("CreateTrend");
+	QString trend_id = _action->text();
+
+  QString grid_name = selected_item_.at(0)->text(0);
+
+//	QString new_prop_name = action_name + "(" + prop_name + ")";
+	QString params = grid_name + QString(Actions::separator.c_str()) + trend_id;
+	emit action(action_name, params);
+}
+
+
 void ObjectTree::onObjectContextMenuClick(QAction* _action) {
 	if (selected_item_.empty()) {
 		return;
