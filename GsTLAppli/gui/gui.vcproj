@@ -308,6 +308,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\appli\object_tree_context_menu.cpp"
+				>
+			</File>
+			<File
 				RelativePath="oinv_description\oinv_cgrid.cpp"
 				>
 			</File>
@@ -876,6 +880,21 @@
 						CommandLine="$(QTDIR)\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DGUI_EXPORTS -DQT_DLL -DQT_NO_DEBUG -DQT_XML_LIB -DQT_OPENGL_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -I&quot;$(QTDIR)\include\QtCore&quot; -I&quot;$(QTDIR)\include\QtCore&quot; -I&quot;$(QTDIR)\include\QtGui&quot; -I&quot;$(QTDIR)\include\QtGui&quot; -I&quot;$(QTDIR)\include\QtOpenGL&quot; -I&quot;$(QTDIR)\include\QtOpenGL&quot; -I&quot;$(QTDIR)\include\QtXml&quot; -I&quot;$(QTDIR)\include\QtXml&quot; -I&quot;$(QTDIR)\include&quot; -I&quot;.&quot; -I&quot;oinv_description&quot; -I&quot;utils&quot; -I&quot;$(QTDIR)\include\ActiveQt&quot; -I&quot;.moc&quot; -I&quot;.&quot; -I$(QTDIR)\mkspecs\win32-msvc.net -D_MSC_VER=1300 -DWIN32 utils\new_region_from_property_dialog.h -o .moc\moc_new_region_from_property_dialog.cpp&#x0D;&#x0A;"
 						AdditionalDependencies="$(QTDIR)\bin\moc.exe;utils\new_region_from_property_dialog.h"
 						Outputs=".moc\moc_new_region_from_property_dialog.cpp"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\appli\object_tree_context_menu.h"
+				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="MOC appli\object_tree_context_menu.h"
+						CommandLine="$(QTDIR)\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DGUI_EXPORTS -DQT_DLL -DQT_XML_LIB -DQT_OPENGL_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -I&quot;$(QTDIR)\include\QtCore&quot; -I&quot;$(QTDIR)\include\QtCore&quot; -I&quot;$(QTDIR)\include\QtGui&quot; -I&quot;$(QTDIR)\include\QtGui&quot; -I&quot;$(QTDIR)\include\QtOpenGL&quot; -I&quot;$(QTDIR)\include\QtOpenGL&quot; -I&quot;$(QTDIR)\include\QtXml&quot; -I&quot;$(QTDIR)\include\QtXml&quot; -I&quot;$(QTDIR)\include&quot; -I&quot;.&quot; -I&quot;oinv_description&quot; -I&quot;utils&quot; -I&quot;variogram2&quot;  -I&quot;$(QTDIR)\include\ActiveQt&quot; -I&quot;.moc&quot; -I&quot;.&quot; -I$(QTDIR)\mkspecs\win32-msvc.net -D_MSC_VER=1300 -DWIN32 appli\object_tree_context_menu.h -o .moc\moc_object_tree_context_menu.cpp"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe;appli\object_tree_context_menu.h"
+						Outputs=".moc\moc_object_tree_context_menu.cpp"
 					/>
 				</FileConfiguration>
 			</File>
@@ -1572,6 +1591,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\.moc\moc_object_tree_context_menu.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".moc\moc_oinv_project_view.cpp"
 				>
 			</File>
@@ -1656,10 +1679,10 @@
 				>
 			</File>
 			<File
-				RelativePath="release\qrc_icons.cpp"
+				RelativePath="debug\qrc_icons.cpp"
 				>
 				<FileConfiguration
-					Name="Debug|Win32"
+					Name="Release|Win32"
 					ExcludedFromBuild="true"
 					>
 					<Tool
@@ -1668,10 +1691,10 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="debug\qrc_icons.cpp"
+				RelativePath="release\qrc_icons.cpp"
 				>
 				<FileConfiguration
-					Name="Release|Win32"
+					Name="Debug|Win32"
 					ExcludedFromBuild="true"
 					>
 					<Tool
