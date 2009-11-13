@@ -38,6 +38,7 @@
 #include <qstring.h>
  
 #include <string> 
+#include <set>
  
 
 class Input_filter; 
@@ -449,7 +450,33 @@ class ACTIONS_DECL Clear_property_value_from_property : public Action {
                      Error_messages_handler* errors ); 
   virtual bool exec(); 
 
+}; 
+
+
+class ACTIONS_DECL Create_trend : public Action { 
+ public: 
+   static Named_interface* create_new_interface( std::string& );
+ 
+ public: 
+  Create_trend();
+  virtual ~Create_trend() {}
+ 
+  virtual bool init( std::string& parameters, GsTL_project* proj,
+                     Error_messages_handler* errors ); 
+  virtual bool exec(); 
+
+  virtual std::vector<std::string> get_trend_functions();
+
  protected: 
+   GsTL_project* proj_;
+   Geostat_grid* grid_;
+   std::string direction_id_;
+   std::string grid_name_;
+   GsTLGridProperty* trend_;
+   std::set<std::string> directions_;
+
+   bool is_direction_valid(std::string direction, 
+                           Error_messages_handler* errors);
 }; 
 
 

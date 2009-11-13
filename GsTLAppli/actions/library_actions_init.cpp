@@ -109,6 +109,16 @@ bool library_actions_init::bind_action_factories(Manager* dir) {
 	dir->factory("DeleteObjects", Delete_objects::create_new_interface);
 	dir->factory("DeleteObjectProperties", Delete_properties::create_new_interface);
 	dir->factory("ClearPropertyValueIf", Clear_property_value_if::create_new_interface);
+  dir->factory("SetActiveRegion", Set_active_region::create_new_interface);
+  dir->factory("SetHarddata",  Set_hard_data::create_new_interface);
+  dir->factory( "DeleteObjectRegions",  Delete_regions::create_new_interface );
+  dir->factory( "MergeObjectRegions",  Merge_regions::create_new_interface );
+  dir->factory( "SetRegionFromComplement", Set_region_complement::create_new_interface );
+  dir->factory( "SetRegionFromPropertyIf", Set_region_from_property::create_new_interface );
+  dir->factory( "ClearPropertyValueFromProperty", 
+    Clear_property_value_from_property::create_new_interface );
+  dir->factory("CreateTrend", Create_trend::create_new_interface);
+
 
 	// algorithm related actions
 	dir->factory("RunGeostatAlgorithm", Run_geostat_algo::create_new_interface);

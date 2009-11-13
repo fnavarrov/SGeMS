@@ -109,6 +109,8 @@ Named_interface* RunScript::create_new_interface( std::string& ) {
 }
 
 
+
+
 // name of the python module for parsing Eclipse PRT file
 //const std::string Load_sim::parser = "readprt";
 
@@ -1316,6 +1318,119 @@ bool Clear_property_value_from_property::exec() {
 
 
 Named_interface* Clear_property_value_from_property::create_new_interface( std::string& ) {
-  return new Clear_property_value_from_property; 
+  return new Clear_property_value_from_property(); 
 }
+
+//================================================
+/* Create_trend grid_name::Direction[::new_prop_name]
+*  where Direction = {X, Y, Z, -X, -Y, -Z}
+*  if no new_prop_name is provided then it is called trend_{X,Y,Z}
+*  depending of the deirection   
+*/
+
+Create_trend::Create_trend(){
+  directions_.insert("X");
+  directions_.insert("Y");
+  directions_.insert("Z");
+  directions_.insert("-X");
+  directions_.insert("-Y");
+  directions_.insert("-Z");
+}
+
+bool Create_trend::init( std::string& parameters, GsTL_project* proj,
+                              Error_messages_handler* errors ) {
+  std::vector< std::string > params = 
+    String_Op::decompose_string( parameters, Actions::separator,
+                      				   Actions::unique );
+
+  if( params.size() < 2 ) return true;
+  if( !is_direction_valid(params[1], errors ) ) return false;
+
+  direction_id_ = params[1];
+  std::string prop_name;
+  if(params.size() == 3) prop_name = params[2];
+  else prop_name = "trend_"+params[1];
+  
+  grid_name_ = params[0];
+  SmartPtr<Named_interface> grid_ni =
+    Root::instance()->interface( gridModels_manager + "/" + grid_name_ );
+  grid_ = dynamic_cast<Geostat_grid*>( grid_ni.raw_ptr() );
+  if( !grid_ ) {
+    std::ostringstream message;
+    message << "No grid called \"" << grid_name_ << "\" was found";
+    errors->report( message.str() ); 
+    return false;
+  }
+  
+
+  trend_ = grid_->add_property(prop_name);
+  if(!trend_){
+    std::ostringstream message;
+    message << "Property already exist";
+    errors->report( message.str() ); 
+    return false;
+  }  
+
+  return true;
+}
+
+
+bool Create_trend::exec() {
+  grid_->select_property(trend_->name());
+  Geostat_grid::iterator it = grid_->begin();
+
+// This is hard coded and should be replaced
+// with a more flexible structure
+  int id;
+  float s = 1;
+  if(direction_id_ == "X" || direction_id_ == "-X" )
+    id = 0;
+  if(direction_id_ == "Y" || direction_id_ == "-Y" )
+    id = 1;
+  if(direction_id_ == "Z" || direction_id_ == "-Z" )
+    id = 2;
+
+  if(direction_id_.size() == 2) s = -1;
+  Geovalue::property_type min = 9e99;
+  Geovalue::property_type max = -9e99;
+  for( ; it!= grid_->end(); it++ ) {
+    float t = s*(it->location()[id]);
+    it->set_property_value(t);
+    if(t < min) min = t;
+    if(t > max) max = t;
+  }
+  for( it= grid_->begin(); it!= grid_->end(); it++ ) {
+    Geovalue::property_type t = it->property_value();
+    it->set_property_value((t-min)/(max-min));
+  }
+
+//  proj_->update( grid_name_ );
+  return true;
+}
+
+
+bool Create_trend::is_direction_valid(std::string direction,
+                                      Error_messages_handler* errors){
+  std::set<std::string>::iterator it = directions_.find(direction);
+  if(it == directions_.end()) {
+    std::ostringstream message;
+    message << "No direction \"" << direction << "\" is implemented \n The choices are:";
+    for(it =directions_.begin(); it != directions_.end() ; it++ ) 
+      message<<*it<<" ";
+    errors->report( message.str() );
+    return false;
+  }
+  return true;
+}
+
+std::vector<string> Create_trend::get_trend_functions(){
+  std::vector<string> trends(directions_.begin(), directions_.end() );
+  return trends;
+}
+
+Named_interface* Create_trend::create_new_interface( std::string& ) {
+  return new Create_trend(); 
+}
+
+
 
