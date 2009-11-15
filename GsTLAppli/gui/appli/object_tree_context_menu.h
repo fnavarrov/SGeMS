@@ -60,6 +60,7 @@ protected:
 
 public slots:
 	void onUnaryActionClick(QAction* _action);
+	void onPythonSciptAction(QAction* _action);
 
 protected:
 	std::vector<QMenu*> nested_menu_;

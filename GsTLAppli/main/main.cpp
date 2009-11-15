@@ -116,8 +116,7 @@ private:
 class QTscribe: public Scribe {
 public:
 	virtual void write(const std::string& str, const Channel*) {
-		QMessageBox::critical(qApp->activeWindow(), "An Error Occurred...", QString(str.c_str()), QMessageBox::Ok,
-				QMessageBox::NoButton);
+		QMessageBox::critical(qApp->activeWindow(), "An Error Occurred...", QString(str.c_str()), QMessageBox::Ok, QMessageBox::NoButton);
 
 	}
 };
@@ -141,8 +140,7 @@ private:
 
 void print_help() {
 	std::cerr << "Usage: sgems [-s] file\n" << "If the -s option is specified, the file is a Python script\n"
-			<< "file. Otherwise, the file contains a list of SGeMS commands\n" << "that will be executed sequentially."
-			<< std::endl;
+			<< "file. Otherwise, the file contains a list of SGeMS commands\n" << "that will be executed sequentially." << std::endl;
 }
 
 int nogui_main(int argc, char** argv) {
@@ -322,6 +320,7 @@ int gui_main(int argc, char **argv) {
 	splash->showMessage("Loading action plugins...");
 	app.processEvents();
 	Lib_initializer::load_action_plugins();
+	Lib_initializer::load_python_scripts();
 
 	SoDB::init();
 	//  QSP_application* appli = new QSP_application( 0 );

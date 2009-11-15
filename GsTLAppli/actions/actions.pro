@@ -17,14 +17,17 @@ HEADERS += action.h \
            obj_manag_actions.h \
            python_commands.h \
            python_wrapper.h \
-           unary_action.h
+           unary_action.h \
+           python_script.h
+           
 SOURCES += algorithms_actions.cpp \
            library_actions_init.cpp \
            misc_actions.cpp \
            obj_manag_actions.cpp \
            python_commands.cpp \
            python_wrapper.cpp \
-           unary_action.cpp
+           unary_action.cpp \
+           python_script.cpp
 
 TARGET=GsTLAppli_actions
 

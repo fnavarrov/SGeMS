@@ -56,8 +56,7 @@ void Lib_initializer::init() {
 		QDir current_dir;
 		bool exists = current_dir.cd("plugins");
 		if (!exists)
-			GsTLcerr << "No plugin directory could be found.\n" << "Set environment variable GSTLAPPLIHOME to where SGeMS"
-					<< " was installed" << gstlIO::end;
+			GsTLcerr << "No plugin directory could be found.\n" << "Set environment variable GSTLAPPLIHOME to where SGeMS" << " was installed" << gstlIO::end;
 		else {
 			QByteArray tmp = current_dir.absolutePath().toLatin1();
 			path = std::string(tmp.constData());
@@ -86,8 +85,7 @@ void Lib_initializer::minimal_init() {
 		QDir current_dir;
 		bool exists = current_dir.cd("plugins");
 		if (!exists)
-			GsTLcerr << "No plugin directory could be found.\n" << "Set environment variable GSTLAPPLIHOME to where SGeMS"
-					<< " was installed" << gstlIO::end;
+			GsTLcerr << "No plugin directory could be found.\n" << "Set environment variable GSTLAPPLIHOME to where SGeMS" << " was installed" << gstlIO::end;
 		else {
 			QByteArray tmp = current_dir.absolutePath().toLatin1();
 			path = std::string(tmp.constData());
@@ -106,6 +104,7 @@ void Lib_initializer::minimal_init() {
 
 void Lib_initializer::release() {
 	Root::instance()->delete_interface(actions_manager);
+	Root::instance()->delete_interface(python_script_manager);
 	Root::instance()->delete_interface(infilters_manager);
 	Root::instance()->delete_interface(outfilters_manager);
 	Root::instance()->delete_interface(gridObject_manager);
@@ -135,8 +134,7 @@ void Lib_initializer::load_geostat_algos() {
 	const QFileInfoList list = dir.entryInfoList();
 
 	if (list.empty()) {
-		GsTLlog << "No geostatistics plugin could be found.\n"
-				<< "Check that environment variable GSTLAPPLIHOME is set to " << "where SGeMS was installed\n"
+		GsTLlog << "No geostatistics plugin could be found.\n" << "Check that environment variable GSTLAPPLIHOME is set to " << "where SGeMS was installed\n"
 				<< "or that directory plugins/Geostat actually contains plugins\n" << gstlIO::end;
 		return;
 	}
@@ -196,9 +194,8 @@ void Lib_initializer::load_colormaps() {
 	dir.setFilter(QDir::Files);
 	const QFileInfoList list = dir.entryInfoList();
 	if (list.empty()) {
-		GsTLcerr << "No colormap could be found.\n" << "Check that environment variable GSTLAPPLIHOME is set to "
-				<< "where SGeMS was installed\n" << "or that directory plugins/colormaps contains colormap "
-				<< "definitions \n" << gstlIO::end;
+		GsTLcerr << "No colormap could be found.\n" << "Check that environment variable GSTLAPPLIHOME is set to " << "where SGeMS was installed\n"
+				<< "or that directory plugins/colormaps contains colormap " << "definitions \n" << gstlIO::end;
 		return;
 	}
 
@@ -211,9 +208,7 @@ void Lib_initializer::load_colormaps() {
 		QString full_path = path + "/" + f_info->fileName();
 		QByteArray s1 = full_path.toLatin1();
 		QByteArray s2 = f_info->baseName().toLatin1();
-		Root::instance()->new_interface("colormap://" + std::string(s1.constData()), colormap_manager + "/" + std::string(
-				s2.constData()));
-
+		Root::instance()->new_interface("colormap://" + std::string(s1.constData()), colormap_manager + "/" + std::string(s2.constData()));
 	}
 }
 
@@ -296,9 +291,8 @@ void Lib_initializer::load_action_plugins() {
 	const QFileInfoList list = dir.entryInfoList();
 
 	if (list.empty()) {
-		GsTLlog << "No action plugin could be found.\n" << "Check that environment variable GSTLAPPLIHOME is set to "
-				<< "where SGeMS was installed\n" << "or that directory plugins/actions actually contains plugins\n"
-				<< gstlIO::end;
+		GsTLlog << "No action plugin could be found.\n" << "Check that environment variable GSTLAPPLIHOME is set to " << "where SGeMS was installed\n"
+				<< "or that directory plugins/actions actually contains plugins\n" << gstlIO::end;
 		return;
 	}
 
@@ -339,4 +333,38 @@ void Lib_initializer::load_action_plugins() {
 	}
 
 	Root::instance()->list_all(GsTLlog);
+}
+
+void Lib_initializer::load_python_scripts() {
+	SmartPtr<Named_interface> ni = Root::instance()->interface(python_script_manager);
+	Manager* mng = dynamic_cast<Manager*> (ni.raw_ptr());
+	appli_assert( mng );
+
+	std::string python_scripts_path(mng->plugin_path());
+	QString path(python_scripts_path.c_str());
+
+	// Loop on all the python scripts (*.py) in directory "path"
+	QDir dir(path);
+	QStringList filters;
+	filters << "*.py";
+	dir.setNameFilters(filters);
+	dir.setFilter(QDir::Files);
+	const QFileInfoList list = dir.entryInfoList();
+	if (list.empty()) {
+		GsTLcerr << "No python scripts could be found.\n" << "Check that environment variable GSTLAPPLIHOME is set to " << "where SGeMS was installed\n"
+				<< "or that directory plugins/ " + mng->plugin_path() + " contains python script files \n" << gstlIO::end;
+		return;
+	}
+
+	QFileInfoList::const_iterator it = list.begin();
+	const QFileInfo* f_info = 0;
+
+	for (; it != list.end(); ++it) {
+		f_info = &(*it);
+		// QLibrary wants the absolute path
+		QString full_path = path + "/" + f_info->fileName();
+		QByteArray s1 = full_path.toLatin1();
+		QByteArray s2 = f_info->baseName().toLatin1();
+		Root::instance()->new_interface("pythonscript://" + std::string(s1.constData()), python_script_manager + "/" + std::string(s2.constData()));
+	}
 }

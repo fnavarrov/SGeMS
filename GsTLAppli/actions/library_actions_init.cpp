@@ -42,6 +42,7 @@
 #include <GsTLAppli/actions/misc_actions.h>
 #include <GsTLAppli/utils/gstl_messages.h>
 #include <GsTLAppli/actions/unary_action.h>
+#include <GsTLAppli/actions/python_script.h>
 
 void init_python_interpreter();
 
@@ -70,6 +71,15 @@ int library_actions_init::init_lib() {
 	}
 
 	bind_action_factories(dir);
+
+	// Rahul: adding a Python Script Manager
+	SmartPtr<Named_interface> py_ni = Root::instance()->new_interface("directory://actions/python", python_script_manager);
+	Manager* py_dir = dynamic_cast<Manager*> (py_ni.raw_ptr());
+	if (!py_dir) {
+		GsTLlog << "could not create directory " << python_script_manager << "\n";
+		return 1;
+	}
+	py_dir->factory("pythonscript", Python_script::create_new_interface);
 
 	GsTLlog << "Registration done \n\n";
 
@@ -109,56 +119,42 @@ bool library_actions_init::bind_action_factories(Manager* dir) {
 	dir->factory("DeleteObjects", Delete_objects::create_new_interface);
 	dir->factory("DeleteObjectProperties", Delete_properties::create_new_interface);
 	dir->factory("ClearPropertyValueIf", Clear_property_value_if::create_new_interface);
-  dir->factory("SetActiveRegion", Set_active_region::create_new_interface);
-  dir->factory("SetHarddata",  Set_hard_data::create_new_interface);
-  dir->factory( "DeleteObjectRegions",  Delete_regions::create_new_interface );
-  dir->factory( "MergeObjectRegions",  Merge_regions::create_new_interface );
-  dir->factory( "SetRegionFromComplement", Set_region_complement::create_new_interface );
-  dir->factory( "SetRegionFromPropertyIf", Set_region_from_property::create_new_interface );
-  dir->factory( "ClearPropertyValueFromProperty", 
-    Clear_property_value_from_property::create_new_interface );
-  dir->factory("CreateTrend", Create_trend::create_new_interface);
-
+	dir->factory("SetActiveRegion", Set_active_region::create_new_interface);
+	dir->factory("SetHarddata", Set_hard_data::create_new_interface);
+	dir->factory("DeleteObjectRegions", Delete_regions::create_new_interface);
+	dir->factory("MergeObjectRegions", Merge_regions::create_new_interface);
+	dir->factory("SetRegionFromComplement", Set_region_complement::create_new_interface);
+	dir->factory("SetRegionFromPropertyIf", Set_region_from_property::create_new_interface);
+	dir->factory("ClearPropertyValueFromProperty", Clear_property_value_from_property::create_new_interface);
+	dir->factory("CreateTrend", Create_trend::create_new_interface);
 
 	// algorithm related actions
 	dir->factory("RunGeostatAlgorithm", Run_geostat_algo::create_new_interface);
 
 	//Registering Unary_action
-	dir->factory(Log_transform_action().name(),
-				 Log_transform_action::create_new_interface);
-	dir->factory(Log10_transform_action().name(),
-				 Log10_transform_action::create_new_interface);
-	dir->factory(Exponential_transform_action().name(),
-				 Exponential_transform_action::create_new_interface);
-	dir->factory(Sine_transform_action().name(),
-			Sine_transform_action::create_new_interface);
-	dir->factory(Cosine_transform_action().name(),
-			Cosine_transform_action::create_new_interface);
-  dir->factory(Sqrt_transform_action().name(),
-			Sqrt_transform_action::create_new_interface);
-  dir->factory(Inverse_transform_action().name(),
-			Inverse_transform_action::create_new_interface);
-	dir->factory(Standardize_transform_action().name(),
-			Standardize_transform_action::create_new_interface);
-	dir->factory(Unit_scaling_transform_action().name(),
-			Unit_scaling_transform_action::create_new_interface);
-  dir->factory(Complement_transform_action().name(),
-			Complement_transform_action::create_new_interface);
-  dir->factory(Logit_transform_action().name(),
-			Logit_transform_action::create_new_interface);
-  dir->factory(Logistic_transform_action().name(),
-			Logistic_transform_action::create_new_interface);
+	dir->factory(Log_transform_action().name(), Log_transform_action::create_new_interface);
+	dir->factory(Log10_transform_action().name(), Log10_transform_action::create_new_interface);
+	dir->factory(Exponential_transform_action().name(), Exponential_transform_action::create_new_interface);
+	dir->factory(Sine_transform_action().name(), Sine_transform_action::create_new_interface);
+	dir->factory(Cosine_transform_action().name(), Cosine_transform_action::create_new_interface);
+	dir->factory(Sqrt_transform_action().name(), Sqrt_transform_action::create_new_interface);
+	dir->factory(Inverse_transform_action().name(), Inverse_transform_action::create_new_interface);
+	dir->factory(Standardize_transform_action().name(), Standardize_transform_action::create_new_interface);
+	dir->factory(Unit_scaling_transform_action().name(), Unit_scaling_transform_action::create_new_interface);
+	dir->factory(Complement_transform_action().name(), Complement_transform_action::create_new_interface);
+	dir->factory(Logit_transform_action().name(), Logit_transform_action::create_new_interface);
+	dir->factory(Logistic_transform_action().name(), Logistic_transform_action::create_new_interface);
 
 	return true;
 }
 
 extern "C" {
-	int libGsTLAppli_actions_init() {
-		return library_actions_init::init_lib();
-	}
-	int libGsTLAppli_actions_release() {
-		return library_actions_init::release_lib();
-	}
+int libGsTLAppli_actions_init() {
+	return library_actions_init::init_lib();
+}
+int libGsTLAppli_actions_release() {
+	return library_actions_init::release_lib();
+}
 }
 
 //--------------------------------------

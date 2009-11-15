@@ -37,6 +37,7 @@ public:
 	static void load_filters_plugins();
 	static void load_colormaps();
 	static void load_action_plugins();
+	static void load_python_scripts();
 	static void release();
 
 private:
