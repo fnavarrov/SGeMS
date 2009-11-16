@@ -113,7 +113,7 @@ public:
 	virtual ~Inverse_transform_action(){}
 	bool transform(const Geovalue::property_type& _val, Geovalue::property_type& _new_val){
 		if (_val != 0.0) return false;
-		_new_val = 1./_new_val;
+		_new_val = 1./_val;
 		return true;
 	}
 };
