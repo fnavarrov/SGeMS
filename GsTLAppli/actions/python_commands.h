@@ -47,10 +47,9 @@
 #include <GsTLAppli/appli/manager_repository.h>
 #include <GsTLAppli/appli/project.h>
 #include <GsTLAppli/grid/grid_model/geostat_grid.h>
+#include <GsTLAppli/grid/grid_model/rgrid.h>
 #include <GsTLAppli/grid/grid_model/grid_property.h>
 
-// TL added this
-#include <GsTLAppli/grid/grid_model/reduced_grid.h>
 
 #include <string> 
 #include <algorithm>
@@ -99,8 +98,6 @@ static PyObject* sgems_get_property( PyObject *self, PyObject *args)
 {
   char* obj_str;
   char* prop_str;
-  Reduced_grid * redgrid;
-  long int trueSize=0;
  
   if( !PyArg_ParseTuple(args, "ss", &obj_str, &prop_str) )
     return NULL;
@@ -142,44 +139,21 @@ static PyObject* sgems_get_property( PyObject *self, PyObject *args)
     return Py_None;
   }
 
-  redgrid = dynamic_cast<Reduced_grid *>(grid_ni.raw_ptr());
 
-  // useless: Geostat_grid::size() should be used instead
-  if (!redgrid) 
-	trueSize = prop->size();
-  else 
-	trueSize = redgrid->trueSize();
 
-  PyObject *list = PyList_New(trueSize);
+  PyObject *list = PyList_New(prop->size());
   
-  //TL modified (special handling of grid w/ inactive cells)
-  if (!redgrid) {
-	  for ( int i = 0; i < prop->size(); i++) {
-		  float val = GsTLGridProperty::no_data_value;
-		  if( prop->is_informed( i ) )
-			  val = prop->get_value( i );
-		  PyObject* item = Py_BuildValue("f", val);
-		  if (!item) {
-			  Py_DECREF(list);
-			  list = NULL;
-			  break;
-		  }
-		  PyList_SetItem(list, i, item);
+  for ( int i = 0; i < prop->size(); i++) {
+	  float val = GsTLGridProperty::no_data_value;
+	  if( prop->is_informed( i ) )
+		  val = prop->get_value( i );
+	  PyObject* item = Py_BuildValue("f", val);
+	  if (!item) {
+		  Py_DECREF(list);
+		  list = NULL;
+		  break;
 	  }
-  }
-  else {
-	  for (int i = 0; i < trueSize; ++i) {
-		  float val = GsTLGridProperty::no_data_value;
-		  if (redgrid->isActive(i))
-			  val = prop->get_value(redgrid->full2reduced(i));
-		  PyObject* item = Py_BuildValue("f", val);
-		  if (!item) {
-			  Py_DECREF(list);
-			  list = NULL;
-			  break;
-		  }
-		  PyList_SetItem(list, i, item);
-	  }
+	  PyList_SetItem(list, i, item);
   }
 
   if( delete_prop ) delete prop;
@@ -193,8 +167,7 @@ static PyObject* sgems_set_property( PyObject *self, PyObject *args)
   char* obj_str;
   char* prop_str;
   PyObject* tuple;
-  Reduced_grid * redgrid;
-  int trueSize;
+
 
   if( !PyArg_ParseTuple(args, "ssO", &obj_str, &prop_str, &tuple) )
     return NULL;
@@ -214,8 +187,6 @@ static PyObject* sgems_set_property( PyObject *self, PyObject *args)
     return Py_None;
   }
 
-  redgrid = dynamic_cast<Reduced_grid *>(grid);
-
 
   GsTLGridProperty* prop = grid->property( prop_name );
   if( !prop ) {
@@ -223,27 +194,16 @@ static PyObject* sgems_set_property( PyObject *self, PyObject *args)
   }
   if( !prop ) return Py_None;
 
-  if (redgrid)
-	  trueSize = redgrid->trueSize();
-  else
-	  trueSize = prop->size();
 
   int numPyItems  = PyList_Size( tuple );
-  int size = std::min( trueSize, numPyItems );
+  int size = std::min( prop->size(), numPyItems );
 
   for( int i=0 ; i < size ; i++ ) {
-	float val;
+	  float val;
 
-	if (!redgrid) {
-		PyArg_Parse( PyList_GET_ITEM( tuple, i ), "f", &val );
-		prop->set_value( val, i );
-	}
-	else {
-		if (redgrid->isActive(i)){
-			PyArg_Parse(PyList_GET_ITEM(tuple, i),"f", &val);
-			prop->set_value(val, redgrid->full2reduced(i));
-		}
-	}
+    PyArg_Parse( PyList_GET_ITEM( tuple, i ), "f", &val );
+	  prop->set_value( val, i );
+
   }
 
   Python_project_wrapper::set_project_modified();
@@ -259,8 +219,6 @@ static PyObject* sgems_get_region( PyObject *self, PyObject *args)
 {
   char* obj_str;
   char* region_str;
-  Reduced_grid * redgrid;
-  long int trueSize=0;
 
   if( !PyArg_ParseTuple(args, "ss", &obj_str, &region_str) )
     return NULL;
@@ -289,11 +247,7 @@ static PyObject* sgems_get_region( PyObject *self, PyObject *args)
     return Py_None;
   }
 
-  redgrid = dynamic_cast<Reduced_grid *>(grid_ni.raw_ptr());
-
-
   PyObject *list = PyList_New(region->size());
-
 
   for ( int i = 0; i < region->size(); i++) {
 	  PyObject* item = Py_BuildValue("b", region->is_inside_region( i ));
@@ -316,8 +270,6 @@ static PyObject* sgems_set_region( PyObject *self, PyObject *args)
   char* obj_str;
   char* region_str;
   PyObject* tuple;
-  Reduced_grid * redgrid;
-  int trueSize;
 
   if( !PyArg_ParseTuple(args, "ssO", &obj_str, &region_str, &tuple) )
     return NULL;
@@ -337,7 +289,6 @@ static PyObject* sgems_set_region( PyObject *self, PyObject *args)
     return Py_None;
   }
 
-  redgrid = dynamic_cast<Reduced_grid *>(grid);
 
 // First must check if the region exist
   GsTLGridRegion* region = grid->region( region_name );
@@ -345,27 +296,22 @@ static PyObject* sgems_set_region( PyObject *self, PyObject *args)
     region = grid->add_region( region_name );
   }
 
-  if (redgrid)
-	  trueSize = redgrid->trueSize();
-  else
-	  trueSize = region->size();
 
   int numPyItems  = PyList_Size( tuple );
-  int size = std::min( trueSize, numPyItems );
+  if( region->size() != numPyItems ) {
+    *GsTLAppli_Python_cerr::instance() << "The region had "<<
+      numPyItems<<" items; "<< region->size()<< "are necessary"
+      << gstlIO::end;
+    Py_INCREF(Py_None);
+    return Py_None;
+  }
 
-  for( int i=0 ; i < size ; i++ ) {
-	bool val;
+  for( int i=0 ; i < region->size() ; i++ ) {
+	  bool val;
 
-	if (!redgrid) {
 		PyArg_Parse( PyList_GET_ITEM( tuple, i ), "b", &val );
 		region->set_region_value( val, i );
-	}
-	else {
-		if (redgrid->isActive(i)){
-			PyArg_Parse(PyList_GET_ITEM(tuple, i),"b", &val);
-			region->set_region_value(val, redgrid->full2reduced(i));
-		}
-	}
+
   }
 
   Python_project_wrapper::set_project_modified();
