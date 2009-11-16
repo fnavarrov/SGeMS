@@ -155,6 +155,16 @@ class FILTERS_DECL Gslib_mgrid_infilter : public Gslib_specialized_infilter {
   bool read_one_realization( std::ifstream& infile, 
                              const std::vector<GsTLGridProperty*>& props,
                              Reduced_grid * grid);
+
+  bool get_mgrid_xyz_dimensions(
+    std::ifstream& infile, Reduced_grid* grid, 
+    int X_col_id, int Y_col_id, int Z_col_id,
+    float x_size, float y_size, float z_size);
+
+  bool get_mgrid_ijk_dimensions(
+    std::ifstream& infile, Reduced_grid* grid, 
+    int X_col_id, int Y_col_id, int Z_col_id,
+    float x_size, float y_size, float z_size);
 };  
  
 /** This class defines a filter capable of parsing a gslib point-set file. 

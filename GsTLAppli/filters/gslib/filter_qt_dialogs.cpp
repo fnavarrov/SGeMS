@@ -194,18 +194,6 @@ Gslib_input_mgrid_dialog::Gslib_input_mgrid_dialog( QWidget* parent,
         setupUi(this);
 	name_->setFocus();
 }
-int Gslib_input_mgrid_dialog::nx() const {
-	return nx_->text().toInt();
-}
-
-int Gslib_input_mgrid_dialog::ny() const {
-  return ny_->text().toInt();
-}
-
-int Gslib_input_mgrid_dialog::nz() const {
-	return nz_->text().toInt();
-}
-
 
 float Gslib_input_mgrid_dialog::x_size() const {
   QString val = x_size_->text();
@@ -235,8 +223,6 @@ float Gslib_input_mgrid_dialog::Oz() const{
 QString Gslib_input_mgrid_dialog::name() const {
   return name_->text();
 }
-
-
 
 int Gslib_input_mgrid_dialog::X_column() const {
   return X_col_->value();

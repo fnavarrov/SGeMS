@@ -85,11 +85,7 @@ class FILTERS_DECL Gslib_input_mgrid_dialog : public QWidget, public Ui::GslibMa
 	Q_OBJECT
 public:
     Gslib_input_mgrid_dialog( QWidget* parent , const char* name = 0 ); 
-	bool isregular() { return _isregular->isChecked(); }
-	/// Grid dimensions 
-	int nx() const; 
-	int ny() const; 
-	int nz() const; 
+	bool is_ijk() { return is_ijk_coords_->isChecked(); }
 
 	/// Cell dimensions 
 	float x_size() const; 
@@ -108,8 +104,6 @@ public:
 	int Y_column() const; 
 	int Z_column() const; 
 
-
-	int maskColumnNum() { return _maskcol->value(); }
 
 	// no data value
 	bool use_no_data_value() const;

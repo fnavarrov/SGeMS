@@ -176,8 +176,113 @@ QWidget* Gslib_mgrid_infilter::init_dialog( std::ifstream& ) {
   return dialog_;
 }
 
-Geostat_grid* Gslib_mgrid_infilter::readRegular(std::ifstream& infile,Reduced_grid * grid)
+
+bool Gslib_mgrid_infilter::get_mgrid_ijk_dimensions(
+  std::ifstream& infile,Reduced_grid* grid, 
+    int X_col_id, int Y_col_id, int Z_col_id,
+    float x_size, float y_size, float z_size)
 {
+
+  std::string buffer;
+	std::getline( infile, buffer, '\n');
+	int property_count;
+	infile >> property_count;
+  for(int i=0;i<property_count; ++i) 
+	  std::getline( infile, buffer, '\n');
+
+  std::vector<GsTLGridNode> ijk;
+  GsTLGridNode max_ijk(-1,-1,-1);
+
+  int line_no=0;
+
+  while( infile ) {
+		GsTLGridNode node;
+		std::getline( infile, buffer, '\n');
+    std::vector<std::string> buf = String_Op::decompose_string( buffer, " ", false );
+		if (buf.empty()) break;
+
+		node[0] = String_Op::to_number<int>(buf[X_col_id]);
+		node[1] = String_Op::to_number<int>(buf[Y_col_id]);
+		node[2] = String_Op::to_number<int>(buf[Z_col_id]);
+    if(node[0]< 0 || node[1]< 0 || node[2]< 0 ) {
+      GsTLcerr << "Some ijk indices are negative, see entry number " << line_no << gstlIO::end;
+      return false;
+    }
+    ijk.push_back(node);
+    if(node[0] > max_ijk[0]) max_ijk[0] = node[0];
+    if(node[1] > max_ijk[1]) max_ijk[1] = node[1];
+    if(node[2] > max_ijk[2]) max_ijk[2] = node[2];
+    line_no++;
+
+  }
+  max_ijk = max_ijk + GsTLGridNode(1,1,1);
+
+  grid->set_dimensions(max_ijk[0],max_ijk[1],max_ijk[2],
+         x_size, y_size, z_size,ijk);
+	float Ox = dialog_->Ox();
+	float Oy = dialog_->Oy();
+	float Oz = dialog_->Oz();
+  grid->origin( Geostat_grid::location_type( Ox,Oy,Oz) );
+  infile.seekg(ios_base::beg);
+
+  return true;
+
+}
+
+bool Gslib_mgrid_infilter::get_mgrid_xyz_dimensions(
+    std::ifstream& infile, Reduced_grid* grid, 
+    int X_col_id, int Y_col_id, int Z_col_id,
+    float x_size, float y_size, float z_size)
+{
+  bool is_jk = dialog_->is_ijk();
+  std::string buffer;
+	std::getline( infile, buffer, '\n');
+	int property_count;
+	infile >> property_count;
+  std::getline( infile, buffer, '\n');
+  for(int i=0;i<property_count; ++i) 
+	  std::getline( infile, buffer, '\n');
+
+  std::vector<Geostat_grid::location_type> xyz;
+  Geostat_grid::location_type max_xyz(-1,-1,-1);
+  Geostat_grid::location_type origin(9e20,9e20,9e20);
+  while( infile ) {
+		Geostat_grid::location_type loc;
+		std::getline( infile, buffer, '\n');
+    if (buffer.empty()) break;
+		std::vector<std::string> buf = String_Op::decompose_string( buffer, " ", false );
+		if (buf.empty()) break;
+
+		loc[0] = String_Op::to_number<float>(buf[X_col_id]);
+		loc[1] = String_Op::to_number<float>(buf[Y_col_id]);
+		loc[2] = String_Op::to_number<float>(buf[Z_col_id]);
+    xyz.push_back(loc);
+
+    if(loc[0] > max_xyz[0]) max_xyz[0] = loc[0];
+    if(loc[1] > max_xyz[1]) max_xyz[1] = loc[1];
+    if(loc[2] > max_xyz[2]) max_xyz[2] = loc[2];
+
+    if(loc[0] < origin[0]) origin[0] = loc[0];
+    if(loc[1] < origin[1]) origin[1] = loc[1];
+    if(loc[2] < origin[2]) origin[2] = loc[2];
+
+  }
+  GsTLGridNode nxyz(int((max_xyz[0]-origin[0])/x_size)+1,
+                    int((max_xyz[1]-origin[1])/y_size)+1,
+                    int((max_xyz[2]-origin[2])/z_size)+1);
+
+
+  grid->set_dimensions(nxyz[0],nxyz[1],nxyz[2],
+         x_size, y_size, z_size, xyz, origin);
+  
+
+  infile.seekg(0, ios::beg);
+  return true;
+}
+
+
+Geostat_grid* Gslib_mgrid_infilter::readRegular(std::ifstream& infile,Reduced_grid * grid)
+{/*
 	std::vector<std::string> nums;
 
 	int nx = dialog_->nx();
@@ -297,7 +402,7 @@ Geostat_grid* Gslib_mgrid_infilter::readRegular(std::ifstream& infile,Reduced_gr
 
 	}
 
-	
+	*/
 	return grid;
 }
 
@@ -307,7 +412,7 @@ read_one_realization( std::ifstream& infile,
                       const std::vector<GsTLGridProperty*>& properties,
                       Reduced_grid * grid) 
 {
-
+/*
   // read the property values
   int property_count = properties.size()+1;  //with mask
   long int count = 0, actual = 0;
@@ -319,7 +424,7 @@ read_one_realization( std::ifstream& infile,
   if( dialog_->use_no_data_value() ) 
     no_data_value = dialog_->no_data_value();
 
-  while( infile && count < grid->trueSize() ) {
+  while( infile && count < grid->rgrid_size() ) {
 	  std::getline( infile, buffer, '\n');
 	  nums = String_Op::decompose_string( buffer, " ", false );
 
@@ -344,35 +449,40 @@ read_one_realization( std::ifstream& infile,
   	  ++count;
   	  ++actual;
   }  
+  */
   return true;
 }
 
 
 Geostat_grid* Gslib_mgrid_infilter::readPointset(std::ifstream& infile, Reduced_grid * grid)
 {
-	int nx = dialog_->nx();
-	int ny = dialog_->ny();
-	int nz = dialog_->nz();
-	float x_size = dialog_->x_size();
-	float y_size = dialog_->y_size();
-	float z_size = dialog_->z_size();
-	float Ox = dialog_->Ox();
-	float Oy = dialog_->Oy();
-	float Oz = dialog_->Oz();
+  
 	int X_col_id = dialog_->X_column()-1;
 	int Y_col_id = dialog_->Y_column()-1;
-	int Z_col_id = dialog_->Z_column()-1;
-
+	int Z_col_id = dialog_->Z_column()-1;	
 	if( X_col_id == Y_col_id || X_col_id == Z_col_id || Y_col_id == Z_col_id ) {
 		GsTLcerr << "The same column number was selected for multiple coordinates \n" << gstlIO::end;
 		return 0;
 	}
+	float x_size = dialog_->x_size();
+	float y_size = dialog_->y_size();
+	float z_size = dialog_->z_size();
 
-	grid->set_dimensions( nx,ny,nz, x_size, y_size, z_size );
-	grid->origin( Cartesian_grid::location_type( Ox,Oy,Oz) );
+  if(x_size< 0. || y_size< 0. || z_size< 0. ) {
+    GsTLcerr << "Pixel size must be positive "<< gstlIO::end;
+    return NULL;
+  }
 
+  if( dialog_->is_ijk())
+    get_mgrid_ijk_dimensions(infile,grid,X_col_id,Y_col_id,Z_col_id,
+                             x_size,y_size,z_size);
+  else
+    get_mgrid_xyz_dimensions(infile,grid,X_col_id,Y_col_id,Z_col_id,
+                             x_size,y_size,z_size);
+
+
+  infile.seekg(0);
 	std::string buffer;
-
 	// read title
 	std::getline( infile, buffer, '\n');
 	
@@ -382,81 +492,68 @@ Geostat_grid* Gslib_mgrid_infilter::readPointset(std::ifstream& infile, Reduced_
 	std::getline( infile, buffer, '\n');
 
 	// read property names 
-	std::vector<std::string> property_names;
+	std::vector<GsTLGridProperty*> properties;
 	for( int i=0; i<columns_count; i++ ) {
 		std::getline( infile, buffer, '\n');
 		QString prop_name( buffer.c_str() );
 		if( i != X_col_id && i != Y_col_id && i != Z_col_id ) {
-			QByteArray tmp = prop_name.simplified().toAscii();
-			property_names.push_back( tmp.constData() );
+      GsTLGridProperty* prop = grid->add_property(prop_name.toStdString());
+      properties.push_back( prop );
 		}
 	}
-
-	std::vector< std::vector<float> > property_values( property_names.size() );
 
 	// read the property values
 	float val;
 	int count = 0;
-	int step_xy = nx*ny; // # of pixels on xy plane
 	bool use_no_data_value = dialog_->use_no_data_value();
 	float no_data_value = dialog_->no_data_value();
-	std::vector<std::string> buf;
 
 	while( infile ) {
-		int property_index=0;
-		Point_set::location_type loc;
 		std::getline( infile, buffer, '\n');
-		buf = String_Op::decompose_string( buffer, " ", false );
-		if (buf.empty()) break;
+    if (buffer.empty()) break;
+    std::vector<std::string> buf = String_Op::decompose_string( buffer, " ", false );
 
-		loc[0] = String_Op::to_number<float>(buf[X_col_id]);
-		loc[1] = String_Op::to_number<float>(buf[Y_col_id]);
-		loc[2] = String_Op::to_number<float>(buf[Z_col_id]);
-
+    int node_id;
+    if(dialog_->is_ijk()) {
+      GsTLGridNode node;
+		  node[0] = String_Op::to_number<int>(buf[X_col_id]);
+		  node[1] = String_Op::to_number<int>(buf[Y_col_id]);
+		  node[2] = String_Op::to_number<int>(buf[Z_col_id]);
+      node_id = grid->cursor()->node_id(node[0],node[1],node[2]);
+    } else {
+      Geostat_grid::location_type loc;
+		  loc[0] = String_Op::to_number<float>(buf[X_col_id]);
+		  loc[1] = String_Op::to_number<float>(buf[Y_col_id]);
+		  loc[2] = String_Op::to_number<float>(buf[Z_col_id]);
+      GsTLGridNode ijk;
+      grid->geometry()->grid_coordinates(ijk,loc);
+      node_id = grid->cursor()->node_id(ijk[0],ijk[1],ijk[2]);
+    }
+    if(node_id < 0) continue;
+    int property_index = 0;
 		for( int j=0; j< columns_count; j++ ) {
-
 			if (j != X_col_id && j != Y_col_id && j != Z_col_id){	
 				val = String_Op::to_number<float>(buf[j]);
 				if( use_no_data_value ) {
 					if( val == no_data_value )
 						val = GsTLGridProperty::no_data_value;          
 				}
-				property_values[ property_index ].push_back( val );
+        properties[ property_index ]->set_value(val,node_id);
 				property_index++;
 			}
 
 		}
-		if (infile){
-			GsTLGridNode ijk;
-			ijk[0] = (loc[0]-Ox)/x_size;
-			ijk[1] = (loc[1]-Oy)/y_size;
-			ijk[2] = (loc[2]-Oz)/z_size;
-			int idFull = ijk[2]*step_xy+ijk[1]*nx+ijk[0];
-			grid->setConversionPair(idFull,count);
-			++count;
-			grid->insertLocation(ijk);
-		}
-
 	}
-	
-	grid->initMaskedGrid(dialog_->isregular());
-	appli_message("filter is " << count);
 
-	// pass values from buffer to properties
-	for( unsigned int k= 0; k < property_names.size(); k++ ) {
-		GsTLGridProperty* prop = grid->add_property( property_names[k] );
-		for( int l=0; l < grid->size(); l++ ) {
-			prop->set_value( property_values[k][l], l );
-		}
-	}
 
 	return grid;
 }
 
 Geostat_grid* Gslib_mgrid_infilter::read( std::ifstream& infile ) 
 {
-	QByteArray tmp  =dialog_->name().simplified().toLatin1();
-	std::string name( tmp.constData() );
+//	QByteArray tmp  =dialog_->name().simplified().toLatin1();
+	//std::string name( tmp.constData() );
+  std::string name = dialog_->name().toStdString();
 
   // ask manager to get a new grid and initialize it
   SmartPtr<Named_interface> ni =
@@ -472,18 +569,19 @@ Geostat_grid* Gslib_mgrid_infilter::read( std::ifstream& infile )
   Reduced_grid* grid = dynamic_cast<Reduced_grid*>( ni.raw_ptr() );
   appli_assert( grid != 0 );
 
-  if (dialog_->isregular())
-	  return readRegular(infile, grid);
-  else
+//  if (dialog_->isregular())
+//	  return readRegular(infile, grid);
+//  else
 	  return readPointset(infile, grid);
 }
 
-bool Gslib_mgrid_infilter::has_valid_parameters() const {
-  if (dialog_->nx() == 0 || dialog_->ny() == 0 || dialog_->nz() == 0) {
-    GsTLcerr << "Enter bounding box information" << gstlIO::end;
-    return false;
-  }
-  return !dialog_->name().isEmpty();
+bool Gslib_mgrid_infilter::has_valid_parameters() const{
+  bool ok = true;
+  ok = ok && dialog_->x_size() > 0.;
+  ok = ok && dialog_->y_size() > 0.;
+  ok = ok && dialog_->z_size() > 0.;
+  ok = ok && !dialog_->name().isEmpty();
+  return ok;
 }
 
 //========================================================
@@ -865,14 +963,14 @@ bool Gslib_outfilter::writeReduced2Cartesian( std::ofstream& outfile, const Geos
 		outfile << *it << std::endl;
 		properties.push_back( grid->property( *it ) );
 	}
-	outfile << rgrid->maskColumn() << std::endl; //use saved name for the mask column
+//	outfile << rgrid->maskColumn() << std::endl; //use saved name for the mask column
 
-	int grid_size = rgrid->trueSize();
+	int grid_size = rgrid->rgrid_size();
 
 	// Write the property values
 	for( int i=0; i < grid_size ; i++ ) {
 		for( unsigned int j=0; j < property_names.size(); ++j ) {
-			if (rgrid->isActive(i)) {
+      if (rgrid->is_inside_mask(i)) {
 				appli_assert(rgrid->full2reduced(i) != -1);
 				if (!properties[j]->is_informed(rgrid->full2reduced(i))) 
 					cout << "-9999 ";
@@ -883,7 +981,7 @@ bool Gslib_outfilter::writeReduced2Cartesian( std::ofstream& outfile, const Geos
 				outfile << "-9999 ";
 		}
 
-		if (rgrid->isActive(i)) {
+		if (rgrid->is_inside_mask(i)) {
 			outfile << "1 ";
 		}
 		else
