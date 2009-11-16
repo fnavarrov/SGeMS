@@ -101,7 +101,7 @@ void Qt_masked_grid_summary::init( const Geostat_grid* grid ) {
 
   //TL modified
   QLabel * num;
-  num = new QLabel(QString("# of active cells: ")+count.setNum(rgrid->numActive()), groupbox);
+  num = new QLabel(QString("# of active cells: ")+count.setNum(rgrid->size()), groupbox);
   hbox->addWidget(num);
   num->setFont(font);
 
