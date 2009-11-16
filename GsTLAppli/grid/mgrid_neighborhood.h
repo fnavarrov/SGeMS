@@ -31,7 +31,7 @@
 
 #include <GsTLAppli/grid/grid_model/rgrid_neighborhood.h>
 #include <GsTLAppli/grid/grid_model/rgrid.h>
-#include <GsTLAppli/grid/egridcursor.h>
+#include <GsTLAppli/grid/maskedgridcursor.h>
 
 class GRID_DECL MgridNeighborhood : public Rgrid_ellips_neighborhood
 {
@@ -45,7 +45,7 @@ public:
 	~MgridNeighborhood() {}
 	 virtual void find_neighbors( const Geovalue& center ); 
 protected:
-	 EGridCursor * _mcursor;
+	 MaskedGridCursor * _mcursor;
 
 };
 
@@ -60,7 +60,7 @@ public:
      virtual void find_all_neighbors( const Geovalue& center );
 
 protected:
-	 EGridCursor * _mcursor;
+	 MaskedGridCursor * _mcursor;
 };
 
 class GRID_DECL MgridNeighborhood_hd : public Rgrid_ellips_neighborhood_hd
@@ -75,6 +75,6 @@ public:
 	~MgridNeighborhood_hd() {}
 	virtual void find_neighbors( const Geovalue& center ); 
 protected:
-	EGridCursor * _mcursor;
+	MaskedGridCursor * _mcursor;
 };
 #endif

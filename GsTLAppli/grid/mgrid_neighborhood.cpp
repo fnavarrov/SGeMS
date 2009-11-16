@@ -47,7 +47,7 @@ MgridNeighborhood::MgridNeighborhood( RGrid* grid,
 void MgridNeighborhood::find_neighbors( const Geovalue& center ) 
 {
   
-  _mcursor = dynamic_cast<EGridCursor*>(grid_->cursor());
+  _mcursor = dynamic_cast<MaskedGridCursor*>(grid_->cursor());
   appli_assert(_mcursor);
 
   neighbors_.clear();
@@ -135,7 +135,7 @@ MgridNeighborhood_hd::MgridNeighborhood_hd( RGrid* grid,
 void MgridNeighborhood_hd::find_neighbors( const Geovalue& center ) {
   appli_assert( center.grid() == grid_ );
 
-  _mcursor = dynamic_cast<EGridCursor*>(grid_->cursor());
+  _mcursor = dynamic_cast<MaskedGridCursor*>(grid_->cursor());
   appli_assert(_mcursor);
 
   // This is exactly the same function as 
@@ -191,7 +191,7 @@ void MgridWindowNeighborhood::set_grid( RGrid* grid ) {
   grid_ = grid;
   if( grid ) {
     cursor_ = *( grid->cursor() );
-	_mcursor = dynamic_cast<EGridCursor*>(grid->cursor());
+	_mcursor = dynamic_cast<MaskedGridCursor*>(grid->cursor());
   }
 }
 
@@ -200,7 +200,7 @@ void MgridWindowNeighborhood::find_neighbors( const Geovalue& center ) {
   center_ = center;
   center_.set_property_array( property_ );
 
-  _mcursor = dynamic_cast<EGridCursor*>(grid_->cursor());
+  _mcursor = dynamic_cast<MaskedGridCursor*>(grid_->cursor());
   neighbors_.clear();
   if( !property_ ) return;
 
@@ -243,7 +243,7 @@ void MgridWindowNeighborhood::find_all_neighbors( const Geovalue& center ) {
   center_ = center;
   center_.set_property_array( property_ );
 
-  _mcursor = dynamic_cast<EGridCursor*>(grid_->cursor());
+  _mcursor = dynamic_cast<MaskedGridCursor*>(grid_->cursor());
 
   neighbors_.clear();
   if( !property_ ) return;
