@@ -118,7 +118,7 @@ void Oinv_mgrid::init( const Geostat_grid* grid ) {
 
   SbVec3s dim = SbVec3s( grid_->nx(), grid_->ny(), grid_->nz() );
 
-  voxel_data_ = new uint8_t[ grid_->trueSize() ];
+  voxel_data_ = new uint8_t[ grid_->rgrid_size() ];
   initialized_ = false;
 
 
@@ -392,13 +392,13 @@ void Oinv_mgrid::refresh() {
   if( current_property_ && cmap_ ) {
     // recompute the voxel data
     if( !voxel_data_ ) 
-      voxel_data_ = new uint8_t[grid_->trueSize() ];
+      voxel_data_ = new uint8_t[grid_->rgrid_size() ];
 
     float min = cmap_->lower_bound();
     float max = cmap_->upper_bound();
     
   
-    for( int i=0; i < grid_->trueSize()  ; i++ ) {
+    for( int i=0; i < grid_->rgrid_size()  ; i++ ) {
 		GsTLInt rindex = grid_->full2reduced(i);
 		if (rindex == -1) {voxel_data_[i] = 0; continue;}
 		if (current_property_->is_informed(rindex)) {
