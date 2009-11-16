@@ -128,7 +128,19 @@ Simulacre_input_filter::read_reduced_grid( QDataStream& stream, std::string* err
 
 	std::ostringstream ostr;
 	ostr << numActive;
-	std::string final_grid_name;
+
+// Read the mask
+  std::vector<bool> mask;
+  mask.reserve(nx*ny*nz);
+  int mask_size = 0;
+  for( GsTLInt k = 0; k < nx*ny*nz ; k++ ) {
+    bool val;
+    stream >> val;
+    mask.push_back( val );
+    if(val) mask_size++;
+  }  
+  
+  std::string final_grid_name;
 	SmartPtr<Named_interface> ni = 
 		Root::instance()->new_interface( "reduced_grid://" + ostr.str(),
 		gridModels_manager + "/" + grid_name,
@@ -137,7 +149,8 @@ Simulacre_input_filter::read_reduced_grid( QDataStream& stream, std::string* err
 
 	if (!grid) return false;
 
-	grid->set_dimensions( nx, ny, nz, xsize, ysize, zsize );
+
+	grid->set_dimensions( nx, ny, nz, xsize, ysize, zsize, mask );
 	grid->origin( Cartesian_grid::location_type( ox,oy,oz ) );
 
 	quint32 properties_count;
@@ -147,8 +160,34 @@ Simulacre_input_filter::read_reduced_grid( QDataStream& stream, std::string* err
 	for( unsigned int i = 0; i < properties_count; i++ ) 
 		stream >> prop_names[i];
 
-	if (!grid->populate(stream, prop_names))
-		return false;
+  
+  for( unsigned int j = 0; j < properties_count; j++ ) {
+    std::string prop_name( prop_names[j] );
+    GsTLGridProperty* prop = grid->add_property( prop_name );
+    for( GsTLInt k = 0; k < numActive ; k++ ) {
+      float val;
+      stream >> val;
+      prop->set_value( val, k );
+    }
+  }
+// Read the regions if any
+  if(!stream.atEnd()) {
+    quint32 regions_count;
+    stream >> regions_count;
+    std::vector< char* > region_names( regions_count );
+	  for( unsigned int i = 0; i < regions_count; i++ ) 
+		  stream >> region_names[i];
+
+    for( unsigned int j = 0; j < regions_count; j++ ) {
+      std::string region_name( region_names[j] );
+      GsTLGridRegion* region = grid->add_region( region_name );
+      for( GsTLInt k = 0; k < numActive ; k++ ) {
+        bool val;
+        stream >> val;
+        region->set_region_value( val, k );
+      }
+    }
+  }
 
 	// clean up
 #ifndef _DEBUG	
@@ -412,6 +451,11 @@ bool Simulacre_output_filter::write_reduced_grid( QDataStream& stream,
 	<< (float) origin[1]
 	<< (float) origin[2];
 
+// write the mask
+  const std::vector<bool> mask = grid->mask();
+  std::vector<bool>::const_iterator it_mask = mask.begin();
+  for(; it_mask != mask.end(); ++it_mask) stream<< *it_mask;
+
 
 	// Write the number of properties and the property names
     std::list<std::string> & prop_list = _list_to_write;
@@ -420,13 +464,6 @@ bool Simulacre_output_filter::write_reduced_grid( QDataStream& stream,
 	std::list<std::string>::iterator it = prop_list.begin();
 	for( ; it != prop_list.end(); ++it ) {
 		stream << it->c_str() ;
-	}
-
-	// retrieve cell coordinates
-	const std::vector<GsTLGridNode>& locs = grid->psIJK();
-	std::vector<GsTLGridNode>::const_iterator vec_it = locs.begin();
-	for( ; vec_it != locs.end(); ++vec_it ) {
-		stream <<  vec_it->x() <<  vec_it->y() << vec_it->z();
 	}
 
 	// write the property values, one property at a time
