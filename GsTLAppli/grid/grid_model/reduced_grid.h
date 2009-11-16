@@ -32,7 +32,8 @@
 
 #include <GsTLAppli/grid/grid_model/cartesian_grid.h>
 #include <GsTLAppli/grid/grid_model/rgrid.h>
-#include <GsTLAppli/grid/egridcursor.h>
+#include <GsTLAppli/grid/maskedgridcursor.h>
+
 #include <GsTLAppli/math/gstlvector.h>
 #include <GsTLAppli/grid/grid_model/neighborhood.h>
 #include <GsTLAppli/utils/string_manipulation.h>
@@ -47,18 +48,15 @@
 
 #define DIV 5.0  /* neighbor search radius = dim/DIV */
 
-/* mask in a cartesian grid will be assigned this name by default */
-#define MASK "__MASK_OF_ACTIVE_CELLS__"
 
 Named_interface* create_reduced_grid( std::string& size_str);
-
 
 class GRID_DECL Reduced_grid : public Cartesian_grid
 {
 public:
 	Reduced_grid(int size); 
 	Reduced_grid();   
-	virtual ~Reduced_grid(); 
+  virtual ~Reduced_grid(){} 
 
 	virtual std::string classname() const { return "Masked_grid"; } 
 
@@ -76,20 +74,9 @@ public:
 		active_coords_.push_back(loc);
 	}
 
-	void setMaskName(std::string & s) { _maskColumn = s; }
+//	void setMaskName(std::string & s) { _maskColumn = s; }
 
-	void initMaskedGrid(bool regular) {
-		long int count = 0;
-		for (int i = 0; i < mask_.size(); ++i)
-			if (mask_[i] == true)
-				++count;
-		appli_assert(count);
-		active_size_ = count;
-		property_manager_.set_prop_size( active_size_ );
-		grid_cursor_.init(&original2reduced_, &reduced2original_, active_size_, &mask_);
-		if (regular)
-			buildIJK();
-	}
+	//void initMaskedGrid(bool regular);
 
 	void copyStructure(const Reduced_grid *);
 
@@ -98,23 +85,18 @@ public:
 	bool populate(QDataStream& stream, std::vector< char* > & prop_names);
 
 	// returns nx*ny*nz
-	GsTLInt trueSize() const;
+	GsTLInt rgrid_size() const;
 
-	//number of active cells
-	GsTLInt numActive() const;
 
 	// from id to cell location
-	inline GsTLGridNode ijkValue(int node_id) const;
-	inline bool isActive(int idInFullGrid) const ;
-
+//	inline GsTLGridNode ijkValue(int node_id) const;
+	inline bool is_inside_mask(int idInFullGrid) const ;
+/*
 	// construct a vector of active cell coordinates(IJK's)
 	void buildIJK();
-
+*/
 	// return the vector of coordinates
-	const std::vector<GsTLGridNode> & psIJK() const;
-
-	// name of the mask column
-	const std::string maskColumn() const ;
+//	const std::vector<GsTLGridNode> & psIJK() const;
 
 	// given a node id in full grid, return the corresponding id in masked grid
 	// returns -1 if not applicable.
@@ -122,50 +104,58 @@ public:
 	const int reduced2full(int idInReducedGrid) const;
 
 
-	//==================================
-	// methods from rgrid that use grid_cursor_.
-	// Because grid_cursor_ is defined as an object, all functions that
-	// depend on this cursor will end up calling the cursor base class methods.
-	// The following functions are from rgrid and cartesian_grid classes. They
-	// all reference the grid_cursor_ object.  We need to override them here.
 	virtual Neighborhood* neighborhood( double x, double y, double z, 
 		double ang1, double ang2, double ang3, 
 		const Covariance<location_type>* cov=0, 
 		bool only_harddata = false  ); 
+
 	virtual Neighborhood* neighborhood( const GsTLTripletTmpl<double>& dim, 
 		const GsTLTripletTmpl<double>& angles, 
 		const Covariance<location_type>* cov=0, 
 		bool only_harddata = false  ); 
+
 	virtual Window_neighborhood* window_neighborhood( const Grid_template& templ ); 
 
-	inline bool contains(GsTLInt i, GsTLInt j, GsTLInt k);
-	inline bool contains(const GsTLGridNode& gn) ;
-	inline void set_level( int level) ;
-	inline int current_level() const ;
-	Geovalue geovalue( GsTLInt gindex );
-	Geovalue geovalue( GsTLInt i, GsTLInt j, GsTLInt k ) ;
-	Geovalue geovalue(const GsTLGridNode& gn ) ;
-	void set_cursor(SGrid_cursor cursor);
-	bool is_informed( GsTLInt i,  GsTLInt j, GsTLInt k );
-	iterator begin( GsTLGridProperty* prop ) ;
-	iterator end( GsTLGridProperty* prop ) ;
-	const_iterator begin( const GsTLGridProperty* prop ) const ;
-	const_iterator end( const GsTLGridProperty* prop ) const;
-	random_path_iterator random_path_begin( GsTLGridProperty* prop ) ;
-	random_path_iterator random_path_end( GsTLGridProperty* prop ) ;
-	bool is_informed( const GsTLGridNode& p ) ;
-	GsTLInt node_id ( GsTLInt index ) const ;
-	void init_random_path( bool from_scratch = true) ;
-	inline location_type location( int node_id ) const ;
-	const SGrid_cursor* cursor() const ;
-	SGrid_cursor* cursor() ;
-	virtual GsTLInt closest_node( const location_type & P );// location specified in full grid
-	//==============================================
+  inline location_type location( int node_id ) const ;
+
+  bool add_location(int i, int j, int k);
+  bool add_location(GsTLCoord x, GsTLCoord y, GsTLCoord z);
+
+
+  const std::vector<bool>& mask() const;
+  void mask(const std::vector<bool>& mask);
+  void mask(const std::vector<GsTLGridNode>& ijkCoords);
+  void mask(const std::vector<location_type>& xyzCoords);
+
+
+//  void set_dimensions( int nx, int ny, int nz);
+
+  void set_dimensions( int nx, int ny, int nz, 
+		       float xsize, float ysize, float zsize);
+
+  void set_dimensions( int nx, int ny, int nz, 
+		       float xsize, float ysize, float zsize, 
+           std::vector<bool> mask ); 
+
+  void set_dimensions( int nx, int ny, int nz,
+    float xsize, float ysize, float zsize,
+    const std::vector<GsTLGridNode>& ijkCoords);
+
+  void set_dimensions( int nx, int ny, int nz, 
+    float xsize, float ysize, float zsize,
+    const std::vector<location_type>& xyzCoords,
+    Geostat_grid::location_type origin);
+
 
 	//==============================================
 	// The following override the functions inherited from rgrid
 	void set_geometry(RGrid_geometry* geom) ;
 	GsTLInt size() const ;
+
+  virtual const SGrid_cursor* cursor() const; 
+  virtual SGrid_cursor* cursor(); 
+
+
 	//===============================================
 
 protected:
@@ -182,18 +172,30 @@ protected:
 	// name of the mask column in a cartesian grid
 	std::string _maskColumn;
 
-	EGridCursor grid_cursor_;  // overrides parent
+//	EGridCursor* grid_cursor_;  // overrides parent
 
 	// mask for active cells
-	bit_vector mask_;
+	std::vector<bool> mask_;
 
 	// number of active cells
 	GsTLInt active_size_;
 
+  MaskedGridCursor* grid_cursor_;
+
+  protected :
+
+  void build_ijkmap_from_mask();
+  void build_mask_from_ijk(
+     const std::vector<GsTLGridNode>& iCoords);
+
+
+  void build_mask_from_xyz(
+    const std::vector<location_type>& xyzCoords);
+
 };
 
 
-
+/*
 inline GsTLGridNode Reduced_grid::ijkValue(int node_id) const {
 	std::map<int,int>::const_iterator itr = reduced2original_.find(node_id);
 	node_id = itr->second;
@@ -204,8 +206,10 @@ inline GsTLGridNode Reduced_grid::ijkValue(int node_id) const {
 	GsTLInt i = inxy%geom_->dim(0);
 	return GsTLGridNode(i,j,k);
 }
-
-inline bool Reduced_grid::isActive(int idInFullGrid) const {return mask_[idInFullGrid];}
+*/
+inline bool Reduced_grid::is_inside_mask(int idInFullGrid) const {
+  return mask_[idInFullGrid];
+}
 
 
 #endif

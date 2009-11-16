@@ -34,7 +34,7 @@
 #include <GsTLAppli/math/gstlpoint.h> 
 #include <GsTLAppli/grid/grid_model/neighborhood.h> 
 #include <GsTLAppli/grid/grid_model/sgrid_cursor.h> 
-#include <GsTLAppli/grid/egridcursor.h> 
+//#include <GsTLAppli/grid/maskgridcursor.h> 
  
 #include <GsTL/geometry/geometry_algorithms.h> 
 #include <GsTL/geometry/covariance.h> 

@@ -70,7 +70,7 @@ void Cartesian_grid::set_geometry( RGrid_geometry* geom ) {
     geom_ = geom->clone();
     topology_is_updated_ = false;
   }
-  grid_cursor_ = SGrid_cursor(nx(), ny(), nz(), 1);
+  grid_cursor_ = new SGrid_cursor(nx(), ny(), nz(), 1);
   property_manager_.set_prop_size( geom->size() );
   region_manager_.set_region_size( geom->size() );
 
@@ -88,7 +88,7 @@ GsTLInt Cartesian_grid::closest_node( const location_type& P ) {
   P0.z() = P.z() - origin.z();
  
   GsTLCoordVector cell_sizes = geometry_->cell_dims();
-  int spacing = grid_cursor_.multigrid_spacing();
+  int spacing = grid_cursor_->multigrid_spacing();
  
   // Account for the multi-grid spacing
   cell_sizes.x() = cell_sizes.x() * spacing;
@@ -101,14 +101,14 @@ GsTLInt Cartesian_grid::closest_node( const location_type& P ) {
   
   // The function will return a valid node even if P is outside the
   // grid's bounding box  
-  if( i >= grid_cursor_.max_iter( SGrid_cursor::X ) )
-    i = grid_cursor_.max_iter( SGrid_cursor::X ) - 1;
-  if( j >= grid_cursor_.max_iter( SGrid_cursor::Y ) )  
-    j = grid_cursor_.max_iter( SGrid_cursor::Y ) - 1;
-  if( k >= grid_cursor_.max_iter( SGrid_cursor::Z ) )
-    k = grid_cursor_.max_iter( SGrid_cursor::Z ) - 1;
+  if( i >= grid_cursor_->max_iter( SGrid_cursor::X ) )
+    i = grid_cursor_->max_iter( SGrid_cursor::X ) - 1;
+  if( j >= grid_cursor_->max_iter( SGrid_cursor::Y ) )  
+    j = grid_cursor_->max_iter( SGrid_cursor::Y ) - 1;
+  if( k >= grid_cursor_->max_iter( SGrid_cursor::Z ) )
+    k = grid_cursor_->max_iter( SGrid_cursor::Z ) - 1;
   
-  return grid_cursor_.node_id( i, j, k );
+  return grid_cursor_->node_id( i, j, k );
 }
 
 

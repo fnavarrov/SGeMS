@@ -51,13 +51,15 @@ RGrid::RGrid( )
   :  geom_(0),
      topology_(0),
      topology_is_updated_(false), property_manager_(),
-     accessor_(0) {
+     accessor_(0),
+     grid_cursor_(0){
 }
 
 RGrid::~RGrid() {
     delete geom_;
     delete topology_;
     delete accessor_;
+    delete grid_cursor_;
 }
 
 
@@ -67,7 +69,7 @@ void RGrid::set_geometry(RGrid_geometry* geom) {
     geom_ = geom->clone();
     topology_is_updated_ = false;
   }
-  grid_cursor_ = SGrid_cursor(nx(), ny(), nz(), 1);
+  grid_cursor_ = new SGrid_cursor(nx(), ny(), nz(), 1);
   property_manager_.set_prop_size( geom->size() );
   region_manager_.set_region_size( geom->size() );
 }
@@ -229,8 +231,8 @@ Window_neighborhood* RGrid::window_neighborhood( const Grid_template& templ) {
   
 
 void RGrid::init_random_path( bool from_scratch ) {
-  if( int( grid_path_.size() ) !=  grid_cursor_.max_index() ) {
-    grid_path_.resize( grid_cursor_.max_index() );
+  if( int( grid_path_.size() ) !=  grid_cursor_->max_index() ) {
+    grid_path_.resize( grid_cursor_->max_index() );
     for( int i=0; i < int( grid_path_.size() ); i++ ) 
       grid_path_[i] = i;
   }

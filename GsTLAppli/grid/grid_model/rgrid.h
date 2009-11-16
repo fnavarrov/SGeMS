@@ -98,7 +98,7 @@ public:
   virtual int current_level() const; 
    
   virtual GsTLInt node_id ( GsTLInt index ) const {  
-    return grid_cursor_.node_id( index );  
+    return grid_cursor_->node_id( index );  
   } 
  
   virtual GsTLInt closest_node( const location_type& P ) {  
@@ -208,7 +208,7 @@ public:
  
 //  std::map<std::string, GsTLGridRegionFlags*> regions_; 
   RGrid_gval_accessor* accessor_; 
-  SGrid_cursor grid_cursor_; 
+  SGrid_cursor* grid_cursor_; 
  
  
  protected: 
@@ -262,19 +262,20 @@ RGrid_gval_accessor* RGrid::accessor() {
  
 inline  
 const SGrid_cursor* RGrid::cursor() const { 
-  return &grid_cursor_; 
+  return grid_cursor_; 
 } 
 
 
 inline  
 SGrid_cursor* RGrid::cursor() { 
-  return &grid_cursor_; 
+  return grid_cursor_; 
 } 
 
 
 inline 
 void RGrid::set_cursor(SGrid_cursor cursor) { 
-  grid_cursor_ = cursor; 
+  delete grid_cursor_;
+  grid_cursor_ = new SGrid_cursor(cursor);
 } 
  
 /* 
@@ -314,23 +315,23 @@ void RGrid::update_topology() {
  
 inline 
 bool RGrid::contains(GsTLInt i, GsTLInt j, GsTLInt k) { 
-  return (grid_cursor_.check_triplet(i, j, k)); 
+  return (grid_cursor_->check_triplet(i, j, k)); 
 } 
  
 inline 
 bool RGrid::contains(const GsTLGridNode& gn) { 
-  return (grid_cursor_.check_triplet(gn[0], gn[1], gn[2])); 
+  return (grid_cursor_->check_triplet(gn[0], gn[1], gn[2])); 
 } 
  
  
 inline 
 void  RGrid::set_level( int level) { 
-  grid_cursor_.set_multigrid_level(level); 
+  grid_cursor_->set_multigrid_level(level); 
 } 
  
 inline 
 int RGrid::current_level() const { 
-  return grid_cursor_.multigrid_level(); 
+  return grid_cursor_->multigrid_level(); 
 } 
  
 inline  
@@ -418,7 +419,7 @@ inline bool RGrid::is_inside_selected_region(int node_id) const {
 inline 
 Geovalue RGrid::geovalue( GsTLInt gindex ) { 
   int i,j,k; 
-  grid_cursor_.coords( gindex, i,j,k ); 
+  grid_cursor_->coords( gindex, i,j,k ); 
   accessor_->set_geovalue( gindex, geom_->coordinates( i,j,k ) ); 
   return (*accessor_->node()); 
 } 
@@ -426,7 +427,7 @@ Geovalue RGrid::geovalue( GsTLInt gindex ) {
  
 inline 
 Geovalue RGrid::geovalue( GsTLInt i, GsTLInt j, GsTLInt k ) { 
-  accessor_->set_geovalue( grid_cursor_.node_id( i,j,k ), 
+  accessor_->set_geovalue( grid_cursor_->node_id( i,j,k ), 
 			   geom_->coordinates( i,j,k ) ); 
   return (*accessor_->node()); 
 } 
@@ -445,7 +446,7 @@ bool RGrid::is_valid( GsTLInt node_id ) {
  
 inline 
 bool RGrid::is_informed( GsTLInt i,  GsTLInt j, GsTLInt k ) { 
-  int ind = grid_cursor_.node_id( i,j,k ); 
+  int ind = grid_cursor_->node_id( i,j,k ); 
   if ( ind < 0 )  
     return false; 
  
@@ -474,7 +475,7 @@ RGrid::location( int node_id ) const {
   // Multiple grid as the resulting ijk will be
   // in the current grid.
   //int i,j,k;
-  //grid_cursor_.coords( node_id, i,j,k);
+  //grid_cursor_->coords( node_id, i,j,k);
   GsTLInt max_nxy = geom_->dim(0)*geom_->dim(1);
 	GsTLInt inxy = node_id % max_nxy; 
 	GsTLInt k = (node_id - inxy)/max_nxy; 
@@ -499,7 +500,7 @@ RGrid::iterator RGrid::begin( GsTLGridProperty* prop ) {
   if( !prop )
     property = property_manager_.selected_property();
 
-  return iterator( this, property, 0, grid_cursor_.max_index(),  
+  return iterator( this, property, 0, grid_cursor_->max_index(),  
 		               LinearMapIndex() ); 
 } 
  
@@ -510,7 +511,7 @@ RGrid::iterator RGrid::end( GsTLGridProperty* prop ) {
     property = property_manager_.selected_property();
 
   return iterator( this, property,
-               	   grid_cursor_.max_index(), grid_cursor_.max_index(), 
+               	   grid_cursor_->max_index(), grid_cursor_->max_index(), 
 	                 LinearMapIndex() ); 
 } 
  
@@ -520,7 +521,7 @@ RGrid::const_iterator RGrid::begin( const GsTLGridProperty* prop ) const {
   if( !prop )
     property = property_manager_.selected_property();
 
-  return const_iterator( this, property, 0, grid_cursor_.max_index(),  
+  return const_iterator( this, property, 0, grid_cursor_->max_index(),  
 		               LinearMapIndex() ); 
 } 
  
@@ -531,14 +532,14 @@ RGrid::const_iterator RGrid::end( const GsTLGridProperty* prop ) const {
     property = property_manager_.selected_property();
 
   return const_iterator( this, property,
-               	   grid_cursor_.max_index(), grid_cursor_.max_index(), 
+               	   grid_cursor_->max_index(), grid_cursor_->max_index(), 
 	                 LinearMapIndex() ); 
 } 
  
  
 inline RGrid::random_path_iterator 
 RGrid::random_path_begin( GsTLGridProperty* prop ) { 
-  if( int(grid_path_.size()) != grid_cursor_.max_index() )  
+  if( int(grid_path_.size()) != grid_cursor_->max_index() )  
     init_random_path(); 
  
   GsTLGridProperty* property = prop;
@@ -546,13 +547,13 @@ RGrid::random_path_begin( GsTLGridProperty* prop ) {
     property = property_manager_.selected_property();
 
   return random_path_iterator( this, property, 
-	                  		       0, grid_cursor_.max_index(),  
+	                  		       0, grid_cursor_->max_index(),  
 		                           TabularMapIndex(&grid_path_) ); 
 } 
  
 inline RGrid::random_path_iterator 
 RGrid::random_path_end( GsTLGridProperty* prop ) { 
-  if( int(grid_path_.size()) != grid_cursor_.max_index() )  
+  if( int(grid_path_.size()) != grid_cursor_->max_index() )  
     init_random_path(); 
  
   GsTLGridProperty* property = prop;

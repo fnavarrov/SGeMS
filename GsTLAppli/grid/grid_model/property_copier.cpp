@@ -506,7 +506,7 @@ bool Pset_to_mask_copier::copy( const Geostat_grid* server,
    for( int i=0; i < server_prop->size() ; i++ ) {
 	   l = from_grid->location(i);
 	   id = int(l[2])*xy/o[0]+int(l[1])*nx/o[1]+int(l[0])/o[2];
-	   if (!to_grid->isActive(id)) continue;
+	   if (!to_grid->is_inside_mask(id)) continue;
 	  if( server_prop->is_informed( i ) ) 
 		  client_prop->set_value( server_prop->get_value( i ), to_grid->full2reduced(id) );
 	  else if(overwrite_)

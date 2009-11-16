@@ -70,6 +70,16 @@ public:
 		set_multigrid_level(1); 
 	} 
 
+	void setDims( GsTLInt nx, GsTLInt ny, GsTLInt nz ) 
+	{ 
+		max_dim_[0] = nx; 
+		max_dim_[1] = ny; 
+		max_dim_[2] = nz; 
+		max_nxy_ = nx * ny; 
+		use_anistropic_ = false;
+		set_multigrid_level(1); 
+	} 
+
 	/** Constructor. 
 	* @param nx, ny and nz are the number of cells of the grid in the x,y and z 
 	* directions 
@@ -268,7 +278,7 @@ public:
 	
 	/** Returns the number of cells in the current coarse grid. 
 	*/ 
-	GsTLInt max_index() const { return max_index_; } 
+	virtual GsTLInt max_index() const { return max_index_; } 
 	
 	
 	/** checks if a point in the current multigrid can have coordinate 
