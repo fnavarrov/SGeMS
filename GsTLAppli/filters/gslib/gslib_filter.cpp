@@ -953,7 +953,7 @@ bool Gslib_outfilter::writeReduced2Cartesian( std::ofstream& outfile, const Geos
 
 	if (!rgrid) return false;
 
-	int nb_properties = property_names.size()+1; // for the mask column
+	int nb_properties = property_names.size();
 
 	outfile << nb_properties << std::endl;
 
@@ -1015,10 +1015,10 @@ bool Gslib_outfilter::write( std::ofstream& outfile, const Geostat_grid* grid ) 
   std::list<std::string> & property_names = _list_to_write;
   //std::list<std::string> property_names = grid->property_list();
   std::vector< const GsTLGridProperty* > properties;
-
+/*
   if (_maskToRegular)
 	  return writeReduced2Cartesian(outfile, grid);
-
+*/
   bool output_locations = false;
   int nb_properties = property_names.size();
 
@@ -1078,7 +1078,7 @@ bool Gslib_outfilter::write( std::ofstream& outfile, const Geostat_grid* grid ) 
       if( properties[j]->is_informed( i ) )
         outfile << properties[j]->get_value( i ) << " ";
       else
-        outfile << "-9999 ";
+        outfile << GsTLGridProperty::no_data_value;
 	
     }
 	
