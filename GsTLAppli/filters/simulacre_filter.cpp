@@ -387,7 +387,6 @@ Simulacre_output_filter::~Simulacre_output_filter() {
 
 bool Simulacre_output_filter::write( std::string outfile, const Geostat_grid* grid, 
                                      std::string* errors ) {
- Reduced_grid rg;
   QFile file( outfile.c_str() );
   if( !file.open( QIODevice::WriteOnly ) ) {
     if( errors ) 
@@ -409,10 +408,9 @@ bool Simulacre_output_filter::write( std::string outfile, const Geostat_grid* gr
   std::string name = grid_manager->name( (Named_interface*) grid ).c_str();
   stream << name.c_str();
 
-  // TL modified
-  if (grid->classname() == rg.classname()) 
-	return write_reduced_grid(stream, grid);
 
+  if ( dynamic_cast<const Reduced_grid*>( grid ) ) 
+  	return write_reduced_grid(stream, grid);
   if( dynamic_cast< const Point_set* >( grid ) )
     return write_pointset( stream, grid );
   if( dynamic_cast< const Cartesian_grid* >( grid ) )
@@ -478,7 +476,20 @@ bool Simulacre_output_filter::write_reduced_grid( QDataStream& stream,
 				stream << (float) GsTLGridProperty::no_data_value;
 		}
 	}
+  std::list< std::string > region_names = grid->region_list();
+  if(!region_names.empty()) {
+    stream << (quint32)region_names.size();
+    std::list< std::string >::iterator it_name  = region_names.begin();
 
+    for( ; it_name != region_names.end(); ++it_name) 
+      stream << it_name->c_str();
+    
+    for( it_name  = region_names.begin() ; it_name != region_names.end(); ++it_name) {
+      const GsTLGridRegion* region = grid->region(*it_name);
+      for(GsTLGridRegion::const_iterator it=region->begin(); it!=region->end(); ++it) 
+        stream << (bool)(*it); 
+    }
+  }
 	return true;
 }
 
