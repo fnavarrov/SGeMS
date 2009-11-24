@@ -220,6 +220,16 @@ float Gslib_input_mgrid_dialog::Oz() const{
   return val.toFloat();
 }
 
+float Gslib_input_mgrid_dialog::nx() const{
+  return nx_->value();
+}
+float Gslib_input_mgrid_dialog::ny() const{
+  return ny_->value();
+}
+float Gslib_input_mgrid_dialog::nz() const{
+  return nz_->value();
+}
+
 QString Gslib_input_mgrid_dialog::name() const {
   return name_->text();
 }
@@ -233,6 +243,12 @@ int Gslib_input_mgrid_dialog::Y_column() const {
 int Gslib_input_mgrid_dialog::Z_column() const {
   return Z_col_->value();
 }
+
+int Gslib_input_mgrid_dialog::mask_column() const {
+  return mask_col_->value();
+}
+
+
 
 bool Gslib_input_mgrid_dialog::use_no_data_value() const {
   return use_no_data_value_->isChecked();

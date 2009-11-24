@@ -150,8 +150,8 @@ class FILTERS_DECL Gslib_mgrid_infilter : public Gslib_specialized_infilter {
   Gslib_mgrid_infilter( const Gslib_mgrid_infilter& ); 
   Gslib_mgrid_infilter& operator=( const Gslib_mgrid_infilter& ); 
 
-  Geostat_grid * readRegular(std::ifstream& infile,Reduced_grid *);
-  Geostat_grid * readPointset(std::ifstream& infile,Reduced_grid *);
+  Geostat_grid * readRegularGridFormat(std::ifstream& infile,Reduced_grid *);
+  Geostat_grid * readPointsetFormat(std::ifstream& infile,Reduced_grid *);
   bool read_one_realization( std::ifstream& infile, 
                              const std::vector<GsTLGridProperty*>& props,
                              Reduced_grid * grid);

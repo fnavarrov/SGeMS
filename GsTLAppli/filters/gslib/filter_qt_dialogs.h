@@ -85,7 +85,8 @@ class FILTERS_DECL Gslib_input_mgrid_dialog : public QWidget, public Ui::GslibMa
 	Q_OBJECT
 public:
     Gslib_input_mgrid_dialog( QWidget* parent , const char* name = 0 ); 
-	bool is_ijk() { return is_ijk_coords_->isChecked(); }
+//	bool is_ijk() { return is_ijk_coords_->isChecked(); }
+    bool is_xyz_file() { return is_xyz_locations_->isChecked(); }
 
 	/// Cell dimensions 
 	float x_size() const; 
@@ -97,12 +98,18 @@ public:
 	float Oy() const; 
 	float Oz() const; 
 
+	/// Number of pixels
+	float nx() const; 
+	float ny() const; 
+	float nz() const; 
+
 	/// name of the grid 
 	QString name() const; 
 
 	int X_column() const; 
 	int Y_column() const; 
 	int Z_column() const; 
+  int mask_column() const;
 
 
 	// no data value
