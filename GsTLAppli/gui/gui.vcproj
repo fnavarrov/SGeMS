@@ -137,7 +137,7 @@
 				Name="VCCLCompilerTool"
 				AdditionalOptions="-Zm300 -w34100 -w34189 -Zm300 -w34100 -w34189 -w34100 -w34189"
 				Optimization="2"
-				AdditionalIncludeDirectories="&quot;$(PYTHONDIR)\include&quot;;&quot;$(SGEMS_BUILD)\GsTL&quot;;&quot;$(SGEMS_BUILD)\GsTLAppli-qt4&quot;;&quot;D:\code-dev\boost\boost_1_38\&quot;;&quot;$(QTDIR)\include\QtCore&quot;;&quot;$(QTDIR)\include\QtGui&quot;;&quot;$(QTDIR)\include\QDesigner&quot;;&quot;$(QTDIR)\include\QtOpenGL&quot;;&quot;$(QTDIR)\include\QtXml&quot;;&quot;$(QTDIR)\include&quot;;.;.moc;&quot;$(COINDIR)\include&quot;;&quot;$(COINDIR)\build\msvc9\include&quot;;&quot;$(SGEMS_BUILD)\SoQT\build\msvc9\src&quot;;&quot;$(SGEMS_BUILD)\SoQT\src&quot;;&quot;$(SGEMS_BUILD)\SIMVoleon\build\msvc9\lib&quot;;&quot;$(SGEMS_BUILD)\SIMVoleon\lib&quot;"
+				AdditionalIncludeDirectories="&quot;$(PYTHONDIR)\include&quot;;&quot;$(SGEMS_BUILD)\GsTL&quot;;&quot;$(SGEMS_BUILD)\GsTLAppli-qt4&quot;;&quot;$(SGEMS_BUILD)\boost\boost_1_38&quot;;&quot;$(QTDIR)\include\QtCore&quot;;&quot;$(QTDIR)\include\QtGui&quot;;&quot;$(QTDIR)\include\QDesigner&quot;;&quot;$(QTDIR)\include\QtOpenGL&quot;;&quot;$(QTDIR)\include\QtXml&quot;;&quot;$(QTDIR)\include&quot;;.;.moc;&quot;$(COINDIR)\include&quot;;&quot;$(COINDIR)\build\msvc9\include&quot;;&quot;$(SGEMS_BUILD)\SoQT\build\msvc9\src&quot;;&quot;$(SGEMS_BUILD)\SoQT\src&quot;;&quot;$(SGEMS_BUILD)\SIMVoleon\build\msvc9\lib&quot;;&quot;$(SGEMS_BUILD)\SIMVoleon\lib&quot;"
 				PreprocessorDefinitions="QT_NO_PLUGIN_CHECK; QT_NO_DEBUG;NDEBUG;_WINDOWS;UNICODE;WIN32;QT_LARGEFILE_SUPPORT;GUI_EXPORTS;QT_DLL;QT_XML_LIB;QT_OPENGL_LIB;QT_GUI_LIB;QT_CORE_LIB;QT_THREAD_SUPPORT;GSTLAPPLI_NDEBUG;SOQT_DLL;COIN_DLL;SIMVOLEON_DLL;QWT_DLL"
 				GeneratePreprocessedFile="0"
 				ExceptionHandling="1"
@@ -892,7 +892,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="MOC appli\object_tree_context_menu.h"
-						CommandLine="$(QTDIR)\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DGUI_EXPORTS -DQT_DLL -DQT_XML_LIB -DQT_OPENGL_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -I&quot;$(QTDIR)\include\QtCore&quot; -I&quot;$(QTDIR)\include\QtCore&quot; -I&quot;$(QTDIR)\include\QtGui&quot; -I&quot;$(QTDIR)\include\QtGui&quot; -I&quot;$(QTDIR)\include\QtOpenGL&quot; -I&quot;$(QTDIR)\include\QtOpenGL&quot; -I&quot;$(QTDIR)\include\QtXml&quot; -I&quot;$(QTDIR)\include\QtXml&quot; -I&quot;$(QTDIR)\include&quot; -I&quot;.&quot; -I&quot;oinv_description&quot; -I&quot;utils&quot; -I&quot;variogram2&quot;  -I&quot;$(QTDIR)\include\ActiveQt&quot; -I&quot;.moc&quot; -I&quot;.&quot; -I$(QTDIR)\mkspecs\win32-msvc.net -D_MSC_VER=1300 -DWIN32 appli\object_tree_context_menu.h -o .moc\moc_object_tree_context_menu.cpp"
+						CommandLine="$(QTDIR)\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DGUI_EXPORTS -DQT_DLL -DQT_XML_LIB -DQT_OPENGL_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -I&quot;$(QTDIR)\include\QtCore&quot; -I&quot;$(QTDIR)\include\QtCore&quot; -I&quot;$(QTDIR)\include\QtGui&quot; -I&quot;$(QTDIR)\include\QtGui&quot; -I&quot;$(QTDIR)\include\QtOpenGL&quot; -I&quot;$(QTDIR)\include\QtOpenGL&quot; -I&quot;$(QTDIR)\include\QtXml&quot; -I&quot;$(QTDIR)\include\QtXml&quot; -I&quot;$(QTDIR)\include&quot; -I&quot;.&quot; -I&quot;oinv_description&quot; -I&quot;utils&quot; -I&quot;variogram2&quot;  -I&quot;$(QTDIR)\include\ActiveQt&quot; -I&quot;.moc&quot; -I&quot;.&quot; -I$(QTDIR)\mkspecs\win32-msvc.net -D_MSC_VER=1300 -DWIN32 appli\object_tree_context_menu.h -o .moc\moc_object_tree_context_menu.cpp&#x0D;&#x0A;"
 						AdditionalDependencies="$(QTDIR)\bin\moc.exe;appli\object_tree_context_menu.h"
 						Outputs=".moc\moc_object_tree_context_menu.cpp"
 					/>
@@ -1679,10 +1679,10 @@
 				>
 			</File>
 			<File
-				RelativePath="debug\qrc_icons.cpp"
+				RelativePath="release\qrc_icons.cpp"
 				>
 				<FileConfiguration
-					Name="Release|Win32"
+					Name="Debug|Win32"
 					ExcludedFromBuild="true"
 					>
 					<Tool
@@ -1691,10 +1691,10 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="release\qrc_icons.cpp"
+				RelativePath="debug\qrc_icons.cpp"
 				>
 				<FileConfiguration
-					Name="Debug|Win32"
+					Name="Release|Win32"
 					ExcludedFromBuild="true"
 					>
 					<Tool
