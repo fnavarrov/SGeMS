@@ -64,39 +64,18 @@ public:
 	// new methods
 	// this is based on point set read function
 
-	void setConversionPair(int orig, int masked) {
-		reduced2original_[masked] = orig;
-		original2reduced_[orig] = masked;
-		mask_[orig]  = true;
-	}
-	
+
 	void insertLocation(GsTLGridNode loc){
 		active_coords_.push_back(loc);
 	}
 
-//	void setMaskName(std::string & s) { _maskColumn = s; }
-
-	//void initMaskedGrid(bool regular);
-
 	void copyStructure(const Reduced_grid *);
 
-
-	// read IJK-format input from a file
-	bool populate(QDataStream& stream, std::vector< char* > & prop_names);
 
 	// returns nx*ny*nz
 	GsTLInt rgrid_size() const;
 
-
-	// from id to cell location
-//	inline GsTLGridNode ijkValue(int node_id) const;
 	inline bool is_inside_mask(int idInFullGrid) const ;
-/*
-	// construct a vector of active cell coordinates(IJK's)
-	void buildIJK();
-*/
-	// return the vector of coordinates
-//	const std::vector<GsTLGridNode> & psIJK() const;
 
 	// given a node id in full grid, return the corresponding id in masked grid
 	// returns -1 if not applicable.
@@ -120,6 +99,7 @@ public:
 
   bool add_location(int i, int j, int k);
   bool add_location(GsTLCoord x, GsTLCoord y, GsTLCoord z);
+  bool Reduced_grid::add_location(int CartesianGridNodeId);
 
 
   const std::vector<bool>& mask() const;
@@ -169,18 +149,13 @@ protected:
 	// stores coordinates of active cells
 	std::vector<GsTLGridNode> active_coords_;
 
-	// name of the mask column in a cartesian grid
-	std::string _maskColumn;
-
-//	EGridCursor* grid_cursor_;  // overrides parent
-
 	// mask for active cells
 	std::vector<bool> mask_;
 
 	// number of active cells
 	GsTLInt active_size_;
 
-  MaskedGridCursor* grid_cursor_;
+  MaskedGridCursor* mgrid_cursor_;
 
   protected :
 

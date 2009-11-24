@@ -152,49 +152,11 @@ void Reduced_grid::copyStructure(const Reduced_grid * from)
 	reduced2original_ = from->reduced2original_;
 	original2reduced_ = from->original2reduced_;
 	active_coords_ = from->active_coords_;
-	_maskColumn = from->_maskColumn;
-	grid_cursor_ = from->grid_cursor_;
+	mgrid_cursor_ = from->mgrid_cursor_;
+  grid_cursor_ = from->grid_cursor_;
 	active_size_ = from->active_size_;
 
 	mask_ = from->mask_;
-}
-
-
-bool Reduced_grid::populate(QDataStream& stream, std::vector< char* > & prop_names)
-{
-	int i,j;
-
-	for (i = 0; i < geometry_->size(); ++i)
-		mask_[i] = false;
-
-	int nxy = geometry_->dim(0)*geometry_->dim(1);
-	for (i = 0; i < active_size_; ++i) {
-		int x,y,z,index;
-		stream >> x >> y >> z; // these are really i,j,k values
-		index = z*nxy+y*geometry_->dim(0)+x;
-
-		mask_[index] = true;
-		reduced2original_[i] = index;
-		original2reduced_[index] = i;
-		active_coords_.push_back(GsTLGridNode(x,y,z));	
-	}
-
-	grid_cursor_ = new MaskedGridCursor(geometry_->dim(0),geometry_->dim(1),geometry_->dim(2),
-                                      &original2reduced_, &reduced2original_, &mask_);
-
-	for (i = 0; i < prop_names.size(); ++i) {
-		std::string prop_name = prop_names[i];
-		GsTLGridProperty * d = property_manager_.add_property(prop_name);
-
-		if (!d) return false;
-
-		for (j = 0; j < active_size_; ++j) {
-			float buf;
-			stream >> buf;
-			d->set_value(buf,j);
-		}
-	}
-	return true;
 }
 
 
@@ -202,37 +164,6 @@ bool Reduced_grid::populate(QDataStream& stream, std::vector< char* > & prop_nam
 GsTLInt Reduced_grid::rgrid_size() const {
 	return RGrid::size();
 }
-
-/*
-void Reduced_grid::buildIJK()
-{
-	int i;
-	if (mask_.empty()) return;
-	active_coords_.clear();
-	for (i = 0; i < active_size_; ++i) 
-		active_coords_.push_back(Reduced_grid::ijkValue(i));	
-}
-*/
-/*
-const std::vector<GsTLGridNode> & Reduced_grid::psIJK() const { 
-	return active_coords_;
-}
-*/
-/*
-void Reduced_grid::initMaskedGrid(bool regular) {
-	long int count = 0;
-	for (int i = 0; i < mask_.size(); ++i)
-		if (mask_[i] == true)
-			++count;
-	appli_assert(count);
-	active_size_ = count;
-	property_manager_.set_prop_size( active_size_ );
-	grid_cursor_ = new MaskedGridCursor(geometry_->dim(0),geometry_->dim(1),geometry_->dim(2),
-                                      &original2reduced_, &reduced2original_, &mask_);
-	if (regular)
-		buildIJK();
-}
-*/
 
 const int Reduced_grid::full2reduced(int idInFullGrid)	const {
 	std::map<int,int>::const_iterator itr = original2reduced_.find(idInFullGrid);
@@ -282,12 +213,12 @@ GsTLInt Reduced_grid::size() const {
 
 inline  
 const SGrid_cursor* Reduced_grid::cursor() const { 
-  return dynamic_cast<const SGrid_cursor*>(grid_cursor_); 
+  return dynamic_cast<const SGrid_cursor*>(mgrid_cursor_); 
 } 
 
 inline  
 SGrid_cursor* Reduced_grid::cursor() { 
-  return dynamic_cast<SGrid_cursor*>(grid_cursor_); 
+  return dynamic_cast<SGrid_cursor*>(mgrid_cursor_); 
 } 
 
 
@@ -319,14 +250,16 @@ void Reduced_grid::set_dimensions( int nx, int ny, int nz,
   geometry_->set_cell_dims( dims );
 
   mask_ = mask;
+  mgrid_cursor_ = new MaskedGridCursor(nx, ny, nz);
+  grid_cursor_ = dynamic_cast<SGrid_cursor*>(mgrid_cursor_);
   build_ijkmap_from_mask();
-
-  grid_cursor_ = new MaskedGridCursor(nx, ny, nz,
-                  &original2reduced_, &reduced2original_, &mask_ );
+	mgrid_cursor_->set_mask(&original2reduced_, &reduced2original_, &mask_ );
+//  mgrid_cursor_ = new MaskedGridCursor(nx, ny, nz,
+//                  &original2reduced_, &reduced2original_, &mask_ );
   
-  active_size_ == grid_cursor_->max_index();
-	property_manager_.set_prop_size( grid_cursor_->max_index() );
-  region_manager_.set_region_size( grid_cursor_->max_index() );
+  active_size_ = mgrid_cursor_->max_index();
+	property_manager_.set_prop_size( mgrid_cursor_->max_index() );
+  region_manager_.set_region_size( mgrid_cursor_->max_index() );
 }
 
 
@@ -338,7 +271,8 @@ void Reduced_grid::set_dimensions( int nx, int ny, int nz,
   Cartesian_grid::set_dimensions( nx, ny, nz );
   GsTLCoordVector dims( xsize, ysize, zsize );
   geometry_->set_cell_dims( dims );
-  grid_cursor_ = new MaskedGridCursor(nx, ny, nz);
+  mgrid_cursor_ = new MaskedGridCursor(nx, ny, nz);
+  grid_cursor_ = dynamic_cast<SGrid_cursor*>(mgrid_cursor_);
 
 }
 
@@ -346,23 +280,35 @@ void Reduced_grid::mask( const std::vector<GsTLGridNode>& ijkCoords)
 {
 
   build_mask_from_ijk(ijkCoords);
-  grid_cursor_->set_mask(&original2reduced_, &reduced2original_, &mask_ );
+  mgrid_cursor_->set_mask(&original2reduced_, &reduced2original_, &mask_ );
 
-  active_size_ == grid_cursor_->max_index();
-	property_manager_.set_prop_size( grid_cursor_->max_index() );
-  region_manager_.set_region_size( grid_cursor_->max_index() );
+  active_size_ = mgrid_cursor_->max_index();
+	property_manager_.set_prop_size( mgrid_cursor_->max_index() );
+  region_manager_.set_region_size( mgrid_cursor_->max_index() );
 }
 
 void Reduced_grid::mask( const std::vector<location_type>& xyzCoords)
 {
   build_mask_from_xyz(xyzCoords);
-  grid_cursor_->set_mask(&original2reduced_, &reduced2original_, &mask_ );
+  mgrid_cursor_->set_mask(&original2reduced_, &reduced2original_, &mask_ );
 
-  active_size_ == grid_cursor_->max_index(); 
-	property_manager_.set_prop_size( grid_cursor_->max_index() );
-  region_manager_.set_region_size( grid_cursor_->max_index() );
+  active_size_ = mgrid_cursor_->max_index(); 
+	property_manager_.set_prop_size( mgrid_cursor_->max_index() );
+  region_manager_.set_region_size( mgrid_cursor_->max_index() );
 }
 
+
+void Reduced_grid::mask( const std::vector<bool>& grid_mask)
+{
+
+  mask_ = grid_mask;
+  build_ijkmap_from_mask();
+	mgrid_cursor_->set_mask(&original2reduced_, &reduced2original_, &mask_ );
+  
+  active_size_ = mgrid_cursor_->max_index();
+	property_manager_.set_prop_size( mgrid_cursor_->max_index() );
+  region_manager_.set_region_size( mgrid_cursor_->max_index() );
+}
 
 
 void Reduced_grid::set_dimensions( int nx, int ny, int nz,
@@ -373,14 +319,15 @@ void Reduced_grid::set_dimensions( int nx, int ny, int nz,
   Cartesian_grid::set_dimensions( nx, ny, nz );
   GsTLCoordVector dims( xsize, ysize, zsize );
   geometry_->set_cell_dims( dims );
-  grid_cursor_ = new MaskedGridCursor(nx, ny, nz);
+  mgrid_cursor_ = new MaskedGridCursor(nx, ny, nz);
+  grid_cursor_ = dynamic_cast<SGrid_cursor*>(mgrid_cursor_);
 
   build_mask_from_ijk(ijkCoords);
-	grid_cursor_->set_mask(&original2reduced_, &reduced2original_, &mask_ );
+	mgrid_cursor_->set_mask(&original2reduced_, &reduced2original_, &mask_ );
 
-  active_size_ == grid_cursor_->max_index();
-	property_manager_.set_prop_size( grid_cursor_->max_index() );
-  region_manager_.set_region_size( grid_cursor_->max_index() );
+  active_size_ = mgrid_cursor_->max_index();
+	property_manager_.set_prop_size( mgrid_cursor_->max_index() );
+  region_manager_.set_region_size( mgrid_cursor_->max_index() );
 }
 
 void Reduced_grid::set_dimensions( int nx, int ny, int nz,
@@ -393,15 +340,16 @@ void Reduced_grid::set_dimensions( int nx, int ny, int nz,
   GsTLCoordVector dims( xsize, ysize, zsize );
   geometry_->set_cell_dims( dims );
   this->origin( origin);
-  grid_cursor_ = new MaskedGridCursor(nx, ny, nz);
+  mgrid_cursor_ = new MaskedGridCursor(nx, ny, nz);
+  grid_cursor_ = dynamic_cast<SGrid_cursor*>(mgrid_cursor_);
 
 
   build_mask_from_xyz(xyzCoords);
-	grid_cursor_->set_mask(&original2reduced_, &reduced2original_, &mask_ );
+	mgrid_cursor_->set_mask(&original2reduced_, &reduced2original_, &mask_ );
 
-  active_size_ = grid_cursor_->max_index(); 
-	property_manager_.set_prop_size( grid_cursor_->max_index() );
-  region_manager_.set_region_size( grid_cursor_->max_index() );
+  active_size_ = mgrid_cursor_->max_index(); 
+	property_manager_.set_prop_size( mgrid_cursor_->max_index() );
+  region_manager_.set_region_size( mgrid_cursor_->max_index() );
 }
 
 
@@ -414,7 +362,7 @@ void Reduced_grid::build_ijkmap_from_mask() {
 
   for( ; it!= mask_.end(); ++it, ++index) {
     if(!(*it) ) continue;
-    grid_cursor_->cartesian_coords(index,i,j,k);
+    mgrid_cursor_->cartesian_coords(index,i,j,k);
     reduced2original_[m_index] = index;
     original2reduced_[index] = m_index;
     m_index++;
@@ -430,7 +378,7 @@ void Reduced_grid::build_mask_from_ijk(
   mask_.clear();
   mask_.insert(mask_.begin(),geometry_->size(),false);
   for( ; it != ijkCoords.end() ; ++it ) {
-    int index = grid_cursor_->cartesian_node_id(it->x(),it->y(),it->z());
+    int index = mgrid_cursor_->cartesian_node_id(it->x(),it->y(),it->z());
     if(index >= 0) mask_[index] = true;
   }
   build_ijkmap_from_mask();
@@ -446,7 +394,7 @@ void Reduced_grid::build_mask_from_xyz(
   GsTLGridNode ijk;
   for( ; it != xyzCoords.end() ; ++it ) {
     geometry_->grid_coordinates(ijk,*it);
-    int index = grid_cursor_->cartesian_node_id(ijk[0],ijk[1],ijk[2]);
+    int index = mgrid_cursor_->cartesian_node_id(ijk[0],ijk[1],ijk[2]);
     if(index >= 0) mask_[index] = true;
   }
   build_ijkmap_from_mask();
@@ -459,6 +407,15 @@ bool Reduced_grid::add_location(int i, int j, int k)
   int index = cursor->node_id(i,j,k);
   if(index < 0) return false ;
   mask_[index] = true;
+  active_size_++;
+  return true;
+}
+
+bool Reduced_grid::add_location(int CartesianGridNodeId)
+{
+  if(active_size_ >= this->size()) return false;
+  if(CartesianGridNodeId < 0) return false ;
+  mask_[CartesianGridNodeId] = true;
   active_size_++;
   return true;
 }
