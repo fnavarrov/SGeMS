@@ -125,7 +125,7 @@ void SinglePropertyContextMenu::onPythonSciptAction(QAction* _action) {
 	SmartPtr<Named_interface> ni = Root::instance()->interface(python_script_manager + "/" + String_Op::qstring2string(_action->text()));
 	Python_script* script = dynamic_cast<Python_script*> (ni.raw_ptr());
 	appli_assert( script );
-
+//  script->filename();
 	script->execute();
 }
 

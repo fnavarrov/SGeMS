@@ -92,7 +92,7 @@ class Octant_search_filter : public Search_filter{
        coord_transform_ = new CoordTransform(1.,1.,1.,alpha,beta,theta);
       else coord_transform_  = NULL;
       octant_registrar_.clear();
-      octant_registrar_.insert(octant_registrar_.begin(),0,8);
+      octant_registrar_.insert(octant_registrar_.begin(),8,0);
     }
 
     Octant_search_filter(const Octant_search_filter& o) {
@@ -119,7 +119,7 @@ class Octant_search_filter : public Search_filter{
       octant_id octant(delta_d[0] >= 0.,delta_d[1] >= 0.,delta_d[2] >= 0.);
 
       //Find the index in the array
-      int id = int(octant[0]) + int(octant[0])*2 +int(octant[0])*4;
+      int id = int(octant[0]) + int(octant[1])*2 +int(octant[2])*4;
       if(octant_registrar_[id] >= max_per_octant_) return false;
       octant_registrar_[id]++;
 
@@ -158,7 +158,7 @@ class Octant_search_filter : public Search_filter{
 
     virtual void clear() { 
       octant_registrar_.clear(); 
-      octant_registrar_.insert(octant_registrar_.begin(),0,8);
+      octant_registrar_.insert(octant_registrar_.begin(),8,0);
     }
     
 

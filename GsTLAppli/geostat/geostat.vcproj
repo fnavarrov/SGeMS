@@ -136,7 +136,7 @@
 				Name="VCCLCompilerTool"
 				AdditionalOptions="-Zm300 -w34100 -w34189 -Zm300 -w34100 -w34189 -w34100 -w34189"
 				Optimization="2"
-				AdditionalIncludeDirectories="&quot;$(PYTHONDIR)\include&quot;;&quot;$(SGEMS_BUILD)\GsTL&quot;;&quot;$(SGEMS_BUILD)\GsTLAppli-qt4&quot;;&quot;D:\code-dev\boost\boost_1_38\&quot;;&quot;$(QTDIR)\include\QtCore&quot;;&quot;$(QTDIR)\include\QtGui&quot;;&quot;$(QTDIR)\include&quot;;.;filtersim_std;snesim_std;&quot;$(QTDIR)\include\ActiveQt&quot;;release"
+				AdditionalIncludeDirectories="&quot;$(PYTHONDIR)\include&quot;;&quot;$(SGEMS_BUILD)\GsTL&quot;;&quot;$(SGEMS_BUILD)\GsTLAppli-qt4&quot;;&quot;$(SGEMS_BUILD)\boost\boost_1_38\&quot;;&quot;$(QTDIR)\include\QtCore&quot;;&quot;$(QTDIR)\include\QtGui&quot;;&quot;$(QTDIR)\include&quot;;.;filtersim_std;snesim_std;&quot;$(QTDIR)\include\ActiveQt&quot;;release"
 				PreprocessorDefinitions="GSTL_NDEBUG;GSTLAPPLI_NDEBUG;WIN32;NDEBUG;_WINDOWS;_USRDLL;UNICODE;QT_DLL;SOQT_DLL;COIN_DLL;SIMVOLEON_DLL;QWT_DLL;GEOSTAT_EXPORTS;QT_THREAD_SUPPORT;QT_NO_DEBUG;QT_LARGEFILE_SUPPORT;QT_GUI_LIB;QT_CORE_LIB"
 				GeneratePreprocessedFile="0"
 				ExceptionHandling="1"
@@ -432,11 +432,11 @@
 				>
 			</File>
 			<File
-				RelativePath="snesim_std\is_categorical.h"
+				RelativePath="filtersim_std\is_categorical.h"
 				>
 			</File>
 			<File
-				RelativePath="filtersim_std\is_categorical.h"
+				RelativePath="snesim_std\is_categorical.h"
 				>
 			</File>
 			<File

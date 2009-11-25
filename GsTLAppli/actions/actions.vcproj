@@ -4,6 +4,7 @@
 	Version="9.00"
 	Name="GsTLAppli_actions"
 	ProjectGUID="{E233AC09-9720-4890-9327-C731778C1360}"
+	RootNamespace="GsTLAppli_actions"
 	Keyword="Qt4VSv1.0"
 	TargetFrameworkVersion="131072"
 	>
@@ -46,7 +47,7 @@
 				Name="VCCLCompilerTool"
 				AdditionalOptions="-Zm300 -w34100 -w34189 -Zm300 -w34100 -w34189 -w34100 -w34189"
 				Optimization="4"
-				AdditionalIncludeDirectories="&quot;$(SGEMS_BUILD)\GsTL&quot;;&quot;$(SGEMS_BUILD)\GsTLAppli-qt4&quot;;&quot;D:\code-dev\boost\boost_1_38\&quot;;&quot;$(QTDIR)\include\QtCore&quot;;&quot;$(QTDIR)\include\QtGui&quot;;&quot;$(QTDIR)\include&quot;;.;&quot;$(QTDIR)\include\ActiveQt&quot;;debug;&quot;$(PYTHONDIR)\include&quot;"
+				AdditionalIncludeDirectories="&quot;$(SGEMS_BUILD)\GsTL&quot;;&quot;$(SGEMS_BUILD)\GsTLAppli-qt4&quot;;&quot;$(SGEMS_BUILD)\boost\boost_1_38\&quot;;&quot;$(QTDIR)\include\QtCore&quot;;&quot;$(QTDIR)\include\QtGui&quot;;&quot;$(QTDIR)\include&quot;;.;&quot;$(QTDIR)\include\ActiveQt&quot;;debug;&quot;$(PYTHONDIR)\include&quot;"
 				PreprocessorDefinitions="_WINDOWS;UNICODE;WIN32;QT_LARGEFILE_SUPPORT;ACTIONS_EXPORTS;QT_DLL;_DEBUG;_USRDLL;SOQT_DLL;COIN_DLL;QWT_DLL;QT_THREAD_SUPPORT;QT_GUI_LIB;QT_CORE_LIB"
 				GeneratePreprocessedFile="0"
 				ExceptionHandling="1"
@@ -136,7 +137,7 @@
 				Name="VCCLCompilerTool"
 				AdditionalOptions="-Zm300 -w34100 -w34189 -Zm300 -w34100 -w34189 -w34100 -w34189"
 				Optimization="2"
-				AdditionalIncludeDirectories="&quot;$(SGEMS_BUILD)\GsTL&quot;;&quot;$(SGEMS_BUILD)\GsTLAppli-qt4&quot;;&quot;D:\code-dev\boost\boost_1_38\&quot;;&quot;$(QTDIR)\include\QtCore&quot;;&quot;$(QTDIR)\include\QtGui&quot;;&quot;$(QTDIR)\include&quot;;.;&quot;$(QTDIR)\include\ActiveQt&quot;;release;&quot;$(PYTHONDIR)\include&quot;"
+				AdditionalIncludeDirectories="&quot;$(SGEMS_BUILD)\GsTL&quot;;&quot;$(SGEMS_BUILD)\GsTLAppli-qt4&quot;;&quot;$(SGEMS_BUILD)\boost\boost_1_38\&quot;;&quot;$(QTDIR)\include\QtCore&quot;;&quot;$(QTDIR)\include\QtGui&quot;;&quot;$(QTDIR)\include&quot;;.;&quot;$(QTDIR)\include\ActiveQt&quot;;release;&quot;$(PYTHONDIR)\include&quot;"
 				PreprocessorDefinitions="GSTLAPPLI_NDEBUG,QT_NO_DEBUG,NDEBUG,_WINDOWS,UNICODE,WIN32,QT_LARGEFILE_SUPPORT,ACTIONS_EXPORTS,QT_DLL,QT_NO_DEBUG,QT_GUI_LIB,QT_CORE_LIB,QT_THREAD_SUPPORT"
 				GeneratePreprocessedFile="0"
 				ExceptionHandling="1"
@@ -226,6 +227,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\python_script.cpp"
+				>
+			</File>
+			<File
 				RelativePath="python_wrapper.cpp"
 				>
 			</File>
@@ -269,6 +274,10 @@
 			</File>
 			<File
 				RelativePath="python_commands.h"
+				>
+			</File>
+			<File
+				RelativePath=".\python_script.h"
 				>
 			</File>
 			<File

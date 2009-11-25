@@ -51,6 +51,7 @@ void MgridNeighborhood::find_neighbors( const Geovalue& center )
   appli_assert(_mcursor);
 
   neighbors_.clear();
+  neigh_filter_->clear();
   if( !property_ ) return;
 
   center_ = center;
@@ -81,18 +82,20 @@ void MgridNeighborhood::find_neighbors( const Geovalue& center )
     node_id = center.node_id();  
 
 		
-	appli_message("center node id : " << center.node_id() << ", loc: " << loc[0] <<
-		"," << loc[1] << "," << loc[2] << ". Id: " << _mcursor->node_id(loc[0],loc[1],loc[2]) 
-		<<  "\n");
+//	appli_message("center node id : " << center.node_id() << ", loc: " << loc[0] <<
+//		"," << loc[1] << "," << loc[2] << ". Id: " << _mcursor->node_id(loc[0],loc[1],loc[2]) 
+//		<<  "\n");
 	
   }
 
-  
   if( includes_center_ && property_->is_informed( node_id ) ) {
-    neighbors_.push_back( Geovalue( grid_, property_, node_id ) );
-    already_found++;
+    Geovalue gval( grid_, property_, node_id );
+    if(neigh_filter_->is_admissible(gval, center)) {
+      neighbors_.push_back( gval );
+      already_found++;
+    }
   }
- 
+  
   
   // Visit each node defined by the window ("geom_")
   // For each node, check if the node is inside the grid.
@@ -115,12 +118,16 @@ void MgridNeighborhood::find_neighbors( const Geovalue& center )
     if( property_->is_informed( node_id ) ) {
       // The node is informed: get the corresponding geovalue and add it
       // to the list of neighbors
-      neighbors_.push_back( Geovalue( grid_, property_, node_id ) );
-      already_found++;
+      Geovalue gval( grid_, property_, node_id );
+      if(neigh_filter_->is_admissible(gval, center)) {
+        neighbors_.push_back( gval );
+        already_found++;
+      }
     }
 
     it++;
   }
+   if(!neigh_filter_->is_neighborhood_valid()) neighbors_.clear();
 }
 
 MgridNeighborhood_hd::MgridNeighborhood_hd( RGrid* grid, 

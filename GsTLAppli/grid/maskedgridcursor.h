@@ -75,15 +75,15 @@ public:
 
 
 	MaskedGridCursor(GsTLInt nx, GsTLInt ny, GsTLInt nz)
-  : SGrid_cursor(), full2reduced_(NULL), reduced2full_(NULL), mask_(NULL), active_size_(0){ 
-    this->setDims(nx,ny,nz);
+  : SGrid_cursor(nx,ny,nz), full2reduced_(NULL), reduced2full_(NULL), mask_(NULL), active_size_(0){ 
+//    this->setDims(nx,ny,nz);
 	}
 
 	MaskedGridCursor(GsTLInt nx, GsTLInt ny, GsTLInt nz, 
         std::map<int,int> *full2masked, std::map<int,int> * masked2full, 
         std::vector<bool> * mask, GsTLInt level = 1, bool use_anistropic=false)
-        :SGrid_cursor(){ 
-    this->setDims(nx,ny,nz);
+        :SGrid_cursor(nx,ny,nz){ 
+ //   this->setDims(nx,ny,nz);
     this->set_mask(full2masked,masked2full,mask);
 	}
 
@@ -104,7 +104,8 @@ public:
 		full2reduced_ = orr; 
 		reduced2full_ = ro;
 		active_size_ = reduced2full_->size();
-    max_size_ = max_index_ = active_size_;
+    SGrid_cursor::max_index_ = active_size_;
+    SGrid_cursor::max_size_ = active_size_;
 		mask_ = p;
 	}
 

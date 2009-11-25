@@ -291,8 +291,8 @@ void Lib_initializer::load_action_plugins() {
 	const QFileInfoList list = dir.entryInfoList();
 
 	if (list.empty()) {
-		GsTLlog << "No action plugin could be found.\n" << "Check that environment variable GSTLAPPLIHOME is set to " << "where SGeMS was installed\n"
-				<< "or that directory plugins/actions actually contains plugins\n" << gstlIO::end;
+//		GsTLlog << "No action plugin could be found.\n" << "Check that environment variable GSTLAPPLIHOME is set to " << "where SGeMS was installed\n"
+//				<< "or that directory plugins/actions actually contains plugins\n" << gstlIO::end;
 		return;
 	}
 
@@ -350,9 +350,10 @@ void Lib_initializer::load_python_scripts() {
 	dir.setNameFilters(filters);
 	dir.setFilter(QDir::Files);
 	const QFileInfoList list = dir.entryInfoList();
+
 	if (list.empty()) {
-		GsTLcerr << "No python scripts could be found.\n" << "Check that environment variable GSTLAPPLIHOME is set to " << "where SGeMS was installed\n"
-				<< "or that directory plugins/ " + mng->plugin_path() + " contains python script files \n" << gstlIO::end;
+//		GsTLcerr << "No python scripts could be found.\n" << "Check that environment variable GSTLAPPLIHOME is set to " << "where SGeMS was installed\n"
+//				<< "or that directory plugins/ " + mng->plugin_path() + " contains python script files \n" << gstlIO::end;
 		return;
 	}
 

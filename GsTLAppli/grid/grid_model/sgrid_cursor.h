@@ -70,7 +70,7 @@ public:
 		set_multigrid_level(1); 
 	} 
 
-	void setDims( GsTLInt nx, GsTLInt ny, GsTLInt nz ) 
+	virtual void setDims( GsTLInt nx, GsTLInt ny, GsTLInt nz ) 
 	{ 
 		max_dim_[0] = nx; 
 		max_dim_[1] = ny; 
@@ -284,14 +284,14 @@ public:
 	/** checks if a point in the current multigrid can have coordinate 
 	* i in direction dir. 
 	*/ 
-	bool check_coord( SGrid_cursor::Dir dir, GsTLInt i ) const { 
+	virtual bool check_coord( SGrid_cursor::Dir dir, GsTLInt i ) const { 
 		return ( (i >= 0) && (i < max_iter_[dir]) ); 
 	} 
 	
 	/** Checks if (i,j,k) is are valid coordinates in the current  
 	* multigrid. 
 	*/ 
-	bool check_triplet( GsTLInt i, GsTLInt j, GsTLInt k) const 
+	virtual bool check_triplet( GsTLInt i, GsTLInt j, GsTLInt k) const 
 	{ 
 		if(!check_coord(X, i)) return false;  
 		if(!check_coord(Y, j)) return false;  
@@ -302,7 +302,7 @@ public:
 	
 	/** checks if node "id" belongs to the current multigrid. 
 	*/ 
-	GsTLBool check_node_id( GsTLInt id ) const 
+	virtual GsTLBool check_node_id( GsTLInt id ) const 
 	{ 
 		GsTLInt inxy = id % max_nxy_; 
 		GsTLInt k = (id - inxy)/max_nxy_; 

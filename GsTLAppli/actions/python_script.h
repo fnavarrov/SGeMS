@@ -2,8 +2,9 @@
 #define PYTHON_SCRIPT_H_
 
 #include <GsTLAppli/utils/named_interface.h>
+#include <GsTLAppli/actions/common.h>
 
-class Python_script: public Named_interface {
+class ACTIONS_DECL Python_script: public Named_interface {
 public:
 	static Named_interface* create_new_interface(std::string&);
 
