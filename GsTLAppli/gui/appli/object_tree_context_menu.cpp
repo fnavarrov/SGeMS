@@ -94,7 +94,7 @@ SinglePropertyContextMenu::SinglePropertyContextMenu(ObjectTree* _object_tree, Q
 			action_.push_back(addSeparator());
 			QMenu* python_script_menu = addMenu("Python Scripts");
 			nested_menu_.push_back(python_script_menu);
-			QObject::connect(python_script_menu, SIGNAL(triggered(QAction*)), this, SLOT(onPythonSciptAction(QAction*)));
+			QObject::connect(python_script_menu, SIGNAL(triggered(QAction*)), this, SLOT(onPythonScriptAction(QAction*)));
 
 			Manager::interface_iterator begin = manager->begin_interfaces();
 			Manager::interface_iterator end = manager->end_interfaces();
