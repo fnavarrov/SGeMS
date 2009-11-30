@@ -99,7 +99,7 @@ public:
 
   bool add_location(int i, int j, int k);
   bool add_location(GsTLCoord x, GsTLCoord y, GsTLCoord z);
-  bool Reduced_grid::add_location(int CartesianGridNodeId);
+  bool add_location(int CartesianGridNodeId);
 
 
   const std::vector<bool>& mask() const;
