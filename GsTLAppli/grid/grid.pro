@@ -9,7 +9,7 @@ INCLUDEPATH += . grid_model
 
 # Input
 HEADERS += common.h \
-           egridcursor.h \
+           maskedgridcursor.h \
            library_grid_init.h \
            mgrid_neighborhood.h \
            grid_model/cartesian_grid.h \
