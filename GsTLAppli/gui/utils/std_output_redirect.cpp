@@ -2,6 +2,7 @@
 
 #include <qtextedit.h>
 #include <QChar>
+#include <libio.h>
 
 GsTLbuf::GsTLbuf( QTextEdit* text_edit, int bsize)
   : std::streambuf(), text_edit_( text_edit ) {
