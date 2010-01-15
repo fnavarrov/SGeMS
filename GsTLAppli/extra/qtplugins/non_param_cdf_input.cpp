@@ -21,6 +21,10 @@ TailCdfInput::TailCdfInput(QWidget* parent, const char* name)
   if (name)
     setObjectName(name);
 
+//  QVBoxLayout * layout = new QVBoxLayout;
+//  this->setLayout(layout);
+
+ 
   QGridLayout* main_layout = new QGridLayout( this);
   main_layout->setRowStretch( 0, 0 );
   main_layout->setRowStretch( 1, 0 );
@@ -28,22 +32,32 @@ TailCdfInput::TailCdfInput(QWidget* parent, const char* name)
 
   QLabel* function_label = new QLabel( "Function", this);
 
-
-
   function_type = new QComboBox( this);
   function_type->setEditable(false);
+
+//  layout->addWidget( function_label );
+//  layout->addWidget( function_type );
+
   main_layout->addWidget( function_label, 0, 0 );
   main_layout->addWidget( function_type, 1, 0 );
   main_layout->setColumnStretch( 1, 6 );
 
   min_max_label_ = new QLabel( this);
   extremeValue = new QLineEdit( this);
+
+//  layout->addWidget( min_max_label_);
+// layout->addWidget( extremeValue);
+
   main_layout->addWidget( min_max_label_, 0, 2 );
   main_layout->addWidget( extremeValue, 1, 2 );
   main_layout->setColumnStretch( 3, 6 );
 
   omega_label = new QLabel( "omega", this);
   omega = new QLineEdit( this);
+//  layout->addWidget( omega_label);
+//  layout->addWidget( omega );
+
+  
   main_layout->addWidget( omega_label, 0, 4 );
   main_layout->addWidget( omega, 1, 4 );
 
@@ -133,17 +147,13 @@ NonParamCdfInput::NonParamCdfInput( QWidget* parent, const char* name)
 : QWidget(parent) {
 
   QVBoxLayout* main_layout = new QVBoxLayout( this );
+  main_layout->setSpacing(1);
 
   if (name) {
 	  this->setObjectName(name);
   }
 
-  /*
-  QGroupBox* options_group = 
-    new QGroupBox( 2, Qt::Horizontal, "Reference distribution from:",
-                      this, "options" );
-  */
-  
+
   QGroupBox * options_group = new QGroupBox( "Reference distribution from:",this);
 
   QHBoxLayout * hbox = new QHBoxLayout;
@@ -160,6 +170,8 @@ NonParamCdfInput::NonParamCdfInput( QWidget* parent, const char* name)
   break_ties = 
     new QRadioButton( "Break ties", this);
 
+
+
   Line_separator* file_sep = 
     new Line_separator( "File with ref. distribution", this, "filesep" );
 	refFileChooser = new FileChooser( this, "refFilename" );
@@ -167,14 +179,19 @@ NonParamCdfInput::NonParamCdfInput( QWidget* parent, const char* name)
   Line_separator* prop_sep = 
     new Line_separator( "Property with ref. distribution", this, "propsep" );  
   refPropSelector = new PropertySelector( this, "refGrid" );
-  refPropSelector->setMinimumHeight( 180 );
+ // refPropSelector->setMinimumHeight( 180 );
 
-  Line_separator* lti_sep = 
-    new Line_separator( "Lower Tail Extrapolation", this, "ltisep" );
-	LTI = new LowerTailCdfInput( this, "LTI_type" );
 
-  Line_separator* uti_sep = 
-    new Line_separator( "Upper Tail Extrapolation", this, "utisep" );  
+
+//  Line_separator* lti_sep = 
+//    new Line_separator( "Lower Tail Extrapolation", this, "ltisep" );
+  QLabel* lti_sep = new QLabel("Lower Tail Extrapolation",this);
+
+  LTI = new LowerTailCdfInput( this, "LTI_type" );
+
+//  Line_separator* uti_sep = 
+//    new Line_separator( "Upper Tail Extrapolation", this, "utisep" );  
+  QLabel* uti_sep = new QLabel("Upper Tail Extrapolation",this);
 	UTI = new UpperTailCdfInput( this, "UTI_type" );
 
   main_layout->addWidget( options_group );
@@ -188,19 +205,15 @@ NonParamCdfInput::NonParamCdfInput( QWidget* parent, const char* name)
 //  main_layout->addSpacing( 8 );
 
   main_layout->addWidget( lti_sep );
- // main_layout->addSpacing( 6 );
   main_layout->addWidget( LTI );
-//  main_layout->addSpacing( 10 );
 
   main_layout->addWidget( uti_sep );
-//  main_layout->addSpacing( 6 );
   main_layout->addWidget( UTI );
 
-  this->setLayout( main_layout );
-  this->setMinimumHeight(550);
+  main_layout->addStretch();
 
-//  main_layout->setStretchFactor( LTI, 0 );
-//  main_layout->setStretchFactor( UTI, 0 );
+  this->setLayout( main_layout );
+  this->setMaximumHeight(480);
 
   QObject::connect( from_file, SIGNAL( toggled(bool) ),
                     file_sep, SLOT( setShown(bool) ) );
