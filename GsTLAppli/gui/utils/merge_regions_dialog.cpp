@@ -41,7 +41,7 @@
 #include <QtGui/QPushButton>
 #include <QtGui/QSpacerItem>
 #include <QtGui/QVBoxLayout>
-
+#include <QtGui/QRadioButton>
 
 
 
@@ -63,6 +63,7 @@ Merge_regions_dialog( GsTL_project* proj, QWidget* parent, const char* name )
   QGroupBox* grid_box = new QGroupBox( this);
   QGroupBox* new_region_box = new QGroupBox( this);
   QGroupBox* regions_selector_box = new QGroupBox( this);
+  QGroupBox* combining_type_box = new QGroupBox( this);
   
   QVBoxLayout *vg = new QVBoxLayout(grid_box);
   QVBoxLayout *vr = new QVBoxLayout(new_region_box);
@@ -84,6 +85,15 @@ Merge_regions_dialog( GsTL_project* proj, QWidget* parent, const char* name )
   vrs->addWidget(choice_list_ );
   regions_selector_box->setLayout( vrs );
 
+  QHBoxLayout* ht = new QHBoxLayout(combining_type_box);
+  unionRegionButton_ = new QRadioButton("Union (At least one true)",combining_type_box);
+  intersectionRegionButton_ = new QRadioButton("Intersection (All true)",combining_type_box);
+  ht->addWidget(unionRegionButton_);
+  ht->addWidget(intersectionRegionButton_);
+
+  unionRegionButton_->setChecked( true );
+  intersectionRegionButton_->setChecked( false );
+  combining_type_box->setLayout(ht);
 
 
   QHBoxLayout* bottom_layout = new QHBoxLayout( this);
@@ -99,6 +109,7 @@ Merge_regions_dialog( GsTL_project* proj, QWidget* parent, const char* name )
   main_layout->addWidget( new_region_box );
   main_layout->addStretch();
   main_layout->addWidget( regions_selector_box );
+  main_layout->addWidget( combining_type_box );
   main_layout->addStretch();
   main_layout->addLayout( bottom_layout );
 
@@ -111,8 +122,11 @@ Merge_regions_dialog( GsTL_project* proj, QWidget* parent, const char* name )
   QObject::connect( cancel, SIGNAL( clicked() ),
                     this, SLOT( reject() ) );
 
+  QObject::connect( unionRegionButton_, SIGNAL( toggled() ),
+                    intersectionRegionButton_, SLOT( toggled() ) );
 
-
+    QObject::connect( intersectionRegionButton_, SIGNAL( toggled() ),
+                    unionRegionButton_, SLOT( toggled() ) );
 
 /*
 
@@ -142,12 +156,15 @@ Merge_regions_dialog( GsTL_project* proj, QWidget* parent, const char* name )
 */
 }
 
+bool Merge_regions_dialog::is_union() const {
+  return unionRegionButton_->isChecked();
+}
 
 QString Merge_regions_dialog::selected_grid() const {
   return grid_selector_->currentText();
 }
 
-QStringList Merge_regions_dialog::selected_items() {
+QStringList Merge_regions_dialog::selected_items() const {
   QStringList list;
   for( unsigned int i = 0; i < choice_list_->count() ; i++ ) {
     if( choice_list_->item(i)->isSelected() && !choice_list_->item(i)->text().isEmpty() ) 
@@ -157,7 +174,7 @@ QStringList Merge_regions_dialog::selected_items() {
   return list;
 }
 
-QString Merge_regions_dialog::new_region_name() {
+QString Merge_regions_dialog::new_region_name() const {
   return merged_region_->text();
   //return name;
 }

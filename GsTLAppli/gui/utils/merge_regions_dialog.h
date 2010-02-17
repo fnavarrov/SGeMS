@@ -45,7 +45,7 @@
 #include <qdialog.h>
 
 
-
+class QRadioButton;
 class MultiRegionSelector;
 class GridSelectorBasic;
 class GsTL_project;
@@ -62,13 +62,17 @@ public:
   virtual ~Merge_regions_dialog() {}
 
   QString selected_grid() const;
-  QStringList selected_items();
-  QString new_region_name();
+  QStringList selected_items() const;
+  QString new_region_name() const;
+  bool Merge_regions_dialog::is_union() const;
   
 protected:
   GridSelectorBasic* grid_selector_;
   MultiRegionSelector* choice_list_;
   QLineEdit *merged_region_;
+  QRadioButton *unionRegionButton_;
+  QRadioButton *intersectionRegionButton_;
+
 };
 QT_END_NAMESPACE
 #endif
