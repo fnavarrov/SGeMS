@@ -40,6 +40,7 @@
 #include <GsTLAppli/gui/utils/delete_regions_dialog.h>
 #include <GsTLAppli/gui/utils/merge_regions_dialog.h>
 #include <GsTLAppli/gui/utils/new_region_from_property_dialog.h>
+#include <GsTLAppli/gui/utils/new_mgrid_from_cgrid_dialog.h>
 #include <GsTLAppli/gui/utils/script_editor.h>
 #include <GsTLAppli/gui/utils/qdirdialog.h>
 #include <GsTLAppli/gui/appli/qt_sp_application.h>
@@ -232,6 +233,8 @@ void QSP_application::init_menu_bar() {
   QMenu* objects = menuBar()->addMenu(tr("&Objects"));
   objects->addAction( "New Cartesian Grid", this, 
 		                   SLOT( new_cartesian_grid() ), Qt::CTRL+Qt::Key_N );
+  objects->addAction( "New Masked Grid From Cartesian Grid", this, 
+		                   SLOT( new_mgrid_from_cgrid() ), Qt::CTRL+Qt::Key_M );
   objects->addAction( "Load Object", this, SLOT( load_object() ), Qt::CTRL+Qt::Key_L );
   objects->addSeparator();
   objects->addAction( "Save Object", this, SLOT( save_object() ) );
@@ -1224,14 +1227,15 @@ void QSP_application::merge_object_regions() {
   QStringList names = dialog->selected_items();
   QString grid_name = dialog->selected_grid();
   QString new_region_name = dialog->new_region_name();
-  merge_object_regions( grid_name, new_region_name, names );
+  merge_object_regions( grid_name, new_region_name, names, dialog->is_union() );
 }
 
 
 
 void QSP_application::merge_object_regions( const QString& qgrid_name,
                                            const QString& new_region_name,
-                                           const QStringList& region_names ) {
+                                           const QStringList& region_names,
+                                           bool is_union) {
   if( qgrid_name.isEmpty() || region_names.empty() || new_region_name.isEmpty()) return;
 
 
@@ -1247,7 +1251,10 @@ void QSP_application::merge_object_regions( const QString& qgrid_name,
   // call the DeleteObjectProperties action
   Error_messages_handler error_messages;
 
-  std::string command( "MergeObjectRegions" );
+  std::string command;
+  if( is_union ) command = "MergeObjectRegionsUnion";
+  else command = "MergeObjectRegionsIntersection";
+
   bool ok = project_->execute( command, parameters, &error_messages );
 
   if( !ok ) {
@@ -1321,7 +1328,58 @@ void QSP_application::new_region_from_property( const QString& qgrid_name,
 
 
 }
+//==========================================================
 
+void QSP_application::new_mgrid_from_cgrid() {
+  New_mgrid_from_cgrid_dialog* dialog = 
+    new New_mgrid_from_cgrid_dialog( project_, this, "Create masked grid from cartesian grid" );
+  dialog->setWindowTitle( "Create New Masked Grid" );
+  if( dialog->exec() == QDialog::Rejected ) return;
+
+  QString grid_name = dialog->selected_grid();
+  QString new_mgrid_name = dialog->new_mgrid_name();
+  QStringList regions_name = dialog->selected_regions();
+
+
+  new_mgrid_from_cgrid( grid_name, regions_name, new_mgrid_name );
+}
+
+
+void QSP_application::new_mgrid_from_cgrid(const QString& cgrid_name,
+                             const QStringList& region_names,
+                             const QString& new_mgrid_name) {
+
+  if( cgrid_name.isEmpty() || region_names.isEmpty() || new_mgrid_name.isEmpty()) return;
+  
+  QApplication::setOverrideCursor( Qt::WaitCursor );
+
+  QString sep = Actions::separator.c_str();
+  QStringList list;
+  list.append( cgrid_name );
+  list.append( new_mgrid_name );
+  list.append( region_names );
+  
+  std::string parameters = std::string( qstring2string(list.join( sep )) );
+  if( parameters.empty() ) return;
+
+  // call the CreateMgridFromCgrid action
+  Error_messages_handler error_messages;
+
+  std::string command( "CreateMgridFromCgrid" );
+  bool ok = project_->execute( command, parameters, &error_messages );
+
+  if( !ok ) {
+    GsTLcerr << "Command " << command << " could not be performed. \n";
+    if( !error_messages.empty() ) {
+      GsTLcerr << error_messages.errors();
+    }
+    GsTLcerr << gstlIO::end;
+  }
+  
+  QApplication::restoreOverrideCursor();
+  project_->update();
+
+}
 
 
 //==========================================================
