@@ -958,7 +958,7 @@ void set_advanced_search( Neighborhood* neigh,
 			                    const Parameters_handler* parameters,
                           Error_messages_handler* errors ) {
 
-Search_filter* filter = set_advanced_search(tag_name,
+  Search_filter* filter = set_advanced_search(tag_name,
 			                    parameters,errors );
 
   if(filter) neigh->search_neighborhood_filter(filter);

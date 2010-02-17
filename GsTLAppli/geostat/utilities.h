@@ -295,19 +295,19 @@ namespace geostat_utils {
    * be retrieved 
    * @param errors is where possible errors are reported 
    */ 
-void set_advanced_search( Neighborhood* neigh,
+  GEOSTAT_DECL void set_advanced_search( Neighborhood* neigh,
                                    const std::string& tag_name,
 			                             const Parameters_handler* parameters,
                                    Error_messages_handler* errors );
 
 
-void set_advanced_search( NeighborhoodHandle neigh,
+  GEOSTAT_DECL void set_advanced_search( NeighborhoodHandle neigh,
                                    const std::string& tag_name,
 			                             const Parameters_handler* parameters,
                                    Error_messages_handler* errors );
 
 
-Search_filter* set_advanced_search( const std::string& tag_name,
+  GEOSTAT_DECL Search_filter* set_advanced_search( const std::string& tag_name,
 			                             const Parameters_handler* parameters,
                                    Error_messages_handler* errors );
 
@@ -322,6 +322,8 @@ Search_filter* set_advanced_search( const std::string& tag_name,
   * cdf can later be used to back-transform the data.
   * The newly created property is returned.
   */
+
+  
   template < class InputIterator, class Cdf >
   GsTLGridProperty* gaussian_transform_property( InputIterator original_distribution_begin,
                                                  InputIterator original_distribution_end,
@@ -361,6 +363,7 @@ Search_filter* set_advanced_search( const std::string& tag_name,
   * cdf can later be used to back-transform the data.
   * The newly created property is returned.
   */
+  
   template < class Cdf >
   GsTLGridProperty* gaussian_transform_property( GsTLGridProperty* original_prop,
                                                  Cdf& original_cdf,
@@ -388,7 +391,8 @@ Search_filter* set_advanced_search( const std::string& tag_name,
   }
 
 //This function transform the informed nodes from the source
-// cdf to the target cdf												 
+// cdf to the target cdf	
+
 template<class Cdf1, class Cdf2>
 void cdf_transform( GsTLGridProperty* prop, Cdf1 cdf_source, Cdf2 cdf_target )
 {
@@ -407,6 +411,7 @@ void cdf_transform( GsTLGridProperty* prop, Cdf1 cdf_source, Cdf2 cdf_target )
   * If all the values are not strictly greater than 0, they are reset to a slightly
   * greater than 0 value.
   */
+  
   template< class T >
   bool is_valid_range_triplet( T& major, T& medium, T& minor ) {
     bool is_sorted = ( major >= medium ) && ( medium >= minor );
@@ -427,11 +432,11 @@ void cdf_transform( GsTLGridProperty* prop, Cdf1 cdf_source, Cdf2 cdf_target )
     return is_valid_range_triplet( triplet[0], triplet[1], triplet[2] );
   }
 
-bool get_non_param_cdf( NonParametricCdfType& cdf_non_param,
+  GEOSTAT_DECL bool get_non_param_cdf( NonParametricCdfType& cdf_non_param,
 					              const Parameters_handler* parameters, 
 				                Error_messages_handler* errors, std::string tag_name);
 
-bool set_cdf_extrapolation_tail( const Parameters_handler* parameters,
+  GEOSTAT_DECL bool set_cdf_extrapolation_tail( const Parameters_handler* parameters,
 	                               Error_messages_handler* errors,
                                  Non_param_cdf<>& nparam_cdf,
 	                               const std::string& LTI_str, 

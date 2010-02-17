@@ -432,11 +432,11 @@
 				>
 			</File>
 			<File
-				RelativePath="filtersim_std\is_categorical.h"
+				RelativePath="snesim_std\is_categorical.h"
 				>
 			</File>
 			<File
-				RelativePath="snesim_std\is_categorical.h"
+				RelativePath="filtersim_std\is_categorical.h"
 				>
 			</File>
 			<File
