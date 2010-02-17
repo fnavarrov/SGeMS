@@ -22,7 +22,7 @@ public:
 
 	virtual bool init(std::string& parameters, GsTL_project* proj, Error_messages_handler* errors);
 	virtual bool exec();
-	virtual bool transform(const Geovalue::property_type& _val, Geovalue::property_type& _new_val) = 0;
+  virtual bool transform(const Geovalue::property_type& _val, Geovalue::property_type& _new_val){return true;}
 
 protected:
 	std::string name_;

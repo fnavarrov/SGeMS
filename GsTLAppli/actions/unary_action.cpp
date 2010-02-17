@@ -67,15 +67,14 @@ bool Unary_action::exec() {
 	for (; property_begin != property_end; ++property_begin, ++new_property_begin) {
 		if(!property_begin->is_informed()) continue;
 		Geovalue::property_type new_prop_value = 0.0;
-		if (false == this->transform(property_begin->property_value(), new_prop_value)) {
+    bool ok = this->transform(property_begin->property_value(), new_prop_value);
+		if ( ok ) 
+      new_property_begin->set_property_value(new_prop_value);
+    else 
 			new_property_begin->set_not_informed();
-		}
-		new_property_begin->set_property_value(new_prop_value);
 	}
 	return true;
 }
-
-
 
 
 
@@ -129,8 +128,16 @@ bool Unit_scaling_transform_action::init(std::string& _parameters, GsTL_project*
 
   GsTLGridProperty* prop = this->grid_->select_property(this->property_name_);
 
-  min_ = *( std::min_element(prop->begin(), prop->end()) );
-  max_ = *( std::max_element(prop->begin(), prop->end()) );
+  GsTLGridProperty::const_iterator it = prop->begin();
+  min_ = 9e20;
+  max_ = -9e20;
+  for( ; it != prop->end(); ++it ){
+    if(*it < min_) min_ = *it;
+    else if(*it > max_) max_ = *it;
+  }
+
+//  min_ = *( std::min_element(prop->begin(), prop->end()) );
+//  max_ = *( std::max_element(prop->begin(), prop->end()) );
 
   if(min_ == max_) return false;
 

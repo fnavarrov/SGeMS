@@ -1156,7 +1156,7 @@ Set_region_from_property::create_new_interface( std::string& ) {
 
 
 //================================================
-/* MergeRegions grid_name::newRegion::region1::region2...
+/* Base class for combining regions
 */
 bool Merge_regions::init( std::string& parameters, GsTL_project* proj,
                               Error_messages_handler* errors ) {
@@ -1166,17 +1166,18 @@ bool Merge_regions::init( std::string& parameters, GsTL_project* proj,
 
   if( params.size() < 4 ) return true;
 
+  grid_name_ = params[0];
+
   SmartPtr<Named_interface> grid_ni =
-    Root::instance()->interface( gridModels_manager + "/" + params[0] );
+    Root::instance()->interface( gridModels_manager + "/" + grid_name_ );
   Geostat_grid* grid = dynamic_cast<Geostat_grid*>( grid_ni.raw_ptr() );
   if( !grid ) {
     std::ostringstream message;
-    message << "No grid called \"" << params[0] << "\" was found";
+    message << "No grid called \"" << grid_name_ << "\" was found";
     errors->report( message.str() ); 
     return false;
   }
 
-  std::vector<GsTLGridRegion*> regions;
   for( unsigned int i = 2 ; i < params.size() ; i++ ) {
     GsTLGridRegion* region = grid->region( params[i] );
     if(region == NULL ) {
@@ -1185,27 +1186,17 @@ bool Merge_regions::init( std::string& parameters, GsTL_project* proj,
       errors->report( message.str() ); 
       return false;
     }
-    regions.push_back( grid->region( params[i]) );
+    regions_.push_back( grid->region( params[i]) );
   }
   
-  GsTLGridRegion* new_region = grid->add_region(params[1]);
+  
+  new_region_ = grid->add_region(params[1]);
+  proj_ = proj;
 
-  for( unsigned int i = 0 ; i < new_region->size() ; i++ ) {
-    new_region->set_region_value( false, i );
-    for( unsigned int j = 0 ; j < regions.size() ; j++ ) {
-      if( regions[j]->is_inside_region( i ) ) {
-        new_region->set_region_value( true, i );
-        continue;
-      }
-    }
-    
-  }
-
-  proj->update( params[0] );
   return true;
 }
 
-
+/*
 bool Merge_regions::exec() {
   return true;
 }
@@ -1214,7 +1205,56 @@ bool Merge_regions::exec() {
 Named_interface* Merge_regions::create_new_interface( std::string& ) {
   return new Merge_regions; 
 }
+*/
+//================================================
+/* MergeRegionsUnion grid_name::newRegion::region1::region2...
+* Initilize through the base class Merge_regions
+*/
 
+
+bool Merge_regions_union::exec() {
+  for( unsigned int i = 0 ; i < new_region_->size() ; i++ ) {
+    new_region_->set_region_value( false, i );
+    for( unsigned int j = 0 ; j < regions_.size() ; j++ ) {
+      if( regions_[j]->is_inside_region( i ) ) {
+        new_region_->set_region_value( true, i );
+        continue;
+      }
+    }
+    
+  }
+
+  proj_->update( grid_name_ );
+  return true;
+}
+Named_interface* Merge_regions_union::create_new_interface( std::string& ) {
+  return new Merge_regions_union; 
+}
+
+//================================================
+/* MergeRegionsUnion grid_name::newRegion::region1::region2...
+* Initilize through the base class Merge_regions
+*/
+
+
+bool Merge_regions_intersection::exec() {
+  for( unsigned int i = 0 ; i < new_region_->size() ; i++ ) {
+    new_region_->set_region_value( true, i );
+    for( unsigned int j = 0 ; j < regions_.size() ; j++ ) {
+      if( !regions_[j]->is_inside_region( i ) ) {
+        new_region_->set_region_value( false, i );
+        continue;
+      }
+    }
+    
+  }
+
+  proj_->update( grid_name_ );
+  return true;
+}
+Named_interface* Merge_regions_intersection::create_new_interface( std::string& ) {
+  return new Merge_regions_intersection; 
+}
 
 
 //================================================

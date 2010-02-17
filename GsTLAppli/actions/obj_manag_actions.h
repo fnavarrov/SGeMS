@@ -408,8 +408,8 @@ class ACTIONS_DECL Set_region_from_property: public Action {
 
 
 class ACTIONS_DECL Merge_regions : public Action { 
- public: 
-  static Named_interface* create_new_interface( std::string& ); 
+// public: 
+//  static Named_interface* create_new_interface( std::string& ); 
  
  public: 
   Merge_regions() {} 
@@ -417,10 +417,46 @@ class ACTIONS_DECL Merge_regions : public Action {
  
   virtual bool init( std::string& parameters, GsTL_project* proj,
                      Error_messages_handler* errors ); 
-  virtual bool exec(); 
+  virtual bool exec() = 0; 
+
+protected : 
+  std::vector<GsTLGridRegion*> regions_;
+  GsTLGridRegion* new_region_;
+  std::string grid_name_;
+  GsTL_project* proj_;
 
 }; 
 
+class ACTIONS_DECL Merge_regions_union : public Merge_regions { 
+ public: 
+  static Named_interface* create_new_interface( std::string& ); 
+ 
+ public: 
+  Merge_regions_union() {} 
+  virtual ~Merge_regions_union() {}
+ /*
+  virtual bool init( std::string& parameters, GsTL_project* proj,
+                     Error_messages_handler* errors );
+                     */
+  virtual bool exec(); 
+
+};
+
+
+class ACTIONS_DECL Merge_regions_intersection : public Merge_regions { 
+ public: 
+  static Named_interface* create_new_interface( std::string& ); 
+ 
+ public: 
+   Merge_regions_intersection() {} 
+  virtual ~Merge_regions_intersection() {}
+ /*
+  virtual bool init( std::string& parameters, GsTL_project* proj,
+                     Error_messages_handler* errors );
+                     */
+  virtual bool exec(); 
+
+};
 
 class ACTIONS_DECL Set_region_complement : public Action { 
  public: 

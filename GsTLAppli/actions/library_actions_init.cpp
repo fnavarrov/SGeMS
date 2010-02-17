@@ -43,6 +43,7 @@
 #include <GsTLAppli/utils/gstl_messages.h>
 #include <GsTLAppli/actions/unary_action.h>
 #include <GsTLAppli/actions/python_script.h>
+#include <GsTLAppli/actions/maskedgrid_actions.h>
 
 void init_python_interpreter();
 
@@ -122,11 +123,13 @@ bool library_actions_init::bind_action_factories(Manager* dir) {
 	dir->factory("SetActiveRegion", Set_active_region::create_new_interface);
 	dir->factory("SetHarddata", Set_hard_data::create_new_interface);
 	dir->factory("DeleteObjectRegions", Delete_regions::create_new_interface);
-	dir->factory("MergeObjectRegions", Merge_regions::create_new_interface);
+	dir->factory("MergeObjectRegionsUnion", Merge_regions_union::create_new_interface);
+  dir->factory("MergeObjectRegionsIntersection", Merge_regions_intersection::create_new_interface);
 	dir->factory("SetRegionFromComplement", Set_region_complement::create_new_interface);
 	dir->factory("SetRegionFromPropertyIf", Set_region_from_property::create_new_interface);
 	dir->factory("ClearPropertyValueFromProperty", Clear_property_value_from_property::create_new_interface);
 	dir->factory("CreateTrend", Create_trend::create_new_interface);
+  dir->factory("CreateMgridFromCgrid", Create_mgrid_from_cgrid::create_new_interface);
 
 	// algorithm related actions
 	dir->factory("RunGeostatAlgorithm", Run_geostat_algo::create_new_interface);

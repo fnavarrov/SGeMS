@@ -419,6 +419,130 @@ static PyObject* sgems_get_property_list( PyObject *self, PyObject *args)
 }
 
 
+static PyObject* sgems_get_location( PyObject *self, PyObject *args)
+{
+	Geostat_grid *grid;
+	char * obj_str;
+  int  nodeid;
+
+	if( !PyArg_ParseTuple(args, "si", &obj_str, &nodeid) )
+		return NULL;
+
+	std::string object(obj_str);
+
+	SmartPtr<Named_interface> grid_ni =
+		Root::instance()->interface( gridModels_manager + "/" + object );
+	grid = dynamic_cast<Geostat_grid*>( grid_ni.raw_ptr() );
+	if( !grid ) {
+		*GsTLAppli_Python_cerr::instance() << object << " does not exist" << gstlIO::end;
+		Py_INCREF(Py_None);
+		return Py_BuildValue("[]");
+	}
+  if(nodeid <0 || nodeid >= grid->size())	{
+    *GsTLAppli_Python_cerr::instance() << "The nodeid must be betwee 0 and "<<grid->size() << gstlIO::end;
+		Py_INCREF(Py_None);
+		return Py_BuildValue("[]");
+	}
+  Geostat_grid::location_type loc = grid->location( nodeid );
+
+  PyObject *list = PyList_New(3);
+  PyList_SetItem(list, 0, PyFloat_FromDouble(loc.x()) );
+  PyList_SetItem(list, 1, PyFloat_FromDouble(loc.y()) );
+  PyList_SetItem(list, 2, PyFloat_FromDouble(loc.z()) );
+
+	return list;
+}
+
+
+static PyObject* sgems_get_nodeid( PyObject *self, PyObject *args)
+{
+	Geostat_grid *grid;
+	char * obj_str;
+  double  x;
+  double  y;
+  double  z;
+
+	if( !PyArg_ParseTuple(args, "sddd", &obj_str, &x,&y,&z) )
+		return NULL;
+
+	std::string object(obj_str);
+
+	SmartPtr<Named_interface> grid_ni =
+		Root::instance()->interface( gridModels_manager + "/" + object );
+	grid = dynamic_cast<Geostat_grid*>( grid_ni.raw_ptr() );
+	if( !grid ) {
+		*GsTLAppli_Python_cerr::instance() << object << " does not exist" << gstlIO::end;
+		Py_INCREF(Py_None);
+		return Py_BuildValue("[]");
+	}
+  RGrid* rgrid = dynamic_cast<RGrid*>(grid);
+  int nodeid  = -1;
+  if(rgrid) {
+    // TODO this code will return the closest node.  Need exact match
+    GsTLPoint origin = rgrid->location(0);
+    x = (x -origin.x() )/rgrid->geometry()->cell_dims()[0];
+    y =(y -origin.y() )/rgrid->geometry()->cell_dims()[1];
+    z = (z -origin.z() )/rgrid->geometry()->cell_dims()[2];
+    if( GsTL::floor( x ) == x && GsTL::floor( y ) == y && GsTL::floor( z ) == z) {
+      int i = (x -origin.x() )/rgrid->geometry()->cell_dims()[0];
+      int j = (y -origin.y() )/rgrid->geometry()->cell_dims()[1];
+      int k = (z -origin.z() )/rgrid->geometry()->cell_dims()[2];
+      nodeid = k*rgrid->geometry()->dim(0)*rgrid->geometry()->dim(1) + j*rgrid->geometry()->dim(0) + i;
+    }
+    else nodeid =-1;
+    
+  }
+  else { // we have a point set
+    for( int i = 0; i<grid->size(); i++) {
+      Geostat_grid::location_type loc = grid->location(i);
+      if( loc.x() == x && loc.y() == y && loc.z() == z ) {
+        nodeid = i;
+        break;
+      }
+    }
+  }
+
+/*
+  if(nodeid <0 )	{
+    *GsTLAppli_Python_cerr::instance() << "Could not find location ("<<x <<","<<y<<","<<z<<")"<<gstlIO::end;
+		Py_INCREF(Py_None);
+	}
+*/
+	return Py_BuildValue("i",nodeid);
+}
+
+
+static PyObject* sgems_get_closest_nodeid( PyObject *self, PyObject *args)
+{
+	Geostat_grid *grid;
+	char * obj_str;
+  double  x;
+  double  y;
+  double  z;
+
+	if( !PyArg_ParseTuple(args, "sddd", &obj_str, &x,&y,&z) )
+		return NULL;
+
+	std::string object(obj_str);
+
+	SmartPtr<Named_interface> grid_ni =
+		Root::instance()->interface( gridModels_manager + "/" + object );
+	grid = dynamic_cast<Geostat_grid*>( grid_ni.raw_ptr() );
+	if( !grid ) {
+		*GsTLAppli_Python_cerr::instance() << object << " does not exist" << gstlIO::end;
+		Py_INCREF(Py_None);
+		return Py_BuildValue("[]");
+	}
+  int nodeid = grid->closest_node(Geostat_grid::location_type(x,y,z));
+/*
+  if(nodeid <0 )	{
+    *GsTLAppli_Python_cerr::instance() << "Could not find closest location to ("<<x <<","<<y<<","<<z<<")"<<gstlIO::end;
+		Py_INCREF(Py_None);
+	}
+*/
+	return Py_BuildValue("i",nodeid);
+}
+
 static PyMethodDef SGemsMethods[] = {
     {"execute", sgems_execute, METH_VARARGS,
      "Return the number of arguments received by the process."},
@@ -437,6 +561,12 @@ static PyMethodDef SGemsMethods[] = {
     "Return the SGeMS value for NAN."},
     {"get_property_list", sgems_get_property_list, METH_VARARGS,
     "Return the list of property name in a grid."},
+    {"get_location", sgems_get_location, METH_VARARGS,
+    "Return the x,y,z location of a grid based on the nodeid."},
+    {"get_nodeid", sgems_get_nodeid, METH_VARARGS,
+    "Return the nodeid from a x,y,z location."},
+    {"get_closest_nodeid", sgems_get_closest_nodeid, METH_VARARGS,
+    "Return the closest nodeid from a x,y,z location."},
     {NULL, NULL, 0, NULL}
 };
 

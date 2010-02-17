@@ -215,6 +215,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\maskedgrid_actions.cpp"
+				>
+			</File>
+			<File
 				RelativePath="misc_actions.cpp"
 				>
 			</File>
@@ -262,6 +266,10 @@
 			</File>
 			<File
 				RelativePath="library_actions_init.h"
+				>
+			</File>
+			<File
+				RelativePath=".\maskedgrid_actions.h"
 				>
 			</File>
 			<File
