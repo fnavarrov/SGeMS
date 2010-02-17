@@ -304,6 +304,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\utils\new_mgrid_from_cgrid_dialog.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\utils\new_region_from_property_dialog.cpp"
 				>
 			</File>
@@ -856,6 +860,21 @@
 			<File
 				RelativePath="appli\new_cartesian_grid_dialog.h"
 				>
+			</File>
+			<File
+				RelativePath=".\utils\new_mgrid_from_cgrid_dialog.h"
+				>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="MOC utils\new_mgrid_from_cgrid_dialog.h"
+						CommandLine="$(QTDIR)\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DGUI_EXPORTS -DQT_DLL -DQT_NO_DEBUG -DQT_XML_LIB -DQT_OPENGL_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -I&quot;$(QTDIR)\include\QtCore&quot; -I&quot;$(QTDIR)\include\QtCore&quot; -I&quot;$(QTDIR)\include\QtGui&quot; -I&quot;$(QTDIR)\include\QtGui&quot; -I&quot;$(QTDIR)\include\QtOpenGL&quot; -I&quot;$(QTDIR)\include\QtOpenGL&quot; -I&quot;$(QTDIR)\include\QtXml&quot; -I&quot;$(QTDIR)\include\QtXml&quot; -I&quot;$(QTDIR)\include&quot; -I&quot;.&quot; -I&quot;oinv_description&quot; -I&quot;utils&quot; -I&quot;$(QTDIR)\include\ActiveQt&quot; -I&quot;.moc&quot; -I&quot;.&quot; -I$(QTDIR)\mkspecs\win32-msvc.net -D_MSC_VER=1300 -DWIN32 utils\new_mgrid_from_cgrid_dialog.h -o .moc\moc_new_mgrid_from_cgrid_dialog.cpp"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe;utils\new_mgrid_from_cgrid_dialog.h"
+						Outputs=".moc\moc_new_mgrid_from_cgrid_dialog.cpp"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath=".\utils\new_region_from_property_dialog.h"
@@ -1584,6 +1603,10 @@
 			</File>
 			<File
 				RelativePath=".moc\moc_multichoice_dialog.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\.moc\moc_new_mgrid_from_cgrid_dialog.cpp"
 				>
 			</File>
 			<File
