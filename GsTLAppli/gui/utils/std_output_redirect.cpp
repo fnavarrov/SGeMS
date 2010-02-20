@@ -2,7 +2,7 @@
 
 #include <qtextedit.h>
 #include <QChar>
-#include <libio.h>
+
 
 GsTLbuf::GsTLbuf( QTextEdit* text_edit, int bsize)
   : std::streambuf(), text_edit_( text_edit ) {
@@ -27,7 +27,7 @@ GsTLbuf::~GsTLbuf() {
 int GsTLbuf::overflow(int c) {
   put_buffer();
   
-  if (c != EOF)
+  if (c != 0)
     if (pbase() == epptr())
       put_char(c);
     else

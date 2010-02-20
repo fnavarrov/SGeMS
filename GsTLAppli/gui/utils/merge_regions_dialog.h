@@ -64,7 +64,7 @@ public:
   QString selected_grid() const;
   QStringList selected_items() const;
   QString new_region_name() const;
-  bool Merge_regions_dialog::is_union() const;
+  bool is_union() const;
   
 protected:
   GridSelectorBasic* grid_selector_;
