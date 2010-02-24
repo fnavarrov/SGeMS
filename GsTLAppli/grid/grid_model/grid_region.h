@@ -60,6 +60,10 @@ class GRID_DECL GsTLGridRegion {
   }
   ~GsTLGridRegion(){}; 
      
+// Direct acces to the region
+  inline std::vector<region_type>& data();
+  inline const std::vector<region_type>& data() const; 
+
   /** Tells whether the ith element of the region array is informed,
   * ie contains a value.
   */
@@ -109,5 +113,15 @@ inline void GsTLGridRegion::set_region_value( region_type val, GsTLInt id ){
   appli_assert(id>=0 && id<accessor_.size());
   accessor_[id] = val;
 }
+
+inline 
+std::vector<GsTLGridRegion::region_type>& GsTLGridRegion::data() {
+  return accessor_;
+} 
+
+inline 
+const std::vector<GsTLGridRegion::region_type>& GsTLGridRegion::data() const{
+  return accessor_;
+} 
 
 #endif

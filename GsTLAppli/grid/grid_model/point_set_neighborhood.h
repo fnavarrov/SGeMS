@@ -36,7 +36,7 @@
 #include <GsTLAppli/grid/grid_model/point_set.h> 
 #include <GsTLAppli/grid/grid_model/superblock.h> 
 #include <GsTLAppli/math/gstlvector.h> 
-#include <GsTLAppli/grid/grid_model/kdtree2.hpp> 
+#include <GsTLAppli/grid/grid_model/gstl_kdtree2.h>
 
 #include <GsTL/geometry/geometry_algorithms.h> 
 #include <GsTL/geometry/covariance.h> 
