@@ -390,7 +390,13 @@ bool ObjectTree::delete_property(QString _grid_name, QString _prop_name) {
 
 bool ObjectTree::delete_object(QString _grid_name) {
 	std::string obj_name(qstring2string(_grid_name));
-	return Root::instance()->delete_interface(gridModels_manager + "/" + obj_name);
+	bool ok = Root::instance()->delete_interface(gridModels_manager + "/" + obj_name);
+	if(ok) {
+		SmartPtr<Named_interface> ni = Root::instance()->interface(projects_manager + "/" + "project");
+		GsTL_project* proj = dynamic_cast<GsTL_project*> (ni.raw_ptr());
+		proj->deleted_object( obj_name );
+	}
+	return ok;
 }
 
 void ObjectTree::keyPressEvent(QKeyEvent* event) {
