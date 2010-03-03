@@ -47,6 +47,7 @@ class GEOSTAT_DECL Parameters_handler_xml : public Parameters_handler {
  
   virtual bool handle( const std::string& parameters ); 
   virtual std::string value( const std::string& parameter ) const; 
+  virtual QDomElement xmlDomElement( const std::string& parameter ) const;
  
   //TL modified
   const QDomDocument & getDoc() const { return xml_params_; }

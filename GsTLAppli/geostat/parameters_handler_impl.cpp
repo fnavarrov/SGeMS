@@ -74,6 +74,12 @@ Parameters_handler_xml::value( const std::string& parameter ) const {
 }
 
 
+QDomElement
+Parameters_handler_xml::xmlDomElement( const std::string& parameter ) const {
+	return root_element_.firstChildElement(parameter.c_str());
+}
+
+
 std::string
 Parameters_handler_xml::get_value( QDomElement start, 
 				   const std::string& param ) const {
