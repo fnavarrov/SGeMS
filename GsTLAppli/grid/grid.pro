@@ -25,7 +25,7 @@ HEADERS += common.h \
            grid_model/grid_region_temp_selector.h \
            grid_model/grid_topology.h \
            grid_model/gval_iterator.h \
-           grid_model/GsTLkdtree2.h \
+           grid_model/gstl_kdtree2.h \
            grid_model/neighborhood.h \
            grid_model/point_set.h \
            grid_model/point_set_neighborhood.h \
@@ -51,7 +51,7 @@ SOURCES += library_grid_init.cpp \
            grid_model/grid_property.cpp \
            grid_model/grid_property_manager.cpp \
            grid_model/grid_region_manager.cpp \
-           grid_model/GsTLkdtree2.cpp \
+           grid_model/gstl_kdtree2.cpp \
            grid_model/neighborhood.cpp \
            grid_model/point_set.cpp \
            grid_model/point_set_neighborhood.cpp \
