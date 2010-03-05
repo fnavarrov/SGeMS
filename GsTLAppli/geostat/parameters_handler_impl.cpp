@@ -76,7 +76,15 @@ Parameters_handler_xml::value( const std::string& parameter ) const {
 
 QDomElement
 Parameters_handler_xml::xmlDomElement( const std::string& parameter ) const {
-	return root_element_.firstChildElement(parameter.c_str());
+  QDomNodeList nodes = root_element_.elementsByTagName( parameter.c_str() );
+    if( nodes.count() == 0 ) {
+      appli_warning( "No element called \"" <<  parameter << "\"" << std::endl 
+		    << "Returning an empty element" );
+      return QDomElement();
+    }
+  return nodes.item(0).toElement();
+//  QDomElement elem = root_element_.firstChildElement(parameter.c_str());
+	//return elem;
 }
 
 
