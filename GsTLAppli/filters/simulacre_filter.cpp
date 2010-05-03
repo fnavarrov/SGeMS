@@ -72,6 +72,7 @@ Geostat_grid* Simulacre_input_filter::read( const std::string& filename,
   }
 
   QDataStream stream( &file );
+  stream.setFloatingPointPrecision(QDataStream::SinglePrecision);
   quint32 magic_nb;
   stream >> magic_nb;
   if( magic_nb != 0xB211175D ) {
@@ -395,6 +396,7 @@ bool Simulacre_output_filter::write( std::string outfile, const Geostat_grid* gr
   }
 
   QDataStream stream( &file );
+  stream.setFloatingPointPrecision(QDataStream::SinglePrecision);
 
   // Write a header with a "magic number" and the grid type
   stream << (quint32)0xB211175D;
