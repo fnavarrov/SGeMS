@@ -13,19 +13,26 @@ HEADERS += common.h \
            library_filters_init.h \
            simulacre_filter.h \
            gslib/filter_qt_dialogs.h \
-           gslib/gslib_filter.h
+           gslib/gslib_filter.h \
+           csv_filter_qt_dialogs.h \
+           csv_filter.h
 FORMS += gslib/gslib_pointset_import.ui \
          gslib/gslibgridimport.ui \
          gslib/gslibimportwizard.ui \
          gslib/gslibmaskedimport.ui \
-         gslib/importwizard.ui
+         gslib/importwizard.ui \
+         csv_grid_import.ui \
+         csv_masked_import.ui \
+         csv_pointset_import.ui 
 SOURCES += library_filters_init.cpp \
            simulacre_filter.cpp \
            gslib/filter_qt_dialogs.cpp \
-           gslib/gslib_filter.cpp
+           gslib/gslib_filter.cpp \
+           csv_filter_qt_dialogs.cpp \
+           csv_filter.cpp           
 
 TARGET=GsTLAppli_filters
-
+QT += xml
 
 
 CONFIG      += release plugin

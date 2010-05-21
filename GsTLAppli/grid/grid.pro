@@ -19,6 +19,8 @@ HEADERS += common.h \
            grid_model/geovalue.h \
            grid_model/grid_initializer.h \
            grid_model/grid_property.h \
+           grid_model/grid_categorical_property.h \
+           grid_model/grid_property_set.h \
            grid_model/grid_property_manager.h \
            grid_model/grid_region.h \
            grid_model/grid_region_manager.h \
@@ -49,6 +51,8 @@ SOURCES += library_grid_init.cpp \
            grid_model/geovalue.cpp \
            grid_model/grid_initializer.cpp \
            grid_model/grid_property.cpp \
+		   grid_model/grid_categorical_property.cpp \
+		   grid_model/grid_property_set.cpp \
            grid_model/grid_property_manager.cpp \
            grid_model/grid_region_manager.cpp \
            grid_model/gstl_kdtree2.cpp \
@@ -64,7 +68,7 @@ SOURCES += library_grid_init.cpp \
            grid_model/superblock.cpp
 
 TARGET=GsTLAppli_grid
-
+QT += xml
 
 
 CONFIG      += release plugin

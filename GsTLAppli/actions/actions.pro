@@ -19,7 +19,8 @@ HEADERS += action.h \
            python_wrapper.h \
            unary_action.h \
            python_script.h \
-           maskedgrid_actions.h
+           maskedgrid_actions.h \
+           categorical_definition_actions.h
            
 SOURCES += algorithms_actions.cpp \
            library_actions_init.cpp \
@@ -29,10 +30,11 @@ SOURCES += algorithms_actions.cpp \
            python_wrapper.cpp \
            unary_action.cpp \
            python_script.cpp \
-           maskedgrid_actions.cpp
+           maskedgrid_actions.cpp \
+           categorical_definition_actions.cpp
 
 TARGET=GsTLAppli_actions
-
+QT += xml
 
 
 CONFIG      += release plugin

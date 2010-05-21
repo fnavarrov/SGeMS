@@ -31,7 +31,6 @@
 
 #include <GsTLAppli/actions/common.h>
 #include <GsTLAppli/actions/action.h> 
-#include <GsTLAppli/filters/filter.h> 
 
 
 #include <qstring.h>

@@ -107,7 +107,7 @@ SOURCES += cokriging.cpp \
 
 TARGET=GsTLAppli_geostat
 
-Qt += xml
+QT += xml
 
 CONFIG      += release plugin
 INCLUDEPATH += $(QTDIR)/tools/designer/interfaces

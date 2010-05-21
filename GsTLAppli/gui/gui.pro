@@ -70,6 +70,7 @@ HEADERS += common.h \
            utils/multichoice_dialog.h \
            utils/new_region_from_property_dialog.h \
            utils/new_mgrid_from_cgrid_dialog.h \
+           utils/categorical_definition_dialog.h \
            utils/qdirdialog.h \
            utils/qtbased_scribes.h \
            utils/qtprogress_notifier.h \
@@ -164,6 +165,7 @@ SOURCES += library_gui_init.cpp \
            utils/multichoice_dialog.cpp \
            utils/new_region_from_property_dialog.cpp \
            utils/new_mgrid_from_cgrid_dialog.cpp \
+           utils/categorical_definition_dialog.cpp \
            utils/qdirdialog.cpp \
            utils/qtbased_scribes.cpp \
            utils/qtprogress_notifier.cpp \
