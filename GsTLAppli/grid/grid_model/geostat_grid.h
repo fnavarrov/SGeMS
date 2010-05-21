@@ -39,9 +39,12 @@
 #include <typeinfo> 
 #include <list> 
  
-class GsTLGridProperty; 
+class GsTLGridProperty;
+class GsTLGridCategoricalProperty;
 class GsTLGridRegion;
+class GsTLGridPropertyGroup;
 class MultiRealization_property; 
+class CategoricalPropertyDefinition;
 template<class R> class Gval_iterator; 
 template<class R> class Gval_const_iterator; 
 class LinearMapIndex; 
@@ -90,7 +93,15 @@ class GRID_DECL Geostat_grid : public Named_interface {
    * is returned. 
    */ 
   virtual GsTLGridProperty* add_property( const std::string& name ) = 0;  
-	 
+
+  /** Adds a new categorical property called \a name.
+   * A pointer to the new property is returned. If \a add_categorical_property(...)
+   * failed,for example because the property already existed, a null pointer
+   * is returned.
+   */
+  virtual GsTLGridCategoricalProperty* add_categorical_property(
+			  const std::string& name,
+			  const std::string& definition_name="Default") = 0;
    
   /** Removes a given property from the property list 
    * @return false if the function failed, eg because the property 
@@ -119,15 +130,37 @@ class GRID_DECL Geostat_grid : public Named_interface {
   virtual const GsTLGridProperty* property( const std::string& name ) const = 0; 
   virtual GsTLGridProperty* property( const std::string& name ) = 0; 
 
+  /** Provides direct access to categorical property \a name. The function returns
+  * a pointer to the categorical property array. If categorical property \a name does not exist,
+  * a null pointer is returned.
+  */
+  virtual const GsTLGridCategoricalProperty* categorical_property( const std::string& name ) const = 0;
+  virtual GsTLGridCategoricalProperty* categorical_property( const std::string& name ) = 0;
+
+
   /** Gives the list of all the names of the properties currently in the grid.
   */
   virtual std::list<std::string> property_list() const = 0; 
- 
+
+  /** Gives the list of all the names of the categorical properties currently in the grid.
+  */
+   virtual std::list<std::string> categorical_property_list() const = 0; 
+
   /** Adds a multi-realization property to the grid.
   */
   virtual MultiRealization_property*  
     add_multi_realization_property( const std::string& name ) = 0; 
  
+
+  //--------------------------- 
+  // PropertyGroup management 
+  //--------------------------- 
+  virtual GsTLGridPropertyGroup* add_group( const std::string& name, const std::string& type  )=0;   
+  virtual std::list<std::string> get_group_names(const std::string& type = "") const=0;   
+  virtual unsigned int group_size() const=0;   
+  virtual GsTLGridPropertyGroup* get_group( const std::string& name )=0;   
+  virtual const GsTLGridPropertyGroup* get_group( const std::string& name ) const =0;  
+
   //--------------------------- 
   // Region management 
  

@@ -212,6 +212,41 @@ void Lib_initializer::load_colormaps() {
 	}
 }
 
+
+void Lib_initializer::load_categorical_definition() {
+	SmartPtr<Named_interface> ni = Root::instance()->interface(categoricalDefinition_manager );
+	Manager* mng = dynamic_cast<Manager*> (ni.raw_ptr());
+	appli_assert( mng );
+
+	std::string colormap_files_path(mng->plugin_path());
+	QString path(colormap_files_path.c_str());
+
+	// Loop on all the categorical definition files (*.cdef) in directory "path"
+	QDir dir(path);
+	QStringList filters;
+	filters << "*.cdef";
+	dir.setNameFilters(filters);
+	dir.setFilter(QDir::Files);
+	const QFileInfoList list = dir.entryInfoList();
+	if (list.empty()) {
+		GsTLcerr << "No categorical definition could be found.\n" << "Check that environment variable GSTLAPPLIHOME is set to " << "where SGeMS was installed\n"
+				<< "or that directory plugins/catdefiniton contains categorical definition " << "definitions \n" << gstlIO::end;
+		return;
+	}
+
+	QFileInfoList::const_iterator it = list.begin();
+	const QFileInfo* f_info = 0;
+
+	for (; it != list.end(); ++it) {
+		f_info = &(*it);
+		// QLibrary wants the absolute path
+		QString full_path = path + "/" + f_info->fileName();
+		QByteArray s1 = full_path.toLatin1();
+		QByteArray s2 = f_info->baseName().toLatin1();
+		Root::instance()->new_interface("cdefintion://" + std::string(s1.constData()), categoricalDefinition_manager  + "/" + std::string(s2.constData()));
+	}
+}
+
 void Lib_initializer::load_filters_plugins() {
 	SmartPtr<Named_interface> ni = Root::instance()->interface(topLevelInputFilters_manager);
 	Manager* mng = dynamic_cast<Manager*> (ni.raw_ptr());

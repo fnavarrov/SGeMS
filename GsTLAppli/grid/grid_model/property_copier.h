@@ -82,6 +82,9 @@ public:
   bool is_undo_enabled() const { return undo_enabled_; }
   void set_undo_enabled( bool on ) { undo_enabled_ = on; }
 
+  void copy_categorical_definition(const GsTLGridProperty* server_prop,
+                                   GsTLGridProperty* client_prop);
+
 protected:
 
   bool from_scratch_;

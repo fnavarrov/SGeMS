@@ -241,6 +241,8 @@ void SinglePropertySelector::show_properties( const QString& grid_name ) {
 
 
 
+//===============================================
+
 
 //===============================================
 

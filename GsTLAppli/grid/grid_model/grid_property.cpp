@@ -27,10 +27,12 @@
 **********************************************************************/
 
 #include <GsTLAppli/grid/grid_model/grid_property.h>
+#include <GsTLAppli/grid/grid_model/grid_property_set.h>
 #include <GsTLAppli/utils/string_manipulation.h>
 
 #include <algorithm>
 #include <stdio.h>
+#include <QDomElement>
 
 const float GsTLGridProperty::no_data_value = -9966699;
 
@@ -99,22 +101,25 @@ MemoryAccessor::MemoryAccessor( GsTLInt size, float default_value ) {
 
 MemoryAccessor::MemoryAccessor( GsTLInt size, std::fstream& stream ) {
 
-  values_ = new float[size];
-  flags_ = new bool[size];
-  size_ = size;
+  values_ = new(std::nothrow) float[size];
+  flags_ = new(std::nothrow) bool[size];
+  if(values_ == NULL || flags_ == NULL) size_ = 0;
+  else {
+    size_ = size;
 
-  if( !stream.is_open() ) {
-    GsTLlog << "Error: Stream not open when trying to swap property to memory!!"
-            << gstlIO::end;
+    if( !stream.is_open() ) {
+      GsTLlog << "Error: Stream not open when trying to swap property to memory!!"
+              << gstlIO::end;
+    }
+    stream.seekg(0);
+    
+    long int remaining = size*sizeof( float );
+    stream.read( (char*) values_, remaining );
+    
+    // read the flags
+    remaining = size*sizeof( bool );
+    stream.read( (char*) flags_, remaining );
   }
-  stream.seekg(0);
-  
-  long int remaining = size*sizeof( float );
-  stream.read( (char*) values_, remaining );
-  
-  // read the flags
-  remaining = size*sizeof( bool );
-  stream.read( (char*) flags_, remaining );
 }
 
 
@@ -462,3 +467,26 @@ const_iterator( const GsTLGridProperty* prop, GsTLInt id, bool skip )
     while( !(prop_->is_inside_region(id_) && prop_->is_informed(id_)) && id_ < prop_->size() ) { id_++; }
   }
 }
+
+/*
+bool GsTLGridPropertyGroup::add_property(GsTLGridProperty* prop) {
+  properties_.insert(prop);
+  return true;
+}
+
+bool GsTLGridPropertyGroup::remove_property(GsTLGridProperty* prop){
+    unsigned int ok = properties_.erase( prop );
+    return ok != 0;
+}
+
+std::vector<GsTLGridProperty::property_type> 
+GsTLGridPropertyGroup::get_vector_data( int node_id ){
+  property_set::iterator it = properties_.begin();
+  std::vector<GsTLGridProperty::property_type> values;
+  values.reserve(properties_.size() );
+  for( ; it!= properties_.end(); ++it) {
+    if((*it)->is_informed(node_id) ) values.push_back( (*it)->get_value(node_id) );
+  }
+  return values;
+}
+*/

@@ -208,6 +208,10 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
+				RelativePath=".\utils\categorical_definition_dialog.cpp"
+				>
+			</File>
+			<File
 				RelativePath="appli\cli_commands_panel.cpp"
 				>
 			</File>
@@ -489,6 +493,32 @@
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
+			<File
+				RelativePath=".\utils\categorical_definition_dialog.h"
+				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="MOC utils\categorical_definition_dialog.h"
+						CommandLine="$(QTDIR)\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DGUI_EXPORTS -DQT_DLL -DQT_NO_DEBUG -DQT_XML_LIB -DQT_OPENGL_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -I&quot;$(QTDIR)\include\QtCore&quot;  -I&quot;$(QTDIR)\include\QtGui&quot; -I&quot;$(QTDIR)\include\QtOpenGL&quot; -I&quot;$(QTDIR)\include\QtXml&quot; -I&quot;$(QTDIR)\include&quot; -I&quot;.&quot; -I&quot;oinv_description&quot; -D_MSC_VER=1300 -DWIN32 utils\categorical_definition_dialog.h -o .moc\moc_categorical_definition_dialog.cpp&#x0D;&#x0A;"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe;utils\categorical_definition_dialog.h"
+						Outputs=".moc\moc_categorical_definition_dialog.cpp"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="MOC utils\categorical_definition_dialog.h"
+						CommandLine="$(QTDIR)\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DGUI_EXPORTS -DQT_DLL -DQT_NO_DEBUG -DQT_XML_LIB -DQT_OPENGL_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -I&quot;$(QTDIR)\include\QtCore&quot;  -I&quot;$(QTDIR)\include\QtGui&quot; -I&quot;$(QTDIR)\include\QtOpenGL&quot; -I&quot;$(QTDIR)\include\QtXml&quot; -I&quot;$(QTDIR)\include&quot; -I&quot;.&quot; -I&quot;oinv_description&quot; -D_MSC_VER=1300 -DWIN32 utils\categorical_definition_dialog.h -o .moc\moc_categorical_definition_dialog.cpp&#x0D;&#x0A;"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe;utils\categorical_definition_dialog.h"
+						Outputs=".moc\moc_categorical_definition_dialog.cpp"
+					/>
+				</FileConfiguration>
+			</File>
 			<File
 				RelativePath="appli\cli_commands_panel.h"
 				>
@@ -865,12 +895,23 @@
 				RelativePath=".\utils\new_mgrid_from_cgrid_dialog.h"
 				>
 				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="MOC utils\new_mgrid_from_cgrid_dialog.h"
+						CommandLine="$(QTDIR)\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DGUI_EXPORTS -DQT_DLL -DQT_NO_DEBUG -DQT_XML_LIB -DQT_OPENGL_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -I&quot;$(QTDIR)\include\QtCore&quot; -I&quot;$(QTDIR)\include\QtCore&quot; -I&quot;$(QTDIR)\include\QtGui&quot; -I&quot;$(QTDIR)\include\QtGui&quot; -I&quot;$(QTDIR)\include\QtOpenGL&quot; -I&quot;$(QTDIR)\include\QtOpenGL&quot; -I&quot;$(QTDIR)\include\QtXml&quot; -I&quot;$(QTDIR)\include\QtXml&quot; -I&quot;$(QTDIR)\include&quot; -I&quot;.&quot; -I&quot;oinv_description&quot; -I&quot;utils&quot; -I&quot;$(QTDIR)\include\ActiveQt&quot; -I&quot;.moc&quot; -I&quot;.&quot; -I$(QTDIR)\mkspecs\win32-msvc.net -D_MSC_VER=1300 -DWIN32 utils\new_mgrid_from_cgrid_dialog.h -o .moc\moc_new_mgrid_from_cgrid_dialog.cpp&#x0D;&#x0A;"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe;utils\new_mgrid_from_cgrid_dialog.h"
+						Outputs=".moc\moc_new_mgrid_from_cgrid_dialog.cpp"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
 					Name="Release|Win32"
 					>
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="MOC utils\new_mgrid_from_cgrid_dialog.h"
-						CommandLine="$(QTDIR)\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DGUI_EXPORTS -DQT_DLL -DQT_NO_DEBUG -DQT_XML_LIB -DQT_OPENGL_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -I&quot;$(QTDIR)\include\QtCore&quot; -I&quot;$(QTDIR)\include\QtCore&quot; -I&quot;$(QTDIR)\include\QtGui&quot; -I&quot;$(QTDIR)\include\QtGui&quot; -I&quot;$(QTDIR)\include\QtOpenGL&quot; -I&quot;$(QTDIR)\include\QtOpenGL&quot; -I&quot;$(QTDIR)\include\QtXml&quot; -I&quot;$(QTDIR)\include\QtXml&quot; -I&quot;$(QTDIR)\include&quot; -I&quot;.&quot; -I&quot;oinv_description&quot; -I&quot;utils&quot; -I&quot;$(QTDIR)\include\ActiveQt&quot; -I&quot;.moc&quot; -I&quot;.&quot; -I$(QTDIR)\mkspecs\win32-msvc.net -D_MSC_VER=1300 -DWIN32 utils\new_mgrid_from_cgrid_dialog.h -o .moc\moc_new_mgrid_from_cgrid_dialog.cpp"
+						CommandLine="$(QTDIR)\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DGUI_EXPORTS -DQT_DLL -DQT_NO_DEBUG -DQT_XML_LIB -DQT_OPENGL_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -I&quot;$(QTDIR)\include\QtCore&quot; -I&quot;$(QTDIR)\include\QtCore&quot; -I&quot;$(QTDIR)\include\QtGui&quot; -I&quot;$(QTDIR)\include\QtGui&quot; -I&quot;$(QTDIR)\include\QtOpenGL&quot; -I&quot;$(QTDIR)\include\QtOpenGL&quot; -I&quot;$(QTDIR)\include\QtXml&quot; -I&quot;$(QTDIR)\include\QtXml&quot; -I&quot;$(QTDIR)\include&quot; -I&quot;.&quot; -I&quot;oinv_description&quot; -I&quot;utils&quot; -I&quot;$(QTDIR)\include\ActiveQt&quot; -I&quot;.moc&quot; -I&quot;.&quot; -I$(QTDIR)\mkspecs\win32-msvc.net -D_MSC_VER=1300 -DWIN32 utils\new_mgrid_from_cgrid_dialog.h -o .moc\moc_new_mgrid_from_cgrid_dialog.cpp&#x0D;&#x0A;"
 						AdditionalDependencies="$(QTDIR)\bin\moc.exe;utils\new_mgrid_from_cgrid_dialog.h"
 						Outputs=".moc\moc_new_mgrid_from_cgrid_dialog.cpp"
 					/>
@@ -1558,6 +1599,10 @@
 			UniqueIdentifier="{71ED8ED8-ACB9-4CE9-BBE1-E00B30144E11}"
 			>
 			<File
+				RelativePath=".\.moc\moc_categorical_definition_dialog.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".moc\moc_cli_commands_panel.cpp"
 				>
 			</File>
@@ -1702,10 +1747,10 @@
 				>
 			</File>
 			<File
-				RelativePath="release\qrc_icons.cpp"
+				RelativePath="debug\qrc_icons.cpp"
 				>
 				<FileConfiguration
-					Name="Debug|Win32"
+					Name="Release|Win32"
 					ExcludedFromBuild="true"
 					>
 					<Tool
@@ -1714,10 +1759,10 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="debug\qrc_icons.cpp"
+				RelativePath="release\qrc_icons.cpp"
 				>
 				<FileConfiguration
-					Name="Release|Win32"
+					Name="Debug|Win32"
 					ExcludedFromBuild="true"
 					>
 					<Tool

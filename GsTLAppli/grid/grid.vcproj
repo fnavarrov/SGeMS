@@ -47,7 +47,7 @@
 				Name="VCCLCompilerTool"
 				AdditionalOptions="-Zm300 -w34100 -w34189 -Zm300 -w34100 -w34189 -w34100 -w34189"
 				Optimization="4"
-				AdditionalIncludeDirectories="&quot;$(SGEMS_BUILD)\GsTL&quot;;&quot;$(SGEMS_BUILD)\GsTLAppli-qt4&quot;;&quot;$(SGEMS_BUILD)\boost\boost_1_38\&quot;;&quot;$(QTDIR)\include\QtCore&quot;;&quot;$(QTDIR)\include\QtGui&quot;;&quot;$(QTDIR)\include&quot;;.;&quot;$(QTDIR)\include\ActiveQt&quot;;debug"
+				AdditionalIncludeDirectories="&quot;$(SGEMS_BUILD)\GsTL&quot;;&quot;$(SGEMS_BUILD)\GsTLAppli-qt4&quot;;&quot;$(SGEMS_BUILD)\boost\boost_1_38\&quot;;&quot;$(QTDIR)\include\QtCore&quot;;&quot;$(QTDIR)\include\QtXml&quot;;&quot;$(QTDIR)\include\QtGui&quot;;&quot;$(QTDIR)\include&quot;;.;&quot;$(QTDIR)\include\ActiveQt&quot;;debug"
 				PreprocessorDefinitions="_WINDOWS;UNICODE;WIN32;QT_LARGEFILE_SUPPORT;GRID_EXPORTS;QT_DLL;QT_GUI_LIB;QT_CORE_LIB;QT_THREAD_SUPPORT;BOOST_NO_EXCEPTIONS"
 				GeneratePreprocessedFile="0"
 				ExceptionHandling="1"
@@ -74,7 +74,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				IgnoreImportLibrary="true"
-				AdditionalDependencies="GsTLAppli_utils.lib GsTLAppli_math.lib GsTLAppli_appli.lib QtCored4.lib"
+				AdditionalDependencies="GsTLAppli_utils.lib GsTLAppli_math.lib GsTLAppli_appli.lib QtCored4.lib QtXmld4.lib"
 				OutputFile="$(SGEMS_BUILD)\GsTLAppli-qt4\lib\win32\debug\GsTLAppli_grid.dll"
 				SuppressStartupBanner="true"
 				AdditionalLibraryDirectories="$(QTDIR)\lib;$(SGEMS_BUILD)\GsTLAppli-qt4\lib\win32\debug"
@@ -137,7 +137,7 @@
 				Name="VCCLCompilerTool"
 				AdditionalOptions="-Zm300 -w34100 -w34189 -Zm300 -w34100 -w34189 -w34100 -w34189"
 				Optimization="2"
-				AdditionalIncludeDirectories=".;&quot;$(SGEMS_BUILD)\GsTL&quot;;&quot;$(SGEMS_BUILD)\GsTLAppli-qt4&quot;;&quot;$(SGEMS_BUILD)\boost\boost_1_38\&quot;;&quot;$(QTDIR)\include\QtCore&quot;;&quot;$(QTDIR)\include\QtGui&quot;;&quot;$(QTDIR)\include&quot;;&quot;$(QTDIR)\include\ActiveQt&quot;;release"
+				AdditionalIncludeDirectories=".;&quot;$(SGEMS_BUILD)\GsTL&quot;;&quot;$(SGEMS_BUILD)\GsTLAppli-qt4&quot;;&quot;$(SGEMS_BUILD)\boost\boost_1_38\&quot;;&quot;$(QTDIR)\include\QtCore&quot;;&quot;$(QTDIR)\include\QtXml&quot;;&quot;$(QTDIR)\include\QtGui&quot;;&quot;$(QTDIR)\include&quot;;&quot;$(QTDIR)\include\ActiveQt&quot;;release"
 				PreprocessorDefinitions="QT_NO_DEBUG;GSTLAPPLI_NDEBUG;_WINDOWS;UNICODE;WIN32;QT_LARGEFILE_SUPPORT;GRID_EXPORTS;QT_DLL;QT_GUI_LIB;QT_CORE_LIB;QT_THREAD_SUPPORT"
 				GeneratePreprocessedFile="0"
 				ExceptionHandling="1"
@@ -164,7 +164,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				IgnoreImportLibrary="true"
-				AdditionalDependencies="GsTLAppli_utils.lib GsTLAppli_math.lib GsTLAppli_appli.lib QtCore4.lib"
+				AdditionalDependencies="GsTLAppli_utils.lib GsTLAppli_math.lib GsTLAppli_appli.lib QtCore4.lib QtXml4.lib"
 				OutputFile="$(SGEMS_BUILD)\GsTLAppli-qt4\lib\win32\release\GsTLAppli_grid.dll"
 				LinkIncremental="0"
 				SuppressStartupBanner="true"
@@ -227,6 +227,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\grid_model\grid_categorical_property.cpp"
+				>
+			</File>
+			<File
 				RelativePath="grid_model\grid_initializer.cpp"
 				>
 			</File>
@@ -239,11 +243,15 @@
 				>
 			</File>
 			<File
+				RelativePath=".\grid_model\grid_property_set.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\grid_model\grid_region_manager.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\grid_model\kdtree2.cpp"
+				RelativePath=".\grid_model\gstl_kdtree2.cpp"
 				>
 			</File>
 			<File
@@ -325,6 +333,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\grid_model\grid_categorical_property.h"
+				>
+			</File>
+			<File
 				RelativePath="grid_model\grid_initializer.h"
 				>
 			</File>
@@ -334,6 +346,10 @@
 			</File>
 			<File
 				RelativePath="grid_model\grid_property_manager.h"
+				>
+			</File>
+			<File
+				RelativePath=".\grid_model\grid_property_set.h"
 				>
 			</File>
 			<File
@@ -353,11 +369,11 @@
 				>
 			</File>
 			<File
-				RelativePath="grid_model\gval_iterator.h"
+				RelativePath=".\grid_model\gstl_kdtree2.h"
 				>
 			</File>
 			<File
-				RelativePath=".\grid_model\kdtree2.hpp"
+				RelativePath="grid_model\gval_iterator.h"
 				>
 			</File>
 			<File

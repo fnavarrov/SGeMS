@@ -52,6 +52,7 @@ class GRID_DECL library_grid_init {
    
   static bool bind_models_factories(Manager* dir); 
   static bool init_property_copier_factory(); 
+  static bool init_categorical_definition_factory();
 }; 
  
  

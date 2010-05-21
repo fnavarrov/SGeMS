@@ -43,6 +43,7 @@ Modified A. Boucher
 #include <GsTLAppli/extra/qtplugins/ellipsoid_input.h>
 #include <GsTLAppli/extra/qtplugins/non_param_cdf_input.h>
 #include <GsTLAppli/extra/qtplugins/neighborhood_filter_input.h>
+#include <GsTLAppli/extra/qtplugins/categorical_selectors.h>
 #include <QDesignerCustomWidgetCollectionInterface>
 //Added by qt3to4:
 #include <QPixmap>
@@ -1141,6 +1142,229 @@ private:
   bool _initialized;
   
 };
+
+
+
+class SingleCategoricalPropertySelectorPlugin : public QObject, public QDesignerCustomWidgetInterface
+{
+  Q_OBJECT
+  Q_INTERFACES(QDesignerCustomWidgetInterface)
+    
+public:
+  SingleCategoricalPropertySelectorPlugin(QObject * o) : QObject(o) { _initialized = false; }
+  
+  bool isContainer() const { return false; }
+  
+  void initialize(QDesignerFormEditorInterface *)
+  {
+    if (_initialized)
+      return;
+    _initialized = true;
+  }
+
+  bool isInitialized () const { return _initialized; }
+
+  QWidget * createWidget(QWidget * parent)
+  {
+    return new SingleCategoricalPropertySelector(parent);
+  }
+
+  QString name() const { return QLatin1String("SingleCategoricalPropertySelector"); }
+
+  QString group() const { return QLatin1String("GsTLWidget"); }
+
+  QIcon icon() const {     return QIcon( QPixmap( GridSelector_pixmap ) ); }
+
+  QString toolTip() const { return QLatin1String("SingleCategoricalPropertySelector widget"); }
+
+  QString whatsThis() const {
+    return "Widget for selecting a single categorical property of a grid object";
+  }
+
+  QString includeFile() const { return "GsTLAppli/extra/qtplugins/categorical_selectors.h"; }
+  
+private:
+  bool _initialized;
+  
+};
+
+class MultiCategoricalPropertySelectorPlugin : public QObject, public QDesignerCustomWidgetInterface
+{
+  Q_OBJECT
+  Q_INTERFACES(QDesignerCustomWidgetInterface)
+    
+public:
+  MultiCategoricalPropertySelectorPlugin(QObject * o) : QObject(o) { _initialized = false; }
+  
+  bool isContainer() const { return false; }
+  
+  void initialize(QDesignerFormEditorInterface *)
+  {
+    if (_initialized)
+      return;
+    _initialized = true;
+  }
+
+  bool isInitialized () const { return _initialized; }
+
+  QWidget * createWidget(QWidget * parent)
+  {
+    return new MultiCategoricalPropertySelector(parent);
+  }
+
+  QString name() const { return QLatin1String("MultiCategoricalPropertySelector"); }
+
+  QString group() const { return QLatin1String("GsTLWidget"); }
+
+  QIcon icon() const {     return QIcon( QPixmap( GridSelector_pixmap ) ); }
+
+  QString toolTip() const { return QLatin1String("MultiCategoricalPropertySelector widget"); }
+
+  QString whatsThis() const {
+    return "Widget for selecting multiple categroical properties of a grid object";
+  }
+
+  QString includeFile() const { return "GsTLAppli/extra/qtplugins/categorical_selectors.h"; }
+  
+private:
+  bool _initialized;
+  
+};
+
+class OrderedCategoricalPropertySelectorPlugin : public QObject, public QDesignerCustomWidgetInterface
+{
+  Q_OBJECT
+  Q_INTERFACES(QDesignerCustomWidgetInterface)
+    
+public:
+  OrderedCategoricalPropertySelectorPlugin(QObject * o) : QObject(o) { _initialized = false; }
+  
+  bool isContainer() const { return false; }
+  
+  void initialize(QDesignerFormEditorInterface *)
+  {
+    if (_initialized)
+      return;
+    _initialized = true;
+  }
+
+  bool isInitialized () const { return _initialized; }
+
+  QWidget * createWidget(QWidget * parent)
+  {
+    return new OrderedCategoricalPropertySelector(parent);
+  }
+
+  QString name() const { return QLatin1String("OrderedCategoricalPropertySelector"); }
+
+  QString group() const { return QLatin1String("GsTLWidget"); }
+
+  QIcon icon() const {     return QIcon( QPixmap( GridSelector_pixmap ) ); }
+
+  QString toolTip() const { return QLatin1String("OrderedCategoricalPropertySelector widget"); }
+
+  QString whatsThis() const {
+    return "Widget for selecting multiple categorical properties of a grid object and ordering them";
+  }
+
+  QString includeFile() const { return "GsTLAppli/extra/qtplugins/categorical_selectors.h"; }
+  
+private:
+  bool _initialized;
+  
+};
+
+
+
+class CategoricalDefinitionSelectorPlugin : public QObject, public QDesignerCustomWidgetInterface
+{
+  Q_OBJECT
+  Q_INTERFACES(QDesignerCustomWidgetInterface)
+    
+public:
+  CategoricalDefinitionSelectorPlugin(QObject * o) : QObject(o) { _initialized = false; }
+
+  bool isContainer() const { return false; }
+ 
+  void initialize(QDesignerFormEditorInterface *)
+  {
+    if (_initialized)
+      return;
+    _initialized = true;
+  }
+
+  bool isInitialized () const { return _initialized; }
+
+  QWidget * createWidget(QWidget * parent)
+  {
+    return new CategoricalDefinitionSelector(parent);
+  }
+
+  QString name() const { return QLatin1String("CategoricalDefinitionSelector"); }
+
+  QString group() const { return QLatin1String("GsTLWidget"); }
+
+  QIcon icon() const {     return QIcon( QPixmap( GridSelector_pixmap ) ); }
+
+  QString toolTip() const { return QLatin1String("CategoricalDefinitionSelector widget"); }
+
+  QString whatsThis() const {
+    return "Widget for selecting a categorical definitions";
+  }
+
+  QString includeFile() const { return "GsTLAppli/extra/qtplugins/categorical_selectors.h"; }
+  
+private:
+  bool _initialized;
+  
+};
+
+
+
+
+class MultiCategoricalDefinitionSelectorPlugin : public QObject, public QDesignerCustomWidgetInterface
+{
+  Q_OBJECT
+  Q_INTERFACES(QDesignerCustomWidgetInterface)
+    
+public:
+  MultiCategoricalDefinitionSelectorPlugin(QObject * o) : QObject(o) { _initialized = false; }
+
+  bool isContainer() const { return false; }
+ 
+  void initialize(QDesignerFormEditorInterface *)
+  {
+    if (_initialized)
+      return;
+    _initialized = true;
+  }
+
+  bool isInitialized () const { return _initialized; }
+
+  QWidget * createWidget(QWidget * parent)
+  {
+    return new MultiCategoricalDefinitionSelector(parent);
+  }
+
+  QString name() const { return QLatin1String("MultiCategoricalDefinitionSelector"); }
+
+  QString group() const { return QLatin1String("GsTLWidget"); }
+
+  QIcon icon() const {     return QIcon( QPixmap( GridSelector_pixmap ) ); }
+
+  QString toolTip() const { return QLatin1String("MultiCategoricalDefinitionSelector widget"); }
+
+  QString whatsThis() const {
+    return "Widget for selecting multiple categorical definitions";
+  }
+
+  QString includeFile() const { return "GsTLAppli/extra/qtplugins/categorical_selectors.h"; }
+  
+private:
+  bool _initialized;
+  
+};
+
 
 
 #endif

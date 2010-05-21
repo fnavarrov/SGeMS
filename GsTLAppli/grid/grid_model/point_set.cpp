@@ -73,6 +73,12 @@ GsTLGridProperty* Point_set::add_property( const std::string& name )
   return point_prop_.add_property( name );
 }
 
+GsTLGridCategoricalProperty* Point_set::add_categorical_property(
+		const std::string& name,
+		const std::string& definition_name){
+	return point_prop_.add_categorical_property( name, definition_name );
+}
+
 
 bool Point_set::remove_property(const std::string& name)
 {
@@ -89,6 +95,22 @@ std::list<std::string> Point_set::property_list() const {
     point_prop_.names_end();
   for( ; it != end ; ++it )
     result.push_back( *it );
+
+  return result;
+}
+
+
+std::list<std::string> Point_set::categorical_property_list() const {
+  std::list<std::string> result;
+
+  Grid_property_manager::Property_name_iterator it =
+    point_prop_.names_begin();
+  Grid_property_manager::Property_name_iterator end =
+    point_prop_.names_end();
+  for( ; it != end ; ++it ) {
+    const GsTLGridCategoricalProperty* prop = categorical_property(*it);
+    if(prop) result.push_back( *it );
+  }
 
   return result;
 }

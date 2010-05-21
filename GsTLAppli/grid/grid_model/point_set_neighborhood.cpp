@@ -154,8 +154,9 @@ Point_set_neighborhood::Point_set_neighborhood( double x,double y,double z,
   //use_only_informed_node_ = true;
   if( (use_n_closest_)) {
     int nInformed = 0;
-    for(int i=0; i<pset_->size(); ++i) 
+    for(int i=0; i<pset_->size(); ++i) {
       if(property_->is_informed(i)) nInformed++;
+    }
     coords_ = new boost::multi_array<GsTLCoord,2>(boost::extents[nInformed][3]);
     idx_.reserve( nInformed );
   }

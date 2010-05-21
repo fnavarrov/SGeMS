@@ -32,6 +32,7 @@
 #include <GsTLAppli/grid/grid_model/sgrid_cursor.h>
 #include <GsTLAppli/appli/manager_repository.h>
 #include <GsTLAppli/grid/grid_model/reduced_grid.h>
+#include <GsTLAppli/grid/grid_model/grid_categorical_property.h>
 
 #include <GsTL/geometry/geometry_algorithms.h>
 #include <qmessagebox.h>
@@ -98,6 +99,19 @@ Property_copier::Property_copier() {
 }
 
 
+void Property_copier::copy_categorical_definition(
+  const GsTLGridProperty* server_prop,
+  GsTLGridProperty* client_prop) {
+    //Set the definition if the property is categorical
+    const GsTLGridCategoricalProperty* server_cprop = 
+              dynamic_cast<const GsTLGridCategoricalProperty*>(server_prop);
+    GsTLGridCategoricalProperty* client_cprop = 
+              dynamic_cast<GsTLGridCategoricalProperty*>(client_prop);
+    if(server_cprop && client_cprop ) {
+      client_cprop->set_category_definition(server_cprop->get_category_definition()->name());
+    }
+}
+
 
 //==========================================
 Mask_to_mask_copier::Mask_to_mask_copier()
@@ -125,6 +139,8 @@ bool Mask_to_mask_copier::copy( const Geostat_grid* server,
 	const Reduced_grid* from_grid = dynamic_cast< const Reduced_grid* >( server );
 
 	if( !from_grid || !to_grid ) return false;
+
+  copy_categorical_definition(server_prop,client_prop);
 
 	if (from_grid != to_grid)
 		to_grid->copyStructure(from_grid);
@@ -165,6 +181,8 @@ bool Cgrid_to_pset_copier::copy( const Geostat_grid* server,
   if( !cgrid || !pset ) return false;
 
   typedef GsTLGridProperty::property_type Property_type;
+
+  copy_categorical_definition(server_prop,client_prop);
 
   // check if we already worked with "source" and "property_name" 
   // If that's the case and we're not required to do the assignement
@@ -317,6 +335,8 @@ bool Cgrid_to_cgrid_copier::copy( const Geostat_grid* server,
 
   if( !from_grid || !to_grid ) return false;
 
+  copy_categorical_definition(server_prop,client_prop);
+
   // if the 2 grids are identical, just copy the property
   if( are_identical_grids( from_grid, to_grid ) ) {
     appli_assert( server_prop->size() == client_prop->size() );
@@ -337,6 +357,7 @@ bool Cgrid_to_cgrid_copier::copy( const Geostat_grid* server,
 		  client_prop->set_not_informed( i );
 
     }
+
     return true;
   }
   
@@ -501,6 +522,8 @@ bool Pset_to_mask_copier::copy( const Geostat_grid* server,
 
   if( !from_grid || !to_grid ) return false;
 
+  copy_categorical_definition(server_prop,client_prop);
+
   // Copy the property
   Point_set::location_type l;
    for( int i=0; i < server_prop->size() ; i++ ) {
@@ -538,6 +561,8 @@ bool Pset_to_pset_copier::copy( const Geostat_grid* server,
 
   //Only allow the copy on the same grid
   if( !are_identical_grids(from_grid,to_grid) ) return false;
+
+  copy_categorical_definition(server_prop,client_prop);
 
   // Copy the property
    for( int i=0; i < server_prop->size() ; i++ ) {

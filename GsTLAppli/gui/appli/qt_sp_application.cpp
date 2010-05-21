@@ -41,6 +41,7 @@
 #include <GsTLAppli/gui/utils/merge_regions_dialog.h>
 #include <GsTLAppli/gui/utils/new_region_from_property_dialog.h>
 #include <GsTLAppli/gui/utils/new_mgrid_from_cgrid_dialog.h>
+#include <GsTLAppli/gui/utils/categorical_definition_dialog.h>
 #include <GsTLAppli/gui/utils/script_editor.h>
 #include <GsTLAppli/gui/utils/qdirdialog.h>
 #include <GsTLAppli/gui/appli/qt_sp_application.h>
@@ -243,12 +244,18 @@ void QSP_application::init_menu_bar() {
   objects->addAction( "Delete Properties", this, SLOT( delete_object_properties() ) );
   objects->addSeparator();
   objects->addAction( "Copy Property", this, SLOT( copy_property() ) );  
+  objects->addSeparator();
+
+  QMenu* definitions = objects->addMenu(tr("&Categorical Definition"));
+  definitions->addAction( "New Categorical definition", this, SLOT( new_categorical_definition() ) );  
+  definitions->addAction( "Show Categorical definition", this, SLOT( show_categorical_definition() ) );  
+  definitions->addAction( "Assign Categorical definition", this, SLOT( assign_categorical_definition() ) );  
 
 /*  Add a menu for regions operations
 * Alexandre Boucher
 */
   QMenu* region =   menuBar()->addMenu( "&Regions" );
-  region->addAction( "New region", this, SLOT( new_region_from_property() ), Qt::CTRL+Qt::Key_N );
+  region->addAction( "New region", this, SLOT( new_region_from_property() ), Qt::CTRL+Qt::Key_R );
   region->addAction( "Merge Regions", this, SLOT( merge_object_regions() ), Qt::CTRL+Qt::Key_M );
   region->addSeparator();
   region->addAction( "Delete Regions", this, SLOT( delete_object_regions() ), Qt::CTRL+Qt::Key_D );
@@ -1270,6 +1277,28 @@ void QSP_application::merge_object_regions( const QString& qgrid_name,
 
 }
 
+void QSP_application::show_categorical_definition(){
+  View_category_definition_dialog* dialog = 
+    new View_category_definition_dialog( project_, this, "Categorical Definition Dialog" );
+  dialog->setWindowTitle( "View Categorical Definition" );
+  if( dialog->exec() == QDialog::Rejected ) return;
+}
+
+
+void QSP_application::new_categorical_definition(){
+  New_category_definition_dialog* dialog = 
+    new New_category_definition_dialog( project_, this, "New Categorical Definition Dialog" );
+  dialog->setWindowTitle( "New Categorical Definition" );
+  if( dialog->exec() == QDialog::Rejected ) return;
+}
+
+
+void QSP_application::assign_categorical_definition(){
+  Assign_category_definition_dialog* dialog = 
+    new Assign_category_definition_dialog( project_, this, "Assign Categorical Definition Dialog" );
+  dialog->setWindowTitle( "Assign Categorical Definition" );
+  if( dialog->exec() == QDialog::Rejected ) return;
+}
 
 void QSP_application::new_region_from_property(){
   New_region_from_property_dialog* dialog = 

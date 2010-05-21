@@ -83,6 +83,7 @@ static const std::string infilters_manager = "/InputFilters";
 static const std::string outfilters_manager = "/OutputFilters";
 static const std::string topLevelInputFilters_manager = "/InputFilters/TopLevel";
 static const std::string gslibInputFilters_manager = "/InputFilters/Gslib";
+static const std::string csvInputFilters_manager = "/InputFilters/Csv";
 
 static const std::string gridObject_manager = "/GridObject";
 static const std::string gridModels_manager = "/GridObject/Model";
@@ -99,6 +100,8 @@ static const std::string geostatParamUtils_manager = "/GeostatParamUtils";
 static const std::string xmlGeostatParamUtils_manager = "/GeostatParamUtils/XML";
 
 static const std::string colormap_manager = "/Colormaps";
+
+static const std::string categoricalDefinition_manager = "/CategoricalDefinitions";
 
 // } 
 

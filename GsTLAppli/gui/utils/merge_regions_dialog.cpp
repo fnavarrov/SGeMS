@@ -125,7 +125,7 @@ Merge_regions_dialog( GsTL_project* proj, QWidget* parent, const char* name )
   QObject::connect( unionRegionButton_, SIGNAL( toggled() ),
                     intersectionRegionButton_, SLOT( toggled() ) );
 
-    QObject::connect( intersectionRegionButton_, SIGNAL( toggled() ),
+  QObject::connect( intersectionRegionButton_, SIGNAL( toggled() ),
                     unionRegionButton_, SLOT( toggled() ) );
 
 /*

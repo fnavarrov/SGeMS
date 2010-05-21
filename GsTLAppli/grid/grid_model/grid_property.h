@@ -37,11 +37,15 @@
  
 #include <string> 
 #include <fstream> 
+#include <set>
  
 class PropertyAccessor; 
 class PropertyValueProxy; 
+class PropertySet; 
  
- 
+
+
+
 /** A GsTLGridProperty contains 3 types of information: 
  *    \li one flag to indicate if the node contains a data value 
  *    \li a data value 
@@ -56,7 +60,7 @@ class GRID_DECL GsTLGridProperty {
  public: 
   GsTLGridProperty( GsTLInt size, const std::string& name, 
 		    property_type default_value = no_data_value ); 
-  ~GsTLGridProperty(); 
+  virtual ~GsTLGridProperty();
      
   /** Tells whether the ith element of the property array is informed,
   * ie contains a value.
@@ -141,6 +145,7 @@ class GRID_DECL GsTLGridProperty {
   std::string name_; 
 
   const GsTLGridRegion* region_;
+
    
  private: 
   GsTLGridProperty( const GsTLGridProperty& rhs ); 
@@ -367,8 +372,50 @@ class GRID_DECL PropertyValueProxy {
     : prop_(prop), id_(id) {} 
 }; 
  
- 
- 
+/** Comparator to store  GsTLGridProperty pointer in STL container
+ *
+ */ 
+struct compareGsTLGridProperty
+{
+  bool operator()(const GsTLGridProperty* p1,const GsTLGridProperty* p2) const
+  {
+    return p1->name() < p2->name();
+  }
+};
+
+ /*
+class GRID_DECL GsTLGridPropertyGroup {
+public:
+  typedef std::set<GsTLGridProperty*, compareGsTLGridProperty> property_set;
+  GsTLGridPropertyGroup(){}
+  GsTLGridPropertyGroup(std::string name):name_(name), type_("Undefined"), group_info_(""){}
+  virtual ~GsTLGridPropertyGroup(){}
+
+  virtual std::string name() {return name_;}
+  virtual std::string type() {return type_;}
+
+  int size() {return properties_.size();}
+
+  bool add_property(GsTLGridProperty*);
+  bool remove_property(GsTLGridProperty*);
+
+  std::vector<GsTLGridProperty::property_type> get_vector_data( int node_id );
+
+  property_set::iterator begin_property(){ return properties_.begin(); }
+  property_set::iterator end_property() {  return properties_.end(); }
+
+  std::string get_group_info() { return group_info_;}
+  void set_group_info(const std::string& info_str) { group_info_ = info_str;};
+
+protected :
+  property_set properties_;
+  std::string name_;
+  std::string type_;
+
+  std::string group_info_;
+};
+*/
+
  
 //================================================= 
 //   Definition of inline functions 
@@ -455,7 +502,6 @@ const GsTLGridRegion* GsTLGridProperty::get_region() const{
 //  end of GsTLGridProperty 
 //--------------------------- 
  
-
 
 //---------------------------------- 
 //  GsTLGridProperty::iterator 

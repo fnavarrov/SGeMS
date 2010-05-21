@@ -40,6 +40,8 @@ public:
 	static void load_python_scripts();
 	static void release();
 
+	static void load_categorical_definition();
+
 private:
 	static int ref_;
 };

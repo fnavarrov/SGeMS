@@ -95,6 +95,8 @@ int library_grid_init::init_lib() {
 
   init_property_copier_factory();
 
+  init_categorical_definition_factory();
+
   GsTLlog << "Registration done" << "\n";
   Root::instance()->list_all( GsTLlog );
 
@@ -111,6 +113,7 @@ int library_grid_init::release_lib() {
     Root::instance()->delete_interface( gridObject_manager );
     Root::instance()->delete_interface( gridModels_manager );
     Root::instance()->delete_interface( oinvDescription_manager );
+    Root::instance()->delete_interface( categoricalDefinition_manager );
   }
   return 0;
 }
@@ -154,8 +157,24 @@ bool library_grid_init::init_property_copier_factory() {
   return true;
 }
 
-
-
+bool library_grid_init::init_categorical_definition_factory() {
+  //----------------------
+  // Create the manager for the categorical definition
+  GsTLlog << "Creating Categorical definition manager" << "\n";
+  SmartPtr<Named_interface> ni_cdefs = 
+    Root::instance()->new_interface("directory://categoricaldefinitions",
+				    categoricalDefinition_manager );
+      
+  Manager* dir = dynamic_cast<Manager*>( ni_cdefs.raw_ptr() );
+    
+  if( !dir ) {
+    GsTLlog << "could not create directory " 
+	      << categoricalDefinition_manager << "\n";
+    return false;
+  }
+  dir->factory( "categoricaldefinition", create_new_categorical_definition );
+  return true;
+}
 
 extern "C" {
   int libGsTLAppli_grid_init() {

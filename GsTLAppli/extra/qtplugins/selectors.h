@@ -84,7 +84,7 @@ class QTPLUGINS_DECL  SinglePropertySelector : public QComboBox {
   virtual ~SinglePropertySelector() {}
   
   public slots:
-    void show_properties( const QString& grid_name );
+    virtual void show_properties( const QString& grid_name );
 
   protected:
     QString current_grid_;
@@ -159,6 +159,8 @@ class QTPLUGINS_DECL  PropertySelectorNoRegion : public QWidget {
   QHBoxLayout* GroupBox4Layout;
   QHBoxLayout* GroupBox5Layout;
 };
+
+
 
 
 

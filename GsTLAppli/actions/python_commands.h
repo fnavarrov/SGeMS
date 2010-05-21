@@ -49,6 +49,7 @@
 #include <GsTLAppli/grid/grid_model/geostat_grid.h>
 #include <GsTLAppli/grid/grid_model/rgrid.h>
 #include <GsTLAppli/grid/grid_model/grid_property.h>
+#include <GsTLAppli/grid/grid_model/grid_categorical_property.h>
 
 
 #include <string> 
@@ -215,6 +216,213 @@ static PyObject* sgems_set_property( PyObject *self, PyObject *args)
 
 
 
+static PyObject* sgems_set_categorical_property_alpha( PyObject *self, PyObject *args)
+{
+  char* obj_str;
+  char* prop_str;
+  PyObject* tuple;
+  char* category_str;
+
+  if( !PyArg_ParseTuple(args, "sss0", &obj_str, &prop_str, &category_str, &tuple) ) {
+    *GsTLAppli_Python_cerr::instance() << "Need 4 inputs paramters: gridName, PropName, catDefName, alphaProperty"<< gstlIO::end;
+    return NULL;
+  }
+
+
+  if( !PyList_Check( tuple ) ) return NULL;
+
+  std::string object( obj_str );
+  std::string prop_name( prop_str );
+
+// Check if the grid exist
+  SmartPtr<Named_interface> ni =
+    Root::instance()->interface( gridModels_manager + "/" + object );
+  Geostat_grid* grid = dynamic_cast<Geostat_grid*>( ni.raw_ptr() );
+  if( !grid ) {
+    *GsTLAppli_Python_cerr::instance() << "No grid called \"" << object
+                << "\" was found" << gstlIO::end;
+    Py_INCREF(Py_None);
+    return Py_None;
+  }
+// Check if the catgegorical definition exist
+  std::string cat_def_name(category_str);
+  ni = Root::instance()->interface( categoricalDefinition_manager+"/"+cat_def_name  );
+  CategoricalPropertyDefinitionName* cat_def = 
+    dynamic_cast<CategoricalPropertyDefinitionName*>(ni.raw_ptr());
+
+
+  GsTLGridCategoricalProperty* prop = grid->categorical_property( prop_name );
+  if( !prop ) {
+    prop = grid->add_categorical_property( prop_name );
+  }
+  else {
+	  prop = dynamic_cast<GsTLGridCategoricalProperty*>(prop);
+  }
+  if( !prop ) return Py_None;
+
+
+  int numPyItems  = PyList_Size( tuple );
+  int size = std::min( prop->size(), numPyItems );
+
+  if(!cat_def) {
+    //No catDef exist with that input name: need to create one
+	  ni = Root::instance()->new_interface( categoricalDefinition_manager, cat_def_name);
+    cat_def = dynamic_cast<CategoricalPropertyDefinitionName*>(ni.raw_ptr());
+	  for( int i=0 ; i < size ; i++ ) {
+		  char* code;
+	    PyArg_Parse( PyList_GET_ITEM( tuple, i ), "s", &code );
+	    std::string code_str(code);
+	    cat_def->add_category(code_str);
+	  }
+  }
+
+  prop->set_category_definition(cat_def->name());
+
+  for( int i=0 ; i < size ; i++ ) {
+	  char* code;
+    PyArg_Parse( PyList_GET_ITEM( tuple, i ), "s", &code );
+    std::string code_str(code);
+  	prop->set_value( code_str, i );
+  }
+
+  Python_project_wrapper::set_project_modified();
+
+  Py_INCREF(Py_None);
+  return Py_None;
+}
+
+
+
+static PyObject* sgems_set_categorical_property_integer( PyObject *self, PyObject *args)
+{
+  char* obj_str;
+  char* prop_str;
+  PyObject* tuple;
+  char* category_str;
+  std::string cat_def_name;
+  bool cat_def_provided = false;
+
+  if( !PyArg_ParseTuple(args, "sssO", &obj_str, &prop_str, &category_str, &tuple ) ) {
+	  cat_def_provided = true;
+    cat_def_name = std::string(category_str);
+  }
+  else if( !PyArg_ParseTuple(args, "ssO", &obj_str, &prop_str, &tuple) )
+    cat_def_name = "Default";
+
+
+  if( !PyList_Check( tuple ) ) return NULL;
+
+  std::string object( obj_str );
+  std::string prop_name( prop_str );
+
+// Check if the grid exist
+  SmartPtr<Named_interface> ni =
+    Root::instance()->interface( gridModels_manager + "/" + object );
+  Geostat_grid* grid = dynamic_cast<Geostat_grid*>( ni.raw_ptr() );
+  if( !grid ) {
+    *GsTLAppli_Python_cerr::instance() << "No grid called \"" << object
+                << "\" was found" << gstlIO::end;
+    Py_INCREF(Py_None);
+    return Py_None;
+  }
+// Check if the categorical deifniton exist
+  ni = Root::instance()->interface( categoricalDefinition_manager+"/"+cat_def_name  );
+  CategoricalPropertyDefinition* cat_def = 
+    dynamic_cast<CategoricalPropertyDefinition*>(ni.raw_ptr());
+  if( !cat_def ) {
+    *GsTLAppli_Python_cerr::instance() << "No categorical definition called \"" << cat_def_name
+                << "\" was found" << gstlIO::end;
+    Py_INCREF(Py_None);
+    return Py_None;
+  }
+
+  GsTLGridCategoricalProperty* prop = grid->categorical_property( prop_name );
+  if( !prop ) {
+    prop = grid->add_categorical_property( prop_name );
+  }
+  else {
+	  prop = dynamic_cast<GsTLGridCategoricalProperty*>(prop);
+  }
+  if( !prop ) return Py_None;
+  prop->set_category_definition(cat_def_name);
+
+  int numPyItems  = PyList_Size( tuple );
+  int size = std::min( prop->size(), numPyItems );
+
+  for( int i=0 ; i < size ; i++ ) {
+	  int val;
+
+    PyArg_Parse( PyList_GET_ITEM( tuple, i ), "i", &val );
+	prop->set_value( static_cast<float>(val), i );
+
+  }
+
+  Python_project_wrapper::set_project_modified();
+
+  Py_INCREF(Py_None);
+  return Py_None;
+}
+
+
+static PyObject* sgems_get_categorical_definition( PyObject *self, PyObject *args)
+{
+  char* obj_str;
+  char* prop_str;
+
+  if( !PyArg_ParseTuple(args, "ss", &obj_str, &prop_str) )
+    return NULL;
+
+  std::string object( obj_str );
+  std::string prop_name( prop_str );
+
+  SmartPtr<Named_interface> grid_ni =
+    Root::instance()->interface( gridModels_manager + "/" + object );
+  Geostat_grid* grid = dynamic_cast<Geostat_grid*>( grid_ni.raw_ptr() );
+  if( !grid ) {
+    *GsTLAppli_Python_cerr::instance() << "No grid called \"" << object
+                << "\" was found" << gstlIO::end;
+    Py_INCREF(Py_None);
+    return Py_None;
+  }
+
+  GsTLGridCategoricalProperty* prop = grid->categorical_property( prop_name );
+
+  if( !prop ) {
+    *GsTLAppli_Python_cerr::instance() << "Grid \"" << object
+                << "\" does not have a categorical property "
+                << "called \"" << prop_name << "\"" << gstlIO::end;
+    Py_INCREF(Py_None);
+    return Py_None;
+  }
+
+  //CategoricalPropertyDefinition* cat_def = prop->get_category_definition();
+  const CategoricalPropertyDefinitionName* cat_def = static_cast<const CategoricalPropertyDefinitionName*>(prop->get_category_definition());
+  if(cat_def == 0) {
+	Py_INCREF(Py_None);
+	return Py_None;
+  }
+
+
+  PyObject *list = PyList_New(cat_def->number_of_category());
+
+  for ( int i = 0; i < cat_def->number_of_category(); i++) {
+	  std::string name = cat_def->get_category_name(i);
+	  PyObject* item = Py_BuildValue("s", name.c_str());
+	  if (!item) {
+		  Py_DECREF(list);
+		  list = NULL;
+		  break;
+	  }
+	  PyList_SetItem(list, i, item);
+  }
+
+  return list;
+}
+
+
+
+
+
 static PyObject* sgems_get_region( PyObject *self, PyObject *args)
 {
   char* obj_str;
@@ -236,7 +444,6 @@ static PyObject* sgems_get_region( PyObject *self, PyObject *args)
     return Py_None;
   }
 
-  bool delete_prop = false;
   GsTLGridRegion* region = grid->region( region_name );
 
   if( !region ) {
@@ -567,6 +774,12 @@ static PyMethodDef SGemsMethods[] = {
     "Return the nodeid from a x,y,z location."},
     {"get_closest_nodeid", sgems_get_closest_nodeid, METH_VARARGS,
     "Return the closest nodeid from a x,y,z location."},
+    {"set_categorical_property_int", sgems_set_categorical_property_integer, METH_VARARGS,
+    "Set a categorical property from a list of integer"},
+    {"set_categorical_property_alpha", sgems_set_categorical_property_alpha, METH_VARARGS,
+    "Set a categorical property from a list of aplhanumeric entries (string)"},
+    {"get_categorical_definition", sgems_get_categorical_definition, METH_VARARGS,
+    "Get the categorical definition from a categorical property"},
     {NULL, NULL, 0, NULL}
 };
 

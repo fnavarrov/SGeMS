@@ -73,7 +73,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				IgnoreImportLibrary="true"
-				AdditionalDependencies="GsTLAppli_utils.lib GsTLAppli_appli.lib $(QTDIR)\lib\QtXmld4.lib $(QTDIR)\lib\QtGuid4.lib $(QTDIR)\lib\QtCored4.lib $(QTDIR)\lib\QtUiToolsd.lib $(QTDIR)\lib\QtDesignerd4.lib"
+				AdditionalDependencies="GsTLAppli_utils.lib GsTLAppli_appli.lib GsTLAppli_grid.lib $(QTDIR)\lib\QtXmld4.lib $(QTDIR)\lib\QtGuid4.lib $(QTDIR)\lib\QtCored4.lib $(QTDIR)\lib\QtUiToolsd.lib $(QTDIR)\lib\QtDesignerd4.lib"
 				OutputFile="$(SGEMS_BUILD)\GsTLAppli-qt4\lib\win32\debug\GsTLwidgets.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
@@ -165,7 +165,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				IgnoreImportLibrary="true"
-				AdditionalDependencies="GsTLAppli_utils.lib GsTLAppli_appli.lib QtXml4.lib QtGui4.lib QtCore4.lib $(QTDIR)\lib\QtUiTools.lib $(QTDIR)\lib\QtDesigner4.lib"
+				AdditionalDependencies="GsTLAppli_utils.lib GsTLAppli_appli.lib GsTLAppli_grid.lib QtXml4.lib QtGui4.lib QtCore4.lib $(QTDIR)\lib\QtUiTools.lib $(QTDIR)\lib\QtDesigner4.lib"
 				OutputFile="$(SGEMS_BUILD)\GsTLAppli-qt4\lib\win32\release\GsTLwidgets.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
@@ -212,6 +212,10 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
+				RelativePath=".\categorical_selectors.cpp"
+				>
+			</File>
+			<File
 				RelativePath="ellipsoid_input.cpp"
 				>
 			</File>
@@ -244,6 +248,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\.rcc\qrc_icons.cpp"
+				>
+			</File>
+			<File
 				RelativePath="selectors.cpp"
 				>
 			</File>
@@ -257,6 +265,32 @@
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
+			<File
+				RelativePath=".\categorical_selectors.h"
+				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="MOC categorical_selectors.h"
+						CommandLine="$(QTDIR)\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQTPLUGINS_EXPORTS -DQT_DLL -DQT_PLUGIN -DQT_XML_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -DQDESIGNER_EXPORT_WIDGETS -I&quot;$(QTDIR)\include\QtDesigner&quot; -I&quot;$(QTDIR)\include\QtUiTools&quot; -I&quot;$(QTDIR)\include\QtCore&quot; -I&quot;$(QTDIR)\include\QtCore&quot; -I&quot;$(QTDIR)\include\QtGui&quot; -I&quot;$(QTDIR)\include\QtGui&quot; -I&quot;$(QTDIR)\include\QtXml&quot; -I&quot;$(QTDIR)\include\QtXml&quot; -I&quot;$(QTDIR)\include&quot; -I&quot;.&quot; -I&quot;$(QTDIR)\tools\designer\interfaces&quot; -I&quot;$(QTDIR)\include\ActiveQt&quot; -I&quot;.moc&quot; -I&quot;.&quot; -D_MSC_VER=1400 -DWIN32 categorical_selectors.h -o .moc\moc_categorical_selectors.cpp&#x0D;&#x0A;"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe;categorical_selectors.h"
+						Outputs=".moc\moc_categorical_selectors.cpp"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="MOC categorical_selectors.h"
+						CommandLine="$(QTDIR)\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQTPLUGINS_EXPORTS -DQT_DLL -DQT_PLUGIN -DQT_XML_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -DQDESIGNER_EXPORT_WIDGETS -I&quot;$(QTDIR)\include\QtDesigner&quot; -I&quot;$(QTDIR)\include\QtUiTools&quot; -I&quot;$(QTDIR)\include\QtCore&quot; -I&quot;$(QTDIR)\include\QtCore&quot; -I&quot;$(QTDIR)\include\QtGui&quot; -I&quot;$(QTDIR)\include\QtGui&quot; -I&quot;$(QTDIR)\include\QtXml&quot; -I&quot;$(QTDIR)\include\QtXml&quot; -I&quot;$(QTDIR)\include&quot; -I&quot;.&quot; -I&quot;$(QTDIR)\tools\designer\interfaces&quot; -I&quot;$(QTDIR)\include\ActiveQt&quot; -I&quot;.moc&quot; -I&quot;.&quot; -D_MSC_VER=1400 -DWIN32 categorical_selectors.h -o .moc\moc_categorical_selectors.cpp&#x0D;&#x0A;"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe;categorical_selectors.h"
+						Outputs=".moc\moc_categorical_selectors.cpp"
+					/>
+				</FileConfiguration>
+			</File>
 			<File
 				RelativePath="common.h"
 				>
@@ -532,6 +566,10 @@
 			UniqueIdentifier="{71ED8ED8-ACB9-4CE9-BBE1-E00B30144E11}"
 			>
 			<File
+				RelativePath=".\.moc\moc_categorical_selectors.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".moc\moc_ellipsoid_input.cpp"
 				>
 			</File>
@@ -700,9 +738,9 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="RCC icons.qrc"
-						CommandLine="$(QTDIR)\bin\rcc.exe -name icons icons.qrc -o debug\qrc_icons.cpp&#x0D;&#x0A;"
+						CommandLine="$(QTDIR)\bin\rcc.exe -name icons icons.qrc -o .rcc\qrc_icons.cpp&#x0D;&#x0A;"
 						AdditionalDependencies="$(QTDIR)\bin\rcc.exe;icons.qrc;icons\down.png;icons\left.png;icons\right.png;icons\up.png"
-						Outputs="debug\qrc_icons.cpp"
+						Outputs=".rcc\qrc_icons.cpp"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -711,9 +749,9 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="RCC icons.qrc"
-						CommandLine="$(QTDIR)\bin\rcc.exe -name icons icons.qrc -o release\qrc_icons.cpp&#x0D;&#x0A;"
+						CommandLine="$(QTDIR)\bin\rcc.exe -name icons icons.qrc -o .rcc\qrc_icons.cpp&#x0D;&#x0A;"
 						AdditionalDependencies="$(QTDIR)\bin\rcc.exe;icons.qrc;icons\down.png;icons\left.png;icons\right.png;icons\up.png"
-						Outputs="release\qrc_icons.cpp"
+						Outputs=".rcc\qrc_icons.cpp"
 					/>
 				</FileConfiguration>
 			</File>

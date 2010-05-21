@@ -131,6 +131,10 @@ class GUI_DECL QSP_application : public QMainWindow {
                              const QString& new_mgrid_name);
   void new_mgrid_from_cgrid();
 
+  void show_categorical_definition();
+  void new_categorical_definition();
+  void assign_categorical_definition();
+
   void show_script_editor();
   void run_script();
 

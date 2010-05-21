@@ -300,8 +300,8 @@ compute_single( const ValPair& head_prop,
                 const ValPair& tail_prop ) {
 
   return
-    0.5*std::pow(std::fabs(head_prop.first - head_prop.second),w_)
-	   *std::pow(std::fabs(tail_prop.first - tail_prop.second),w_);
+    0.5*std::pow(std::fabs(head_prop.first - head_prop.second),w_/2)
+	   *std::pow(std::fabs(tail_prop.first - tail_prop.second),w_/2);
 }
 
 //----------------------------
@@ -313,9 +313,11 @@ double Madogram_measure::
 compute_single( const ValPair& head_prop,
                 const ValPair& tail_prop ) {
 
+// Must take the square root such that the product is the
+// absolute value
   return
-    0.5*std::fabs(head_prop.first - head_prop.second)
-	   *std::fabs(tail_prop.first - tail_prop.second);
+    0.5*std::sqrt(std::fabs(head_prop.first - head_prop.second))
+	   *std::sqrt(std::fabs(tail_prop.first - tail_prop.second));
 }
 
 //----------------------------
@@ -328,6 +330,6 @@ compute_single( const ValPair& head_prop,
                 const ValPair& tail_prop ) {
 
   return
-  0.5*std::sqrt(std::fabs(head_prop.first - head_prop.second))
-	 *std::sqrt(std::fabs(tail_prop.first - tail_prop.second));
+  0.5*std::pow(std::fabs(head_prop.first - head_prop.second),0.25)
+	 *std::pow(std::fabs(tail_prop.first - tail_prop.second),0.25);
 }

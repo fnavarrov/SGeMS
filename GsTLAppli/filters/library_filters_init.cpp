@@ -29,6 +29,7 @@
 #include <GsTLAppli/filters/library_filters_init.h>
 #include <GsTLAppli/filters/gslib/gslib_filter.h>
 #include <GsTLAppli/filters/simulacre_filter.h>
+#include <GsTLAppli/filters/csv_filter.h>
 #include <GsTLAppli/utils/gstl_messages.h>
 
 int library_filters_init::references_ = 0;
@@ -65,7 +66,11 @@ int library_filters_init::init_lib() {
   SmartPtr<Named_interface> ni_gslib =
     Root::instance()->new_interface("directory", 
 				    gslibInputFilters_manager);
-      
+
+  SmartPtr<Named_interface> ni_csv =
+    Root::instance()->new_interface("directory", 
+				    csvInputFilters_manager);
+
 
   // Bind the factory methods for top-level filters
    
@@ -90,6 +95,17 @@ int library_filters_init::init_lib() {
  
   bind_gslib_infilters_factories( dir );
 
+  
+  // Bind the factory methods for csv filters
+   
+  dir = dynamic_cast<Manager*>( ni_csv.raw_ptr() );
+  if( !dir ) {
+    GsTLlog << "could not create directory" 
+	      << csvInputFilters_manager << "\n";
+    return 1;
+  }     
+ 
+  bind_csv_infilters_factories( dir );
 
 
   // Create the directory for output filters
@@ -117,6 +133,7 @@ int library_filters_init::release_lib() {
     Root::instance()->delete_interface( infilters_manager );
     Root::instance()->delete_interface( topLevelInputFilters_manager );
     Root::instance()->delete_interface( gslibInputFilters_manager );
+    Root::instance()->delete_interface( csvInputFilters_manager );
   }
   return 0;
 }
@@ -129,6 +146,8 @@ bool library_filters_init::bind_toplevel_infilters_factories(Manager* dir) {
                 Gslib_infilter::create_new_interface );
   dir->factory( Simulacre_input_filter().filter_name(),
                 Simulacre_input_filter::create_new_interface );
+  dir->factory( Csv_infilter().filter_name(),
+                Csv_infilter::create_new_interface );
   return true;
 }
 
@@ -153,6 +172,25 @@ bool library_filters_init::bind_gslib_infilters_factories(Manager* dir) {
   return true;
 }
 
+
+bool library_filters_init::bind_csv_infilters_factories(Manager* dir) {
+  // Input filter for grids
+  Csv_grid_infilter filter;
+  dir->factory( filter.object_filtered(), 
+		Csv_grid_infilter::create_new_interface );
+
+  //TL modified
+  Csv_mgrid_infilter mfilter;
+  dir->factory( mfilter.object_filtered(), 
+		Csv_mgrid_infilter::create_new_interface );
+
+  // Input filter for point-sets
+  Csv_poinset_infilter pset_filter;
+  dir->factory( pset_filter.object_filtered(), 
+		Csv_poinset_infilter::create_new_interface );
+
+  return true;
+}
 
 bool library_filters_init::bind_output_filters_factories(Manager* dir) {
   Gslib_outfilter gslib_filter;

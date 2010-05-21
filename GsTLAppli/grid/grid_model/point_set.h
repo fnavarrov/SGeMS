@@ -37,12 +37,14 @@
 #include <GsTLAppli/grid/grid_model/geostat_grid.h> 
 #include <GsTLAppli/grid/grid_model/grid_property_manager.h> 
 #include <GsTLAppli/grid/grid_model/grid_region_manager.h>  
+#include <GsTLAppli/grid/grid_model/grid_property_set.h> 
 #include <string> 
 #include <vector> 
  
 
 
-class GsTLGridProperty; 
+class GsTLGridProperty;
+class GsTLGridCategoricalProperty;
 class Point_set_neighborhood; 
  
  
@@ -72,6 +74,10 @@ class GRID_DECL Point_set : public Geostat_grid {
   virtual GsTLGridProperty* add_property( const std::string& name ); 
  
  
+  virtual GsTLGridCategoricalProperty* add_categorical_property(
+			  const std::string& name,
+			  const std::string& definition_name = "Default");
+
   virtual bool remove_property( const std::string& name ); 
   
  
@@ -86,11 +92,23 @@ class GRID_DECL Point_set : public Geostat_grid {
   virtual const GsTLGridProperty* property( const std::string& name ) const; 
   virtual GsTLGridProperty* property( const std::string& name ); 
  
+  virtual const GsTLGridCategoricalProperty* categorical_property( const std::string& name ) const;
+  virtual GsTLGridCategoricalProperty* categorical_property( const std::string& name );
+
   virtual std::list<std::string> property_list() const ; 
+  virtual std::list<std::string> categorical_property_list() const ; 
  
   virtual MultiRealization_property*  
     add_multi_realization_property( const std::string& name ); 
  
+
+  //--------------------------- 
+  // PropertyGroup management 
+  virtual GsTLGridPropertyGroup* add_group( const std::string& name, const std::string& type  );   
+  virtual std::list<std::string> get_group_names(const std::string& type = "") const;   
+  virtual unsigned int group_size() const;   
+  virtual GsTLGridPropertyGroup* get_group( const std::string& name );   
+  virtual const GsTLGridPropertyGroup* get_group( const std::string& name ) const;  
 
 
  //--------------------------- 
@@ -176,6 +194,7 @@ class GRID_DECL Point_set : public Geostat_grid {
   Grid_property_manager point_prop_;
 
   Grid_region_manager region_manager_;
+  Grid_property_group_manager group_manager_;
   
   std::vector<GsTLInt> grid_path_; 
  
@@ -235,7 +254,15 @@ GsTLGridProperty* Point_set::property( const std::string& name )
     return point_prop_.get_property( name ); 
 } 
  
- 
+inline
+const GsTLGridCategoricalProperty* Point_set::categorical_property( const std::string& name ) const{
+	 return point_prop_.get_categorical_property( name );
+}
+
+inline
+GsTLGridCategoricalProperty* Point_set::categorical_property( const std::string& name ){
+	return point_prop_.get_categorical_property( name );
+}
  
 inline 
 GsTLGridRegion* Point_set::add_region(const std::string& name) { 
@@ -322,5 +349,29 @@ Point_set::const_iterator Point_set::end( const GsTLGridProperty* prop ) const {
 	                    	 point_loc_.size(),point_loc_.size(), 
                          LinearMapIndex() ); 
 } 
+
+
+inline GsTLGridPropertyGroup* 
+Point_set::add_group( const std::string& name, const std::string& type ) {
+  return group_manager_.add_group(name,type);
+}
+
+inline std::list<std::string> 
+Point_set::get_group_names(const std::string& type) const {
+  return group_manager_.group_names(type);
+}
+
+inline unsigned int Point_set::group_size() const {
+  return group_manager_.size();
+}
+
+inline GsTLGridPropertyGroup* 
+Point_set::get_group( const std::string& name ){
+  return group_manager_.get_group(name);
+}
+inline const GsTLGridPropertyGroup* 
+Point_set::get_group( const std::string& name ) const{
+  return group_manager_.get_group(name);
+}
 
 #endif 

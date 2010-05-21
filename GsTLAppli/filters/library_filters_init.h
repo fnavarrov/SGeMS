@@ -50,6 +50,7 @@ class FILTERS_DECL library_filters_init {
   static bool bind_toplevel_infilters_factories(Manager* dir); 
   static bool bind_gslib_infilters_factories(Manager* dir); 
   static bool bind_output_filters_factories(Manager* dir); 
+  static bool bind_csv_infilters_factories(Manager* dir);
  
 }; 
  

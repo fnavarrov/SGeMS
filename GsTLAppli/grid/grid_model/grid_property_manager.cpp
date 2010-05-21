@@ -27,7 +27,6 @@
 **********************************************************************/
 
 #include <GsTLAppli/grid/grid_model/grid_property_manager.h>
-#include <GsTLAppli/grid/grid_model/grid_property.h>
 #include <GsTLAppli/utils/string_manipulation.h> 
 
 #include <stdlib.h>
@@ -45,6 +44,16 @@ MultiRealization_property::MultiRealization_property( const std::string& name,
   : name_( name ),
     prop_manager_( manager ) {
   size_ = 0;
+  definition_ = 0;
+}
+
+MultiRealization_property::MultiRealization_property( const std::string& name,
+				  Grid_property_manager* manager,
+          CategoricalPropertyDefinition* cat_definition)
+  : name_( name ),
+    prop_manager_( manager ) {
+  size_ = 0;
+  definition_ = cat_definition;
 }
 
 MultiRealization_property::
@@ -52,6 +61,7 @@ MultiRealization_property( const MultiRealization_property& rhs ) {
   name_ = rhs.name_;
   size_ = rhs.size_;
   prop_manager_ = rhs.prop_manager_;
+  definition_ = rhs.definition_;
 }
 
 MultiRealization_property& 
@@ -59,6 +69,7 @@ MultiRealization_property::operator = ( const MultiRealization_property& rhs ) {
   name_ = rhs.name_;
   size_ = rhs.size_;
   prop_manager_ = rhs.prop_manager_;
+  definition_ = rhs.definition_;
 
   return *this;
 }
@@ -100,6 +111,48 @@ const GsTLGridProperty* MultiRealization_property::realization( int id ) const {
 
 }
 
+
+void MultiRealization_property::
+set_category_definition(CategoricalPropertyDefinition* definition) {
+  definition_= definition;
+}
+
+
+GsTLGridCategoricalProperty* MultiRealization_property::new_categorical_realization() {
+  // if there was already a realization, don't keep it loaded in memory
+  // and swap it to disk
+  if( size_ > 0 ) {
+    GsTLGridCategoricalProperty* previous_real = 
+      prop_manager_->get_categorical_property( name_ + separator + 
+				   String_Op::to_string( size_-1 ) );
+    previous_real->swap_to_disk();
+  }
+  
+  GsTLGridCategoricalProperty* new_real = 
+    prop_manager_->add_categorical_property( name_ + separator +
+				 String_Op::to_string( size_ ), definition_->name() );
+  if( new_real )
+    size_++;
+  
+  return new_real;
+}
+
+GsTLGridCategoricalProperty* MultiRealization_property::categorical_realization( int id ) {
+  if( id >= size_ )
+    return 0;
+
+  return prop_manager_->get_categorical_property( name_ + MultiRealization_property::separator +
+                                      String_Op::to_string( id ) );
+}
+
+const GsTLGridCategoricalProperty* MultiRealization_property::categorical_realization( int id ) const {
+  if( id >= size_ )
+    return 0;
+
+  return prop_manager_->get_categorical_property( name_ + MultiRealization_property::separator +
+                                      String_Op::to_string( id ) );
+
+}
 
 
 
@@ -155,7 +208,7 @@ Grid_property_manager::add_property( const std::string& name ) {
 
     }
     properties_map_[name] = new_prop_id;
-    properties_.push_back( new GsTLGridProperty( size_, name ) );
+    properties_.push_back( prop );
 
     // if no property was selected before, select the first one in the list
     if( selected_property_ == -1 )
@@ -167,6 +220,38 @@ Grid_property_manager::add_property( const std::string& name ) {
     return 0 ; 
 }
 
+
+GsTLGridCategoricalProperty*
+Grid_property_manager::add_categorical_property( const std::string& name,
+                                                const std::string definition_name) {
+
+  appli_assert( size_ != 0 );
+  Property_map::iterator it = properties_map_.find( name );
+  if( it == properties_map_.end() ) {
+    int new_prop_id = properties_.size();
+    GsTLGridProperty* prop = new GsTLGridCategoricalProperty( size_, name, definition_name);
+
+    // Check if the property has been correctly created
+    if(prop->size() == 0 ) {
+        delete prop;
+        GsTLcerr << "The property "<<name<<" could not be created,\n"<<
+          "probably running out of memory" << gstlIO::end;
+        return 0;
+
+    }
+    properties_map_[name] = new_prop_id;
+    properties_.push_back( prop );
+    //properties_.push_back( new GsTLGridProperty( size_, name ) );
+
+    // if no property was selected before, select the first one in the list
+    if( selected_property_ == -1 )
+      selected_property_ = new_prop_id;
+
+    return dynamic_cast<GsTLGridCategoricalProperty*>(properties_[ new_prop_id ]);
+  }
+  else
+    return 0 ;
+}
 
 
 bool 
@@ -188,7 +273,9 @@ Grid_property_manager::remove_property( const std::string& name ) {
 
 
 MultiRealization_property* 
-Grid_property_manager::new_multireal_property( const std::string& name ) {
+Grid_property_manager::new_multireal_property( 
+      const std::string& name,
+      CategoricalPropertyDefinition* definition ) {
   // Make sure the requested name does not conflict with another one
   // If it does, append "_0" to the requested name
   const std::string suffix = MultiRealization_property::separator;
@@ -200,7 +287,7 @@ Grid_property_manager::new_multireal_property( const std::string& name ) {
     conflict = new_name + suffix;
   }
 
-  multireal_properties_[ new_name ] = MultiRealization_property( new_name, this );
+  multireal_properties_[ new_name ] = MultiRealization_property( new_name, this, definition );
   MultirealProperty_map::iterator found = multireal_properties_.find( new_name );
   appli_assert( found != multireal_properties_.end() );
   

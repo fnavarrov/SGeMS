@@ -794,11 +794,11 @@ void kdtree2_node::process_terminal_node_fixedball(searchrecord& sr) {
       early_exit = false;
       dis = 0.0;
       for (int k=0; k<dim; k++) {
-	dis += squared(data[i][k] - sr.qv[k]);
-	if (dis > ballsize) {
-	  early_exit=true; 
-	  break;
-	}
+	      dis += squared(data[i][k] - sr.qv[k]);
+	      if (dis > ballsize) {
+	        early_exit=true; 
+	        break;
+	      }
       }
       if(early_exit) continue; // next iteration of mainloop
       // why do we do things like this?  because if we take an early
@@ -816,11 +816,11 @@ void kdtree2_node::process_terminal_node_fixedball(searchrecord& sr) {
       early_exit = false;
       dis = 0.0;
       for (int k=0; k<dim; k++) {
-	dis += squared(data[indexofi][k] - sr.qv[k]);
-	if (dis > ballsize) {
-	  early_exit= true; 
-	  break;
-	}
+	      dis += squared(data[indexofi][k] - sr.qv[k]);
+	      if (dis > ballsize) {
+	        early_exit= true; 
+	        break;
+	      }
       }
       if(early_exit) continue; // next iteration of mainloop
     } // end if rearrange. 
@@ -834,7 +834,7 @@ void kdtree2_node::process_terminal_node_fixedball(searchrecord& sr) {
       kdtree2_result e;
       e.idx = indexofi;
       e.dis = dis;
-	sr.result.push_back(e);
+	    sr.result.push_back(e);
     }
 
   }

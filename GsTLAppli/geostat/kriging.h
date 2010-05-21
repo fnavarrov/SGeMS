@@ -90,6 +90,8 @@ class GEOSTAT_DECL Kriging : public Geostat_algo {
   Temporary_gridRegion_Selector gridTempRegionSelector_;
   Temporary_gridRegion_Selector hdgridTempRegionSelector_;
 
+  bool do_block_kriging_;
+
 
 /* 
  protected: 

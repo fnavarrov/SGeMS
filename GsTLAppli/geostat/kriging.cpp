@@ -100,6 +100,10 @@ int Kriging::execute( GsTL_project* ) {
   typedef Geostat_grid::iterator iterator;
   iterator begin = simul_grid_->begin();
   iterator end = simul_grid_->end();
+
+  Block_covariance<Location>* rhs_covar_blk = 0;
+  if(do_block_kriging_)  
+    rhs_covar_blk = static_cast<Block_covariance<Location>*>(rhs_covar_);
   
   for( ; begin != end; ++begin ) {
     if( !progress_notifier->notify() ) {
@@ -119,10 +123,22 @@ int Kriging::execute( GsTL_project* ) {
     }
 
     double variance;
-    int status = kriging_weights_2( kriging_weights_, variance,
+
+
+
+    int status;
+    
+    if(rhs_covar_blk) {
+      status  = kriging_weights_2( kriging_weights_, variance,
+                                   begin->location(), *(neighborhood_.raw_ptr()),
+                      				     covar_,*rhs_covar_blk, *Kconstraints_ );
+    } 
+    else {
+      status = kriging_weights_2( kriging_weights_, variance,
                                   begin->location(), *(neighborhood_.raw_ptr()),
                       				    covar_,*rhs_covar_, *Kconstraints_ );
-      
+    }
+
     if(status == 0) {
     	// the kriging system could be solved
     	double estimate = (*combiner_)( kriging_weights_.begin(), 
@@ -227,8 +243,8 @@ bool Kriging::initialize( const Parameters_handler* parameters,
     geostat_utils::initialize_covariance( &covar_, "Variogram", 
 	                        		            parameters, errors );
   if( !init_cov_ok ) return false;
-  std::string test = parameters->value("do_block_kriging.value");
-  if( parameters->value("do_block_kriging.value") == "1") {
+  do_block_kriging_ = parameters->value("do_block_kriging.value") == "1";
+  if( do_block_kriging_ ) {
 
     RGrid* block_grid = dynamic_cast<RGrid*>(simul_grid_);
     if(!block_grid) {

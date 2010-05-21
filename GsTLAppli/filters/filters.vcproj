@@ -46,7 +46,7 @@
 				Name="VCCLCompilerTool"
 				AdditionalOptions="-Zm300 -w34100 -w34189 -Zm300 -w34100 -w34189 -w34100 -w34189"
 				Optimization="4"
-				AdditionalIncludeDirectories="&quot;$(SGEMS_BUILD)\GsTL&quot;;&quot;$(SGEMS_BUILD)\GsTLAppli-qt4&quot;;&quot;$(SGEMS_BUILD)\boost\boost_1_38\&quot;;&quot;$(QTDIR)\include\QtCore&quot;;&quot;$(QTDIR)\include\QtGui&quot;;&quot;$(QTDIR)\include&quot;;.;gslib;&quot;$(QTDIR)\include\ActiveQt&quot;;.moc"
+				AdditionalIncludeDirectories="&quot;$(SGEMS_BUILD)\GsTL&quot;;&quot;$(SGEMS_BUILD)\GsTLAppli-qt4&quot;;&quot;$(SGEMS_BUILD)\boost\boost_1_38\&quot;;&quot;$(QTDIR)\include\QtCore&quot;;&quot;$(QTDIR)\include\QtGui&quot;;&quot;$(QTDIR)\include\QtXml&quot;;&quot;$(QTDIR)\include&quot;;.;gslib;&quot;$(QTDIR)\include\ActiveQt&quot;;.moc"
 				PreprocessorDefinitions="_WINDOWS,UNICODE,WIN32,QT_LARGEFILE_SUPPORT,FILTERS_EXPORTS,QT_DLL,QT_GUI_LIB,QT_CORE_LIB,QT_THREAD_SUPPORT"
 				GeneratePreprocessedFile="0"
 				ExceptionHandling="1"
@@ -136,7 +136,7 @@
 				Name="VCCLCompilerTool"
 				AdditionalOptions="-Zm300 -w34100 -w34189 -Zm300 -w34100 -w34189 -w34100 -w34189"
 				Optimization="2"
-				AdditionalIncludeDirectories="&quot;$(SGEMS_BUILD)\GsTL&quot;;&quot;$(SGEMS_BUILD)\GsTLAppli-qt4&quot;;&quot;$(SGEMS_BUILD)\boost\boost_1_38\&quot;;&quot;$(QTDIR)\include\QtCore&quot;;&quot;$(QTDIR)\include\QtGui&quot;;&quot;$(QTDIR)\include&quot;;.;gslib;&quot;$(QTDIR)\include\ActiveQt&quot;;.moc"
+				AdditionalIncludeDirectories="&quot;$(SGEMS_BUILD)\GsTL&quot;;&quot;$(SGEMS_BUILD)\GsTLAppli-qt4&quot;;&quot;$(SGEMS_BUILD)\boost\boost_1_38\&quot;;&quot;$(QTDIR)\include\QtCore&quot;;&quot;$(QTDIR)\include\QtGui&quot;;&quot;$(QTDIR)\include\QtXml&quot;;&quot;$(QTDIR)\include&quot;;.;gslib;&quot;$(QTDIR)\include\ActiveQt&quot;;.moc"
 				PreprocessorDefinitions="QT_NO_DEBUG,GSTLAPPLI_NDEBUG,_WINDOWS,UNICODE,WIN32,QT_LARGEFILE_SUPPORT,FILTERS_EXPORTS,QT_DLL,QT_NO_DEBUG,QT_GUI_LIB,QT_CORE_LIB,QT_THREAD_SUPPORT,NDEBUG"
 				GeneratePreprocessedFile="0"
 				ExceptionHandling="1"
@@ -206,6 +206,14 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
+				RelativePath=".\csv_filter.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\csv_filter_qt_dialogs.cpp"
+				>
+			</File>
+			<File
 				RelativePath="gslib\filter_qt_dialogs.cpp"
 				>
 			</File>
@@ -230,6 +238,36 @@
 			<File
 				RelativePath="common.h"
 				>
+			</File>
+			<File
+				RelativePath=".\csv_filter.h"
+				>
+			</File>
+			<File
+				RelativePath=".\csv_filter_qt_dialogs.h"
+				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="MOC csv_filter_qt_dialogs.h"
+						CommandLine="$(QTDIR)\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DFILTERS_EXPORTS -DQT_DLL -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -I&quot;$(QTDIR)\include\QtCore&quot; -I&quot;$(QTDIR)\include\QtCore&quot; -I&quot;$(QTDIR)\include\QtGui&quot; -I&quot;$(QTDIR)\include\QtGui&quot; -I&quot;$(QTDIR)\include&quot; -I&quot;.&quot; -I&quot;gslib&quot; -I&quot;$(QTDIR)\include\ActiveQt&quot; -I&quot;.moc&quot; -I&quot;.&quot; -I$(QTDIR)\mkspecs\win32-msvc.net -D_MSC_VER=1300 -DWIN32 csv_filter_qt_dialogs.h -o .moc\moc_csv_filter_qt_dialogs.cpp&#x0D;&#x0A;"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe;csv_filter_qt_dialogs.h"
+						Outputs=".moc\moc_csv_filter_qt_dialogs.cpp"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="MOC csv_filter_qt_dialogs.h"
+						CommandLine="$(QTDIR)\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DFILTERS_EXPORTS -DQT_DLL -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -I&quot;$(QTDIR)\include\QtCore&quot; -I&quot;$(QTDIR)\include\QtCore&quot; -I&quot;$(QTDIR)\include\QtGui&quot; -I&quot;$(QTDIR)\include\QtGui&quot; -I&quot;$(QTDIR)\include&quot; -I&quot;.&quot; -I&quot;gslib&quot; -I&quot;$(QTDIR)\include\ActiveQt&quot; -I&quot;.moc&quot; -I&quot;.&quot; -I$(QTDIR)\mkspecs\win32-msvc.net -D_MSC_VER=1300 -DWIN32 csv_filter_qt_dialogs.h -o .moc\moc_csv_filter_qt_dialogs.cpp&#x0D;&#x0A;"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe;csv_filter_qt_dialogs.h"
+						Outputs=".moc\moc_csv_filter_qt_dialogs.cpp"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="filter.h"
@@ -280,7 +318,23 @@
 			UniqueIdentifier="{71ED8ED8-ACB9-4CE9-BBE1-E00B30144E11}"
 			>
 			<File
+				RelativePath=".\.moc\moc_csv_filter_qt_dialogs.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".moc\moc_filter_qt_dialogs.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\ui_csv_grid_import.h"
+				>
+			</File>
+			<File
+				RelativePath=".\ui_csv_masked_import.h"
+				>
+			</File>
+			<File
+				RelativePath=".\ui_csv_pointset_import.h"
 				>
 			</File>
 			<File
@@ -306,6 +360,84 @@
 			UniqueIdentifier="{99349809-55BA-4b9d-BF79-8FDBB0286EB3}"
 			ParseFiles="false"
 			>
+			<File
+				RelativePath=".\csv_grid_import.ui"
+				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="UIC csv_grid_import.ui"
+						CommandLine="$(QTDIR)\bin\uic.exe csv_grid_import.ui -o ui_csv_grid_import.h&#x0D;&#x0A;"
+						AdditionalDependencies="$(QTDIR)\bin\uic.exe;csv_grid_import.ui"
+						Outputs="ui_csv_grid_import.h"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="UIC csv_grid_import.ui"
+						CommandLine="$(QTDIR)\bin\uic.exe csv_grid_import.ui -o ui_csv_grid_import.h&#x0D;&#x0A;"
+						AdditionalDependencies="$(QTDIR)\bin\uic.exe;csv_grid_import.ui"
+						Outputs="ui_csv_grid_import.h"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\csv_masked_import.ui"
+				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="UIC csv_masked_import.ui"
+						CommandLine="$(QTDIR)\bin\uic.exe csv_masked_import.ui -o ui_csv_masked_import.h&#x0D;&#x0A;"
+						AdditionalDependencies="$(QTDIR)\bin\uic.exe;csv_masked_import.ui"
+						Outputs="ui_csv_masked_import.h"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="UIC csv_masked_import.ui"
+						CommandLine="$(QTDIR)\bin\uic.exe csv_masked_import.ui -o ui_csv_masked_import.h&#x0D;&#x0A;"
+						AdditionalDependencies="$(QTDIR)\bin\uic.exe;csv_masked_import.ui"
+						Outputs="ui_csv_masked_import.h"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\csv_pointset_import.ui"
+				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="UIC csv_pointset_import.ui"
+						CommandLine="$(QTDIR)\bin\uic.exe csv_pointset_import.ui -o ui_csv_pointset_import.h&#x0D;&#x0A;"
+						AdditionalDependencies="$(QTDIR)\bin\uic.exe;csv_pointset_import.ui"
+						Outputs="ui_csv_pointset_import.h"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="UIC csv_pointset_import.ui"
+						CommandLine="$(QTDIR)\bin\uic.exe csv_pointset_import.ui -o ui_csv_pointset_import.h&#x0D;&#x0A;"
+						AdditionalDependencies="$(QTDIR)\bin\uic.exe;csv_pointset_import.ui"
+						Outputs="ui_csv_pointset_import.h"
+					/>
+				</FileConfiguration>
+			</File>
 			<File
 				RelativePath="gslib\gslib_pointset_import.ui"
 				>

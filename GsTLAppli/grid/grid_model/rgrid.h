@@ -34,6 +34,7 @@
 #include <GsTLAppli/grid/grid_model/grid_topology.h> 
 #include <GsTLAppli/grid/grid_model/grid_property_manager.h> 
 #include <GsTLAppli/grid/grid_model/grid_region_manager.h> 
+#include <GsTLAppli/grid/grid_model/grid_property_set.h> 
 #include <GsTLAppli/grid/grid_model/sgrid_cursor.h> 
 #include <GsTLAppli/grid/grid_model/rgrid_gval_accessor.h> 
 #include <GsTLAppli/grid/grid_model/gval_iterator.h> 
@@ -108,19 +109,35 @@ public:
  
  
   // Property management 
-  virtual GsTLGridProperty* add_property( const std::string& name ); 
+  virtual GsTLGridProperty* add_property( const std::string& name );
+
+  virtual GsTLGridCategoricalProperty* add_categorical_property(
+		  const std::string& name,
+		  const std::string& definition_name="Default");
 				 
   virtual bool remove_property( const std::string& name ) ; 
   virtual GsTLGridProperty* select_property( const std::string& name ); 
   virtual const GsTLGridProperty* selected_property() const ; 
   virtual GsTLGridProperty* selected_property() ; 
   virtual std::list<std::string> property_list() const; 
+  virtual std::list<std::string> categorical_property_list() const; 
   virtual const GsTLGridProperty* property( const std::string& name ) const; 
   virtual GsTLGridProperty* property( const std::string& name ); 
- 
+  virtual const GsTLGridCategoricalProperty* categorical_property( const std::string& name ) const;
+  virtual GsTLGridCategoricalProperty* categorical_property( const std::string& name );
+
   virtual MultiRealization_property*  
     add_multi_realization_property( const std::string& name ); 
  
+
+  //--------------------------- 
+  // PropertyGroup management 
+  virtual GsTLGridPropertyGroup* add_group( const std::string& name, const std::string& type  );   
+  virtual std::list<std::string> get_group_names(const std::string& type = "") const;   
+  virtual unsigned int group_size() const;   
+  virtual GsTLGridPropertyGroup* get_group( const std::string& name );   
+  virtual const GsTLGridPropertyGroup* get_group( const std::string& name ) const;   
+
   // Region  managment
   virtual const GsTLGridRegion* region(const std::string& name) const;
   virtual GsTLGridRegion* region(const std::string& name); 
@@ -205,6 +222,7 @@ public:
  
   Grid_property_manager property_manager_; 
   Grid_region_manager region_manager_;
+  Grid_property_group_manager group_manager_;
  
 //  std::map<std::string, GsTLGridRegionFlags*> regions_; 
   RGrid_gval_accessor* accessor_; 
@@ -344,6 +362,16 @@ GsTLGridProperty* RGrid::property( const std::string& name ) {
   return property_manager_.get_property( name ); 
 } 
  
+inline
+const GsTLGridCategoricalProperty* RGrid::categorical_property( const std::string& name ) const{
+	 return property_manager_.get_categorical_property( name );
+}
+
+inline
+GsTLGridCategoricalProperty* RGrid::categorical_property( const std::string& name ){
+	return property_manager_.get_categorical_property( name );
+}
+
 inline const GsTLGridProperty* RGrid::selected_property() const { 
   return property_manager_.selected_property(); 
 } 
@@ -566,6 +594,30 @@ RGrid::random_path_end( GsTLGridProperty* prop ) {
 			       TabularMapIndex(&grid_path_) ); 
 } 
  
+
+
+inline GsTLGridPropertyGroup* 
+RGrid::add_group( const std::string& name, const std::string& type ) {
+  return group_manager_.add_group(name,type);
+}
+
+inline std::list<std::string> 
+RGrid::get_group_names(const std::string& type) const {
+  return group_manager_.group_names(type);
+}
+
+inline unsigned int RGrid::group_size() const {
+  return group_manager_.size();
+}
+
+inline GsTLGridPropertyGroup* 
+RGrid::get_group( const std::string& name ){
+  return group_manager_.get_group(name);
+}
+inline const GsTLGridPropertyGroup* 
+RGrid::get_group( const std::string& name ) const{
+  return group_manager_.get_group(name);
+}
  
 #endif 
  

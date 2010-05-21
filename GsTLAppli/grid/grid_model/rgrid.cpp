@@ -88,6 +88,13 @@ GsTLGridProperty* RGrid::add_property( const std::string& name ) {
   return property_manager_.add_property( name );
 }
 
+
+GsTLGridCategoricalProperty* RGrid::add_categorical_property(
+		const std::string& name,
+		const std::string& definition_name){
+	return property_manager_.add_categorical_property( name, definition_name );
+}
+
 bool RGrid::remove_property( const std::string& name ) {
   return property_manager_.remove_property( name );
 }
@@ -117,6 +124,21 @@ std::list<std::string> RGrid::property_list() const {
     property_manager_.names_end();
   for( ; it != end ; ++it )
     result.push_back( *it );
+
+  return result;
+}
+
+std::list<std::string> RGrid::categorical_property_list() const {
+  std::list<std::string> result;
+
+  Grid_property_manager::Property_name_iterator it =
+    property_manager_.names_begin();
+  Grid_property_manager::Property_name_iterator end =
+    property_manager_.names_end();
+  for( ; it != end ; ++it ) {
+    const GsTLGridCategoricalProperty* prop = categorical_property(*it);
+    if(prop) result.push_back( *it );
+  }
 
   return result;
 }
