@@ -66,7 +66,7 @@ class QScrollArea;
 class QWidget;
 class GridSelectorBasic;
 class QTreeWidgetItem;
-class ObjectTreeContextMenu;
+class BaseTreeItemMenu;
 
 /** This class is a convenience class that behaves essentially as an std::map. 
  * An Oinv_description_map is a set of descriptions of currently available 
@@ -77,7 +77,8 @@ class ObjectTreeContextMenu;
  * Inventor scene-graph; while std::map::find(...) would simply have signaled 
  * that no such map was available. 
  */
-class GUI_DECL Oinv_description_map {
+class GUI_DECL Oinv_description_map
+{
 private:
 	typedef std::map<std::string, SmartPtr<Oinv_description> > Desc_Map;
 
@@ -89,7 +90,8 @@ public:
 public:
 
 	Oinv_description_map(SoGroup* scene_root = 0);
-	~Oinv_description_map() {
+	~Oinv_description_map()
+	{
 	}
 
 	void scene_graph(SoGroup* scene_root);
@@ -109,16 +111,20 @@ public:
 	bool delete_description(const std::string& obj_name);
 
 	iterator find(const std::string& obj_name);
-	iterator begin() {
+	iterator begin()
+	{
 		return available_descriptions_.begin();
 	}
-	const_iterator begin() const {
+	const_iterator begin() const
+	{
 		return available_descriptions_.begin();
 	}
-	iterator end() {
+	iterator end()
+	{
 		return available_descriptions_.end();
 	}
-	const_iterator end() const {
+	const_iterator end() const
+	{
 		return available_descriptions_.end();
 	}
 
@@ -127,11 +133,13 @@ private:
 	SoGroup* scene_root_;
 };
 
-class GUI_DECL ObjectTree: public QTreeWidget {
+class GUI_DECL ObjectTree: public QTreeWidget
+{
 Q_OBJECT
 
 public:
 	ObjectTree(QWidget * parent = 0);
+	QString getGridName(QTreeWidgetItem* _item);
 
 protected:
 	virtual void mousePressEvent(QMouseEvent* event);
@@ -139,24 +147,24 @@ protected:
 
 private:
 	QMouseEvent* mouse_event_;
-	std::vector<QTreeWidgetItem*> selected_item_;
+	QVector<BaseTreeItem*> selected_items_;
 
 	bool rename_in_progress_;
 	QString old_name_;
 
-	ObjectTreeContextMenu* multi_property_context_menu_;
-	ObjectTreeContextMenu* single_property_context_menu_;
-	ObjectTreeContextMenu* single_object_context_menu_;
+	//	BaseTreeItemMenu* multi_property_context_menu_;
+	//	BaseTreeItemMenu* single_property_context_menu_;
+	//	BaseTreeItemMenu* single_object_context_menu_;
 
 	bool rename_property(QString, QString, QString);
 	bool delete_property(QString _grid_name, QString _prop_name);
 	bool delete_object(QString _grid_name);
-	void switch_selected_item();
+	void switch_selected_items();
 
 signals:
 	void action(QString _action_name, QString _params);
 	void rename_finished(string, QString, QString);
-	void swap_display(QTreeWidgetItem*);
+	void swap_display(BaseTreeItem*);
 	void project_modified();
 	void delete_property_finished(QString, QString);
 	void delete_object_finished(QString);
@@ -165,8 +173,9 @@ public slots:
 	void slotItemSelected(QTreeWidgetItem * _item, int _col);
 	void onPropertyContextMenuClick(QAction* _action);
 	void onUnaryActionClick(QAction* _action);
+	void onPythonScriptClick(QAction* _action);
 	void onObjectContextMenuClick(QAction* _action);
-  void onTrendActionClick(QAction* _action);
+	void onTrendActionClick(QAction* _action);
 
 };
 
@@ -177,7 +186,8 @@ public slots:
  * to display, to set display preferences, etc). 
  */
 
-class GUI_DECL Project_view_gui: public QWidget, public Ui::Project_view_form {
+class GUI_DECL Project_view_gui: public QWidget, public Ui::Project_view_form
+{
 
 Q_OBJECT
 
@@ -186,7 +196,8 @@ public:
 	void set_parent(QWidget* parent);
 
 	//TL modified
-	void load_colorbar(QString & s) {
+	void load_colorbar(QString & s)
+	{
 		general_pref_panel_->load_colorbar_fromfile(s);
 	}
 
@@ -196,10 +207,12 @@ public:
 	 */
 	void add_object(std::string obj_name);
 
-	const SoQtGsTLViewer* get_render_area() const {
+	const SoQtGsTLViewer* get_render_area() const
+	{
 		return oinv_viewer_;
 	}
-	SoQtGsTLViewer* get_render_area() {
+	SoQtGsTLViewer* get_render_area()
+	{
 		return oinv_viewer_;
 	}
 
@@ -209,8 +222,8 @@ public:
 	void set_property_undisplayed(const QString& grid, const QString& prop);
 
 public slots:
-	void update_display(QTreeWidgetItem*);
-	void object_clicked_slot(QTreeWidgetItem*);
+	void update_display(BaseTreeItem*);
+	void object_clicked_slot(BaseTreeItem*);
 	void show_preference_panel(const QString& obj);
 	void show_info_panel(const QString& obj);
 	//  void z_scaling( int factor );
@@ -223,7 +236,8 @@ public slots:
 	void top_view();
 	void snapshot();
 	void save_scenegraph_to_file(const QString& filename);
-	void reRender() {
+	void reRender()
+	{
 		oinv_viewer_->render();
 	}
 
@@ -235,8 +249,8 @@ protected:
 	virtual void display_property(const QString& grid, const QString& prop);
 	virtual void undisplay_property(const QString& grid, const QString& prop);
 
-	QTreeWidgetItem* get_grid_listitem(const QString& grid);
-	QTreeWidgetItem* get_property_listitem(const QString& grid, const QString& prop);
+	BaseTreeItem* get_grid_listitem(const QString& grid);
+	BaseTreeItem* get_property_listitem(const QString& grid, const QString& prop);
 
 protected:
 	typedef std::map<std::string, Display_pref_panel*> Pref_Panel_Map;
@@ -281,7 +295,8 @@ private:
  * the map of descriptions, etc, should be moved to Project_view_gui. 
  */
 
-class GUI_DECL Oinv_view: public Project_view_gui, public Project_view {
+class GUI_DECL Oinv_view: public Project_view_gui, public Project_view
+{
 
 Q_OBJECT
 

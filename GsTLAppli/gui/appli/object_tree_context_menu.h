@@ -7,53 +7,60 @@
 
 class ObjectTree;
 
-class GUI_DECL ObjectTreeContextMenu: public QMenu {
+class GUI_DECL BaseTreeItemMenu: public QMenu
+{
 Q_OBJECT
 
 public:
-	ObjectTreeContextMenu(ObjectTree* _object_tree, QWidget* _parent);
-	virtual ~ObjectTreeContextMenu();
+	BaseTreeItemMenu(ObjectTree* _object_tree, QWidget* _parent);
+	virtual ~BaseTreeItemMenu();
 
 public:
 	void setMenuItemEnable(QString _action_name, bool _enable);
+	void setObjectTree(ObjectTree* _object_tree);
 
 protected:
 	ObjectTree* object_tree_;
 	std::vector<QAction*> action_;
 
-signals:
-	void action(QString _action_name, QString _params);
-
 public slots:
-	void onContextMenuClick(QAction* _action);
+void onContextMenuClick(QAction* _action);
 
 protected:
-	virtual void handleContextMenuClick(QAction* _action) = 0;
+	virtual void handleContextMenuClick(QAction* _action);
 };
 
 /**
  *
  */
-class GUI_DECL MultiPropertyContextMenu: public ObjectTreeContextMenu {
+class GUI_DECL ObjectTreeItemMenu: public BaseTreeItemMenu
+{
 Q_OBJECT
 
 public:
-	MultiPropertyContextMenu(ObjectTree* _object_tree, QWidget* _parent);
-	virtual ~MultiPropertyContextMenu();
+	ObjectTreeItemMenu(ObjectTree* _object_tree, QWidget* _parent);
+	virtual ~ObjectTreeItemMenu();
 
 protected:
 	void handleContextMenuClick(QAction* _action);
+
+public slots:
+void onTrendActionClick(QAction* _action);
+
+protected:
+	std::vector<QMenu*> nested_menu_;
 };
 
 /**
  *
  */
-class GUI_DECL SinglePropertyContextMenu: public ObjectTreeContextMenu {
+class GUI_DECL PropertyTreeItemMenu_Single: public BaseTreeItemMenu
+{
 Q_OBJECT
 
 public:
-	SinglePropertyContextMenu(ObjectTree* _object_tree, QWidget* _parent);
-	virtual ~SinglePropertyContextMenu();
+	PropertyTreeItemMenu_Single(ObjectTree* _object_tree, QWidget* _parent);
+	virtual ~PropertyTreeItemMenu_Single();
 
 protected:
 	void handleContextMenuClick(QAction* _action);
@@ -69,21 +76,31 @@ protected:
 /**
  *
  */
-class GUI_DECL SingleObjectContextMenu: public ObjectTreeContextMenu {
+class GUI_DECL PropertyTreeItemMenu_Multiple: public BaseTreeItemMenu
+{
 Q_OBJECT
 
 public:
-	SingleObjectContextMenu(ObjectTree* _object_tree, QWidget* _parent);
-	virtual ~SingleObjectContextMenu();
-
-public slots:
-	void onTrendActionClick(QAction* _action);
+	PropertyTreeItemMenu_Multiple(ObjectTree* _object_tree, QWidget* _parent);
+	virtual ~PropertyTreeItemMenu_Multiple();
 
 protected:
 	void handleContextMenuClick(QAction* _action);
-
-protected:
-	std::vector<QMenu*> nested_menu_;
 };
+
+/**
+ *
+ */
+//class GUI_DECL SimulationSetTreeItemMenu: public BaseTreeItemMenu
+//{
+//Q_OBJECT
+//
+//public:
+//	SimulationSetTreeItemMenu(ObjectTree* _object_tree, QWidget* _parent);
+//	virtual ~SimulationSetTreeItemMenu();
+//
+//protected:
+//	void handleContextMenuClick(QAction* _action);
+//};
 
 #endif /* OBJECT_TREE_CONTEXT_MENU_H_ */

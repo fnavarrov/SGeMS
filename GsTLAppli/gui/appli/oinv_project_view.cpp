@@ -44,6 +44,7 @@
 #include <GsTLAppli/actions/unary_action.h>
 #include <GsTLAppli/gui/utils/gstl_qlistviewitem.h>
 #include <GsTLAppli/extra/qtplugins/selectors.h>
+#include <GsTLAppli/actions/python_script.h>
 
 #include <Inventor/nodes/SoSelection.h>
 #include <Inventor/nodes/SoTransform.h>
@@ -79,6 +80,7 @@
 #include <QDragEnterEvent>
 #include <QDragMoveEvent>
 #include <QDropEvent>
+#include <QQueue>
 
 #include <vector>
 #include <list>
@@ -89,39 +91,36 @@
 
 using namespace String_Op;
 
-Named_interface* Create_oinv_view(std::string&) {
+Named_interface* Create_oinv_view(std::string&)
+{
 	return new Oinv_view();
 }
 
 //TL modified
-SbBool eventHandler(void * data, SoEvent * e) {
+SbBool eventHandler(void * data, SoEvent * e)
+{
 	return true;
 }
 
 ObjectTree::ObjectTree(QWidget* parent) :
-	QTreeWidget(parent) {
+	QTreeWidget(parent)
+{
 	QObject::connect(this, SIGNAL(itemClicked(QTreeWidgetItem *,int)), this, SLOT(slotItemSelected(QTreeWidgetItem*,int)));
 	rename_in_progress_ = false;
-
 	mouse_event_ = 0;
-
-	// create the single object context menu
-	single_object_context_menu_ = new SingleObjectContextMenu(this, this);
-
-	// create the single property context menu
-	single_property_context_menu_ = new SinglePropertyContextMenu(this, this);
-
-	// create the multi property context menu
-	multi_property_context_menu_ = new MultiPropertyContextMenu(this, this);
 }
 
-void ObjectTree::mousePressEvent(QMouseEvent* event) {
-	if (rename_in_progress_) {
+void ObjectTree::mousePressEvent(QMouseEvent* event)
+{
+	if (rename_in_progress_)
+	{
 		return;
 	}
 
-	if (mouse_event_) {
+	if (mouse_event_)
+	{
 		delete mouse_event_;
+		mouse_event_ = 0;
 	}
 
 	mouse_event_ = new QMouseEvent(*event);
@@ -129,117 +128,127 @@ void ObjectTree::mousePressEvent(QMouseEvent* event) {
 	QTreeWidget::mousePressEvent(event);
 }
 
-void ObjectTree::slotItemSelected(QTreeWidgetItem* _item, int _col) {
+void ObjectTree::slotItemSelected(QTreeWidgetItem* _item, int _col)
+{
 
-	if (rename_in_progress_) {
+	BaseTreeItem* baseItem = dynamic_cast<BaseTreeItem*> (_item);
+
+	if ((rename_in_progress_) || (baseItem == 0))
+	{
 		return;
 	}
 
-	// check if the top level item was clicked
-	if (topLevelItem(0) == _item) {
+	if (!baseItem->selectionEnabled())
+	{
+		selected_items_.clear();
+		switch_selected_items();
 		return;
 	}
 
-	// handle left click
-	if (mouse_event_->button() == Qt::LeftButton) {
-
-		// left click + ctrl combination
-		if (mouse_event_->modifiers() & Qt::ControlModifier) {
-			// click on object
-			if (dynamic_cast<MultiSel_QListViewItem*> (_item)) {
-				selected_item_.clear();
-				selected_item_.push_back(_item);
-			}
-			// click on property
-			else if (dynamic_cast<SingleSel_QListViewItem*> (_item)) {
-				// check if last clicked item was an object
-				if ((selected_item_.size() == 1) && (dynamic_cast<MultiSel_QListViewItem*> (selected_item_.at(0)))) {
-					selected_item_.clear();
-				}
-				// also need to check that parents of items are same
-				for (std::vector<QTreeWidgetItem*>::iterator iter = selected_item_.begin(); iter != selected_item_.end(); ++iter) {
-					if ((*iter)->parent()->text(0) != _item->parent()->text(0)) {
-						selected_item_.clear();
-						break;
-					}
-				}
-
-				selected_item_.push_back(_item);
-			}
+	// handle control+click combination
+	if ((mouse_event_->modifiers() & Qt::ControlModifier) && baseItem->multipleSelectionEnabled())
+	{
+		// clear current selection if incompatible item was clicked
+		if ((selected_items_.size() != 0) && (!baseItem->isCompatibleItem(selected_items_.at(0))))
+		{
+			selected_items_.clear();
 		}
 
-		// otherwise, only a single item can be selected one
-		else {
-			selected_item_.clear();
-			selected_item_.push_back(_item);
-			emit swap_display(_item);
-		}
-
-	}
-
-	// handle right click
-	else {
-
-		// if item was not of selected items in multi-select, make this as active item
-		std::vector<QTreeWidgetItem*>::iterator iter = selected_item_.begin();
-		for (; iter != selected_item_.end(); ++iter) {
-			if ((*iter) == _item) {
+		// also need to check that parents of items are same
+		for (int i = 0; i < selected_items_.size(); ++i)
+		{
+			if (getGridName(baseItem) != getGridName(selected_items_.at(i)))
+			{
+				selected_items_.clear();
 				break;
 			}
 		}
-		if (iter == selected_item_.end()) {
-			selected_item_.clear();
-			selected_item_.push_back(_item);
-			switch_selected_item();
-		}
 
-		// a property name
-		if (dynamic_cast<SingleSel_QListViewItem*> (_item)) {
-			if (selected_item_.size() == 1) {
+		selected_items_.push_back(baseItem);
+	}
+
+	// otherwise, only a single item can be selected one
+	else
+	{
+		selected_items_.clear();
+		selected_items_.push_back(baseItem);
+		emit swap_display(baseItem);
+	}
+
+	// handle right click
+	if (mouse_event_->button() == Qt::RightButton)
+	{
+		switch_selected_items();
+
+		bool multiple = selected_items_.size() > 1;
+		BaseTreeItemMenu* menu = baseItem->getMenu(this, multiple);
+
+		if (menu)
+		{
+			if (dynamic_cast<PropertyTreeItemMenu_Single*> (menu))
+			{
 				// enable/disable appropriate swap actions
-				std::string grid_name = qstring2string(selected_item_.at(0)->parent()->text(0));
-				std::string prop_name = qstring2string(selected_item_.at(0)->text(0));
+				std::string grid_name = getGridName(selected_items_.at(0)).toStdString();
+				std::string prop_name = selected_items_.at(0)->text(0).toStdString();
 
 				// get reference to the grid, grid will always exist as this is executed from the object tree
 				SmartPtr<Named_interface> grid_ni = Root::instance()->interface(gridModels_manager + "/" + grid_name);
 				Geostat_grid* grid = dynamic_cast<Geostat_grid*> (grid_ni.raw_ptr());
 				GsTLGridProperty* property = grid->property(prop_name);
 
-				single_property_context_menu_->setMenuItemEnable("Swap to RAM", !property->is_in_memory());
-				single_property_context_menu_->setMenuItemEnable("Swap to disk", property->is_in_memory());
-
-				single_property_context_menu_->exec(mouse_event_->globalPos());
-			} else {
-				multi_property_context_menu_->exec(mouse_event_->globalPos());
+				menu->setMenuItemEnable("Swap to RAM", !property->is_in_memory());
+				menu->setMenuItemEnable("Swap to disk", property->is_in_memory());
 			}
-		}
-		// a grid name
-		else if (dynamic_cast<MultiSel_QListViewItem*> (_item)) {
-			single_object_context_menu_->exec(mouse_event_->globalPos());
-		}
 
+			menu->exec(mouse_event_->globalPos());
+		}
 	}
 
-	switch_selected_item();
+	switch_selected_items();
 }
 
-void ObjectTree::onPropertyContextMenuClick(QAction* _action) {
-	if (selected_item_.empty()) {
+QString ObjectTree::getGridName(QTreeWidgetItem* _item)
+{
+	QTreeWidgetItem* parent = _item;
+	QTreeWidgetItem* root = topLevelItem(0);
+
+	if ((parent == 0) || (parent == root))
+	{
+		return "";
+	}
+
+	while (parent->parent() != root)
+	{
+		parent = parent->parent();
+	}
+
+	//	std::cout << "ObjectTree::getGridName == " << parent->text(0).toStdString() << '\n';
+
+	return parent->text(0);
+}
+
+// assumes that only properties were selected
+void ObjectTree::onPropertyContextMenuClick(QAction* _action)
+{
+	if (selected_items_.empty())
+	{
 		return;
 	}
 
 	// all selected items SHOULD have the same parent grid
-	QString grid_name = selected_item_.at(0)->parent()->text(0);
+	QString grid_name = getGridName(selected_items_.at(0));
 
 	QString action_name = _action->text();
 
 	// handle Rename
-	if ("Rename" == action_name) {
+	if ("Rename" == action_name)
+	{
 		// must have only one item selected
-		if (selected_item_.size() != 1) {
+		if (selected_items_.size() != 1)
+		{
 			return;
 		}
-		QTreeWidgetItem* item = selected_item_.at(0);
+		QTreeWidgetItem* item = selected_items_.at(0);
 		old_name_ = item->text(0);
 		item->setFlags(item->flags() | Qt::ItemIsEditable);
 		openPersistentEditor(item, 0);
@@ -247,13 +256,17 @@ void ObjectTree::onPropertyContextMenuClick(QAction* _action) {
 	}
 
 	// handle Delete
-	else if ("Delete" == action_name) {
-		for (std::vector<QTreeWidgetItem*>::iterator iter = selected_item_.begin(); iter != selected_item_.end(); ++iter) {
-			QString prop_name = (*iter)->text(0);
-			if (!delete_property(grid_name, prop_name)) {
+	else if ("Delete" == action_name)
+	{
+		for (int i = 0; i < selected_items_.size(); ++i)
+		{
+			QString prop_name = selected_items_.at(i)->text(0);
+			if (!delete_property(grid_name, prop_name))
+			{
 				QMessageBox::critical(this, "Cannot perform deletion", "Unable to delete property", QMessageBox::Ok, Qt::NoButton);
-			} else {
-				this->removeItemWidget(*iter, 0);
+			} else
+			{
+				this->removeItemWidget(selected_items_.at(i), 0);
 				emit delete_property_finished(grid_name, prop_name);
 			}
 			emit project_modified();
@@ -261,50 +274,59 @@ void ObjectTree::onPropertyContextMenuClick(QAction* _action) {
 	}
 
 	// handle ShowHistogram
-	else if ("Histogram" == action_name) {
+	else if ("Histogram" == action_name)
+	{
 		// must have only one item selected
-		if (selected_item_.size() != 1) {
+		if (selected_items_.size() != 1)
+		{
 			return;
 		}
-		QTreeWidgetItem* item = selected_item_.at(0);
+		QTreeWidgetItem* item = selected_items_.at(0);
 		QString params = grid_name + QString(Actions::separator.c_str()) + item->text(0);
 		emit action("ShowHistogram", params);
 	}
 
 	// handle Swap To Disk
-	else if ("Swap to disk" == action_name) {
+	else if ("Swap to disk" == action_name)
+	{
 		// must have only one item selected
-		if (selected_item_.size() != 1) {
+		if (selected_items_.size() != 1)
+		{
 			return;
 		}
-		QTreeWidgetItem* item = selected_item_.at(0);
+		QTreeWidgetItem* item = selected_items_.at(0);
 		QString params = grid_name + QString(Actions::separator.c_str()) + item->text(0);
 		emit action("SwapPropertyToDisk", params);
 	}
 
 	// handle Swap To RAM
-	else if ("Swap to RAM" == action_name) {
+	else if ("Swap to RAM" == action_name)
+	{
 		// must have only one item selected
-		if (selected_item_.size() != 1) {
+		if (selected_items_.size() != 1)
+		{
 			return;
 		}
-		QTreeWidgetItem* item = selected_item_.at(0);
+		QTreeWidgetItem* item = selected_items_.at(0);
 		QString params = grid_name + QString(Actions::separator.c_str()) + item->text(0);
 		emit action("SwapPropertyToRAM", params);
 	}
 
 }
 
-void ObjectTree::onUnaryActionClick(QAction* _action) {
+// assumes that only ONE property were selected
+void ObjectTree::onUnaryActionClick(QAction* _action)
+{
 	// must have only one item selected
-	if (selected_item_.size() != 1) {
+	if (selected_items_.size() != 1)
+	{
 		return;
 	}
 
 	QString action_name = _action->text();
 
-	QTreeWidgetItem* item = selected_item_.at(0);
-	QString grid_name = item->parent()->text(0);
+	QTreeWidgetItem* item = selected_items_.at(0);
+	QString grid_name = getGridName(item);
 
 	QString prop_name = item->text(0);
 	QString new_prop_name = action_name + "(" + prop_name + ")";
@@ -312,44 +334,69 @@ void ObjectTree::onUnaryActionClick(QAction* _action) {
 	emit action(action_name, params);
 }
 
+void ObjectTree::onPythonScriptClick(QAction* _action)
+{
+	SmartPtr<Named_interface> ni = Root::instance()->interface(python_script_manager + "/" + String_Op::qstring2string(_action->text()));
+	Python_script* script = dynamic_cast<Python_script*> (ni.raw_ptr());
+	appli_assert( script );
 
-void ObjectTree::onTrendActionClick(QAction* _action) {
+	QTreeWidgetItem* item = selected_items_.at(0);
+	std::string grid_name = getGridName(item).toStdString();
+
+	std::vector<std::string> properties;
+	for (int i = 0; i < selected_items_.size(); ++i)
+	{
+		properties.push_back(selected_items_.at(i)->text(0).toStdString());
+	}
+
+	script->execute(grid_name, properties);
+}
+
+// assumes only OBJECT was selected
+void ObjectTree::onTrendActionClick(QAction* _action)
+{
 	// must have only one item selected
-	if (selected_item_.size() != 1) {
+	if (selected_items_.size() != 1)
+	{
 		return;
 	}
 
-  QString action_name("CreateTrend");
+	QString action_name("CreateTrend");
 	QString trend_id = _action->text();
 
-  QString grid_name = selected_item_.at(0)->text(0);
+	QString grid_name = getGridName(selected_items_.at(0));
 
-//	QString new_prop_name = action_name + "(" + prop_name + ")";
+	//	QString new_prop_name = action_name + "(" + prop_name + ")";
 	QString params = grid_name + QString(Actions::separator.c_str()) + trend_id;
 	emit action(action_name, params);
 }
 
-
-void ObjectTree::onObjectContextMenuClick(QAction* _action) {
-	if (selected_item_.empty()) {
+// assumes only OBJECT was selected
+void ObjectTree::onObjectContextMenuClick(QAction* _action)
+{
+	if (selected_items_.empty())
+	{
 		return;
 	}
 
 	QString action_name = _action->text();
-	if ("Delete" == action_name) {
-		QString grid_name = selected_item_.at(0)->text(0);
-		if (!delete_object(grid_name)) {
+	if ("Delete" == action_name)
+	{
+		QString grid_name = getGridName(selected_items_.at(0));
+		if (!delete_object(grid_name))
+		{
 			QMessageBox::critical(this, "Cannot perform deletion", "Unable to delete object", QMessageBox::Ok, Qt::NoButton);
-		} else {
-			selected_item_.clear();
+		} else
+		{
+			selected_items_.clear();
 			emit delete_object_finished(grid_name);
 		}
 	}
 
 }
 
-bool ObjectTree::rename_property(QString grid_name, QString old, QString n) {
-
+bool ObjectTree::rename_property(QString grid_name, QString old, QString n)
+{
 	std::string obj_name(qstring2string(grid_name));
 
 	SmartPtr<Named_interface> grid_ni = Root::instance()->interface(gridModels_manager + "/" + obj_name);
@@ -359,7 +406,8 @@ bool ObjectTree::rename_property(QString grid_name, QString old, QString n) {
 	QByteArray n1 = old_name_.toLatin1();
 	QByteArray n2 = n.toLatin1();
 
-	if (!grid->reNameProperty(n1.constData(), n2.constData())) {
+	if (!grid->reNameProperty(n1.constData(), n2.constData()))
+	{
 		return false;
 	}
 
@@ -369,7 +417,8 @@ bool ObjectTree::rename_property(QString grid_name, QString old, QString n) {
 	return true;
 }
 
-bool ObjectTree::delete_property(QString _grid_name, QString _prop_name) {
+bool ObjectTree::delete_property(QString _grid_name, QString _prop_name)
+{
 
 	std::string obj_name(qstring2string(_grid_name));
 
@@ -378,7 +427,8 @@ bool ObjectTree::delete_property(QString _grid_name, QString _prop_name) {
 	appli_assert(grid);
 
 	std::string prop_name(qstring2string(_prop_name));
-	if (!grid->remove_property(prop_name)) {
+	if (!grid->remove_property(prop_name))
+	{
 		return false;
 	}
 
@@ -388,49 +438,59 @@ bool ObjectTree::delete_property(QString _grid_name, QString _prop_name) {
 	return true;
 }
 
-bool ObjectTree::delete_object(QString _grid_name) {
+bool ObjectTree::delete_object(QString _grid_name)
+{
 	std::string obj_name(qstring2string(_grid_name));
 	bool ok = Root::instance()->delete_interface(gridModels_manager + "/" + obj_name);
-	if(ok) {
+	if (ok)
+	{
 		SmartPtr<Named_interface> ni = Root::instance()->interface(projects_manager + "/" + "project");
 		GsTL_project* proj = dynamic_cast<GsTL_project*> (ni.raw_ptr());
-		proj->deleted_object( obj_name );
+		proj->deleted_object(obj_name);
 	}
 	return ok;
 }
 
-void ObjectTree::keyPressEvent(QKeyEvent* event) {
-	if (rename_in_progress_) {
-		switch (event->key()) {
+void ObjectTree::keyPressEvent(QKeyEvent* event)
+{
+	if (rename_in_progress_)
+	{
+		switch (event->key())
+		{
 
-			case Qt::Key_Escape: {
-				rename_in_progress_ = false;
-				closePersistentEditor(selected_item_.at(0), 0);
-				selected_item_.at(0)->setText(0, old_name_);
-				emit
-				project_modified();
-				break;
-			}
+		case Qt::Key_Escape:
+		{
+			rename_in_progress_ = false;
+			closePersistentEditor(selected_items_.at(0), 0);
+			selected_items_.at(0)->setText(0, old_name_);
+			emit
+			project_modified();
+			break;
+		}
 
-			case Qt::Key_Return: {
-				rename_in_progress_ = false;
-				QString n = dynamic_cast<QLineEdit*> (itemWidget(selected_item_.at(0), 0))->text();
-				QString o = selected_item_.at(0)->parent()->text(0);
+		case Qt::Key_Return:
+		{
+			rename_in_progress_ = false;
+			QString n = dynamic_cast<QLineEdit*> (itemWidget(selected_items_.at(0), 0))->text();
+			QString o = getGridName(selected_items_.at(0));
 
-				if (old_name_ != n) {
-					if (!rename_property(o, old_name_, n))
-						QMessageBox::critical(this, "Cannot perform renaming", "Unable to rename property", QMessageBox::Ok, Qt::NoButton);
-					else {
-						selected_item_.at(0)->setText(0, n);
-					}
+			if (old_name_ != n)
+			{
+				if (!rename_property(o, old_name_, n))
+					QMessageBox::critical(this, "Cannot perform renaming", "Unable to rename property", QMessageBox::Ok, Qt::NoButton);
+				else
+				{
+					selected_items_.at(0)->setText(0, n);
 				}
-				closePersistentEditor(selected_item_.at(0), 0);
-				break;
 			}
+			closePersistentEditor(selected_items_.at(0), 0);
+			break;
+		}
 
-			default: {
-				break;
-			}
+		default:
+		{
+			break;
+		}
 		}
 
 	}
@@ -438,30 +498,39 @@ void ObjectTree::keyPressEvent(QKeyEvent* event) {
 	QTreeWidget::keyPressEvent(event);
 }
 
-void ObjectTree::switch_selected_item() {
+void ObjectTree::switch_selected_items()
+{
 	QBrush blackBrush(Qt::black);
 	QBrush redBrush(Qt::red);
 
 	// set foreground color of all objects to black
 	QTreeWidgetItem* root = topLevelItem(0);
-	for (int index = 0; index < root->childCount(); ++index) {
-		QTreeWidgetItem* objectNode = root->child(index);
-		objectNode->setForeground(0, blackBrush);
-		for (int propIndex = 0; propIndex < objectNode->childCount(); ++propIndex) {
-			QTreeWidgetItem* propertyNode = objectNode->child(propIndex);
-			propertyNode->setForeground(0, blackBrush);
+
+	QQueue<QTreeWidgetItem*> queue;
+	queue.enqueue(root);
+
+	while (!queue.isEmpty())
+	{
+		QTreeWidgetItem* item = queue.dequeue();
+		item->setForeground(0, blackBrush);
+		for (int i = 0; i < item->childCount(); ++i)
+		{
+			queue.enqueue(item->child(i));
 		}
 	}
 
 	// set selected item foreground color to red
-	for (std::vector<QTreeWidgetItem*>::iterator iter = selected_item_.begin(); iter != selected_item_.end(); ++iter) {
-		(*iter)->setForeground(0, redBrush);
+	for (int i = 0; i < selected_items_.size(); ++i)
+	{
+		selected_items_.at(i)->setForeground(0, redBrush);
 	}
 }
 
-void Oinv_view::object_rename_slot(string obj, QString old, QString n) {
+void Oinv_view::object_rename_slot(string obj, QString old, QString n)
+{
 	Oinv_description_map::pair desc_pair = displayed_objects_.description(obj);
-	if (desc_pair.second != 0) {
+	if (desc_pair.second != 0)
+	{
 		desc_pair.second->update_desc(old, n);
 	}
 	update_project();
@@ -470,7 +539,8 @@ void Oinv_view::object_rename_slot(string obj, QString old, QString n) {
 const QString Project_view_gui::general_pref_panel_name_("< General >");
 
 Project_view_gui::Project_view_gui(QWidget* parent) :
-	QWidget(parent), current_pref_panel_(0), current_info_panel_(0), _pref_scroll(NULL) {
+	QWidget(parent), current_pref_panel_(0), current_info_panel_(0), _pref_scroll(NULL)
+{
 
 	setupUi(this);
 	//--------------
@@ -611,7 +681,7 @@ Project_view_gui::Project_view_gui(QWidget* parent) :
 	// Set up the connections between the different widgets
 
 
-	QObject::connect(Object_tree, SIGNAL(swap_display(QTreeWidgetItem * )), this, SLOT(object_clicked_slot(QTreeWidgetItem *)));
+	QObject::connect(Object_tree, SIGNAL(swap_display(BaseTreeItem*)), this, SLOT(object_clicked_slot(BaseTreeItem*)));
 
 	QObject::connect(pref_object_selector_, SIGNAL( activated( const QString& ) ), (QObject*) this, SLOT( show_preference_panel( const QString& ) ));
 
@@ -629,86 +699,36 @@ Project_view_gui::Project_view_gui(QWidget* parent) :
 	setAcceptDrops(true);
 
 }
-/*
- void Project_view_gui::dragEnterEvent( QDragEnterEvent* event ) {
- //  event->accept( QUriDrag::canDecode(event) );
- std::cout << "enter" << std::endl;
- event->accept( true );
- }
 
- void Project_view_gui::dropEvent( QDropEvent* event ) {
- std::cout << "dropped" << std::endl;
- QUriDrag uri;
- QStrList files;
- if ( QUriDrag::decode( event, files ) ) {
- char* str;
- for( str = files.first(); str; str = files.next() )
- std::cout << str << std::endl;
- }
- }
- */
-
-void Project_view_gui::set_parent(QWidget* parent) {
+void Project_view_gui::set_parent(QWidget* parent)
+{
 	QPoint p(0, 0);
-
-	// revisit - TL
-	//reparent( parent, p, false );
 	setParent(parent);
 }
 
-Project_view_gui::~Project_view_gui() {
-	if (oinv_viewer_) {
+Project_view_gui::~Project_view_gui()
+{
+	if (oinv_viewer_)
+	{
 		delete oinv_viewer_;
-		//scene_root_->unref();
-		//oinv_viewer_ = 0;
 	}
-
-	/* a QT widget is supposed to destroy all its children when it is destroyed.
-	 * Each display pref panel is a widget child, so I expect them to be destroyed
-	 * automatically. If that is true, the following piece of code should not be
-	 * necessary
-	 */
-	/*
-	 for( Pref_Panel_Map::iterator it = display_pref_panels_.begin();
-	 it != display_pref_panels_.end() ; ++it ) {
-	 delete it->second;
-	 }
-	 */
 }
 
-void Project_view_gui::object_clicked_slot(QTreeWidgetItem* item) {
+void Project_view_gui::object_clicked_slot(BaseTreeItem* item)
+{
 	update_display(item);
-	/*
-	 if( button == Qt::LeftButton ) {
-	 update_display( item );
-	 }
-	 else {
-	 if (item) {
-	 if (item == Object_tree->topLevelItem(0)) {
-	 appli_message("Cannot rename the root");
-	 return;
-	 }
-	 else if (dynamic_cast<MultiSel_QListViewItem*>(item)) {
-	 appli_message("Renaming grid is not currently supported");
-	 return ;
-	 }
-	 _oldName = item->text(0);
-	 item->setFlags(item->flags() | Qt::ItemIsEditable);
-	 Object_tree->editItem(item);
-	 _itemBeingRenamed = item;
-	 }
-	 }
-	 */
 }
 
-void Project_view_gui::init_objects_selector() {
+void Project_view_gui::init_objects_selector()
+{
 	SmartPtr<Named_interface> ni = Root::instance()->interface(gridModels_manager);
 	Manager* mng = dynamic_cast<Manager*> (ni.raw_ptr());
 	appli_assert(mng);
 
 	QTreeWidgetItem* root = Object_tree->topLevelItem(0);
-	if (!root) {
-		root = new QTreeWidgetItem(Object_tree, QStringList(QString("Objects")));
+	if (!root)
+	{
+		root = new HeaderTreeItem(Object_tree, "Objects");
 		Object_tree->insertTopLevelItem(0, root);
 	}
 
@@ -717,31 +737,44 @@ void Project_view_gui::init_objects_selector() {
 	Manager::interface_iterator begin = mng->begin_interfaces();
 	Manager::interface_iterator end = mng->end_interfaces();
 
-	for (; begin != end; ++begin) {
+	for (; begin != end; ++begin)
+	{
 
 		// Add the grid-object to the list
-
 		std::string name = mng->name(begin->raw_ptr());
-		MultiSel_QListViewItem* entry = new MultiSel_QListViewItem(root, QString(name.c_str()));
-
-		// Add the properties of the grid-object to the list
+		ObjectTreeItem* entry = new ObjectTreeItem(root, QString(name.c_str()));
 
 		Geostat_grid* grid = dynamic_cast<Geostat_grid*> (begin->raw_ptr());
 		appli_assert(grid != 0);
+
+		// Add the properties of the grid-object to the list
 		std::list<std::string> property_names = grid->property_list();
 		typedef std::list<std::string>::const_iterator iterator;
-
 		iterator prop_end = property_names.end();
-		for (iterator it = property_names.begin(); it != prop_end; ++it) {
-			new SingleSel_QListViewItem(entry, QString(it->c_str()));
+		for (iterator it = property_names.begin(); it != prop_end; ++it)
+		{
+			new PropertyTreeItem(entry, QString(it->c_str()));
 		}
+
+		// Add the regions of the grid-object to the list
+		HeaderTreeItem* regionRoot = new HeaderTreeItem(entry, "Regions");
+		std::list<std::string> region_names = grid->region_list();
+		typedef std::list<std::string>::const_iterator iterator;
+		iterator region_end = region_names.end();
+		for (iterator it = region_names.begin(); it != region_end; ++it)
+		{
+			new RegionTreeItem(regionRoot, QString(it->c_str()));
+		}
+
 	}
 }
 
-void Project_view_gui::add_object(std::string obj_name) {
+void Project_view_gui::add_object(std::string obj_name)
+{
 	SmartPtr<Named_interface> ni = Root::instance()->interface(gridModels_manager + "/" + obj_name);
 	Geostat_grid* grid = dynamic_cast<Geostat_grid*> (ni.raw_ptr());
-	if (!grid) {
+	if (!grid)
+	{
 		appli_warning("invalid object name (object does not exist): " << obj_name);
 		return;
 	}
@@ -750,21 +783,32 @@ void Project_view_gui::add_object(std::string obj_name) {
 	appli_assert(root != 0);
 
 	// Add the grid-object to the list
-	MultiSel_QListViewItem* entry = new MultiSel_QListViewItem(root, QString(obj_name.c_str()));
+	ObjectTreeItem* entry = new ObjectTreeItem(root, QString(obj_name.c_str()));
 
 	// Add the properties of the grid-object to the list
 	std::list<std::string> property_names = grid->property_list();
 	typedef std::list<std::string>::const_iterator iterator;
-
 	iterator prop_end = property_names.end();
-	for (iterator it = property_names.begin(); it != prop_end; ++it) {
-		new SingleSel_QListViewItem(entry, QString(it->c_str()));
+	for (iterator it = property_names.begin(); it != prop_end; ++it)
+	{
+		new PropertyTreeItem(entry, QString(it->c_str()));
+	}
+
+	// Add the regions of the grid-object to the list
+	HeaderTreeItem* regionRoot = new HeaderTreeItem(entry, "Regions");
+	std::list<std::string> region_names = grid->region_list();
+	typedef std::list<std::string>::const_iterator iterator;
+	iterator region_end = region_names.end();
+	for (iterator it = region_names.begin(); it != region_end; ++it)
+	{
+		new RegionTreeItem(regionRoot, QString(it->c_str()));
 	}
 
 }
 
 //------------------
-void Project_view_gui::set_object_displayed(const QString& obj) {
+void Project_view_gui::set_object_displayed(const QString& obj)
+{
 	QTreeWidgetItem* grid_item = get_grid_listitem(obj);
 	if (!grid_item)
 		return;
@@ -773,7 +817,8 @@ void Project_view_gui::set_object_displayed(const QString& obj) {
 	display_object(obj);
 }
 
-void Project_view_gui::set_object_undisplayed(const QString& obj) {
+void Project_view_gui::set_object_undisplayed(const QString& obj)
+{
 	QTreeWidgetItem* grid_item = get_grid_listitem(obj);
 	if (!grid_item)
 		return;
@@ -782,7 +827,8 @@ void Project_view_gui::set_object_undisplayed(const QString& obj) {
 	undisplay_object(obj);
 }
 
-void Project_view_gui::set_property_displayed(const QString& grid, const QString& prop) {
+void Project_view_gui::set_property_displayed(const QString& grid, const QString& prop)
+{
 	QTreeWidgetItem* prop_item = get_property_listitem(grid, prop);
 	if (!prop_item)
 		return;
@@ -791,7 +837,8 @@ void Project_view_gui::set_property_displayed(const QString& grid, const QString
 	display_property(grid, prop);
 }
 
-void Project_view_gui::set_property_undisplayed(const QString& grid, const QString& prop) {
+void Project_view_gui::set_property_undisplayed(const QString& grid, const QString& prop)
+{
 	QTreeWidgetItem* prop_item = get_property_listitem(grid, prop);
 	if (!prop_item)
 		return;
@@ -802,57 +849,60 @@ void Project_view_gui::set_property_undisplayed(const QString& grid, const QStri
 //------------------
 
 
-void Project_view_gui::update_display(QTreeWidgetItem* item) {
+void Project_view_gui::update_display(BaseTreeItem* item)
+{
 	if (!item)
 		return;
 
 	QString obj_name = item->text(0);
 
-	if (dynamic_cast<MultiSel_QListViewItem*> (item)) {
-
-		// The user clicked on an object name
-
-
-		MultiSel_QListViewItem* ms_item = (MultiSel_QListViewItem*) item;
-		ms_item->switch_state();
-		if (ms_item->is_visible()) {
+	// object clicked
+	if (dynamic_cast<ObjectTreeItem*> (item))
+	{
+		item->setVisible(!item->visible());
+		//		ObjectTreeItem* objItem = (ObjectTreeItem*) item;
+		//		ms_item->switch_state();
+		if (item->visible())
+		{
 			appli_message("displaying " << qstring2string(obj_name));
 			display_object(obj_name);
-		} else {
+		} else
+		{
 			appli_message("un-displaying " << qstring2string(obj_name));
 			undisplay_object(obj_name);
 		}
-
 	}
 
-	else if (dynamic_cast<SingleSel_QListViewItem*> (item)) {
-
-		// The user clicked on a property name
-		SingleSel_QListViewItem* ss_item = (SingleSel_QListViewItem*) item;
-		ss_item->switch_state();
+	// The user clicked on a property name
+	else if (dynamic_cast<PropertyTreeItem*> (item))
+	{
+		item->setVisible(!item->visible());
 
 		// tell the grid to change the displayed property
-		QTreeWidgetItem* up = ss_item->parent();
-		QString grid_name = up->text(0);
+		QString grid_name = Object_tree->getGridName(item);
 
-		if (ss_item->is_visible()) {
+		if (item->visible())
+		{
 			display_property(grid_name, obj_name);
-		} else {
+		} else
+		{
 			undisplay_property(grid_name, obj_name);
 		}
 
 		// find if there is a display preference panel for grid_name and
 		// notify it of the changes
 		Pref_Panel_Map::const_iterator panel_it = display_pref_panels_.find(std::string(qstring2string(grid_name)));
-		if (panel_it != display_pref_panels_.end()) {
+		if (panel_it != display_pref_panels_.end())
+		{
 			panel_it->second->change_selected_property(obj_name);
-			panel_it->second->toggle_paint_property(ss_item->is_visible());
+			panel_it->second->toggle_paint_property(item->visible());
 		}
 
 	}
 }
 
-void Project_view_gui::display_object(const QString& obj) {
+void Project_view_gui::display_object(const QString& obj)
+{
 	std::string obj_name(qstring2string(obj));
 	//Desc_Map::iterator it = displayed_objects_.find( obj_name );
 	Oinv_description_map::pair desc_pair = displayed_objects_.description(obj_name);
@@ -885,7 +935,8 @@ void Project_view_gui::display_object(const QString& obj) {
 
 }
 
-void Project_view_gui::undisplay_object(const QString& obj) {
+void Project_view_gui::undisplay_object(const QString& obj)
+{
 	appli_message("un-displaying " << qstring2string(obj));
 
 	std::string obj_name(qstring2string(obj));
@@ -900,7 +951,8 @@ void Project_view_gui::undisplay_object(const QString& obj) {
 
 }
 
-void Project_view_gui::display_property(const QString& grid, const QString& prop) {
+void Project_view_gui::display_property(const QString& grid, const QString& prop)
+{
 	appli_message("displaying property " << qstring2string(prop) << " of object " << qstring2string(grid));
 
 	std::string obj_name(qstring2string(grid));
@@ -918,7 +970,8 @@ void Project_view_gui::display_property(const QString& grid, const QString& prop
 	if (desc_pair.first == false)
 		scene_root_->addChild((SoNode*) desc_pair.second->oinv_node());
 
-	if (gr->classname() == temp.classname()) {
+	if (gr->classname() == temp.classname())
+	{
 		Oinv_strati_grid * g = dynamic_cast<Oinv_strati_grid*> (desc_pair.second);
 		g->display_mode(Oinv_strati_grid::RENDERING);
 	}
@@ -935,7 +988,8 @@ void Project_view_gui::display_property(const QString& grid, const QString& prop
 
 }
 
-void Project_view_gui::undisplay_property(const QString& grid, const QString&) {
+void Project_view_gui::undisplay_property(const QString& grid, const QString&)
+{
 	Oinv_description_map::pair desc_pair = displayed_objects_.description(std::string(qstring2string(grid)));
 
 	appli_assert(desc_pair.first == true);
@@ -947,11 +1001,13 @@ void Project_view_gui::undisplay_property(const QString& grid, const QString&) {
 
 }
 
-void Project_view_gui::show_preference_panel(const QString& obj) {
+void Project_view_gui::show_preference_panel(const QString& obj)
+{
 
 	// set up the frame where the preference panel will be displayed,
 	// if that has not been done yet
-	if (!_pref_scroll) {
+	if (!_pref_scroll)
+	{
 		_pref_scroll = new QScrollArea(_pref_group);
 		_pref_scroll->setWidgetResizable(true);
 
@@ -962,8 +1018,10 @@ void Project_view_gui::show_preference_panel(const QString& obj) {
 	}
 
 	// If the user wants to see the "general preferences panel"
-	if (obj == general_pref_panel_name_) {
-		if (!general_pref_panel_) {
+	if (obj == general_pref_panel_name_)
+	{
+		if (!general_pref_panel_)
+		{
 			general_pref_panel_ = new General_display_pref_panel(oinv_viewer_, colormap_root_node_, &displayed_objects_, _pref_scroll->viewport(), NULL);
 		}
 
@@ -983,7 +1041,8 @@ void Project_view_gui::show_preference_panel(const QString& obj) {
 	std::string obj_name(qstring2string(obj));
 	Pref_Panel_Map::iterator it = display_pref_panels_.find(obj_name);
 
-	if (it == display_pref_panels_.end()) {
+	if (it == display_pref_panels_.end())
+	{
 		Oinv_description_map::pair desc_pair = displayed_objects_.description(obj_name);
 		if (desc_pair.first == false)
 			scene_root_->addChild((SoNode*) desc_pair.second->oinv_node());
@@ -1007,7 +1066,8 @@ void Project_view_gui::show_preference_panel(const QString& obj) {
 
 		QObject::connect(pref_panel, SIGNAL(renderRequest()), this, SLOT(reRender()));
 
-		if (general_pref_panel_) {
+		if (general_pref_panel_)
+		{
 			QObject::connect(pref_panel, SIGNAL( colormap_changed( const Colormap* ) ), general_pref_panel_, SLOT( update_colorbar() ));
 		}
 
@@ -1042,7 +1102,8 @@ void Project_view_gui::show_preference_panel(const QString& obj) {
 
 }
 
-void Project_view_gui::show_info_panel(const QString& obj) {
+void Project_view_gui::show_info_panel(const QString& obj)
+{
 
 	appli_assert( info_panel_frame_);
 	std::cout << "showing " << qstring2string(obj) << std::endl;
@@ -1050,7 +1111,8 @@ void Project_view_gui::show_info_panel(const QString& obj) {
 	SmartPtr<Named_interface> model = Root::instance()->interface(gridModels_manager + "/" + qstring2string(obj));
 
 	Geostat_grid* grid_obj = dynamic_cast<Geostat_grid*> (model.raw_ptr());
-	if (!grid_obj) {
+	if (!grid_obj)
+	{
 		if (current_info_panel_)
 			current_info_panel_->close();
 		return;
@@ -1072,7 +1134,8 @@ void Project_view_gui::show_info_panel(const QString& obj) {
 
 }
 
-void Project_view_gui::toggle_grid_property(const QString& grid, const QString& prop) {
+void Project_view_gui::toggle_grid_property(const QString& grid, const QString& prop)
+{
 	/*
 	 QListViewItem* root = Object_tree->firstChild();
 	 appli_assert( root != 0);
@@ -1095,54 +1158,60 @@ void Project_view_gui::toggle_grid_property(const QString& grid, const QString& 
 	 }
 	 appli_assert( prop_item );
 	 */
-	QTreeWidgetItem* prop_item = get_property_listitem(grid, prop);
+	BaseTreeItem* prop_item = get_property_listitem(grid, prop);
 	appli_assert(prop_item);
 
 	// Select that item as the new visible property
-	SingleSel_QListViewItem* ss_item = (SingleSel_QListViewItem*) prop_item;
-	ss_item->switch_state();
-
+	prop_item->setVisible(!prop_item->visible());
 }
 
-void Project_view_gui::view_all() {
+void Project_view_gui::view_all()
+{
 	oinv_viewer_->viewAll();
 }
 
-void Project_view_gui::set_home_view() {
+void Project_view_gui::set_home_view()
+{
 	oinv_viewer_->saveHomePosition();
 }
 
-void Project_view_gui::home_view() {
+void Project_view_gui::home_view()
+{
 	oinv_viewer_->resetToHomePosition();
 }
 
-void Project_view_gui::face_view() {
+void Project_view_gui::face_view()
+{
 	SbVec3f newNormal(1, 0, 0);
 	SbVec3f newRight(0, 1, 0);
 
 	set_view_plane(newNormal, newRight);
 }
 
-void Project_view_gui::side_view() {
+void Project_view_gui::side_view()
+{
 	SbVec3f newNormal(0, 1, 0);
 	SbVec3f newRight(-1, 0, 0);
 
 	set_view_plane(newNormal, newRight);
 }
 
-void Project_view_gui::top_view() {
+void Project_view_gui::top_view()
+{
 	SbVec3f newNormal(0, 0, 1);
 	SbVec3f newRight(1, 0, 0);
 
 	set_view_plane(newNormal, newRight);
 }
 
-void Project_view_gui::snapshot() {
+void Project_view_gui::snapshot()
+{
 	Snapshot_dialog* dialog = new Snapshot_dialog(oinv_viewer_, this);
 	dialog->show();
 }
 
-void Project_view_gui::set_view_plane(const SbVec3f& newNormal, const SbVec3f& newRight) {
+void Project_view_gui::set_view_plane(const SbVec3f& newNormal, const SbVec3f& newRight)
+{
 
 	SoCamera* camera = oinv_viewer_->getCamera();
 
@@ -1172,7 +1241,8 @@ void Project_view_gui::set_view_plane(const SbVec3f& newNormal, const SbVec3f& n
 
 }
 
-void Project_view_gui::save_scenegraph_to_file(const QString& filename) {
+void Project_view_gui::save_scenegraph_to_file(const QString& filename)
+{
 	FILE* file = fopen(qstring2string(filename).c_str(), "w");
 	if (!file)
 		return;
@@ -1184,71 +1254,79 @@ void Project_view_gui::save_scenegraph_to_file(const QString& filename) {
 	fclose(file);
 }
 
-QTreeWidgetItem* Project_view_gui::get_grid_listitem(const QString& grid) {
-	int i;
+BaseTreeItem* Project_view_gui::get_grid_listitem(const QString& grid)
+{
 	QTreeWidgetItem* root = Object_tree->topLevelItem(0);
 	appli_assert(root != 0);
 
 	// search for the listview item corresponding to grid
-	for (i = 0; i < root->childCount(); ++i)
+	for (int i = 0; i < root->childCount(); ++i)
+	{
 		if (root->child(i)->text(0) == grid)
-			break;
+		{
+			return (BaseTreeItem*) root->child(i);;
+		}
+	}
 
-	if (i == root->childCount())
-		return NULL;
-	else
-		return root->child(i);;
+	return NULL;
 }
 
-QTreeWidgetItem* Project_view_gui::get_property_listitem(const QString& grid, const QString& prop) {
-	int i;
+BaseTreeItem* Project_view_gui::get_property_listitem(const QString& grid, const QString& prop)
+{
 	QTreeWidgetItem* root = Object_tree->topLevelItem(0);
 	appli_assert(root != 0);
 
-	QTreeWidgetItem* grid_item = NULL;
-	QTreeWidgetItem* prop_item = NULL;
+	BaseTreeItem* grid_item = NULL;
+	BaseTreeItem* prop_item = NULL;
 
 	// search for the listview item corresponding to grid
-	for (i = 0; i < root->childCount(); ++i) {
-		grid_item = root->child(i);
-		if (grid_item->text(0) == grid)
+	for (int i = 0; i < root->childCount(); ++i)
+	{
+		if (root->child(i)->text(0) == grid)
+		{
+			grid_item = dynamic_cast<BaseTreeItem*> (root->child(i));
 			break;
+		}
 	}
-	if (i == root->childCount())
-		return NULL;
 
+	if (grid_item == NULL)
+	{
+		return NULL;
+	}
+
+	QList<BaseTreeItem*> children = grid_item->children();
 	// search for the child listview item of grid_item corresponding to prop
-	for (i = 0; i < grid_item->childCount(); ++i) {
-		prop_item = grid_item->child(i);
-		if (prop_item->text(0) == prop)
+	for (int i = 0; i < children.count(); ++i)
+	{
+		if (children.at(i)->text(0) == prop)
+		{
+			prop_item = dynamic_cast<BaseTreeItem*> (children.at(i));
 			break;
+		}
 	}
 
-	if (i == grid_item->childCount())
-		return NULL;
-	else
-		return prop_item;
-
+	return prop_item;
 }
 
 //=======================================================
 
 
 Oinv_view::Oinv_view(GsTL_project* project, QWidget* parent) :
-	Project_view_gui(parent), Project_view(project) {
+	Project_view_gui(parent), Project_view(project)
+{
 
 	pref_object_selector_->init(project_);
 	info_object_selector_->init(project_);
 	general_pref_panel_->init(project_);
 
-	QObject::connect(Object_tree, SIGNAL(rename_finished(string, QString, QString)), this, SLOT(object_rename_slot(
-					string, QString, QString)));
+	QObject::connect(Object_tree, SIGNAL(rename_finished(string, QString, QString)), this, SLOT(object_rename_slot(string, QString, QString)));
 	QObject::connect(Object_tree, SIGNAL(action(QString, QString)), this, SLOT(execute_action(QString, QString)));
 	QObject::connect(Object_tree, SIGNAL(project_modified()), this, SLOT(update_project()));
 	QObject::connect(Object_tree, SIGNAL(delete_object_finished(QString)), this, SLOT(slot_delete_object(QString)));
 }
 
-void Oinv_view::initialize(GsTL_project* project, QWidget* parent) {
+void Oinv_view::initialize(GsTL_project* project, QWidget* parent)
+{
 	Project_view::init(project);
 	Project_view_gui::set_parent(parent);
 
@@ -1257,7 +1335,8 @@ void Oinv_view::initialize(GsTL_project* project, QWidget* parent) {
 	general_pref_panel_->init(project_);
 }
 
-Oinv_view::~Oinv_view() {
+Oinv_view::~Oinv_view()
+{
 	appli_message("destroying Oinv_view");
 
 	/* This is a dirty trick...
@@ -1273,7 +1352,8 @@ Oinv_view::~Oinv_view() {
 	//  Named_interface::new_ref();
 }
 
-void Oinv_view::update(std::string obj) {
+void Oinv_view::update(std::string obj)
+{
 
 	// Some of the existing objects have been updated (ie a property
 	// has been added, removed, etc, or a region has been added, etc)
@@ -1290,14 +1370,16 @@ void Oinv_view::update(std::string obj) {
 	// Visit each grid object entry. For each, check that the property
 	// list is up-to-date. If not, add/remove the properties that should be
 	// added/removed
-	for (int i = 0; i < root->childCount(); ++i) {
+	for (int i = 0; i < root->childCount(); ++i)
+	{
 		grid_item = root->child(i);
 		std::string grid_name(qstring2string(grid_item->text(0)));
 		appli_message("updating grid_name: \"" << grid_name << "\"");
 
 		// get the list of properties of the current grid
 		SmartPtr<Named_interface> grid_ni = Root::instance()->interface(gridModels_manager + "/" + grid_name);
-		if (!grid_ni.raw_ptr()) {
+		if (!grid_ni.raw_ptr())
+		{
 			appli_warning("no grid called \"" << grid_name << "\"");
 			return;
 		}
@@ -1325,14 +1407,18 @@ void Oinv_view::update(std::string obj) {
 				property_names.end(), to_be_removed.begin());
 
 		// Add the property names that should be added
-		for (String_iterator it = to_be_added.begin(); it != added_end; ++it) {
-			new SingleSel_QListViewItem(grid_item, QString(it->c_str()));
+		for (String_iterator it = to_be_added.begin(); it != added_end; ++it)
+		{
+			new PropertyTreeItem(grid_item, QString(it->c_str()));
 		}
 
-		for (String_iterator it2 = to_be_removed.begin(); it2 != removed_end; ++it2) {
-			for (int k = 0; k < grid_item->childCount(); ++k) {
+		for (String_iterator it2 = to_be_removed.begin(); it2 != removed_end; ++it2)
+		{
+			for (int k = 0; k < grid_item->childCount(); ++k)
+			{
 				QTreeWidgetItem* prop_item2 = grid_item->child(k);
-				if (std::string(qstring2string(prop_item2->text(0))) == *it2) {
+				if (std::string(qstring2string(prop_item2->text(0))) == *it2)
+				{
 					grid_item->removeChild(prop_item2);
 					break;
 				}
@@ -1342,7 +1428,8 @@ void Oinv_view::update(std::string obj) {
 		// If properties were removed, tell the oinv description
 		// Remove the property names that should be removed
 		Oinv_description_map::iterator desc_found = displayed_objects_.find(grid_name);
-		if (desc_found != displayed_objects_.end()) {
+		if (desc_found != displayed_objects_.end())
+		{
 			Oinv_description* desc = desc_found->second.raw_ptr();
 			desc->update(Oinv::PROPERTY_DELETED, &to_be_removed);
 			//      for( String_iterator it3 = to_be_removed.begin(); it3!= removed_end; ++it3 ) {
@@ -1353,12 +1440,14 @@ void Oinv_view::update(std::string obj) {
 	}
 
 	// Update the oinv descriptions, in case an existing property was modified
-	for (Oinv_description_map::iterator it = displayed_objects_.begin(); it != displayed_objects_.end(); ++it) {
+	for (Oinv_description_map::iterator it = displayed_objects_.begin(); it != displayed_objects_.end(); ++it)
+	{
 		it->second->update(Oinv::PROPERTY_CHANGED);
 	}
 
 	// Update the display preference panels
-	for (Pref_Panel_Map::iterator it2 = display_pref_panels_.begin(); it2 != display_pref_panels_.end(); ++it2) {
+	for (Pref_Panel_Map::iterator it2 = display_pref_panels_.begin(); it2 != display_pref_panels_.end(); ++it2)
+	{
 		it2->second->update();
 	}
 
@@ -1367,11 +1456,13 @@ void Oinv_view::update(std::string obj) {
 	// otherwise, ignore
 }
 
-void Oinv_view::new_object(std::string obj) {
+void Oinv_view::new_object(std::string obj)
+{
 	add_object(obj);
 }
 
-void Oinv_view::deleted_object(std::string obj) {
+void Oinv_view::deleted_object(std::string obj)
+{
 	/* 3 things have to be updated:
 	 *   - remove "obj" from tree view of objects (Object_tree)
 	 *   - undisplay "obj" if it was displayed
@@ -1424,19 +1515,23 @@ void Oinv_view::deleted_object(std::string obj) {
 
 }
 
-void Oinv_view::dragMoveEvent(QDragMoveEvent *) {
+void Oinv_view::dragMoveEvent(QDragMoveEvent *)
+{
 }
 
-void Oinv_view::dragEnterEvent(QDragEnterEvent * e) {
+void Oinv_view::dragEnterEvent(QDragEnterEvent * e)
+{
 	if (e->mimeData()->hasUrls())
 		e->acceptProposedAction();
 
 }
 
-void Oinv_view::dragLeaveEvent(QDragLeaveEvent *) {
+void Oinv_view::dragLeaveEvent(QDragLeaveEvent *)
+{
 }
 
-void Oinv_view::dropEvent(QDropEvent * e) {
+void Oinv_view::dropEvent(QDropEvent * e)
+{
 	Error_messages_handler error_messages;
 	bool ok = true;
 
@@ -1444,7 +1539,8 @@ void Oinv_view::dropEvent(QDropEvent * e) {
 		return;
 	QList<QUrl> urls = e->mimeData()->urls();
 
-	for (int i = 0; i < urls.size(); ++i) {
+	for (int i = 0; i < urls.size(); ++i)
+	{
 		QString s = urls[i].toLocalFile();
 
 		if (s.isEmpty())
@@ -1452,18 +1548,23 @@ void Oinv_view::dropEvent(QDropEvent * e) {
 
 		appli_message("Loading file " << qstring2string(s));
 		QFileInfo f_info(s);
-		if (f_info.isDir() && (s.endsWith(".prj", Qt::CaseInsensitive) || s.endsWith(".prj/", Qt::CaseInsensitive))) {
+		if (f_info.isDir() && (s.endsWith(".prj", Qt::CaseInsensitive) || s.endsWith(".prj/", Qt::CaseInsensitive)))
+		{
 			ok *= project_->execute("LoadProject", std::string(qstring2string(s)), &error_messages);
-		} else {
-			if (s.endsWith(".prt", Qt::CaseInsensitive)) {
+		} else
+		{
+			if (s.endsWith(".prt", Qt::CaseInsensitive))
+			{
 				ok *= project_->execute("LoadSimFromFile", qstring2string(s), &error_messages);
-			} else {
+			} else
+			{
 				std::string param(std::string(qstring2string(s)) + Actions::separator + "All");
 				ok *= project_->execute("LoadObjectFromFile", param, &error_messages);
 			}
 		}
 	}
-	if (!ok) {
+	if (!ok)
+	{
 		GsTLcerr << "All the selected files could not be loaded. \n";
 		if (!error_messages.empty())
 			GsTLcerr << error_messages.errors() << "\n";
@@ -1472,14 +1573,16 @@ void Oinv_view::dropEvent(QDropEvent * e) {
 
 }
 
-void Oinv_view::execute_action(QString _action_name, QString _params) {
+void Oinv_view::execute_action(QString _action_name, QString _params)
+{
 	Error_messages_handler error_messages;
 	std::string action_name = qstring2string(_action_name);
 	std::string params = qstring2string(_params);
 
 	bool ok = project_->execute(action_name, params, &error_messages);
 
-	if (!ok) {
+	if (!ok)
+	{
 		GsTLcerr << "Command " << action_name << " could not be performed: \n";
 		if (!error_messages.empty())
 			GsTLcerr << error_messages.errors() << "\n";
@@ -1490,13 +1593,16 @@ void Oinv_view::execute_action(QString _action_name, QString _params) {
 	update_project();
 }
 
-void Oinv_view::update_project() {
-	if (project_) {
+void Oinv_view::update_project()
+{
+	if (project_)
+	{
 		project_->update();
 	}
 }
 
-void Oinv_view::slot_delete_object(QString _grid_name) {
+void Oinv_view::slot_delete_object(QString _grid_name)
+{
 	deleted_object(qstring2string(_grid_name));
 	update_project();
 }
@@ -1504,19 +1610,23 @@ void Oinv_view::slot_delete_object(QString _grid_name) {
 //=========================================================
 
 Oinv_description_map::Oinv_description_map(SoGroup* scene_root) :
-	scene_root_(scene_root) {
+	scene_root_(scene_root)
+{
 
 }
 
-void Oinv_description_map::scene_graph(SoGroup* scene_root) {
+void Oinv_description_map::scene_graph(SoGroup* scene_root)
+{
 	scene_root_ = scene_root;
 }
 
-std::pair<bool, Oinv_description*> Oinv_description_map::description(const std::string& obj_name) {
+std::pair<bool, Oinv_description*> Oinv_description_map::description(const std::string& obj_name)
+{
 	bool already_there = true;
 	Desc_Map::iterator it = available_descriptions_.find(obj_name);
 
-	if (it == available_descriptions_.end()) {
+	if (it == available_descriptions_.end())
+	{
 		already_there = false;
 
 		SmartPtr<Named_interface> model = Root::instance()->interface(gridModels_manager + "/" + obj_name);
@@ -1545,7 +1655,8 @@ std::pair<bool, Oinv_description*> Oinv_description_map::description(const std::
 	return std::make_pair(already_there, it->second.raw_ptr());
 }
 
-bool Oinv_description_map::delete_description(const std::string& obj_name) {
+bool Oinv_description_map::delete_description(const std::string& obj_name)
+{
 	Desc_Map::iterator it = available_descriptions_.find(obj_name);
 
 	if (it == available_descriptions_.end())
@@ -1563,6 +1674,7 @@ bool Oinv_description_map::delete_description(const std::string& obj_name) {
 	return true;
 }
 
-Oinv_description_map::iterator Oinv_description_map::find(const std::string& obj_name) {
+Oinv_description_map::iterator Oinv_description_map::find(const std::string& obj_name)
+{
 	return available_descriptions_.find(obj_name);
 }
