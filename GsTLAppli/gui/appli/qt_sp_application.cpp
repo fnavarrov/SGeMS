@@ -1019,8 +1019,15 @@ void QSP_application::run_script() {
     return;
   }
 
-  QByteArray tmp = filename.toAscii();
-  PyRun_SimpleFile( fp, tmp.constData());
+	PyObject* module = PyImport_AddModule("__main__");
+  	PyObject* dictionary = PyModule_GetDict(module);
+  	PyObject* dictionary_copy = PyDict_Copy(dictionary);
+
+  	PyRun_File(fp, filename.toAscii().constData(), Py_file_input, dictionary_copy, dictionary_copy);
+  	Py_XDECREF(dictionary_copy);
+
+//  QByteArray tmp = filename.toAscii();
+//  PyRun_SimpleFile( fp, tmp.constData());
   fclose( fp );
 }
 
