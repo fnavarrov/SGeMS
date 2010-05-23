@@ -4,7 +4,10 @@
 #include <GsTLAppli/utils/named_interface.h>
 #include <GsTLAppli/actions/common.h>
 
-class ACTIONS_DECL Python_script: public Named_interface {
+#include <vector>
+
+class ACTIONS_DECL Python_script: public Named_interface
+{
 public:
 	static Named_interface* create_new_interface(std::string&);
 
@@ -13,7 +16,7 @@ public:
 
 	std::string filename() const;
 
-	void execute() const;
+	void execute(const std::string grid_name, const std::vector<std::string> prop_names) const;
 
 protected:
 	std::string filename_;
