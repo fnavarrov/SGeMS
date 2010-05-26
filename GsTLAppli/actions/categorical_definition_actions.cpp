@@ -38,8 +38,9 @@ bool New_categorical_definition::init( std::string& parameters, GsTL_project* pr
   CategoricalPropertyDefinitionName* cat_def = 
             dynamic_cast<CategoricalPropertyDefinitionName*>(ni.raw_ptr());
 
-  for(int i=1; i<params.size(); i++ )
+  for(int i=1; i<params.size(); i++ ) {
     cat_def->add_category(params[i]);
+  }
   
   return true;
 

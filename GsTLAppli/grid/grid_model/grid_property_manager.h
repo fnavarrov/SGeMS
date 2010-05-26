@@ -33,6 +33,7 @@
 #include <GsTLAppli/utils/gstl_types.h> 
 #include <GsTLAppli/utils/gstl_messages.h> 
 #include <GsTLAppli/grid/grid_model/grid_property.h>
+#include <GsTLAppli/grid/grid_model/grid_property_set.h>
 #include <GsTLAppli/grid/grid_model/grid_categorical_property.h>
  
 #include <string> 
@@ -76,6 +77,8 @@ class GRID_DECL MultiRealization_property {
  
 
   void set_category_definition(CategoricalPropertyDefinition* definition);
+
+  void set_group( bool on);
 
   GsTLGridCategoricalProperty* new_categorical_realization(); 
  

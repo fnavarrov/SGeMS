@@ -32,7 +32,7 @@
 #include <GsTLAppli/grid/common.h>
 #include <GsTLAppli/utils/gstl_types.h> 
 #include <GsTLAppli/utils/gstl_messages.h> 
-
+//#include <GsTLAppli/grid/grid_model/grid_property_set.h> 
 #include <GsTLAppli/grid/grid_model/grid_region.h> 
  
 #include <string> 
@@ -41,7 +41,7 @@
  
 class PropertyAccessor; 
 class PropertyValueProxy; 
-class PropertySet; 
+class GsTLGridPropertyGroup; 
  
 
 
@@ -140,11 +140,26 @@ class GRID_DECL GsTLGridProperty {
   inline const GsTLGridRegion* get_region();
   inline const GsTLGridRegion* get_region() const;
 
+  /** Manage the property group
+  */
+  bool has_group_membership() const;
+  std::vector< std::pair<std::string,std::string> > group_pair_name_type() const;
+  std::vector<std::string > group_names() const;
+  std::vector<std::string > group_types() const;
+  const std::vector<const GsTLGridPropertyGroup*>& groups() const;
+  bool add_group_membership(GsTLGridPropertyGroup* group);
+  bool remove_group_membership(GsTLGridPropertyGroup* group);
+  int number_group_membership() const;
+
+
+
  protected: 
   mutable PropertyAccessor* accessor_;   
   std::string name_; 
 
   const GsTLGridRegion* region_;
+  std::vector<const GsTLGridPropertyGroup*> groups_;
+  
 
    
  private: 
@@ -498,6 +513,65 @@ inline
 const GsTLGridRegion* GsTLGridProperty::get_region() const{
   return region_;
 }
+
+/*
+inline 
+bool GsTLGridProperty::has_group_membership() const{
+  return groups_.empty();
+}
+inline 
+std::vector< std::pair<std::string,std::string> > GsTLGridProperty::group_ids() const{
+
+}
+inline 
+std::vector<std::string > GsTLGridProperty::group_names() const{
+  std::vector<std::string> names;
+  std::vector< const GsTLGridPropertyGroup* >::const_iterator it = groups_.begin();
+  for(; it != groups_.end(); ++it) {
+    names.push_back( it->name() );
+  }
+  return names;
+}
+
+inline 
+std::vector<std::string > GsTLGridProperty::group_types() const{
+  std::vector<std::string> types;
+  std::vector< const GsTLGridPropertyGroup* >::const_iterator it = groups_.begin();
+  for(; it != groups_.end(); ++it) {
+    types.push_back( it->type() );
+  }
+  return types;
+}
+
+inline 
+const std::vector<const GsTLGridPropertyGroup*>& GsTLGridProperty::groups() const {
+  return groups_;
+}
+
+inline 
+bool GsTLGridProperty::add_group_membership(GsTLGridPropertyGroup* group) {
+  std::vector< const GsTLGridPropertyGroup* >::iterator it = groups_.begin();
+  std::string gname = group->name();
+  for(; it != groups_.end(); ++it) {
+    if(gname == it->name()) return false;
+  }  
+  groups_.push_back(group);
+  return true;
+}
+
+inline bool 
+GsTLGridProperty::remove_group_membership(GsTLGridPropertyGroup* group){
+  std::vector< const GsTLGridPropertyGroup* >::iterator it = groups_.begin();
+  std::string gname = group->name();
+  for(; it != groups_.end(); ++it) {
+    if(gname == it->name()) {
+      groups_.erase(it);
+      return true;
+    }
+  }  
+  return false;
+}
+*/
 
 //  end of GsTLGridProperty 
 //--------------------------- 

@@ -231,6 +231,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\property_group_actions.cpp"
+				>
+			</File>
+			<File
 				RelativePath="python_commands.cpp"
 				>
 			</File>
@@ -286,6 +290,10 @@
 			</File>
 			<File
 				RelativePath="obj_manag_actions.h"
+				>
+			</File>
+			<File
+				RelativePath=".\property_group_actions.h"
 				>
 			</File>
 			<File

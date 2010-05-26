@@ -468,6 +468,73 @@ const_iterator( const GsTLGridProperty* prop, GsTLInt id, bool skip )
   }
 }
 
+
+
+bool GsTLGridProperty::has_group_membership() const{
+  return groups_.empty();
+}
+inline 
+std::vector< std::pair<std::string,std::string> > GsTLGridProperty::group_pair_name_type() const{
+  std::vector< std::pair<std::string,std::string> > group_ids;
+  std::vector< const GsTLGridPropertyGroup* >::const_iterator it = groups_.begin();
+  for(; it != groups_.end(); ++it) {
+    std::pair<std::string, std::string > id( (*it)->name(), (*it)->type() );
+    group_ids.push_back( id );
+  }
+  return group_ids;
+}
+
+std::vector<std::string > GsTLGridProperty::group_names() const{
+  std::vector<std::string> names;
+  std::vector< const GsTLGridPropertyGroup* >::const_iterator it = groups_.begin();
+  for(; it != groups_.end(); ++it) {
+    names.push_back( (*it)->name() );
+  }
+  return names;
+}
+
+
+std::vector<std::string > GsTLGridProperty::group_types() const{
+  std::vector<std::string> types;
+  std::vector< const GsTLGridPropertyGroup* >::const_iterator it = groups_.begin();
+  for(; it != groups_.end(); ++it) {
+    types.push_back( (*it)->type() );
+  }
+  return types;
+}
+
+
+const std::vector<const GsTLGridPropertyGroup*>& GsTLGridProperty::groups() const {
+  return groups_;
+}
+
+
+bool GsTLGridProperty::add_group_membership(GsTLGridPropertyGroup* group) {
+  std::vector< const GsTLGridPropertyGroup* >::iterator it = groups_.begin();
+  std::string gname = group->name();
+  for(; it != groups_.end(); ++it) {
+    if(gname == (*it)->name()) return false;
+  }  
+  groups_.push_back(group);
+  return true;
+}
+
+bool GsTLGridProperty::remove_group_membership(GsTLGridPropertyGroup* group){
+  std::vector< const GsTLGridPropertyGroup* >::iterator it = groups_.begin();
+  std::string gname = group->name();
+  for(; it != groups_.end(); ++it) {
+    if(gname == (*it)->name()) {
+      groups_.erase(it);
+      return true;
+    }
+  }  
+  return false;
+}
+
+int GsTLGridProperty::number_group_membership() const{
+  return groups_.size();
+}
+
 /*
 bool GsTLGridPropertyGroup::add_property(GsTLGridProperty* prop) {
   properties_.insert(prop);

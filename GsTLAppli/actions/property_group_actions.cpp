@@ -1,0 +1,126 @@
+#include <GsTLAppli/actions/property_group_actions.h>
+#include <GsTLAppli/actions/defines.h>
+#include <GsTLAppli/utils/string_manipulation.h>
+#include <GsTLAppli/utils/error_messages_handler.h>
+#include <GsTLAppli/appli/manager_repository.h>
+#include <GsTLAppli/appli/project.h>
+#include <GsTLAppli/grid/grid_model/geostat_grid.h> 
+#include <GsTLAppli/grid/grid_model/grid_property.h>
+#include <GsTLAppli/grid/grid_model/grid_property_set.h>
+
+
+/**
+* New_property_group
+*/
+
+Named_interface* New_property_group::create_new_interface( std::string& ){
+  return new New_property_group;
+}
+   
+
+bool New_property_group::init( std::string& parameters, GsTL_project* proj,
+                     Error_messages_handler* errors ){
+
+  std::vector< std::string > params = 
+      String_Op::decompose_string( parameters, Actions::separator,
+				   Actions::unique );
+
+  if( params.size() < 3 ) {
+    errors->report( "Must have at least 3 parameters, name of the grid and name and type of the group" );
+    return false;
+  }
+
+  // Get the grid
+  SmartPtr<Named_interface> ni = Root::instance()->interface( gridModels_manager + "/" + params[0] );
+  Geostat_grid* grid = dynamic_cast<Geostat_grid*>( ni.raw_ptr() );
+  if(!grid)  {
+    errors->report( "The grid "+params[0]+" does not exist" );
+    return false;
+  }
+
+  GsTLGridPropertyGroup* group = grid->get_group(params[1]);
+  if(group)  {
+    errors->report( "The goup "+params[1]+" already exist; hence cannot be created" );
+    return false;
+  }
+
+  group = grid->add_group(params[1],params[2]);
+  if(!group)  {
+    errors->report( "The goup "+params[1]+" could no be created; possibly type undefined" );
+    return false;
+  }
+
+  for(int i=3; i< params.size(); i++) {
+    GsTLGridProperty* prop = grid->property(params[i]);
+    if(prop == NULL)  {
+      errors->report( "The property "+params[i]+" does not exist" );
+      return false;
+    }
+  }
+
+  for(int i=3; i< params.size(); i++) {
+    group->add_property(grid->property(params[i]));
+  }
+
+  return true;
+}
+
+bool New_property_group::exec(){
+
+return true;
+}
+ 
+
+/**
+* Add_properties_to_group::
+*/
+Named_interface* Add_properties_to_group::create_new_interface( std::string& ){
+  return new Add_properties_to_group;
+}
+
+ 
+bool Add_properties_to_group::init( std::string& parameters, GsTL_project* proj,
+                     Error_messages_handler* errors ){
+
+  std::vector< std::string > params = 
+      String_Op::decompose_string( parameters, Actions::separator,
+				   Actions::unique );
+
+  if( params.size() < 3 ) {
+    errors->report( "Must have at least 3 parameters, name of the grid and name the group and at least one property" );
+    return false;
+  }
+
+  // Get the grid
+  SmartPtr<Named_interface> ni = Root::instance()->interface( gridModels_manager + "/" + params[0] );
+  Geostat_grid* grid = dynamic_cast<Geostat_grid*>( ni.raw_ptr() );
+  if(!grid)  {
+    errors->report( "The grid "+params[0]+" does not exist" );
+    return false;
+  }
+
+  GsTLGridPropertyGroup* group = grid->get_group(params[1]);
+  if(!group)  {
+    errors->report( "The goup "+params[1]+" does not exist" );
+    return false;
+  }
+
+  for(int i=2; i< params.size(); i++) {
+    GsTLGridProperty* prop = grid->property(params[i]);
+    if(prop == NULL)  {
+      errors->report( "The property "+params[i]+" does not exist" );
+      return false;
+    }
+  }
+
+  for(int i=2; i< params.size(); i++) {
+    if( !group->is_member_property( params[i] ) )
+      group->add_property(grid->property(params[i]));
+  }
+
+  return true;
+}
+bool Add_properties_to_group::exec(){
+
+  return true;
+}

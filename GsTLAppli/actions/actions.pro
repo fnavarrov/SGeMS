@@ -20,7 +20,8 @@ HEADERS += action.h \
            unary_action.h \
            python_script.h \
            maskedgrid_actions.h \
-           categorical_definition_actions.h
+           categorical_definition_actions.h \
+           property_group_actions.h
            
 SOURCES += algorithms_actions.cpp \
            library_actions_init.cpp \
@@ -31,7 +32,8 @@ SOURCES += algorithms_actions.cpp \
            unary_action.cpp \
            python_script.cpp \
            maskedgrid_actions.cpp \
-           categorical_definition_actions.cpp
+           categorical_definition_actions.cpp \
+           property_group_actions.cpp
 
 TARGET=GsTLAppli_actions
 QT += xml

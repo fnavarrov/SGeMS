@@ -1,5 +1,6 @@
 
 #include <GsTLAppli/grid/grid_model/grid_property_set.h>
+#include <GsTLAppli/grid/grid_model/grid_property.h> 
 #include <GsTLAppli/grid/grid_model/grid_categorical_property.h> 
 #include <QDomElement>
 
@@ -14,23 +15,35 @@ GsTLGridPropertyGroup::GsTLGridPropertyGroup(std::string name){
   meta_data_.appendChild(root_);
 }
 
+
+bool GsTLGridPropertyGroup::is_member_property(std::string prop_name) const {
+  return( properties_.find( prop_name) != properties_.end() );
+}
+
+GsTLGridProperty* GsTLGridPropertyGroup::get_property(std::string prop_name) {
+  property_map::iterator it = properties_.find( prop_name);
+  if( it == properties_.end() ) return 0;
+  return it->second;
+}
+
 bool GsTLGridPropertyGroup::add_property(GsTLGridProperty* prop) {
-  properties_.insert(prop);
+  if(prop == 0) return false;
+  properties_[prop->name()] = prop;
   return true;
 }
 
 bool GsTLGridPropertyGroup::remove_property(GsTLGridProperty* prop){
-    unsigned int ok = properties_.erase( prop );
+  unsigned int ok = properties_.erase( prop->name() );
     return ok != 0;
 }
 
 std::vector<GsTLGridProperty::property_type> 
 GsTLGridPropertyGroup::get_vector_data( int node_id ) const{
-  property_set::const_iterator it = properties_.begin();
+  property_map::const_iterator it = properties_.begin();
   std::vector<GsTLGridProperty::property_type> values;
   values.reserve(properties_.size() );
   for( ; it!= properties_.end(); ++it) {
-    if((*it)->is_informed(node_id) ) values.push_back( (*it)->get_value(node_id) );
+    if( it->second->is_informed(node_id) ) values.push_back( it->second->get_value(node_id) );
   }
   return values;
 }
@@ -49,6 +62,9 @@ std::string GsTLGridPropertyGroup::get_group_info(){
   return ele.attribute("text").toStdString();
 }
 
+/***
+*  ------------------------
+*/
 
 
 GsTLGridPropertyGroup* Grid_property_group_manager::add_group(const std::string& name, const std::string& type) {
@@ -144,6 +160,9 @@ unsigned int Grid_property_group_manager::size() const{
   return groups_.size();
 }
 
+
+
+
 /* 
 *         -----------------------
 */
@@ -228,7 +247,7 @@ const CategoricalPropertyDefinition*
 IndicatorCategoricalPropertyGroup::get_categorical_definition() const{
   if(properties_.empty()) return 0;
   const GsTLGridCategoricalProperty* prop = 
-      dynamic_cast<const GsTLGridCategoricalProperty*>( *(properties_.begin()) );
+    dynamic_cast<const GsTLGridCategoricalProperty*>( properties_.begin()->second );
   if(prop) return 0;
   return prop->get_category_definition();
 }

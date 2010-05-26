@@ -40,7 +40,9 @@
 
 #include <string> 
 #include <map>
+#include <set>
 #include <QDomDocument>
+
 
 
  
@@ -49,23 +51,26 @@ public:
 
   static Named_interface* create_new_interface( std::string& name);
 
-  typedef std::set<GsTLGridProperty*, compareGsTLGridProperty> property_set;
+  typedef std::map<std::string, GsTLGridProperty*> property_map;
   GsTLGridPropertyGroup(){}
   GsTLGridPropertyGroup(std::string name);
   virtual ~GsTLGridPropertyGroup(){}
 
-  virtual std::string name() {return name_;}
-  virtual std::string type() {return type_;}
+  virtual std::string name() const {return name_;}
+  virtual std::string type() const {return type_;}
+  
 
-  int size() {return properties_.size();}
+  bool is_member_property(std::string prop_name) const;
+  GsTLGridProperty* get_property(std::string prop_name);
+  int size() const {return properties_.size();}
 
   bool add_property(GsTLGridProperty*);
   bool remove_property(GsTLGridProperty*);
 
   std::vector<GsTLGridProperty::property_type> get_vector_data( int node_id ) const;
 
-  property_set::iterator begin_property(){ return properties_.begin(); }
-  property_set::iterator end_property() {  return properties_.end(); }
+  property_map::iterator begin_property(){ return properties_.begin(); }
+  property_map::iterator end_property() {  return properties_.end(); }
 
   std::string get_group_info();
   void set_group_info(const std::string& info_str);
@@ -73,7 +78,7 @@ public:
 
 
 protected :
-  property_set properties_;
+  property_map properties_;
   std::string name_;
   std::string type_;
   
