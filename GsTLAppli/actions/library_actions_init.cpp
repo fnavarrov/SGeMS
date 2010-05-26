@@ -45,6 +45,7 @@
 #include <GsTLAppli/actions/python_script.h>
 #include <GsTLAppli/actions/maskedgrid_actions.h>
 #include <GsTLAppli/actions/categorical_definition_actions.h>
+#include <GsTLAppli/actions/property_group_actions.h>
 
 
 void init_python_interpreter();
@@ -134,6 +135,10 @@ bool library_actions_init::bind_action_factories(Manager* dir) {
   dir->factory("CreateMgridFromCgrid", Create_mgrid_from_cgrid::create_new_interface);
 
   dir->factory("NewCategoricalDefinition", New_categorical_definition::create_new_interface);
+
+  dir->factory("NewPropertyGroup", New_property_group::create_new_interface);
+  dir->factory("AddPropertiesToGroup", Add_properties_to_group::create_new_interface);
+  
 
 	// algorithm related actions
 	dir->factory("RunGeostatAlgorithm", Run_geostat_algo::create_new_interface);
