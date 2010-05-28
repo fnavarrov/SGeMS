@@ -184,6 +184,11 @@ void ObjectTree::slotItemSelected(QTreeWidgetItem* _item, int _col)
 	// handle right click
 	if (mouse_event_->button() == Qt::RightButton)
 	{
+		if (selected_items_.size() == 0)
+		{
+			selected_items_.push_back(baseItem);
+		}
+
 		switch_selected_items();
 
 		bool multiple = selected_items_.size() > 1;
