@@ -146,44 +146,52 @@ void ObjectTree::slotItemSelected(QTreeWidgetItem* _item, int _col)
 	}
 
 	// see if we need to remove clicked item from the menu list
-	if ((mouse_event_->button() != Qt::RightButton) && (mouse_event_->modifiers() & Qt::ControlModifier) && selected_items_.contains(baseItem))
+	if (mouse_event_->button() != Qt::RightButton)
 	{
-		selected_items_.remove(selected_items_.indexOf(baseItem));
+		if ((mouse_event_->modifiers() & Qt::ControlModifier) && selected_items_.contains(baseItem))
+		{
+			selected_items_.remove(selected_items_.indexOf(baseItem));
+		}
+
+		// handle control+click combination
+		else if ((mouse_event_->modifiers() & Qt::ControlModifier) && baseItem->multipleSelectionEnabled())
+		{
+			// clear current selection if incompatible item was clicked
+			if ((selected_items_.size() != 0) && (!baseItem->isCompatibleItem(selected_items_.at(0))))
+			{
+				selected_items_.clear();
+			}
+
+			// also need to check that parents of items are same
+			for (int i = 0; i < selected_items_.size(); ++i)
+			{
+				if (getGridName(baseItem) != getGridName(selected_items_.at(i)))
+				{
+					selected_items_.clear();
+					break;
+				}
+			}
+
+			selected_items_.push_back(baseItem);
+		}
+
+		// otherwise, only a single item can be selected one
+		else
+		{
+			selected_items_.clear();
+			selected_items_.push_back(baseItem);
+			emit swap_display(baseItem);
+		}
 	}
 
-	// handle control+click combination
-	else if ((mouse_event_->button() != Qt::RightButton) && (mouse_event_->modifiers() & Qt::ControlModifier) && baseItem->multipleSelectionEnabled())
+	// handle right click
+	else
 	{
-		// clear current selection if incompatible item was clicked
 		if ((selected_items_.size() != 0) && (!baseItem->isCompatibleItem(selected_items_.at(0))))
 		{
 			selected_items_.clear();
 		}
 
-		// also need to check that parents of items are same
-		for (int i = 0; i < selected_items_.size(); ++i)
-		{
-			if (getGridName(baseItem) != getGridName(selected_items_.at(i)))
-			{
-				selected_items_.clear();
-				break;
-			}
-		}
-
-		selected_items_.push_back(baseItem);
-	}
-
-	// otherwise, only a single item can be selected one
-	else if (mouse_event_->button() != Qt::RightButton)
-	{
-		selected_items_.clear();
-		selected_items_.push_back(baseItem);
-		emit swap_display(baseItem);
-	}
-
-	// handle right click
-	if (mouse_event_->button() == Qt::RightButton)
-	{
 		if (selected_items_.size() == 0)
 		{
 			selected_items_.push_back(baseItem);
