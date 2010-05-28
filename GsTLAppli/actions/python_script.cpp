@@ -73,18 +73,37 @@ void Python_script::execute(const std::string grid_name, const std::vector<std::
 	PyObject* function = PyDict_GetItemString(dictionary_copy, "sgems_execute_action");
 	if (PyCallable_Check(function))
 	{
-		//		PyObject* properties = PyTuple_New(prop_names.size());
+		//		PyObject* properties = Py_BuildValue("[ss]", prop_names.at(0).c_str(), prop_names.at(0).c_str());
+		//		if (NULL == properties)
+		//		{
+		//			std::cout << "building value failed\n";
+		//		}
+		//		PyObject* properties = PyList_New(prop_names.size());
 		//		for (int i = 0; i < prop_names.size(); ++i)
 		//		{
-		//			PyTuple_SetItem(properties, i, PyString_FromString(prop_names.at(i).c_str()));
+		//			PyList_SetItem(properties, i, PyString_FromString(prop_names.at(i).c_str()));
 		//		}
-		//		PyObject* result = PyObject_CallFunction(function, "so", grid_name.c_str(), properties);
-		PyObject* result = PyObject_CallFunction(function, "s[s]", grid_name.c_str(), prop_names.at(0).c_str());
+		//		PyObject* result = PyObject_CallFunction(function, "s[o]", grid_name.c_str(), properties);
 
-		if (NULL == result)
+		PyObject* result = NULL;
+
+		switch (prop_names.size())
 		{
-			std::cout << "execution failed\n";
+		case 1:
+			result = PyObject_CallFunction(function, "s[s]", grid_name.c_str(), prop_names.at(0).c_str());
+			break;
+		case 2:
+			result = PyObject_CallFunction(function, "s[ss]", grid_name.c_str(), prop_names.at(0).c_str(), prop_names.at(1).c_str());
+			break;
+		default:
+			GsTLcerr << "Execution of python script failed.\n Cannot have more than 2 properties selected\n" << gstlIO::end;
+			break;
 		}
+
+		//		if (NULL == result)
+		//		{
+		//			std::cout << "execution failed\n";
+		//		}
 
 		Py_XDECREF(result);
 	}
