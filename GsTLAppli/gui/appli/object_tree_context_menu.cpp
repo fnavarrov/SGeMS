@@ -177,6 +177,27 @@ PropertyTreeItemMenu_Multiple::PropertyTreeItemMenu_Multiple(ObjectTree* _object
 	BaseTreeItemMenu(_object_tree, _parent)
 {
 	action_.push_back(addAction("Delete"));
+
+	// add python scripts
+	{
+		SmartPtr<Named_interface> ni = Root::instance()->interface(python_script_manager);
+		Manager* manager = dynamic_cast<Manager*> (ni.raw_ptr());
+		if (manager)
+		{
+			action_.push_back(addSeparator());
+			QMenu* python_script_menu = addMenu("Python Scripts");
+			nested_menu_.push_back(python_script_menu);
+			QObject::connect(python_script_menu, SIGNAL(triggered(QAction*)), this, SLOT(onPythonScriptAction(QAction*)));
+
+			Manager::interface_iterator begin = manager->begin_interfaces();
+			Manager::interface_iterator end = manager->end_interfaces();
+			for (; begin != end; ++begin)
+			{
+				QString script_name(manager->name(begin->raw_ptr()).c_str());
+				action_.push_back(python_script_menu->addAction(script_name));
+			}
+		}
+	}
 }
 
 PropertyTreeItemMenu_Multiple::~PropertyTreeItemMenu_Multiple()
@@ -186,6 +207,11 @@ PropertyTreeItemMenu_Multiple::~PropertyTreeItemMenu_Multiple()
 void PropertyTreeItemMenu_Multiple::handleContextMenuClick(QAction* _action)
 {
 	object_tree_->onPropertyContextMenuClick(_action);
+}
+
+void PropertyTreeItemMenu_Multiple::onPythonScriptAction(QAction* _action)
+{
+	object_tree_->onPythonScriptClick(_action);
 }
 
 /**

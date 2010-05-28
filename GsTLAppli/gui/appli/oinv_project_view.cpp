@@ -145,8 +145,14 @@ void ObjectTree::slotItemSelected(QTreeWidgetItem* _item, int _col)
 		return;
 	}
 
+	// see if we need to remove clicked item from the menu list
+	if ((mouse_event_->button() != Qt::RightButton) && (mouse_event_->modifiers() & Qt::ControlModifier) && selected_items_.contains(baseItem))
+	{
+		selected_items_.remove(selected_items_.indexOf(baseItem));
+	}
+
 	// handle control+click combination
-	if ((mouse_event_->modifiers() & Qt::ControlModifier) && baseItem->multipleSelectionEnabled())
+	else if ((mouse_event_->button() != Qt::RightButton) && (mouse_event_->modifiers() & Qt::ControlModifier) && baseItem->multipleSelectionEnabled())
 	{
 		// clear current selection if incompatible item was clicked
 		if ((selected_items_.size() != 0) && (!baseItem->isCompatibleItem(selected_items_.at(0))))
@@ -168,7 +174,7 @@ void ObjectTree::slotItemSelected(QTreeWidgetItem* _item, int _col)
 	}
 
 	// otherwise, only a single item can be selected one
-	else
+	else if (mouse_event_->button() != Qt::RightButton)
 	{
 		selected_items_.clear();
 		selected_items_.push_back(baseItem);
@@ -411,8 +417,7 @@ bool ObjectTree::rename_property(QString grid_name, QString old, QString n)
 		return false;
 	}
 
-	emit
-	rename_finished(obj_name, old_name_, n);
+	emit rename_finished(obj_name, old_name_, n);
 
 	return true;
 }
@@ -432,8 +437,7 @@ bool ObjectTree::delete_property(QString _grid_name, QString _prop_name)
 		return false;
 	}
 
-	emit
-	delete_property_finished(_grid_name, _prop_name);
+	emit delete_property_finished(_grid_name, _prop_name);
 
 	return true;
 }
@@ -739,33 +743,9 @@ void Project_view_gui::init_objects_selector()
 
 	for (; begin != end; ++begin)
 	{
-
 		// Add the grid-object to the list
 		std::string name = mng->name(begin->raw_ptr());
-		ObjectTreeItem* entry = new ObjectTreeItem(root, QString(name.c_str()));
-
-		Geostat_grid* grid = dynamic_cast<Geostat_grid*> (begin->raw_ptr());
-		appli_assert(grid != 0);
-
-		// Add the properties of the grid-object to the list
-		std::list<std::string> property_names = grid->property_list();
-		typedef std::list<std::string>::const_iterator iterator;
-		iterator prop_end = property_names.end();
-		for (iterator it = property_names.begin(); it != prop_end; ++it)
-		{
-			new PropertyTreeItem(entry, QString(it->c_str()));
-		}
-
-		// Add the regions of the grid-object to the list
-		HeaderTreeItem* regionRoot = new HeaderTreeItem(entry, "Regions");
-		std::list<std::string> region_names = grid->region_list();
-		typedef std::list<std::string>::const_iterator iterator;
-		iterator region_end = region_names.end();
-		for (iterator it = region_names.begin(); it != region_end; ++it)
-		{
-			new RegionTreeItem(regionRoot, QString(it->c_str()));
-		}
-
+		add_object(name);
 	}
 }
 
@@ -1057,48 +1037,48 @@ void Project_view_gui::show_preference_panel(const QString& obj)
 		Display_pref_panel* pref_panel = it->second;
 
 		QObject::connect(pref_panel, SIGNAL( displayed_property_changed( const QString&,
-						const QString& ) ), this, SLOT( toggle_grid_property( const QString&,
-						const QString& ) ));
+								const QString& ) ), this, SLOT( toggle_grid_property( const QString&,
+								const QString& ) ));
 
 		QObject::connect(pref_panel, SIGNAL( property_painted_toggled( const QString&,
-						const QString& ) ), this, SLOT( toggle_grid_property( const QString&,
-						const QString& ) ));
+								const QString& ) ), this, SLOT( toggle_grid_property( const QString&,
+								const QString& ) ));
 
 		QObject::connect(pref_panel, SIGNAL(renderRequest()), this, SLOT(reRender()));
 
 		if (general_pref_panel_)
 		{
-			QObject::connect(pref_panel, SIGNAL( colormap_changed( const Colormap* ) ), general_pref_panel_, SLOT( update_colorbar() ));
-		}
-
+QObject		::connect(pref_panel, SIGNAL( colormap_changed( const Colormap* ) ), general_pref_panel_, SLOT( update_colorbar() ));
 	}
 
-	// set it->second as the currently displayed panel, and show() it
-	QWidget * tmp = _pref_scroll->takeWidget();
-	tmp->hide();
+}
 
-	_pref_scroll->setWidget(it->second);
-	_pref_scroll->show();
+// set it->second as the currently displayed panel, and show() it
+QWidget * tmp = _pref_scroll->takeWidget();
+tmp->hide();
 
-	SmartPtr<Named_interface> grid_ni = Root::instance()->interface(gridModels_manager + "/" + obj_name);
-	Geostat_grid* grid = dynamic_cast<Geostat_grid*> (grid_ni.raw_ptr());
-	appli_assert( grid );
+_pref_scroll->setWidget(it->second);
+_pref_scroll->show();
 
-	/*
-	 Display_pref_panel* p = dynamic_cast<Display_pref_panel*>(current_pref_panel_);
-	 if (rgrid) {
-	 p->volume_explorer_checkbox_->setDisabled(true);
-	 }
-	 else
-	 p->volume_explorer_checkbox_->setDisabled(false);
-	 */
+SmartPtr<Named_interface> grid_ni = Root::instance()->interface(gridModels_manager + "/" + obj_name);
+Geostat_grid* grid = dynamic_cast<Geostat_grid*> (grid_ni.raw_ptr());
+appli_assert( grid );
 
-	//current_pref_panel_->setMaximumWidth( 250 );
-	/*
-	 current_pref_panel_->setGeometry( 0,0, 250,
-	 _pref_scroll->height() );
-	 current_pref_panel_->show();
-	 */
+/*
+ Display_pref_panel* p = dynamic_cast<Display_pref_panel*>(current_pref_panel_);
+ if (rgrid) {
+ p->volume_explorer_checkbox_->setDisabled(true);
+ }
+ else
+ p->volume_explorer_checkbox_->setDisabled(false);
+ */
+
+//current_pref_panel_->setMaximumWidth( 250 );
+/*
+ current_pref_panel_->setGeometry( 0,0, 250,
+ _pref_scroll->height() );
+ current_pref_panel_->show();
+ */
 
 }
 
@@ -1365,27 +1345,28 @@ void Oinv_view::update(std::string obj)
 	QTreeWidgetItem* root = Object_tree->topLevelItem(0);
 	appli_assert(root != 0);
 
-	QTreeWidgetItem* grid_item;
+	BaseTreeItem* grid_item;
 
 	// Visit each grid object entry. For each, check that the property
 	// list is up-to-date. If not, add/remove the properties that should be
 	// added/removed
 	for (int i = 0; i < root->childCount(); ++i)
 	{
-		grid_item = root->child(i);
+		grid_item = dynamic_cast<BaseTreeItem*> (root->child(i));
+		appli_assert(grid_item != 0);
 		std::string grid_name(qstring2string(grid_item->text(0)));
 		appli_message("updating grid_name: \"" << grid_name << "\"");
 
-		// get the list of properties of the current grid
 		SmartPtr<Named_interface> grid_ni = Root::instance()->interface(gridModels_manager + "/" + grid_name);
 		if (!grid_ni.raw_ptr())
 		{
 			appli_warning("no grid called \"" << grid_name << "\"");
 			return;
 		}
-
 		Geostat_grid* grid = dynamic_cast<Geostat_grid*> (grid_ni.raw_ptr());
 		appli_assert(grid != 0);
+
+		// get the list of properties of the current grid
 		std::list<std::string> property_names = grid->property_list();
 		typedef std::list<std::string>::const_iterator iterator;
 

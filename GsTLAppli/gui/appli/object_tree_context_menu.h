@@ -86,6 +86,12 @@ public:
 
 protected:
 	void handleContextMenuClick(QAction* _action);
+
+public slots:
+	void onPythonScriptAction(QAction* _action);
+
+protected:
+	std::vector<QMenu*> nested_menu_;
 };
 
 /**
