@@ -29,12 +29,14 @@ GsTLGridProperty* GsTLGridPropertyGroup::get_property(std::string prop_name) {
 bool GsTLGridPropertyGroup::add_property(GsTLGridProperty* prop) {
   if(prop == 0) return false;
   properties_[prop->name()] = prop;
+  prop->add_group_membership( this );
   return true;
 }
 
 bool GsTLGridPropertyGroup::remove_property(GsTLGridProperty* prop){
   unsigned int ok = properties_.erase( prop->name() );
-    return ok != 0;
+  if(ok) prop->remove_group_membership( this );
+  return ok != 0;
 }
 
 std::vector<GsTLGridProperty::property_type> 
