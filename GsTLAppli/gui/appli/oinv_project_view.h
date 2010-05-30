@@ -161,7 +161,7 @@ private:
 	bool delete_object(QString _grid_name);
 	void switch_selected_items();
 
-signals:
+	signals:
 	void action(QString _action_name, QString _params);
 	void rename_finished(string, QString, QString);
 	void swap_display(BaseTreeItem*);
@@ -251,6 +251,8 @@ protected:
 
 	BaseTreeItem* get_grid_listitem(const QString& grid);
 	BaseTreeItem* get_property_listitem(const QString& grid, const QString& prop);
+	QVector<BaseTreeItem*> get_property_parent_items(BaseTreeItem* gridItem, GsTLGridProperty* property);
+	BaseTreeItem* treeItemChildByName(BaseTreeItem* treeItem, QString childName);
 
 protected:
 	typedef std::map<std::string, Display_pref_panel*> Pref_Panel_Map;

@@ -776,7 +776,7 @@ void Project_view_gui::add_object(std::string obj_name)
 	appli_assert(root != 0);
 
 	// Add the grid-object to the list
-	ObjectTreeItem* entry = new ObjectTreeItem(root, QString(obj_name.c_str()));
+	ObjectTreeItem* gridItem = new ObjectTreeItem(root, QString(obj_name.c_str()));
 
 	// Add the properties of the grid-object to the list
 	std::list<std::string> property_names = grid->property_list();
@@ -784,11 +784,17 @@ void Project_view_gui::add_object(std::string obj_name)
 	iterator prop_end = property_names.end();
 	for (iterator it = property_names.begin(); it != prop_end; ++it)
 	{
-		new PropertyTreeItem(entry, QString(it->c_str()));
+		GsTLGridProperty* property = grid->property(*it);
+		QVector<BaseTreeItem*> parentItems = get_property_parent_items(gridItem, property);
+
+		for (int i = 0; i < parentItems.size(); ++i)
+		{
+			new PropertyTreeItem(parentItems.at(i), QString(it->c_str()));
+		}
 	}
 
 	// Add the regions of the grid-object to the list
-	HeaderTreeItem* regionRoot = new HeaderTreeItem(entry, "Regions");
+	HeaderTreeItem* regionRoot = new HeaderTreeItem(gridItem, "Regions");
 	std::list<std::string> region_names = grid->region_list();
 	typedef std::list<std::string>::const_iterator iterator;
 	iterator region_end = region_names.end();
@@ -1301,6 +1307,47 @@ BaseTreeItem* Project_view_gui::get_property_listitem(const QString& grid, const
 	return prop_item;
 }
 
+QVector<BaseTreeItem*> Project_view_gui::get_property_parent_items(BaseTreeItem* gridItem, GsTLGridProperty* property)
+{
+	QVector<BaseTreeItem*> parents;
+
+	if (property->has_group_membership())
+	{
+		std::vector<std::string> groupNames = property->group_names();
+		for (std::vector<std::string>::iterator iter = groupNames.begin(); iter != groupNames.end(); ++iter)
+		{
+			QString groupName = iter->c_str();
+			BaseTreeItem* matchingChild = treeItemChildByName(gridItem, groupName);
+			if (matchingChild == NULL)
+			{
+				matchingChild = new SimulationSetTreeItem(gridItem, groupName);
+			}
+			parents.push_back(matchingChild);
+		}
+	}
+	// property does not belong to any group
+	else
+	{
+		parents.push_back(gridItem);
+	}
+
+	return parents;
+}
+
+BaseTreeItem* Project_view_gui::treeItemChildByName(BaseTreeItem* treeItem, QString childName)
+{
+	BaseTreeItem* childItem = NULL;
+	for (int i = 0; i < treeItem->childCount(); ++i)
+	{
+		if (treeItem->child(i)->text(0) == childName)
+		{
+			childItem = dynamic_cast<BaseTreeItem*> (treeItem->child(i));
+			break;
+		}
+	}
+	return childItem;
+}
+
 //=======================================================
 
 
@@ -1381,42 +1428,63 @@ void Oinv_view::update(std::string obj)
 
 		// get the list of properties of the current grid
 		std::list<std::string> property_names = grid->property_list();
-		typedef std::list<std::string>::const_iterator iterator;
+		QList<QString> property_names_qstring;
+		typedef std::list<std::string>::iterator iterator;
+		iterator prop_end = property_names.end();
 
-		// get the list of properties currently displayed
-		std::list<std::string> displayed_properties;
-		for (int j = 0; j < grid_item->childCount(); ++j)
-			displayed_properties.push_back(qstring2string(grid_item->child(j)->text(0)));
-
-		property_names.sort();
-		displayed_properties.sort();
-
-		typedef std::vector<std::string>::iterator String_iterator;
-		std::vector<std::string> to_be_added(property_names.size());
-		std::vector<std::string> to_be_removed(displayed_properties.size());
-
-		String_iterator added_end = std::set_difference(property_names.begin(), property_names.end(), displayed_properties.begin(), displayed_properties.end(),
-				to_be_added.begin());
-		String_iterator removed_end = std::set_difference(displayed_properties.begin(), displayed_properties.end(), property_names.begin(),
-				property_names.end(), to_be_removed.begin());
-
-		// Add the property names that should be added
-		for (String_iterator it = to_be_added.begin(); it != added_end; ++it)
+		// add newly added properties
+		for (iterator it = property_names.begin(); it != prop_end; ++it)
 		{
-			new PropertyTreeItem(grid_item, QString(it->c_str()));
-		}
+			property_names_qstring.push_back(QString(it->c_str()));
 
-		for (String_iterator it2 = to_be_removed.begin(); it2 != removed_end; ++it2)
-		{
-			for (int k = 0; k < grid_item->childCount(); ++k)
+			GsTLGridProperty* property = grid->property(*it);
+			QVector<BaseTreeItem*> parentItems = get_property_parent_items(grid_item, property);
+
+			for (int i = 0; i < parentItems.size(); ++i)
 			{
-				QTreeWidgetItem* prop_item2 = grid_item->child(k);
-				if (std::string(qstring2string(prop_item2->text(0))) == *it2)
+				if (NULL == treeItemChildByName(parentItems.at(i), QString(it->c_str())))
 				{
-					grid_item->removeChild(prop_item2);
-					break;
+					new PropertyTreeItem(parentItems.at(i), QString(it->c_str()));
 				}
 			}
+		}
+
+		// remove deleted properties
+		std::vector<std::string> to_be_removed;
+		QList<BaseTreeItem*> allChildren = grid_item->children();
+		for (int i = 0; i < allChildren.size(); ++i)
+		{
+			BaseTreeItem* child = allChildren.at(i);
+			if (false == property_names_qstring.contains(child->text(0)))
+			{
+				if (dynamic_cast<PropertyTreeItem*> (child))
+				{
+					to_be_removed.push_back(child->text(0).toStdString());
+				}
+				child->parent()->removeChild(child);
+			}
+		}
+
+		// remove grouping elements no longer needed
+		property_names_qstring.push_back("Regions"); // done to avoid removing "Regions" entry
+		for (int i = 0; i < grid_item->childCount();)
+		{
+			QTreeWidgetItem* child = grid_item->child(i);
+			if ((false == property_names_qstring.contains(child->text(0))) && (child->childCount() == 0))
+			{
+				grid_item->removeChild(child);
+			} else
+			{
+				++i;
+			}
+		}
+
+		BaseTreeItem* regionRoot = treeItemChildByName(grid_item, "Regions");
+		std::list<std::string> region_names = grid->region_list();
+		iterator region_end = region_names.end();
+		for (iterator it = region_names.begin(); it != region_end; ++it)
+		{
+			new RegionTreeItem(regionRoot, QString(it->c_str()));
 		}
 
 		// If properties were removed, tell the oinv description
