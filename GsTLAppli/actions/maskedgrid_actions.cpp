@@ -66,23 +66,11 @@ bool Create_mgrid_from_cgrid::exec(){
   }
   
 // Create the new masked_grid
-//	std::ostringstream ostr;
-//	ostr << ;
-//  std::string final_grid_name;
-//	ni = 
-//		Root::instance()->new_interface( "reduced_grid",
-//		gridModels_manager + "/" + grid_name,
-//		&final_grid_name );
 
-  std::string final_mgrid_name;
-//  std::string mgrid_full_name( "/GridObject/Model/" + mgrid_name_, &final_mgrid_name );
   ni = 
       Root::instance()->new_interface("reduced_grid", 
-      gridModels_manager + "/" + mgrid_name_,
-      &final_mgrid_name);
-
-  mgrid_name_ = final_mgrid_name;
-  
+      gridModels_manager + "/" + mgrid_name_);
+ 
   if( ni.raw_ptr() == 0 ) {
     errors_->report( "Object " + mgrid_name_ + " already exists. Use a different name." );
     return false;
