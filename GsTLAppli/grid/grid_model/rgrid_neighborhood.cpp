@@ -161,6 +161,9 @@ void Rgrid_window_neighborhood::find_neighbors( const Geovalue& center ) {
       bound--;
   }
 
+  // Need to place the bound at one pass the actual end point
+  bound++;
+
   for( ; begin != bound; ++begin ) {
     GsTLGridNode node = center_location + (*begin);
     neighbors_.push_back( Geovalue( grid_, property_, 
