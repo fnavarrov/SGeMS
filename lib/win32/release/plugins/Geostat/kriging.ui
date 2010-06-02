@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>297</width>
-    <height>828</height>
+    <height>878</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -67,6 +67,76 @@
        </item>
        <item>
         <widget class="KrigingTypeSelector" name="Kriging_Type"/>
+       </item>
+       <item>
+        <widget class="QCheckBox" name="do_block_kriging">
+         <property name="text">
+          <string>Block Kriging</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="GsTLGroupBox" name="box_BK">
+         <property name="title">
+          <string/>
+         </property>
+         <property name="displayed" stdset="0">
+          <bool>false</bool>
+         </property>
+         <layout class="QHBoxLayout">
+          <item>
+           <widget class="QLabel" name="textLabel1">
+            <property name="text">
+             <string>X</string>
+            </property>
+            <property name="wordWrap">
+             <bool>false</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QSpinBox" name="npoints_x">
+            <property name="value">
+             <number>5</number>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="textLabel2">
+            <property name="text">
+             <string>Y</string>
+            </property>
+            <property name="wordWrap">
+             <bool>false</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QSpinBox" name="npoints_y">
+            <property name="value">
+             <number>5</number>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="textLabel3">
+            <property name="text">
+             <string>Z</string>
+            </property>
+            <property name="wordWrap">
+             <bool>false</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QSpinBox" name="npoints_z">
+            <property name="value">
+             <number>5</number>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
        </item>
        <item>
         <widget class="QGroupBox" name="GroupBox3">
@@ -298,6 +368,11 @@
    <header>GsTLAppli/extra/qtplugins/kriging_type_selector.h</header>
   </customwidget>
   <customwidget>
+   <class>GsTLGroupBox</class>
+   <extends>QGroupBox</extends>
+   <header>GsTLAppli/extra/qtplugins/selectors.h</header>
+  </customwidget>
+  <customwidget>
    <class>EllipsoidInput</class>
    <extends>QWidget</extends>
    <header>GsTLAppli/extra/qtplugins/ellipsoid_input.h</header>
@@ -328,5 +403,22 @@
   <include location="local">variograminput.h</include>
  </includes>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>do_block_kriging</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>box_BK</receiver>
+   <slot>setShown(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>
