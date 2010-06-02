@@ -228,12 +228,22 @@ void ObjectTree::slotItemSelected(QTreeWidgetItem* _item, int _col)
 
 QString ObjectTree::getGridName(QTreeWidgetItem* _item)
 {
+	QTreeWidgetItem* parent = getGridItem(_item);
+	if (parent)
+	{
+		return parent->text(0);
+	}
+	return "";
+}
+
+BaseTreeItem* ObjectTree::getGridItem(QTreeWidgetItem* _item)
+{
 	QTreeWidgetItem* parent = _item;
 	QTreeWidgetItem* root = topLevelItem(0);
 
 	if ((parent == 0) || (parent == root))
 	{
-		return "";
+		return 0;
 	}
 
 	while (parent->parent() != root)
@@ -241,9 +251,7 @@ QString ObjectTree::getGridName(QTreeWidgetItem* _item)
 		parent = parent->parent();
 	}
 
-	//	std::cout << "ObjectTree::getGridName == " << parent->text(0).toStdString() << '\n';
-
-	return parent->text(0);
+	return dynamic_cast<BaseTreeItem*> (parent);
 }
 
 // assumes that only properties were selected
@@ -430,7 +438,8 @@ bool ObjectTree::rename_property(QString grid_name, QString old, QString n)
 		return false;
 	}
 
-	emit rename_finished(obj_name, old_name_, n);
+	emit
+	rename_finished(obj_name, old_name_, n);
 
 	return true;
 }
@@ -450,7 +459,8 @@ bool ObjectTree::delete_property(QString _grid_name, QString _prop_name)
 		return false;
 	}
 
-	emit delete_property_finished(_grid_name, _prop_name);
+	emit
+	delete_property_finished(_grid_name, _prop_name);
 
 	return true;
 }
@@ -541,6 +551,29 @@ void ObjectTree::switch_selected_items()
 	{
 		selected_items_.at(i)->setForeground(0, redBrush);
 	}
+}
+
+QList<BaseTreeItem*> ObjectTree::getAllChildItems(QTreeWidgetItem* parent)
+{
+	QList<BaseTreeItem*> children;
+
+	QQueue<QTreeWidgetItem*> queue;
+	for (int i = 0; i < parent->childCount(); ++i)
+	{
+		queue.enqueue(parent->child(i));
+	}
+
+	while (!queue.empty())
+	{
+		BaseTreeItem* item = dynamic_cast<BaseTreeItem*> (queue.dequeue());
+		children.push_back(item);
+		for (int i = 0; i < item->childCount(); ++i)
+		{
+			queue.enqueue(item->child(i));
+		}
+	}
+
+	return children;
 }
 
 void Oinv_view::object_rename_slot(string obj, QString old, QString n)
@@ -859,10 +892,19 @@ void Project_view_gui::update_display(BaseTreeItem* item)
 	if (dynamic_cast<ObjectTreeItem*> (item))
 	{
 		item->setVisible(!item->visible());
-		//		ObjectTreeItem* objItem = (ObjectTreeItem*) item;
-		//		ms_item->switch_state();
 		if (item->visible())
 		{
+			// set all other objects to not visible
+			QTreeWidgetItem* root = Object_tree->topLevelItem(0);
+			for (int i = 0; i < root->childCount(); ++i)
+			{
+				BaseTreeItem* child = dynamic_cast<BaseTreeItem*> (root->child(i));
+				if (child != item)
+				{
+					child->setVisible(false);
+				}
+			}
+
 			appli_message("displaying " << qstring2string(obj_name));
 			display_object(obj_name);
 		} else
@@ -882,6 +924,19 @@ void Project_view_gui::update_display(BaseTreeItem* item)
 
 		if (item->visible())
 		{
+			// set all other properties to not visible
+			BaseTreeItem* grid_item = Object_tree->getGridItem(item);
+			BaseTreeItem* parent = dynamic_cast<BaseTreeItem*> (item->parent());
+			QList<BaseTreeItem*> allChildren = Object_tree->getAllChildItems(Object_tree->topLevelItem(0));
+			for (int i = 0; i < allChildren.size(); ++i)
+			{
+				BaseTreeItem* child = allChildren.at(i);
+				if (!((child == item) || (child == parent) || (child == grid_item)))
+				{
+					child->setVisible(false);
+				}
+			}
+
 			display_property(grid_name, obj_name);
 		} else
 		{
@@ -1056,48 +1111,48 @@ void Project_view_gui::show_preference_panel(const QString& obj)
 		Display_pref_panel* pref_panel = it->second;
 
 		QObject::connect(pref_panel, SIGNAL( displayed_property_changed( const QString&,
-								const QString& ) ), this, SLOT( toggle_grid_property( const QString&,
-								const QString& ) ));
+						const QString& ) ), this, SLOT( toggle_grid_property( const QString&,
+						const QString& ) ));
 
 		QObject::connect(pref_panel, SIGNAL( property_painted_toggled( const QString&,
-								const QString& ) ), this, SLOT( toggle_grid_property( const QString&,
-								const QString& ) ));
+						const QString& ) ), this, SLOT( toggle_grid_property( const QString&,
+						const QString& ) ));
 
 		QObject::connect(pref_panel, SIGNAL(renderRequest()), this, SLOT(reRender()));
 
 		if (general_pref_panel_)
 		{
-QObject		::connect(pref_panel, SIGNAL( colormap_changed( const Colormap* ) ), general_pref_panel_, SLOT( update_colorbar() ));
+			QObject::connect(pref_panel, SIGNAL( colormap_changed( const Colormap* ) ), general_pref_panel_, SLOT( update_colorbar() ));
+		}
+
 	}
 
-}
+	// set it->second as the currently displayed panel, and show() it
+	QWidget * tmp = _pref_scroll->takeWidget();
+	tmp->hide();
 
-// set it->second as the currently displayed panel, and show() it
-QWidget * tmp = _pref_scroll->takeWidget();
-tmp->hide();
+	_pref_scroll->setWidget(it->second);
+	_pref_scroll->show();
 
-_pref_scroll->setWidget(it->second);
-_pref_scroll->show();
+	SmartPtr<Named_interface> grid_ni = Root::instance()->interface(gridModels_manager + "/" + obj_name);
+	Geostat_grid* grid = dynamic_cast<Geostat_grid*> (grid_ni.raw_ptr());
+	appli_assert( grid );
 
-SmartPtr<Named_interface> grid_ni = Root::instance()->interface(gridModels_manager + "/" + obj_name);
-Geostat_grid* grid = dynamic_cast<Geostat_grid*> (grid_ni.raw_ptr());
-appli_assert( grid );
+	/*
+	 Display_pref_panel* p = dynamic_cast<Display_pref_panel*>(current_pref_panel_);
+	 if (rgrid) {
+	 p->volume_explorer_checkbox_->setDisabled(true);
+	 }
+	 else
+	 p->volume_explorer_checkbox_->setDisabled(false);
+	 */
 
-/*
- Display_pref_panel* p = dynamic_cast<Display_pref_panel*>(current_pref_panel_);
- if (rgrid) {
- p->volume_explorer_checkbox_->setDisabled(true);
- }
- else
- p->volume_explorer_checkbox_->setDisabled(false);
- */
-
-//current_pref_panel_->setMaximumWidth( 250 );
-/*
- current_pref_panel_->setGeometry( 0,0, 250,
- _pref_scroll->height() );
- current_pref_panel_->show();
- */
+	//current_pref_panel_->setMaximumWidth( 250 );
+	/*
+	 current_pref_panel_->setGeometry( 0,0, 250,
+	 _pref_scroll->height() );
+	 current_pref_panel_->show();
+	 */
 
 }
 

@@ -140,6 +140,8 @@ Q_OBJECT
 public:
 	ObjectTree(QWidget * parent = 0);
 	QString getGridName(QTreeWidgetItem* _item);
+	BaseTreeItem* getGridItem(QTreeWidgetItem* _item);
+	QList<BaseTreeItem*> getAllChildItems(QTreeWidgetItem* parent);
 
 protected:
 	virtual void mousePressEvent(QMouseEvent* event);
@@ -161,7 +163,7 @@ private:
 	bool delete_object(QString _grid_name);
 	void switch_selected_items();
 
-	signals:
+signals:
 	void action(QString _action_name, QString _params);
 	void rename_finished(string, QString, QString);
 	void swap_display(BaseTreeItem*);
@@ -176,6 +178,8 @@ public slots:
 	void onPythonScriptClick(QAction* _action);
 	void onObjectContextMenuClick(QAction* _action);
 	void onTrendActionClick(QAction* _action);
+
+public:
 
 };
 
