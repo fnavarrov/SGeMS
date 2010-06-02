@@ -471,7 +471,7 @@ const_iterator( const GsTLGridProperty* prop, GsTLInt id, bool skip )
 
 
 bool GsTLGridProperty::has_group_membership() const{
-  return groups_.empty();
+  return !groups_.empty();
 }
 inline 
 std::vector< std::pair<std::string,std::string> > GsTLGridProperty::group_pair_name_type() const{

@@ -2,7 +2,7 @@
 #include <GsTLAppli/grid/grid_model/grid_property_set.h>
 #include <GsTLAppli/grid/grid_model/grid_property.h> 
 #include <GsTLAppli/grid/grid_model/grid_categorical_property.h> 
-#include <QDomElement>
+//#include <QtXml/QDomElement>
 
 Named_interface* GsTLGridPropertyGroup::create_new_interface( std::string& name) {
   return new GsTLGridPropertyGroup(name);
@@ -11,8 +11,8 @@ Named_interface* GsTLGridPropertyGroup::create_new_interface( std::string& name)
 GsTLGridPropertyGroup::GsTLGridPropertyGroup(std::string name){
   name_ = name;
   type_ = "General";
-  root_ = meta_data_.createElement(type_.c_str());
-  meta_data_.appendChild(root_);
+//  root_ = meta_data_.createElement(type_.c_str());
+//  meta_data_.appendChild(root_);
 }
 
 
@@ -52,16 +52,20 @@ GsTLGridPropertyGroup::get_vector_data( int node_id ) const{
 
 
 void GsTLGridPropertyGroup::set_group_info(const std::string& info_str) {
-  QDomElement ele = meta_data_.createElement("Info");
-  root_.appendChild(ele);
-  ele.setAttribute("Info",info_str.c_str());
+  info_["Info"] = info_str;
+//  QDomElement ele = meta_data_.createElement("Info");
+//  root_.appendChild(ele);
+//  ele.setAttribute("Info",info_str.c_str());
 }
 
 
 std::string GsTLGridPropertyGroup::get_group_info(){
-  QDomElement ele = root_.firstChildElement("Info");
-  if(ele.isNull()) return "";
-  return ele.attribute("text").toStdString();
+  std::map<std::string, std::string>::const_iterator it = info_.find("Info");
+  if(it == info_.end()) return "";
+  return it->second;
+//  QDomElement ele = root_.firstChildElement("Info");
+//  if(ele.isNull()) return "";
+//  return ele.attribute("text").toStdString();
 }
 
 /***
@@ -175,30 +179,34 @@ Named_interface* SimulationPropertyGroup::create_new_interface( std::string& nam
 
 SimulationPropertyGroup::SimulationPropertyGroup() {
   type_ = "Simulation";
-  root_ = meta_data_.createElement(type_.c_str());
-  meta_data_.appendChild(root_);
+//  root_ = meta_data_.createElement(type_.c_str());
+//  meta_data_.appendChild(root_);
 
 }
 
 SimulationPropertyGroup::SimulationPropertyGroup(std::string name) {
   name_ = name;
   type_ = "Simulation";
-  root_ = meta_data_.createElement(type_.c_str());
-  meta_data_.appendChild(root_);
+//  root_ = meta_data_.createElement(type_.c_str());
+//  meta_data_.appendChild(root_);
 }
 
 
 void SimulationPropertyGroup::set_algo_command(const std::string& algo_str){
-  QDomDocument doc_algo;
-  doc_algo.setContent( QString(algo_str.c_str() ) );
-  root_.appendChild( doc_algo.firstChild() );
+  info_["Algo"] = algo_str;
+//  QDomDocument doc_algo;
+//  doc_algo.setContent( QString(algo_str.c_str() ) );
+//  root_.appendChild( doc_algo.firstChild() );
 
 }
 
 std::string SimulationPropertyGroup::get_algo_command(){
- QDomDocument doc_algo;
- doc_algo.appendChild(root_.firstChildElement("parameters"));
- return doc_algo.toString().toStdString();
+  std::map<std::string, std::string>::const_iterator it = info_.find("Algo");
+  if(it == info_.end()) return "";
+  return it->second;
+ //QDomDocument doc_algo;
+ //doc_algo.appendChild(root_.firstChildElement("parameters"));
+ //return doc_algo.toString().toStdString();
 
 }
 
@@ -210,17 +218,17 @@ Named_interface* IndicatorCategoricalPropertyGroup::create_new_interface( std::s
 IndicatorCategoricalPropertyGroup::IndicatorCategoricalPropertyGroup()
 {
   type_ = "CategoricalIndicator";
-  root_ = meta_data_.createElement(type_.c_str());
-  meta_data_.appendChild(root_);
+//  root_ = meta_data_.createElement(type_.c_str());
+//  meta_data_.appendChild(root_);
 
 }
 
 IndicatorCategoricalPropertyGroup::IndicatorCategoricalPropertyGroup(std::string name)
 {
   name_ = name;
-  type_ = "CategoricalIndicator";
-  root_ = meta_data_.createElement("type_.c_str()");
-  meta_data_.appendChild(root_);
+//  type_ = "CategoricalIndicator";
+//  root_ = meta_data_.createElement("type_.c_str()");
+//  meta_data_.appendChild(root_);
 }
 
 
@@ -262,8 +270,8 @@ Named_interface* IndicatorContinuousPropertyGroup::create_new_interface( std::st
 IndicatorContinuousPropertyGroup::IndicatorContinuousPropertyGroup()
 {
   type_ = "ContinuousIndicator";
-  root_ = meta_data_.createElement(type_.c_str());
-  meta_data_.appendChild(root_);
+//  root_ = meta_data_.createElement(type_.c_str());
+//  meta_data_.appendChild(root_);
 
 }
 
@@ -271,8 +279,8 @@ IndicatorContinuousPropertyGroup::IndicatorContinuousPropertyGroup(std::string n
 {
   name_ = name;
   type_ = "ContinuousIndicator";
-  root_ = meta_data_.createElement("type_.c_str()");
-  meta_data_.appendChild(root_);
+//  root_ = meta_data_.createElement("type_.c_str()");
+//  meta_data_.appendChild(root_);
 }
 
 void IndicatorContinuousPropertyGroup::set_thresholds(std::vector<float> thresholds){

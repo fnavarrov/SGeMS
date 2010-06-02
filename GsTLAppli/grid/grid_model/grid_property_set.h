@@ -41,7 +41,7 @@
 #include <string> 
 #include <map>
 #include <set>
-#include <QDomDocument>
+//#include <QtXml/QDomDocument>
 
 
 
@@ -82,8 +82,10 @@ protected :
   std::string name_;
   std::string type_;
   
-  QDomElement root_;
-  QDomDocument meta_data_;
+ // QDomElement root_;
+//  QDomDocument meta_data_;
+
+  std::map<std::string, std::string> info_;
 };
 
 
