@@ -45,6 +45,7 @@
 #include <GsTLAppli/gui/utils/gstl_qlistviewitem.h>
 #include <GsTLAppli/extra/qtplugins/selectors.h>
 #include <GsTLAppli/actions/python_script.h>
+#include <GsTLAppli/actions/python_group_script.h>
 
 #include <Inventor/nodes/SoSelection.h>
 #include <Inventor/nodes/SoTransform.h>
@@ -386,6 +387,20 @@ void ObjectTree::onPythonScriptClick(QAction* _action)
 	}
 
 	script->execute(grid_name, properties);
+
+	emit project_modified();
+}
+
+void ObjectTree::onPythonGroupScriptClick(QAction* _action)
+{
+	SmartPtr<Named_interface> ni = Root::instance()->interface(python_group_script_manager + "/" + String_Op::qstring2string(_action->text()));
+	Python_group_script* script = dynamic_cast<Python_group_script*> (ni.raw_ptr());
+	appli_assert( script );
+
+	QTreeWidgetItem* item = selected_items_.at(0);
+	std::string grid_name = getGridName(item).toStdString();
+
+	script->execute(grid_name, item->text(0).toStdString());
 
 	emit project_modified();
 }

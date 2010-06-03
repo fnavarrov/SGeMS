@@ -256,4 +256,5 @@ void SimulationSetTreeItemMenu::handleContextMenuClick(QAction* _action)
 
 void SimulationSetTreeItemMenu::onPythonScriptAction(QAction* _action)
 {
+	object_tree_->onPythonGroupScriptClick(_action);
 }
