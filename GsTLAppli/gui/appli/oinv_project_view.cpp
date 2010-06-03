@@ -298,6 +298,7 @@ void ObjectTree::onPropertyContextMenuClick(QAction* _action)
 			}
 			emit project_modified();
 		}
+		selected_items_.clear();
 	}
 
 	// handle ShowHistogram
@@ -310,7 +311,9 @@ void ObjectTree::onPropertyContextMenuClick(QAction* _action)
 		}
 		QTreeWidgetItem* item = selected_items_.at(0);
 		QString params = grid_name + QString(Actions::separator.c_str()) + item->text(0);
-		emit action("ShowHistogram", params);
+		emit
+		action("ShowHistogram", params);
+		selected_items_.clear();
 	}
 
 	// handle Swap To Disk
@@ -323,7 +326,9 @@ void ObjectTree::onPropertyContextMenuClick(QAction* _action)
 		}
 		QTreeWidgetItem* item = selected_items_.at(0);
 		QString params = grid_name + QString(Actions::separator.c_str()) + item->text(0);
-		emit action("SwapPropertyToDisk", params);
+		emit
+		action("SwapPropertyToDisk", params);
+		selected_items_.clear();
 	}
 
 	// handle Swap To RAM
@@ -336,7 +341,9 @@ void ObjectTree::onPropertyContextMenuClick(QAction* _action)
 		}
 		QTreeWidgetItem* item = selected_items_.at(0);
 		QString params = grid_name + QString(Actions::separator.c_str()) + item->text(0);
-		emit action("SwapPropertyToRAM", params);
+		emit
+		action("SwapPropertyToRAM", params);
+		selected_items_.clear();
 	}
 
 }
@@ -358,7 +365,9 @@ void ObjectTree::onUnaryActionClick(QAction* _action)
 	QString prop_name = item->text(0);
 	QString new_prop_name = action_name + "(" + prop_name + ")";
 	QString params = grid_name + QString(Actions::separator.c_str()) + prop_name + QString(Actions::separator.c_str()) + new_prop_name;
-	emit action(action_name, params);
+	emit
+	action(action_name, params);
+	selected_items_.clear();
 }
 
 void ObjectTree::onPythonScriptClick(QAction* _action)
@@ -377,6 +386,8 @@ void ObjectTree::onPythonScriptClick(QAction* _action)
 	}
 
 	script->execute(grid_name, properties);
+
+	emit project_modified();
 }
 
 // assumes only OBJECT was selected
@@ -395,7 +406,9 @@ void ObjectTree::onTrendActionClick(QAction* _action)
 
 	//	QString new_prop_name = action_name + "(" + prop_name + ")";
 	QString params = grid_name + QString(Actions::separator.c_str()) + trend_id;
-	emit action(action_name, params);
+	emit
+	action(action_name, params);
+	selected_items_.clear();
 }
 
 // assumes only OBJECT was selected
@@ -419,7 +432,7 @@ void ObjectTree::onObjectContextMenuClick(QAction* _action)
 			emit delete_object_finished(grid_name);
 		}
 	}
-
+	selected_items_.clear();
 }
 
 bool ObjectTree::rename_property(QString grid_name, QString old, QString n)
