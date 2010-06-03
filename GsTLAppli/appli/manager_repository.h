@@ -55,7 +55,8 @@
  * \endcode
  * \c ni can then be casted into a \c gslib_filter. 
  */
-class APPLI_DECL Root {
+class APPLI_DECL Root
+{
 
 public:
 
@@ -78,6 +79,7 @@ private:
 
 static const std::string actions_manager = "/Actions";
 static const std::string python_script_manager = "/PythonScripts";
+static const std::string python_group_script_manager = "/PythonGroupScripts";
 
 static const std::string infilters_manager = "/InputFilters";
 static const std::string outfilters_manager = "/OutputFilters";
