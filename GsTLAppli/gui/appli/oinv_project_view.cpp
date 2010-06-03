@@ -922,21 +922,21 @@ void Project_view_gui::update_display(BaseTreeItem* item)
 		// tell the grid to change the displayed property
 		QString grid_name = Object_tree->getGridName(item);
 
+		// set all other properties to not visible
+		BaseTreeItem* grid_item = Object_tree->getGridItem(item);
+		BaseTreeItem* parent = dynamic_cast<BaseTreeItem*> (item->parent());
+		QList<BaseTreeItem*> allChildren = Object_tree->getAllChildItems(Object_tree->topLevelItem(0));
+		for (int i = 0; i < allChildren.size(); ++i)
+		{
+			BaseTreeItem* child = allChildren.at(i);
+			if (!((child == item) || (child == parent) || (child == grid_item)))
+			{
+				child->setVisible(false);
+			}
+		}
+
 		if (item->visible())
 		{
-			// set all other properties to not visible
-			BaseTreeItem* grid_item = Object_tree->getGridItem(item);
-			BaseTreeItem* parent = dynamic_cast<BaseTreeItem*> (item->parent());
-			QList<BaseTreeItem*> allChildren = Object_tree->getAllChildItems(Object_tree->topLevelItem(0));
-			for (int i = 0; i < allChildren.size(); ++i)
-			{
-				BaseTreeItem* child = allChildren.at(i);
-				if (!((child == item) || (child == parent) || (child == grid_item)))
-				{
-					child->setVisible(false);
-				}
-			}
-
 			display_property(grid_name, obj_name);
 		} else
 		{
@@ -951,7 +951,16 @@ void Project_view_gui::update_display(BaseTreeItem* item)
 			panel_it->second->change_selected_property(obj_name);
 			panel_it->second->toggle_paint_property(item->visible());
 		}
+	}
 
+	// The user clicked on a group name
+	else if (dynamic_cast<SimulationSetTreeItem*> (item))
+	{
+		BaseTreeItem* firstChild = dynamic_cast<BaseTreeItem*> (item->child(0));
+		firstChild->setVisible(item->visible());
+
+		item->setVisible(!item->visible());
+		update_display(firstChild);
 	}
 }
 
