@@ -367,7 +367,16 @@ bool SimulationSetTreeItem::isCompatibleItem(BaseTreeItem* _item)
 
 BaseTreeItemMenu* SimulationSetTreeItem::getMenu(ObjectTree* _object_tree, bool _multiple)
 {
-	return 0;
+	static BaseTreeItemMenu* _singleInstance = 0;
+
+	if (_singleInstance == 0)
+	{
+		_singleInstance = new SimulationSetTreeItemMenu(_object_tree, _object_tree);
+	}
+
+	_singleInstance->setObjectTree(_object_tree);
+
+	return _multiple ? 0 : _singleInstance;
 }
 
 /**
