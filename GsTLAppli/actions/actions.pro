@@ -19,6 +19,7 @@ HEADERS += action.h \
            python_wrapper.h \
            unary_action.h \
            python_script.h \
+           python_group_script.h \
            maskedgrid_actions.h \
            categorical_definition_actions.h \
            property_group_actions.h
@@ -31,6 +32,7 @@ SOURCES += algorithms_actions.cpp \
            python_wrapper.cpp \
            unary_action.cpp \
            python_script.cpp \
+           python_group_script.cpp \
            maskedgrid_actions.cpp \
            categorical_definition_actions.cpp \
            property_group_actions.cpp

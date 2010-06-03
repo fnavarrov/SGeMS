@@ -43,22 +43,24 @@
 #include <GsTLAppli/utils/gstl_messages.h>
 #include <GsTLAppli/actions/unary_action.h>
 #include <GsTLAppli/actions/python_script.h>
+#include <GsTLAppli/actions/python_group_script.h>
 #include <GsTLAppli/actions/maskedgrid_actions.h>
 #include <GsTLAppli/actions/categorical_definition_actions.h>
 #include <GsTLAppli/actions/property_group_actions.h>
-
 
 void init_python_interpreter();
 
 int library_actions_init::references_ = 0;
 
-int library_actions_init::init_lib() {
+int library_actions_init::init_lib()
+{
 
 	// initialize Python
 	init_python_interpreter();
 
 	references_++;
-	if (references_ != 1) {
+	if (references_ != 1)
+	{
 		GsTLlog << "actions library already registered \n";
 		return 2;
 	}
@@ -69,7 +71,8 @@ int library_actions_init::init_lib() {
 
 	Manager* dir = dynamic_cast<Manager*> (ni.raw_ptr());
 
-	if (!dir) {
+	if (!dir)
+	{
 		GsTLlog << "could not create directory " << actions_manager << "\n";
 		return 1;
 	}
@@ -77,13 +80,28 @@ int library_actions_init::init_lib() {
 	bind_action_factories(dir);
 
 	// Rahul: adding a Python Script Manager
-	SmartPtr<Named_interface> py_ni = Root::instance()->new_interface("directory://actions/python", python_script_manager);
-	Manager* py_dir = dynamic_cast<Manager*> (py_ni.raw_ptr());
-	if (!py_dir) {
-		GsTLlog << "could not create directory " << python_script_manager << "\n";
-		return 1;
+	{
+		SmartPtr<Named_interface> py_ni = Root::instance()->new_interface("directory://actions/python", python_script_manager);
+		Manager* py_dir = dynamic_cast<Manager*> (py_ni.raw_ptr());
+		if (!py_dir)
+		{
+			GsTLlog << "could not create directory " << python_script_manager << "\n";
+			return 1;
+		}
+		py_dir->factory("pythonscript", Python_script::create_new_interface);
 	}
-	py_dir->factory("pythonscript", Python_script::create_new_interface);
+
+	// Rahul: adding a Python Script Manager for groups
+	{
+		SmartPtr<Named_interface> py_ni = Root::instance()->new_interface("directory://actions/python_group", python_group_script_manager);
+		Manager* py_dir = dynamic_cast<Manager*> (py_ni.raw_ptr());
+		if (!py_dir)
+		{
+			GsTLlog << "could not create directory " << python_group_script_manager << "\n";
+			return 1;
+		}
+		py_dir->factory("pythongroupscript", Python_group_script::create_new_interface);
+	}
 
 	GsTLlog << "Registration done \n\n";
 
@@ -91,16 +109,19 @@ int library_actions_init::init_lib() {
 	return 0;
 }
 
-int library_actions_init::release_lib() {
+int library_actions_init::release_lib()
+{
 	references_--;
-	if (references_ == 0) {
+	if (references_ == 0)
+	{
 		Root::instance()->delete_interface(actions_manager);
 		Py_Finalize();
 	}
 	return 0;
 }
 
-bool library_actions_init::bind_action_factories(Manager* dir) {
+bool library_actions_init::bind_action_factories(Manager* dir)
+{
 	// Grid management actions
 	dir->factory("Help", Help_action::create_new_interface);
 
@@ -127,18 +148,17 @@ bool library_actions_init::bind_action_factories(Manager* dir) {
 	dir->factory("SetHarddata", Set_hard_data::create_new_interface);
 	dir->factory("DeleteObjectRegions", Delete_regions::create_new_interface);
 	dir->factory("MergeObjectRegionsUnion", Merge_regions_union::create_new_interface);
-  dir->factory("MergeObjectRegionsIntersection", Merge_regions_intersection::create_new_interface);
+	dir->factory("MergeObjectRegionsIntersection", Merge_regions_intersection::create_new_interface);
 	dir->factory("SetRegionFromComplement", Set_region_complement::create_new_interface);
 	dir->factory("SetRegionFromPropertyIf", Set_region_from_property::create_new_interface);
 	dir->factory("ClearPropertyValueFromProperty", Clear_property_value_from_property::create_new_interface);
 	dir->factory("CreateTrend", Create_trend::create_new_interface);
-  dir->factory("CreateMgridFromCgrid", Create_mgrid_from_cgrid::create_new_interface);
+	dir->factory("CreateMgridFromCgrid", Create_mgrid_from_cgrid::create_new_interface);
 
-  dir->factory("NewCategoricalDefinition", New_categorical_definition::create_new_interface);
+	dir->factory("NewCategoricalDefinition", New_categorical_definition::create_new_interface);
 
-  dir->factory("NewPropertyGroup", New_property_group::create_new_interface);
-  dir->factory("AddPropertiesToGroup", Add_properties_to_group::create_new_interface);
-  
+	dir->factory("NewPropertyGroup", New_property_group::create_new_interface);
+	dir->factory("AddPropertiesToGroup", Add_properties_to_group::create_new_interface);
 
 	// algorithm related actions
 	dir->factory("RunGeostatAlgorithm", Run_geostat_algo::create_new_interface);
@@ -157,23 +177,25 @@ bool library_actions_init::bind_action_factories(Manager* dir) {
 	dir->factory(Logit_transform_action().name(), Logit_transform_action::create_new_interface);
 	dir->factory(Logistic_transform_action().name(), Logistic_transform_action::create_new_interface);
 
-
-
 	return true;
 }
 
-extern "C" {
-int libGsTLAppli_actions_init() {
+extern "C"
+{
+int libGsTLAppli_actions_init()
+{
 	return library_actions_init::init_lib();
 }
-int libGsTLAppli_actions_release() {
+int libGsTLAppli_actions_release()
+{
 	return library_actions_init::release_lib();
 }
 }
 
 //--------------------------------------
 
-void init_python_interpreter() {
+void init_python_interpreter()
+{
 	Py_Initialize();
 	Py_InitModule("sgems", SGemsMethods);
 	Py_InitModule("redirect", RedirectMethods);
