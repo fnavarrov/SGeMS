@@ -217,3 +217,43 @@ void PropertyTreeItemMenu_Multiple::onPythonScriptAction(QAction* _action)
 /**
  *
  */
+SimulationSetTreeItemMenu::SimulationSetTreeItemMenu(ObjectTree* _object_tree, QWidget* _parent) :
+	BaseTreeItemMenu(_object_tree, _parent)
+{
+	// add group python scripts
+	{
+		SmartPtr<Named_interface> ni = Root::instance()->interface(python_group_script_manager);
+		Manager* manager = dynamic_cast<Manager*> (ni.raw_ptr());
+		if (manager)
+		{
+			action_.push_back(addSeparator());
+			QMenu* python_script_menu = addMenu("Python Scripts");
+			nested_menu_.push_back(python_script_menu);
+			QObject::connect(python_script_menu, SIGNAL(triggered(QAction*)), this, SLOT(onPythonScriptAction(QAction*)));
+
+			Manager::interface_iterator begin = manager->begin_interfaces();
+			Manager::interface_iterator end = manager->end_interfaces();
+			for (; begin != end; ++begin)
+			{
+				QString script_name(manager->name(begin->raw_ptr()).c_str());
+				action_.push_back(python_script_menu->addAction(script_name));
+			}
+		}
+	}
+}
+
+SimulationSetTreeItemMenu::~SimulationSetTreeItemMenu()
+{
+	for (std::vector<QMenu*>::iterator iter = nested_menu_.begin(); iter != nested_menu_.end(); ++iter)
+	{
+		delete (*iter);
+	}
+}
+
+void SimulationSetTreeItemMenu::handleContextMenuClick(QAction* _action)
+{
+}
+
+void SimulationSetTreeItemMenu::onPythonScriptAction(QAction* _action)
+{
+}

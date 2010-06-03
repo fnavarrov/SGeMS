@@ -24,7 +24,7 @@ protected:
 	std::vector<QAction*> action_;
 
 public slots:
-void onContextMenuClick(QAction* _action);
+	void onContextMenuClick(QAction* _action);
 
 protected:
 	virtual void handleContextMenuClick(QAction* _action);
@@ -45,7 +45,7 @@ protected:
 	void handleContextMenuClick(QAction* _action);
 
 public slots:
-void onTrendActionClick(QAction* _action);
+	void onTrendActionClick(QAction* _action);
 
 protected:
 	std::vector<QMenu*> nested_menu_;
@@ -97,16 +97,22 @@ protected:
 /**
  *
  */
-//class GUI_DECL SimulationSetTreeItemMenu: public BaseTreeItemMenu
-//{
-//Q_OBJECT
-//
-//public:
-//	SimulationSetTreeItemMenu(ObjectTree* _object_tree, QWidget* _parent);
-//	virtual ~SimulationSetTreeItemMenu();
-//
-//protected:
-//	void handleContextMenuClick(QAction* _action);
-//};
+class GUI_DECL SimulationSetTreeItemMenu: public BaseTreeItemMenu
+{
+Q_OBJECT
+
+public:
+	SimulationSetTreeItemMenu(ObjectTree* _object_tree, QWidget* _parent);
+	virtual ~SimulationSetTreeItemMenu();
+
+protected:
+	void handleContextMenuClick(QAction* _action);
+
+public slots:
+	void onPythonScriptAction(QAction* _action);
+
+protected:
+	std::vector<QMenu*> nested_menu_;
+};
 
 #endif /* OBJECT_TREE_CONTEXT_MENU_H_ */
