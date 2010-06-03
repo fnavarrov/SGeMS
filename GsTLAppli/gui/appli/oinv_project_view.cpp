@@ -1539,6 +1539,7 @@ void Oinv_view::update(std::string obj)
 					to_be_removed.push_back(child->text(0).toStdString());
 				}
 				child->parent()->removeChild(child);
+				delete child;
 			}
 		}
 
@@ -1550,6 +1551,7 @@ void Oinv_view::update(std::string obj)
 			if ((false == property_names_qstring.contains(child->text(0))) && (child->childCount() == 0))
 			{
 				grid_item->removeChild(child);
+				delete child;
 			} else
 			{
 				++i;
