@@ -38,6 +38,7 @@ public:
 	static void load_colormaps();
 	static void load_action_plugins();
 	static void load_python_scripts();
+	static void load_python_group_scripts();
 	static void release();
 
 	static void load_categorical_definition();

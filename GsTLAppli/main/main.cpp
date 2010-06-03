@@ -321,6 +321,7 @@ int gui_main(int argc, char **argv) {
 	app.processEvents();
 	Lib_initializer::load_action_plugins();
 	Lib_initializer::load_python_scripts();
+	Lib_initializer::load_python_group_scripts();
 
 	SoDB::init();
 	//  QSP_application* appli = new QSP_application( 0 );
