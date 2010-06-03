@@ -1,5 +1,5 @@
-#ifndef PYTHON_SCRIPT_H_
-#define PYTHON_SCRIPT_H_
+#ifndef PYTHON_GROUP_SCRIPT_H_
+#define PYTHON_GROUP_SCRIPT_H_
 
 #include <GsTLAppli/utils/named_interface.h>
 #include <GsTLAppli/actions/common.h>
@@ -22,4 +22,4 @@ protected:
 	std::string filename_;
 };
 
-#endif /* PYTHON_SCRIPT_H_ */
+#endif /* PYTHON_GROUP_SCRIPT_H_ */
