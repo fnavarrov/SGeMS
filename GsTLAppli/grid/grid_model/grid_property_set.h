@@ -71,6 +71,7 @@ public:
 
   property_map::iterator begin_property(){ return properties_.begin(); }
   property_map::iterator end_property() {  return properties_.end(); }
+  std::vector<std::string> property_names() const;
 
   std::string get_group_info();
   void set_group_info(const std::string& info_str);

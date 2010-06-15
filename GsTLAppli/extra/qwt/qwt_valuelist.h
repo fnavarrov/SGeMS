@@ -36,13 +36,14 @@ typedef QValueList<double> QwtValueList;
 
 #if defined(QWT_TEMPLATEDLL)
 
-#if QT_VERSION < 0x040300
+// ABoucher, bugs with qt4.6 and VS2008
+//#if QT_VERSION < 0x040300
 // Some compilers have problems, 
 // without a qHash(double) implementation
 #include <qset.h>
 #include <qvector.h>
 inline uint qHash(double key) { return uint(key); }
-#endif
+//#endif
 
 // MOC_SKIP_BEGIN
 template class QWT_EXPORT QList<double>;

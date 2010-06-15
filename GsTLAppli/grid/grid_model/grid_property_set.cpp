@@ -39,6 +39,16 @@ bool GsTLGridPropertyGroup::remove_property(GsTLGridProperty* prop){
   return ok != 0;
 }
 
+std::vector<std::string> GsTLGridPropertyGroup::property_names() const{
+  std::vector<std::string> names;
+  names.reserve(properties_.size());
+  property_map::const_iterator  it = properties_.begin();
+  for(; it != properties_.end(); ++it) {
+    names.push_back(it->first);
+  }
+  return names;
+}
+
 std::vector<GsTLGridProperty::property_type> 
 GsTLGridPropertyGroup::get_vector_data( int node_id ) const{
   property_map::const_iterator it = properties_.begin();
@@ -156,8 +166,10 @@ std::list<std::string>
 Grid_property_group_manager::group_names(const std::string& type) const{
   group_map::const_iterator it = groups_.begin();
   std::list<std::string> group_name;
-  for(; it!= groups_.begin(); ++it) 
-    if( type != "" &&  it->second->type() == type) group_name.push_back(it->first);
+  for(; it!= groups_.end(); ++it) {
+    if( type == "") group_name.push_back(it->first);
+    else if( it->second->type() == type) group_name.push_back(it->first);
+  }
   return group_name;
 }
 

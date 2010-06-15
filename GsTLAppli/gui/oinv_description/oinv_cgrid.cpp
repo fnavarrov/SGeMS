@@ -449,7 +449,9 @@ void Oinv_cgrid::set_transparency( const QString& str ) {
   if( min == max ) return;
 
   QString cleaned_intervals;
-  const float alpha = 0.01f;
+  const float alpha = 0.001f;
+//  volrend_colormap_->colorMap.set1Value( 3, alpha );
+//  volrend_colormap_->colorMap.set1Value( 7, alpha );
 
   QStringList intervals_str = str.split( ";", QString::SkipEmptyParts);
   QStringList::Iterator it = intervals_str.begin(); 
@@ -495,7 +497,12 @@ void Oinv_cgrid::set_transparency() {
   float max = cmap_->upper_bound();
   if( min == max ) return;
 
-  const float alpha = 0.01f;
+  const float alpha = 0.001f;
+
+  // Trying to automatically set the uninformed transparent
+ // unsigned int not_inf = (low  - min) / ( max - min ) * 255;
+//  volrend_colormap_->colorMap.set1Value( 3, alpha );
+//  volrend_colormap_->colorMap.set1Value( 7, alpha );
 
   std::map< std::string, QString >::iterator found = 
     transparency_map_.find( current_property_name_ );

@@ -115,9 +115,15 @@ std::list<std::string> Point_set::categorical_property_list() const {
   return result;
 }
 
+
 MultiRealization_property* 
 Point_set::add_multi_realization_property( const std::string& name ) {
-  return point_prop_.new_multireal_property( name );
+  MultiRealization_property* mprops = point_prop_.new_multireal_property( name );
+  GsTLGridPropertyGroup* group = this->add_group( mprops->name(), "Simulation" );
+  if(group) {
+    mprops->set_group(group);
+  }
+  return mprops;
 }
 
 std::list<std::string> Point_set::region_list() const {

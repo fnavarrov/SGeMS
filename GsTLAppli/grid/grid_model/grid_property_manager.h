@@ -47,6 +47,7 @@
 //class GsTLGridCategoricalProperty;
 class Grid_property_manager; 
 //class CategoricalPropertyDefinition;
+class GsTLGridPropertyGroup;
  
  
 /** A MultiRealization_property is a property that can have multiple  
@@ -65,7 +66,9 @@ class GRID_DECL MultiRealization_property {
 			     Grid_property_manager* manager ); 
   MultiRealization_property( const std::string& name, 
 			     Grid_property_manager* manager,
-           CategoricalPropertyDefinition* definition); 
+           CategoricalPropertyDefinition* definition);
+
+  
   MultiRealization_property( const MultiRealization_property& rhs ); 
   MultiRealization_property& operator = ( const MultiRealization_property& rhs ); 
  
@@ -78,7 +81,7 @@ class GRID_DECL MultiRealization_property {
 
   void set_category_definition(CategoricalPropertyDefinition* definition);
 
-  void set_group( bool on);
+  void set_group( GsTLGridPropertyGroup* group);
 
   GsTLGridCategoricalProperty* new_categorical_realization(); 
  
@@ -86,12 +89,16 @@ class GRID_DECL MultiRealization_property {
   const GsTLGridCategoricalProperty* categorical_realization( int id ) const; 
 
   int size() const { return size_; } 
+
+  std::string name() const {return name_;}
+
  
  private: 
   std::string name_; 
   int size_; 
   Grid_property_manager* prop_manager_; 
   CategoricalPropertyDefinition* definition_;
+  GsTLGridPropertyGroup* group_;
 }; 
  
  

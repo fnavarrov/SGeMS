@@ -42,8 +42,6 @@
 
 class Geostat_grid;
  
-typedef std::vector< GsTLGridProperty* > prop_vecT;
-
 class  Postsim : public Geostat_algo {
  public:
   static Named_interface* create_new_interface(std::string&);
@@ -63,6 +61,8 @@ class  Postsim : public Geostat_algo {
 	virtual std::string name() const { return "Postsim"; }
    
   private:
+
+	typedef std::vector< GsTLGridProperty* > prop_vecT;
 
 	Geostat_grid* grid_;
 	prop_vecT props_;

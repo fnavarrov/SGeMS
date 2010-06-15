@@ -72,7 +72,7 @@ Geostat_grid* Simulacre_input_filter::read( const std::string& filename,
   }
 
   QDataStream stream( &file );
- // stream.setFloatingPointPrecision(QDataStream::SinglePrecision);
+  stream.setFloatingPointPrecision(QDataStream::SinglePrecision);
   quint32 magic_nb;
   stream >> magic_nb;
   if( magic_nb != 0xB211175D ) {
@@ -171,25 +171,7 @@ Simulacre_input_filter::read_reduced_grid( QDataStream& stream, std::string* err
       prop->set_value( val, k );
     }
   }
-// Read the regions if any
-  if(!stream.atEnd()) {
-    quint32 regions_count;
-    stream >> regions_count;
-    std::vector< char* > region_names( regions_count );
-	  for( unsigned int i = 0; i < regions_count; i++ ) 
-		  stream >> region_names[i];
-
-    for( unsigned int j = 0; j < regions_count; j++ ) {
-      std::string region_name( region_names[j] );
-      GsTLGridRegion* region = grid->add_region( region_name );
-      for( GsTLInt k = 0; k < numActive ; k++ ) {
-        bool val;
-        stream >> val;
-        region->set_region_value( val, k );
-      }
-    }
-  }
-
+  read_region_and_goup(stream,errors,grid);
 	// clean up
 #ifndef _DEBUG	
 	for( unsigned int k = 0; k < properties_count; k++ ) {
@@ -250,24 +232,7 @@ Simulacre_input_filter::read_cartesian_grid( QDataStream& stream,
       prop->set_value( val, k );
     }
   }
-// Read the regions if any
-  if(!stream.atEnd()) {
-    quint32 regions_count;
-    stream >> regions_count;
-    std::vector< char* > region_names( regions_count );
-	  for( unsigned int i = 0; i < regions_count; i++ ) 
-		  stream >> region_names[i];
-
-    for( unsigned int j = 0; j < regions_count; j++ ) {
-      std::string region_name( region_names[j] );
-      GsTLGridRegion* region = grid->add_region( region_name );
-      for( GsTLInt k = 0; k < nx*ny*nz ; k++ ) {
-        bool val;
-        stream >> val;
-        region->set_region_value( val, k );
-      }
-    }
-  }
+  read_region_and_goup(stream,errors,grid);
 
 #ifndef _DEBUG
   // clean up
@@ -341,24 +306,8 @@ Simulacre_input_filter::read_pointset( QDataStream& stream,
       prop->set_value( val, k );
     }
   }
-  // Read the regions if any
-  if(!stream.atEnd()) {
-    quint32 regions_count;
-    stream >> regions_count;
-    std::vector< char* > region_names( regions_count );
-	  for( unsigned int i = 0; i < regions_count; i++ ) 
-		  stream >> region_names[i];
 
-    for( unsigned int j = 0; j < regions_count; j++ ) {
-      std::string region_name( region_names[j] );
-      GsTLGridRegion* region = grid->add_region( region_name );
-      for( GsTLInt k = 0; k < size ; k++ ) {
-        bool val;
-        stream >> val;
-        region->set_region_value( val, k );
-      }
-    }
-  }
+  read_region_and_goup(stream,errors,grid);
 #ifndef _DEBUG
   for( unsigned int l = 0; l < properties_count; l++ ) {
     delete [] prop_names[l];
@@ -368,6 +317,54 @@ Simulacre_input_filter::read_pointset( QDataStream& stream,
   return grid;
 }
 
+void Simulacre_input_filter::
+read_region_and_goup(QDataStream& stream, 
+                     std::string* errors,
+                     Geostat_grid* grid){
+  // Read the regions if any
+  int size = grid->size();
+  while(!stream.atEnd()) {
+    char* blockType;
+    stream >>blockType;
+
+    if(strcmp(blockType,"RegionBlock") == 0 ) {
+      quint32 regions_count;
+      stream >> regions_count;
+      std::vector< char* > region_names( regions_count );
+	    for( unsigned int i = 0; i < regions_count; i++ ) 
+		    stream >> region_names[i];
+
+      for( unsigned int j = 0; j < regions_count; j++ ) {
+        std::string region_name( region_names[j] );
+        GsTLGridRegion* region = grid->add_region( region_name );
+        for( GsTLInt k = 0; k < size ; k++ ) {
+          bool val;
+          stream >> val;
+          region->set_region_value( val, k );
+        }
+      }
+    }
+    else if(strcmp(blockType,"GroupBlock") == 0 ) {
+      quint32 group_count;
+      stream >> group_count;
+      std::vector< char* > group_names( group_count );
+      for( unsigned int i = 0; i < group_count; i++ ) {
+        char* group_name;
+        char* group_type;
+		    stream >> group_name>>group_type;
+        GsTLGridPropertyGroup* group = grid->add_group(group_name, group_type);
+        quint32 group_size;
+        stream>>group_size;
+        for(int i=0; i<group_size;i++) {
+          char* prop_name;
+          stream>>prop_name;
+          group->add_property(grid->property( std::string(prop_name) ));
+        }
+      }
+    }
+  }
+
+}
 
 
 
@@ -396,7 +393,7 @@ bool Simulacre_output_filter::write( std::string outfile, const Geostat_grid* gr
   }
 
   QDataStream stream( &file );
-//  stream.setFloatingPointPrecision(QDataStream::SinglePrecision);
+  stream.setFloatingPointPrecision(QDataStream::SinglePrecision);
 
   // Write a header with a "magic number" and the grid type
   stream << (quint32)0xB211175D;
@@ -478,20 +475,7 @@ bool Simulacre_output_filter::write_reduced_grid( QDataStream& stream,
 				stream << (float) GsTLGridProperty::no_data_value;
 		}
 	}
-  std::list< std::string > region_names = grid->region_list();
-  if(!region_names.empty()) {
-    stream << (quint32)region_names.size();
-    std::list< std::string >::iterator it_name  = region_names.begin();
-
-    for( ; it_name != region_names.end(); ++it_name) 
-      stream << it_name->c_str();
-    
-    for( it_name  = region_names.begin() ; it_name != region_names.end(); ++it_name) {
-      const GsTLGridRegion* region = grid->region(*it_name);
-      for(GsTLGridRegion::const_iterator it=region->begin(); it!=region->end(); ++it) 
-        stream << (bool)(*it); 
-    }
-  }
+  write_region_and_goup(stream, grid);
 	return true;
 }
 
@@ -544,21 +528,7 @@ bool Simulacre_output_filter::write_cartesian_grid( QDataStream& stream,
         stream << (float) GsTLGridProperty::no_data_value;
     }
   }
-  std::list< std::string > region_names = grid->region_list();
-  if(!region_names.empty()) {
-    stream << (quint32)region_names.size();
-    std::list< std::string >::iterator it_name  = region_names.begin();
-
-    for( ; it_name != region_names.end(); ++it_name) 
-      stream << it_name->c_str();
-    
-    for( it_name  = region_names.begin() ; it_name != region_names.end(); ++it_name) {
-      const GsTLGridRegion* region = grid->region(*it_name);
-      for(GsTLGridRegion::const_iterator it=region->begin(); it!=region->end(); ++it) 
-        stream << (bool)(*it); 
-    }
-  }
-
+  write_region_and_goup(stream, grid);
   return true;
 }
 
@@ -604,8 +574,18 @@ bool Simulacre_output_filter::write_pointset( QDataStream& stream,
         stream << (float) GsTLGridProperty::no_data_value;
     }
   }
+  write_region_and_goup(stream, grid);
+
+  return true;
+}
+
+
+void Simulacre_output_filter::
+write_region_and_goup( QDataStream& stream, const Geostat_grid* grid ) {
+
   std::list< std::string > region_names = grid->region_list();
   if(!region_names.empty()) {
+    stream<<"RegionBlock";
     stream << (quint32)region_names.size();
     std::list< std::string >::iterator it_name  = region_names.begin();
 
@@ -618,5 +598,22 @@ bool Simulacre_output_filter::write_pointset( QDataStream& stream,
         stream << (bool)(*it); 
     }
   }
-  return true;
+
+  // Write the group names and membership
+  std::list< std::string > group_names = grid->get_group_names();
+  if(!group_names.empty()) {
+    stream<<"GroupBlock";
+    stream << (quint32)group_names.size();
+    std::list< std::string >::iterator it_name  = group_names.begin();
+
+    for( ; it_name != group_names.end(); ++it_name) {
+      const GsTLGridPropertyGroup* group = grid->get_group(*it_name);
+      stream << group->name().c_str()<<group->type().c_str();
+      std::vector<std::string> group_prop_names = group->property_names();
+      stream<< (quint32)group_prop_names.size();
+      std::vector<std::string>::const_iterator it = group_prop_names.begin();
+      for(; it!= group_prop_names.end(); ++it)
+        stream<<it->c_str();
+    }
+  }
 }

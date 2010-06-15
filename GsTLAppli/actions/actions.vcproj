@@ -47,7 +47,7 @@
 				Name="VCCLCompilerTool"
 				AdditionalOptions="-Zm300 -w34100 -w34189 -Zm300 -w34100 -w34189 -w34100 -w34189"
 				Optimization="4"
-				AdditionalIncludeDirectories="&quot;$(SGEMS_BUILD)\GsTL&quot;;&quot;$(SGEMS_BUILD)\GsTLAppli-qt4&quot;;&quot;$(SGEMS_BUILD)\boost\boost_1_38\&quot;;&quot;$(QTDIR)\include\QtCore&quot;;&quot;$(QTDIR)\include\QtGui&quot;;&quot;$(QTDIR)\include\QtXml&quot;;&quot;$(QTDIR)\include&quot;;.;&quot;$(QTDIR)\include\ActiveQt&quot;;debug;&quot;$(PYTHONDIR)\include&quot;"
+				AdditionalIncludeDirectories="&quot;$(SGEMS_BUILD)\GsTL&quot;;&quot;$(SGEMS_BUILD)\GsTLAppli-qt4&quot;;&quot;$(BOOSTDIR)&quot;;&quot;$(QTDIR)\include\QtCore&quot;;&quot;$(QTDIR)\include\QtGui&quot;;&quot;$(QTDIR)\include&quot;;.;&quot;$(QTDIR)\include\ActiveQt&quot;;debug;&quot;$(PYTHONDIR)\include&quot;"
 				PreprocessorDefinitions="_WINDOWS;UNICODE;WIN32;QT_LARGEFILE_SUPPORT;ACTIONS_EXPORTS;QT_DLL;_DEBUG;_USRDLL;SOQT_DLL;COIN_DLL;QWT_DLL;QT_THREAD_SUPPORT;QT_GUI_LIB;QT_CORE_LIB"
 				GeneratePreprocessedFile="0"
 				ExceptionHandling="1"
@@ -137,7 +137,7 @@
 				Name="VCCLCompilerTool"
 				AdditionalOptions="-Zm300 -w34100 -w34189 -Zm300 -w34100 -w34189 -w34100 -w34189"
 				Optimization="2"
-				AdditionalIncludeDirectories="&quot;$(SGEMS_BUILD)\GsTL&quot;;&quot;$(SGEMS_BUILD)\GsTLAppli-qt4&quot;;&quot;$(SGEMS_BUILD)\boost\boost_1_38\&quot;;&quot;$(QTDIR)\include\QtCore&quot;;&quot;$(QTDIR)\include\QtGui&quot;;&quot;$(QTDIR)\include\QtXml&quot;;&quot;$(QTDIR)\include&quot;;.;&quot;$(QTDIR)\include\ActiveQt&quot;;release;&quot;$(PYTHONDIR)\include&quot;"
+				AdditionalIncludeDirectories="&quot;$(SGEMS_BUILD)\GsTL&quot;;&quot;$(SGEMS_BUILD)\GsTLAppli-qt4&quot;;&quot;$(BOOSTDIR)&quot;;&quot;$(QTDIR)\include\QtCore&quot;;&quot;$(QTDIR)\include\QtGui&quot;;&quot;$(QTDIR)\include&quot;;.;&quot;$(QTDIR)\include\ActiveQt&quot;;release;&quot;$(PYTHONDIR)\include&quot;"
 				PreprocessorDefinitions="GSTLAPPLI_NDEBUG,QT_NO_DEBUG,NDEBUG,_WINDOWS,UNICODE,WIN32,QT_LARGEFILE_SUPPORT,ACTIONS_EXPORTS,QT_DLL,QT_NO_DEBUG,QT_GUI_LIB,QT_CORE_LIB,QT_THREAD_SUPPORT"
 				GeneratePreprocessedFile="0"
 				ExceptionHandling="1"
@@ -211,10 +211,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\categorical_definition_actions.cpp"
-				>
-			</File>
-			<File
 				RelativePath="library_actions_init.cpp"
 				>
 			</File>
@@ -228,10 +224,6 @@
 			</File>
 			<File
 				RelativePath="obj_manag_actions.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\property_group_actions.cpp"
 				>
 			</File>
 			<File
@@ -265,10 +257,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\categorical_definition_actions.h"
-				>
-			</File>
-			<File
 				RelativePath="common.h"
 				>
 			</File>
@@ -290,10 +278,6 @@
 			</File>
 			<File
 				RelativePath="obj_manag_actions.h"
-				>
-			</File>
-			<File
-				RelativePath=".\property_group_actions.h"
 				>
 			</File>
 			<File

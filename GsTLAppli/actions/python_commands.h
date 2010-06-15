@@ -626,6 +626,46 @@ static PyObject* sgems_get_property_list( PyObject *self, PyObject *args)
 }
 
 
+static PyObject* sgems_get_property_in_group( PyObject *self, PyObject *args)
+{
+	Geostat_grid *grid;
+	char * obj_str;
+  char * group_str;
+
+	if( !PyArg_ParseTuple(args, "ss", &obj_str, &group_str) )
+		return NULL;
+
+	std::string object(obj_str);
+  std::string group_name(group_str);
+
+	SmartPtr<Named_interface> grid_ni =
+		Root::instance()->interface( gridModels_manager + "/" + object );
+	grid = dynamic_cast<Geostat_grid*>( grid_ni.raw_ptr() );
+	if( !grid ) {
+		*GsTLAppli_Python_cerr::instance() << object << " does not exist" << gstlIO::end;
+		Py_INCREF(Py_None);
+		return Py_BuildValue("[]");
+	}
+
+  GsTLGridPropertyGroup* group = grid->get_group(group_name);
+	if( !group ) {
+		*GsTLAppli_Python_cerr::instance() << group_name << " does not exist" << gstlIO::end;
+		Py_INCREF(Py_None);
+		return Py_BuildValue("[]");
+	}
+
+  std::vector<std::string>  names = group->property_names();
+  PyObject *list = PyList_New(names.size());
+  int i=0;
+  for( std::vector<std::string>::const_iterator it = names.begin();
+       it != names.end() ; ++it, ++i ) {
+    PyList_SetItem(list, i, PyString_FromString( it->c_str() ) );
+  }
+
+	return list;
+}
+
+
 static PyObject* sgems_get_location( PyObject *self, PyObject *args)
 {
 	Geostat_grid *grid;
@@ -780,6 +820,8 @@ static PyMethodDef SGemsMethods[] = {
     "Set a categorical property from a list of aplhanumeric entries (string)"},
     {"get_categorical_definition", sgems_get_categorical_definition, METH_VARARGS,
     "Get the categorical definition from a categorical property"},
+    {"get_properties_in_group", sgems_get_property_in_group, METH_VARARGS,
+    "Get the name of the member property for a group"},
     {NULL, NULL, 0, NULL}
 };
 

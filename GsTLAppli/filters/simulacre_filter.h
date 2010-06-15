@@ -84,6 +84,10 @@ protected:
                                              std::string* errors );
   virtual Geostat_grid* read_pointset( QDataStream& stream, 
                                        std::string* errors );
+
+  void read_region_and_goup(QDataStream& stream, 
+                            std::string* errors,
+                            Geostat_grid* grid);
 };
 
 
@@ -107,6 +111,9 @@ protected:
 
   virtual bool write_cartesian_grid( QDataStream& stream, const Geostat_grid* grid );
   virtual bool write_pointset( QDataStream& stream, const Geostat_grid* grid );
+
+  void write_region_and_goup(QDataStream& stream, const Geostat_grid* gstat_grid);
+
 };
 
 

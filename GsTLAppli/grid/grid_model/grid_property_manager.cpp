@@ -30,19 +30,22 @@
 #include <GsTLAppli/utils/string_manipulation.h> 
 
 #include <stdlib.h>
+#include <GsTLAppli/grid/grid_model/grid_property_manager.h>
 
 
 const std::string MultiRealization_property::separator( "__real" );
 
 MultiRealization_property::MultiRealization_property()
   : size_( 0 ),
-    prop_manager_( 0 ) {
+    prop_manager_( 0 ),
+    group_(0){
 }
 
 MultiRealization_property::MultiRealization_property( const std::string& name,
 				  Grid_property_manager* manager )
   : name_( name ),
-    prop_manager_( manager ) {
+    prop_manager_( manager ),
+    group_(0){
   size_ = 0;
   definition_ = 0;
 }
@@ -51,7 +54,8 @@ MultiRealization_property::MultiRealization_property( const std::string& name,
 				  Grid_property_manager* manager,
           CategoricalPropertyDefinition* cat_definition)
   : name_( name ),
-    prop_manager_( manager ) {
+    prop_manager_( manager ),
+    group_(0){
   size_ = 0;
   definition_ = cat_definition;
 }
@@ -62,6 +66,7 @@ MultiRealization_property( const MultiRealization_property& rhs ) {
   size_ = rhs.size_;
   prop_manager_ = rhs.prop_manager_;
   definition_ = rhs.definition_;
+  group_ = rhs.group_;
 }
 
 MultiRealization_property& 
@@ -70,6 +75,7 @@ MultiRealization_property::operator = ( const MultiRealization_property& rhs ) {
   size_ = rhs.size_;
   prop_manager_ = rhs.prop_manager_;
   definition_ = rhs.definition_;
+  group_ = rhs.group_;
 
   return *this;
 }
@@ -90,6 +96,8 @@ GsTLGridProperty* MultiRealization_property::new_realization() {
 				 String_Op::to_string( size_ ) );
   if( new_real )
     size_++;
+
+  if(group_) group_->add_property( new_real );
   
   return new_real;
 }
@@ -134,6 +142,7 @@ GsTLGridCategoricalProperty* MultiRealization_property::new_categorical_realizat
   if( new_real )
     size_++;
   
+  if(group_) group_->add_property( new_real );
   return new_real;
 }
 
@@ -154,6 +163,9 @@ const GsTLGridCategoricalProperty* MultiRealization_property::categorical_realiz
 
 }
 
+void MultiRealization_property::set_group( GsTLGridPropertyGroup* group){
+  group_ = group;
+}
 
 
 //=================================================

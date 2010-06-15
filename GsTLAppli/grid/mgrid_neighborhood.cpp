@@ -221,7 +221,7 @@ void MgridWindowNeighborhood::find_neighbors( const Geovalue& center ) {
   Grid_template::iterator begin = geom_.begin();
   Grid_template::iterator bound = geom_.end()-1;
 
-  while (bound != begin-1) {
+  while (bound != begin) {
     GsTLGridNode p = center_location + (*bound);
     GsTLInt node_id = _mcursor->node_id( p[0], p[1], p[2] );
     if( node_id < 0 ) {
@@ -234,10 +234,11 @@ void MgridWindowNeighborhood::find_neighbors( const Geovalue& center ) {
       bound--;
   }
 
-  for( ; begin != bound+1 ; ++begin ) {
+  bound++;
+  for( ; begin != bound ; ++begin ) {
     GsTLGridNode node = center_location + (*begin);
-	if (_mcursor->node_id( node[0], node[1], node[2] ) < 0)
-		continue;
+	  if (_mcursor->node_id( node[0], node[1], node[2] ) < 0)
+		  continue;
     neighbors_.push_back( Geovalue( grid_, property_, 
 				    _mcursor->node_id( node[0], node[1],
 						     node[2] ) )
@@ -263,12 +264,12 @@ void MgridWindowNeighborhood::find_all_neighbors( const Geovalue& center ) {
   if( geom_.size() == 0 ) return;
 
   Grid_template::iterator begin = geom_.begin();
-  Grid_template::iterator bound = geom_.end()-1;
+//  Grid_template::iterator bound = geom_.end()-1;
 
-  for( ; begin != bound+1 ; ++begin ) {
+  for( ; begin != geom_.end() ; ++begin ) {
     GsTLGridNode node = center_location + (*begin);
-	if (_mcursor->node_id( node[0], node[1], node[2] ) < 0)
-		continue;
+	  if (_mcursor->node_id( node[0], node[1], node[2] ) < 0)
+		  continue;
     neighbors_.push_back( Geovalue( grid_, property_, 
 				    _mcursor->node_id( node[0], node[1],
 						     node[2] ) )

@@ -146,7 +146,12 @@ std::list<std::string> RGrid::categorical_property_list() const {
 
 MultiRealization_property* 
 RGrid::add_multi_realization_property( const std::string& name ) {
-  return property_manager_.new_multireal_property( name );
+  MultiRealization_property* mprops = property_manager_.new_multireal_property( name );
+  GsTLGridPropertyGroup* group = this->add_group( mprops->name(), "Simulation" );
+  if(group) {
+    mprops->set_group(group);
+  }
+  return mprops;
 }
 
  
