@@ -211,6 +211,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\categorical_definition_actions.cpp"
+				>
+			</File>
+			<File
 				RelativePath="library_actions_init.cpp"
 				>
 			</File>
@@ -227,7 +231,15 @@
 				>
 			</File>
 			<File
+				RelativePath=".\property_group_actions.cpp"
+				>
+			</File>
+			<File
 				RelativePath="python_commands.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\python_group_script.cpp"
 				>
 			</File>
 			<File
@@ -257,6 +269,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\categorical_definition_actions.h"
+				>
+			</File>
+			<File
 				RelativePath="common.h"
 				>
 			</File>
@@ -281,7 +297,15 @@
 				>
 			</File>
 			<File
+				RelativePath=".\property_group_actions.h"
+				>
+			</File>
+			<File
 				RelativePath="python_commands.h"
+				>
+			</File>
+			<File
+				RelativePath=".\python_group_script.h"
 				>
 			</File>
 			<File
