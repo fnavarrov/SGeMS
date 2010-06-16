@@ -37,6 +37,7 @@
 #include <GsTLAppli/grid/grid_model/geostat_grid.h>
 
 #include <algorithm>
+#include <iterator>
 
 
 

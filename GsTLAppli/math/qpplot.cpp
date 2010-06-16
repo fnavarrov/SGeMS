@@ -91,7 +91,7 @@ void QPplot::high_clip( Variable var, float val ) {
  
 std::pair<double*,double*> QPplot::plotting_data( int& size ) {
   if( x_data_.empty() || y_data_.empty() )
-    return std::pair<double*,double*>(0,0);
+    return std::pair<double*,double*>(static_cast<double*>(0),static_cast<double*>(0));
 
   switch( analysis_type_ ) {
   case QQplot:
@@ -101,7 +101,7 @@ std::pair<double*,double*> QPplot::plotting_data( int& size ) {
     return ppplot( size );
     break;
   default:
-    return std::pair<double*,double*>(0,0);
+    return std::pair<double*,double*>(static_cast<double*>(0),static_cast<double*>(0));
   }
 }
 
@@ -129,7 +129,7 @@ std::pair<double*,double*> QPplot::ppplot( int& size ) {
 
   if( clipped_ranges_[0].first == clipped_ranges_[0].second ||
       clipped_ranges_[1].first == clipped_ranges_[1].second ) {
-    return std::make_pair( (double*) 0, (double*) 0);
+    return std::make_pair( static_cast<double*>(0),static_cast<double*>(0));
   }
 
   float range_min = std::min( *(clipped_ranges_[0].first), *(clipped_ranges_[1].first) );

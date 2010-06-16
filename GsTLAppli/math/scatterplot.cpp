@@ -143,7 +143,7 @@ std::pair<double*,double*> Scatter_plot::plotting_data( int& size ) {
     return std::make_pair( x_vals_, y_vals_ );
 
   if( x_data_.size() != y_data_.size() )
-    return std::pair<double*,double*>( 0,0 );
+    return std::pair<double*,double*>( static_cast<double*>(0),static_cast<double*>(0) );
 
   size = std::min( max_pairs_, int(x_data_.size()) );
   clear_plot_values();
