@@ -38,6 +38,8 @@ bool Csv_infilter::can_handle( const std::string& filename ){
   //   - read the first line, and store the nuber of comma delimieted entries
   //   - Read the next 10 lines to ensure that the same number of entries than the first line
 
+  QString qfilename(filename.c_str());
+  if( !qfilename.endsWith(".csv",Qt::CaseInsensitive) )return false;
   QFile file( filename.c_str() );
   if( !file.open( QIODevice::ReadOnly ) ) return false;
 
