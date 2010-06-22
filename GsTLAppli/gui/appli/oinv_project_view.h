@@ -257,7 +257,10 @@ protected:
 	BaseTreeItem* get_grid_listitem(const QString& grid);
 	BaseTreeItem* get_property_listitem(const QString& grid, const QString& prop);
 	QVector<BaseTreeItem*> get_property_parent_items(BaseTreeItem* gridItem, GsTLGridProperty* property);
+	QVector<QString> get_property_group_names(BaseTreeItem* gridItem, GsTLGridProperty* property);
 	BaseTreeItem* treeItemChildByName(BaseTreeItem* treeItem, QString childName);
+
+	void reorderTreeItems();
 
 protected:
 	typedef std::map<std::string, Display_pref_panel*> Pref_Panel_Map;

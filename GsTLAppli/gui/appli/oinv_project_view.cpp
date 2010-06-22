@@ -312,8 +312,7 @@ void ObjectTree::onPropertyContextMenuClick(QAction* _action)
 		}
 		QTreeWidgetItem* item = selected_items_.at(0);
 		QString params = grid_name + QString(Actions::separator.c_str()) + item->text(0);
-		emit
-		action("ShowHistogram", params);
+		emit action("ShowHistogram", params);
 		selected_items_.clear();
 	}
 
@@ -327,8 +326,7 @@ void ObjectTree::onPropertyContextMenuClick(QAction* _action)
 		}
 		QTreeWidgetItem* item = selected_items_.at(0);
 		QString params = grid_name + QString(Actions::separator.c_str()) + item->text(0);
-		emit
-		action("SwapPropertyToDisk", params);
+		emit action("SwapPropertyToDisk", params);
 		selected_items_.clear();
 	}
 
@@ -342,8 +340,7 @@ void ObjectTree::onPropertyContextMenuClick(QAction* _action)
 		}
 		QTreeWidgetItem* item = selected_items_.at(0);
 		QString params = grid_name + QString(Actions::separator.c_str()) + item->text(0);
-		emit
-		action("SwapPropertyToRAM", params);
+		emit action("SwapPropertyToRAM", params);
 		selected_items_.clear();
 	}
 
@@ -366,8 +363,7 @@ void ObjectTree::onUnaryActionClick(QAction* _action)
 	QString prop_name = item->text(0);
 	QString new_prop_name = action_name + "(" + prop_name + ")";
 	QString params = grid_name + QString(Actions::separator.c_str()) + prop_name + QString(Actions::separator.c_str()) + new_prop_name;
-	emit
-	action(action_name, params);
+	emit action(action_name, params);
 	selected_items_.clear();
 }
 
@@ -421,8 +417,7 @@ void ObjectTree::onTrendActionClick(QAction* _action)
 
 	//	QString new_prop_name = action_name + "(" + prop_name + ")";
 	QString params = grid_name + QString(Actions::separator.c_str()) + trend_id;
-	emit
-	action(action_name, params);
+	emit action(action_name, params);
 	selected_items_.clear();
 }
 
@@ -466,8 +461,7 @@ bool ObjectTree::rename_property(QString grid_name, QString old, QString n)
 		return false;
 	}
 
-	emit
-	rename_finished(obj_name, old_name_, n);
+	emit rename_finished(obj_name, old_name_, n);
 
 	return true;
 }
@@ -487,8 +481,7 @@ bool ObjectTree::delete_property(QString _grid_name, QString _prop_name)
 		return false;
 	}
 
-	emit
-	delete_property_finished(_grid_name, _prop_name);
+	emit delete_property_finished(_grid_name, _prop_name);
 
 	return true;
 }
@@ -1148,48 +1141,48 @@ void Project_view_gui::show_preference_panel(const QString& obj)
 		Display_pref_panel* pref_panel = it->second;
 
 		QObject::connect(pref_panel, SIGNAL( displayed_property_changed( const QString&,
-						const QString& ) ), this, SLOT( toggle_grid_property( const QString&,
-						const QString& ) ));
+								const QString& ) ), this, SLOT( toggle_grid_property( const QString&,
+								const QString& ) ));
 
 		QObject::connect(pref_panel, SIGNAL( property_painted_toggled( const QString&,
-						const QString& ) ), this, SLOT( toggle_grid_property( const QString&,
-						const QString& ) ));
+								const QString& ) ), this, SLOT( toggle_grid_property( const QString&,
+								const QString& ) ));
 
 		QObject::connect(pref_panel, SIGNAL(renderRequest()), this, SLOT(reRender()));
 
 		if (general_pref_panel_)
 		{
-			QObject::connect(pref_panel, SIGNAL( colormap_changed( const Colormap* ) ), general_pref_panel_, SLOT( update_colorbar() ));
-		}
-
+QObject		::connect(pref_panel, SIGNAL( colormap_changed( const Colormap* ) ), general_pref_panel_, SLOT( update_colorbar() ));
 	}
 
-	// set it->second as the currently displayed panel, and show() it
-	QWidget * tmp = _pref_scroll->takeWidget();
-	tmp->hide();
+}
 
-	_pref_scroll->setWidget(it->second);
-	_pref_scroll->show();
+// set it->second as the currently displayed panel, and show() it
+QWidget * tmp = _pref_scroll->takeWidget();
+tmp->hide();
 
-	SmartPtr<Named_interface> grid_ni = Root::instance()->interface(gridModels_manager + "/" + obj_name);
-	Geostat_grid* grid = dynamic_cast<Geostat_grid*> (grid_ni.raw_ptr());
-	appli_assert( grid );
+_pref_scroll->setWidget(it->second);
+_pref_scroll->show();
 
-	/*
-	 Display_pref_panel* p = dynamic_cast<Display_pref_panel*>(current_pref_panel_);
-	 if (rgrid) {
-	 p->volume_explorer_checkbox_->setDisabled(true);
-	 }
-	 else
-	 p->volume_explorer_checkbox_->setDisabled(false);
-	 */
+SmartPtr<Named_interface> grid_ni = Root::instance()->interface(gridModels_manager + "/" + obj_name);
+Geostat_grid* grid = dynamic_cast<Geostat_grid*> (grid_ni.raw_ptr());
+appli_assert( grid );
 
-	//current_pref_panel_->setMaximumWidth( 250 );
-	/*
-	 current_pref_panel_->setGeometry( 0,0, 250,
-	 _pref_scroll->height() );
-	 current_pref_panel_->show();
-	 */
+/*
+ Display_pref_panel* p = dynamic_cast<Display_pref_panel*>(current_pref_panel_);
+ if (rgrid) {
+ p->volume_explorer_checkbox_->setDisabled(true);
+ }
+ else
+ p->volume_explorer_checkbox_->setDisabled(false);
+ */
+
+//current_pref_panel_->setMaximumWidth( 250 );
+/*
+ current_pref_panel_->setGeometry( 0,0, 250,
+ _pref_scroll->height() );
+ current_pref_panel_->show();
+ */
 
 }
 
@@ -1426,6 +1419,33 @@ QVector<BaseTreeItem*> Project_view_gui::get_property_parent_items(BaseTreeItem*
 	return parents;
 }
 
+QVector<QString> Project_view_gui::get_property_group_names(BaseTreeItem* gridItem, GsTLGridProperty* property)
+{
+	QVector<QString> group_names;
+
+	if (property == 0)
+	{
+		return group_names;
+	}
+
+	if (property->has_group_membership())
+	{
+		std::vector<std::string> groupNames = property->group_names();
+		for (std::vector<std::string>::iterator iter = groupNames.begin(); iter != groupNames.end(); ++iter)
+		{
+			QString groupName = iter->c_str();
+			group_names.push_back(groupName);
+		}
+	}
+	// property does not belong to any group
+	else
+	{
+		group_names.push_back(gridItem->text(0));
+	}
+
+	return group_names;
+}
+
 BaseTreeItem* Project_view_gui::treeItemChildByName(BaseTreeItem* treeItem, QString childName)
 {
 	BaseTreeItem* childItem = NULL;
@@ -1438,6 +1458,50 @@ BaseTreeItem* Project_view_gui::treeItemChildByName(BaseTreeItem* treeItem, QStr
 		}
 	}
 	return childItem;
+}
+
+void Project_view_gui::reorderTreeItems()
+{
+	QTreeWidgetItem* root = Object_tree->topLevelItem(0);
+	for (int i = 0; i < root->childCount(); ++i)
+	{
+		BaseTreeItem* gridItem = dynamic_cast<BaseTreeItem*> (root->child(i));
+		QVector<BaseTreeItem*> childItems;
+		while (gridItem->childCount() > 0)
+		{
+			BaseTreeItem* childItem = dynamic_cast<BaseTreeItem*> (gridItem->child(0));
+			childItems.push_back(childItem);
+			gridItem->removeChild(childItem);
+		}
+
+		// add properties first
+		for (int index = 0; index < childItems.size(); ++index)
+		{
+			if (dynamic_cast<PropertyTreeItem*> (childItems.at(index)))
+			{
+				gridItem->addChild(childItems.at(index));
+			}
+		}
+
+		// then simulation groups
+		for (int index = 0; index < childItems.size(); ++index)
+		{
+			if (dynamic_cast<SimulationSetTreeItem*> (childItems.at(index)))
+			{
+				gridItem->addChild(childItems.at(index));
+			}
+		}
+
+		// and finally the regions
+		for (int index = 0; index < childItems.size(); ++index)
+		{
+			if (dynamic_cast<HeaderTreeItem*> (childItems.at(index)))
+			{
+				gridItem->addChild(childItems.at(index));
+			}
+		}
+	}
+
 }
 
 //=======================================================
@@ -1547,12 +1611,19 @@ void Oinv_view::update(std::string obj)
 		for (int i = 0; i < allChildren.size(); ++i)
 		{
 			BaseTreeItem* child = allChildren.at(i);
-			if (false == property_names_qstring.contains(child->text(0)))
+			if (dynamic_cast<PropertyTreeItem*> (child))
 			{
-				if (dynamic_cast<PropertyTreeItem*> (child))
+				QVector<QString> group_names = get_property_group_names(grid_item, grid->property(child->text(0).toStdString()));
+				if (false == group_names.contains(child->parent()->text(0)))
 				{
 					to_be_removed.push_back(child->text(0).toStdString());
+					child->parent()->removeChild(child);
+					delete child;
 				}
+			}
+			// delete all region entries
+			else
+			{
 				child->parent()->removeChild(child);
 				delete child;
 			}
@@ -1580,6 +1651,9 @@ void Oinv_view::update(std::string obj)
 		{
 			new RegionTreeItem(regionRoot, QString(it->c_str()));
 		}
+
+		// reorder
+		reorderTreeItems();
 
 		// If properties were removed, tell the oinv description
 		// Remove the property names that should be removed
