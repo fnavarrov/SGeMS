@@ -296,7 +296,7 @@ inline GsTLGridCategoricalProperty*
 Grid_property_manager::get_categorical_property( const std::string& name ) {
   Property_map::iterator it = properties_map_.find(name);
   if( it != properties_map_.end() )  {
-	return  static_cast<GsTLGridCategoricalProperty*>(properties_[ it->second ]);
+	return  dynamic_cast<GsTLGridCategoricalProperty*>(properties_[ it->second ]);
   }
   else
     return 0;
