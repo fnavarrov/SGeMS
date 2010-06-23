@@ -37,7 +37,12 @@
 
 class GridSelectorBasic;
 class SinglePropertySelector;
+class MultipleCategorySelector;
+class QGroupBox;
+
 class GsTL_project;
+
+
 
 class New_region_from_property_dialog : public QDialog {
   Q_OBJECT
@@ -50,13 +55,30 @@ public:
   QString new_region_name() const;
   QString get_min_filter_value() const;
   QString get_max_filter_value() const;
+  QStringList get_selected_categories() const;
+
+  bool isCategorical() const;
+
+protected slots:
+  void set_filter_type();
+  void create_region();
+  void create_region_and_close();
 
 protected:
+  GsTL_project* project_;
   GridSelectorBasic* gridSelector_;
   SinglePropertySelector* propSelector_;
 
+  bool isCategorical_;
+
   QLineEdit *new_region_;
+
+  QGroupBox* min_max_box_;
   QLineEdit *minFilter_, *maxFilter_;
+
+  QGroupBox* category_box_;
+  MultipleCategorySelector *cat_selector_;
+
 
 };
 

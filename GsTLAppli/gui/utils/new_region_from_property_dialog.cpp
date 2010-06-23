@@ -28,7 +28,14 @@
 
 #include <GsTLAppli/gui/utils/new_region_from_property_dialog.h>
 #include <GsTLAppli/extra/qtplugins/selectors.h>
+#include <GsTLAppli/extra/qtplugins/categorical_selectors.h>
 #include <GsTLAppli/utils/gstl_messages.h>
+#include <GsTLAppli/utils/error_messages_handler.h>
+#include <GsTLAppli/actions/common.h>
+#include <GsTLAppli/actions/defines.h>
+#include <GsTLAppli/grid/grid_model/geostat_grid.h>
+#include <GsTLAppli/appli/manager_repository.h>
+#include <GsTLAppli/appli/project.h>
 
 #include <QtGui/QGroupBox>
 #include <QtGui/QHBoxLayout>
@@ -45,6 +52,7 @@ New_region_from_property_dialog( GsTL_project* proj,
                     QWidget* parent, const char* name ){
   if (name)
     setObjectName(name);
+  project_ = proj;
   
   QVBoxLayout* main_layout = new QVBoxLayout( this);
   main_layout->setMargin(9);
@@ -73,7 +81,7 @@ New_region_from_property_dialog( GsTL_project* proj,
   QHBoxLayout *h_min_max = new QHBoxLayout( prop_box );
   
 
-  QGroupBox* min_max_box = new QGroupBox( prop_box );
+  min_max_box_ = new QGroupBox( prop_box );
   QVBoxLayout *v_min = new QVBoxLayout( prop_box );
   QVBoxLayout *v_max = new QVBoxLayout( prop_box );
 
@@ -86,11 +94,24 @@ New_region_from_property_dialog( GsTL_project* proj,
 
   h_min_max->addLayout(v_min);
   h_min_max->addLayout(v_max);
-  min_max_box->setLayout( h_min_max);
-  min_max_box->setTitle("Values between Min and Max will be inside the region");
+  min_max_box_->setLayout( h_min_max);
+  min_max_box_->setTitle("Values between Min and Max will be inside the region");
 
   vp->addWidget( propSelector_ );
-  vp->addWidget( min_max_box );
+  vp->addWidget( min_max_box_ );
+  min_max_box_->setHidden(true);
+
+
+  category_box_ = new QGroupBox(prop_box);
+  category_box_->setTitle("Select categories that define the region");
+  QVBoxLayout *v_cat = new QVBoxLayout( prop_box );
+
+  cat_selector_ = new MultipleCategorySelector();
+  v_cat->addWidget(cat_selector_);
+  category_box_->setLayout(v_cat);
+  category_box_->setHidden(true);
+  vp->addWidget( category_box_ );
+
 
 
   grid_box->setLayout(vg);
@@ -100,10 +121,13 @@ New_region_from_property_dialog( GsTL_project* proj,
 
   QHBoxLayout* bottom_layout = new QHBoxLayout( this);
   bottom_layout->setSpacing(9);
-  QPushButton* ok = new QPushButton( "Create", this);  
+  QPushButton* ok = new QPushButton( "Create", this);
+  QPushButton* close = new QPushButton( "Create and Close", this);
   QPushButton* cancel = new QPushButton( "Cancel", this);
+
   bottom_layout->addStretch();
   bottom_layout->addWidget( ok );
+  bottom_layout->addWidget( close );
   bottom_layout->addWidget( cancel );
 
   main_layout->addWidget( grid_box );
@@ -118,8 +142,13 @@ New_region_from_property_dialog( GsTL_project* proj,
   QObject::connect( gridSelector_, SIGNAL( activated( const QString& ) ),
                     propSelector_, SLOT( show_properties( const QString& ) ) );
 
+  QObject::connect( propSelector_, SIGNAL( activated( const QString& ) ),
+                    this, SLOT( set_filter_type(  ) ) );
+
   QObject::connect( ok, SIGNAL( clicked() ),
-                    this, SLOT( accept() ) );
+                    this, SLOT( create_region() ) );
+  QObject::connect( close, SIGNAL( clicked() ),
+                    this, SLOT( create_region_and_close() ) );
   QObject::connect( cancel, SIGNAL( clicked() ),
                     this, SLOT( reject() ) );
 
@@ -141,7 +170,6 @@ New_region_from_property_dialog::new_region_name() const {
   return new_region_->text();
 }
 
-
 QString 
 New_region_from_property_dialog::get_min_filter_value() const{
   return minFilter_->text();
@@ -149,4 +177,92 @@ New_region_from_property_dialog::get_min_filter_value() const{
 QString 
 New_region_from_property_dialog::get_max_filter_value() const {
   return maxFilter_->text();
+}
+
+QStringList New_region_from_property_dialog::get_selected_categories() const{
+  QStringList current_selection;
+  for( int i = 0; i < cat_selector_->count() ; i++ ) {
+	if( !cat_selector_->item(i)->isSelected() ) continue;
+	current_selection.push_back( cat_selector_->item(i)->text() );
+  }
+  return current_selection;
+}
+
+
+void New_region_from_property_dialog::set_filter_type(){
+  QString grid_name = selected_grid();
+  QString prop_name = selected_property();
+  if(grid_name.isEmpty() || prop_name.isEmpty()) return;
+  SmartPtr< Named_interface > ni =
+	Root::instance()->interface( gridModels_manager + "/" + grid_name.toStdString() );
+  Geostat_grid* grid = dynamic_cast<Geostat_grid*>(ni.raw_ptr());
+  GsTLGridCategoricalProperty *prop = grid->categorical_property(prop_name.toStdString());
+  if(prop) {
+	  min_max_box_->setHidden(true);
+	  category_box_->setVisible(true);
+	  isCategorical_ = true;
+  } else {
+	  category_box_->setHidden(true);
+	  min_max_box_->setVisible(true);
+	  isCategorical_ = false;
+  }
+
+}
+
+bool New_region_from_property_dialog::isCategorical() const{
+	return isCategorical_;
+}
+
+void New_region_from_property_dialog::create_region(){
+	  QString grid_name = selected_grid();
+	  QString prop_name = selected_property();
+	  QString region_name = new_region_name();
+
+	  if( grid_name.isEmpty() || region_name.isEmpty() || prop_name.isEmpty()) return;
+
+
+	  QApplication::setOverrideCursor( Qt::WaitCursor );
+
+	  QString sep = Actions::separator.c_str();
+	  QStringList list;
+	  list.append( grid_name );
+	  list.append(region_name);
+	  list.append( prop_name );
+
+	  std::string command;
+	  if(this->isCategorical()) {
+		 list.append(this->get_selected_categories());
+		 command = "SetRegionFromCategoricalPropertyIf";
+	  }
+	  else	{
+		list.append( this->get_min_filter_value() );
+		list.append( this->get_max_filter_value() );
+		command = "SetRegionFromPropertyIf";
+	  }
+	  std::string parameters = list.join( sep ).toStdString();
+	  if( parameters.empty() ) return;
+
+	  // call the DeleteObjectProperties action
+	  Error_messages_handler error_messages;
+
+
+
+	  bool ok = project_->execute( command, parameters, &error_messages );
+
+	  if( !ok ) {
+	    GsTLcerr << "Command " << command << " could not be performed. \n";
+	    if( !error_messages.empty() ) {
+	      GsTLcerr << error_messages.errors();
+	    }
+	    GsTLcerr << gstlIO::end;
+	  }
+
+	  QApplication::restoreOverrideCursor();
+	  project_->update();
+
+}
+
+void New_region_from_property_dialog::create_region_and_close(){
+	create_region();
+	accept();
 }

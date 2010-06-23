@@ -1311,8 +1311,11 @@ void QSP_application::new_region_from_property(){
   New_region_from_property_dialog* dialog = 
     new New_region_from_property_dialog( project_, this, "Create region from property" );
   dialog->setWindowTitle( "Create New Region" );
-  if( dialog->exec() == QDialog::Rejected ) return;
-
+  dialog->exec();
+  delete dialog;
+  //if( dialog->exec() == QDialog::Rejected ) return;
+//  delete
+/*
   QString grid_name = dialog->selected_grid();
   QString new_region_name = dialog->new_region_name();
   QString prop_name = dialog->selected_property();
@@ -1323,8 +1326,10 @@ void QSP_application::new_region_from_property(){
 
 
   new_region_from_property( grid_name, new_region_name, prop_name, minmax );
+  */
 }
 
+/*
 void QSP_application::new_region_from_property( const QString& qgrid_name,
                              const QString& new_region_name,               
                              const QString& prop_name,
@@ -1364,6 +1369,7 @@ void QSP_application::new_region_from_property( const QString& qgrid_name,
 
 
 }
+*/
 //==========================================================
 
 void QSP_application::new_mgrid_from_cgrid() {

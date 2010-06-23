@@ -119,11 +119,12 @@ class GUI_DECL QSP_application : public QMainWindow {
                              bool is_union);
   void merge_object_regions();
 
-
+/*
   void new_region_from_property( const QString& qgrid_name,
                              const QString& new_region_name,
                              const QString& prop_name,
                              const QStringList& thresholds );
+                             */
   void new_region_from_property();
 
   void new_mgrid_from_cgrid( const QString& cgrid_name,
