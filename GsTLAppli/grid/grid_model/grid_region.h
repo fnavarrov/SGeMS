@@ -77,6 +77,17 @@ class GRID_DECL GsTLGridRegion {
   /** Returns the total number of values in the region array
   */
   inline GsTLInt size() const {return accessor_.size();} 
+
+  /** Returns the total number of active values in the region array
+  */
+  inline GsTLInt active_size() const {
+    region::const_iterator it = accessor_.begin();
+    int n_active = 0;
+    for( ; it != accessor_.begin(); ++it) {
+      if(*it) n_active++;
+    }
+    return n_active;
+  }
  
   /** Returns the name of the region
   */
