@@ -76,6 +76,7 @@ GridSelectorBasic::GridSelectorBasic( QWidget* parent, const char* name,
   setDuplicatesEnabled(false);
   
   insertItem( 0,no_selection );
+  setCurrentIndex(0);
 
 }
 
@@ -1392,42 +1393,16 @@ GridSelector::GridSelector( QWidget* parent,
   if (name)
     setObjectName(name);
 
-  
-  QWidget *gridPage = new QWidget(this);
-  QVBoxLayout *qvboxlayoutGridPage = new QVBoxLayout(gridPage);
-//  qvboxlayoutGridPage->setMargin(0);
-  qvboxlayoutGridPage->setContentsMargins(0,0,0,0);
-  object_selector_ = new GridSelectorBasic(gridPage);
-  qvboxlayoutGridPage->addWidget( object_selector_ );
-
-  QWidget *regionPage = new QWidget(this);
-  QVBoxLayout *qvboxlayoutRegionPage = new QVBoxLayout(regionPage);
-  qvboxlayoutRegionPage->setContentsMargins(0,0,0,0);
-  region_selector_ = new SingleRegionSelector(regionPage);
-  qvboxlayoutRegionPage->addWidget(region_selector_);
-//  QVBoxLayout* grid_layout = new QVBoxLayout();
-//  object_selector_->setLayout(grid_layout);
- // QGroupBox* box = new QGroupBox("test");
-  //grid_layout->addWidget(object_selector_);
-  //box->setLayout(grid_layout);
-  
-  //grid_layout->addWidget(object_selector_);
-  //QVBoxLayout* region_layout = new QVBoxLayout();
-  //object_selector_->setLayout(region_layout);
-  //region_layout->addWidget(region_selector_);
-
-  addTab( gridPage, "Grid" );
-  addTab(regionPage,"Region");
-  
-//  addTab(object_selector_,"Grid");
-//  addTab(region_selector_,"Region");
+  object_selector_ = new GridSelectorBasic();
+  region_selector_ = new SingleRegionSelector();
+  this->addTab( object_selector_, "Grid" );
+  this->addTab(region_selector_,"Region");
   QVBoxLayout *layout = new QVBoxLayout(this);
-  //layout->addWidget(this);
+  layout->setContentsMargins(0,0,0,0);
+  this->setLayout(layout);
+//  this->setMinimumHeight( 60 );
+  this->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum );
 
-  this->setLayout( layout );
-
-  this->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed );
-  this->setMinimumHeight( 60 );
 
   object_selector_->init( project );
 
@@ -1444,13 +1419,7 @@ GridSelector::GridSelector( QWidget* parent,
 		   this, 
 		   SLOT( forward_region_changed() )
 		   );
-/*
-  QObject::connect( 
-		   region_selector_, 
-		   SIGNAL( activated( const QString& ) ),
-		   SIGNAL( region_changed( const QString& ) )
-		   );
-*/
+
   // Forward some signals
   QObject::connect( this, 
 		    SIGNAL( object_changed( const QString& ) ),

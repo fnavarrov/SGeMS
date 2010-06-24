@@ -174,5 +174,31 @@ protected:
 };
 
 
+/** A widget to choose multiple categories from a property
+ */
+class QTPLUGINS_DECL  MultipleCategorySelector : public QListWidget {
+
+  Q_OBJECT
+
+ public:
+  MultipleCategorySelector( QWidget* parent = 0, const char* name = 0 );
+  virtual ~MultipleCategorySelector() {}
+
+  public slots:
+    void show_categories( const QString& cat_def_name);
+
+  protected slots:
+    void selection_size();
+
+    signals:
+     void selected_count( int );
+
+protected:
+
+
+};
+
+
+
 
 #endif

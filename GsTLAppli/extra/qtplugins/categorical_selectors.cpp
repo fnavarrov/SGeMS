@@ -308,3 +308,55 @@ void CategoricalDefinitionViewer::show_definition( QString cat_def_name) {
 //    baseLayout_->addWidget(nameLabel);    
   }
 }
+
+
+
+//===============================================
+
+
+//===============================================
+
+MultipleCategorySelector::MultipleCategorySelector( QWidget* parent, const char* name )
+  : QListWidget( parent ) {
+  if (name)
+    setObjectName(name);
+
+  setSelectionMode( QAbstractItemView::ExtendedSelection );
+
+  QObject::connect( this, SIGNAL( itemSelectionChanged() ),
+		    this, SLOT( selection_size() ) );
+}
+
+void MultipleCategorySelector::show_categories( const QString& cat_def_name ) {
+  QListWidget::clear();
+
+  if( cat_def_name.isEmpty() || cat_def_name == GridSelectorBasic::no_selection ) return;
+
+  SmartPtr<Named_interface> ni =
+    Root::instance()->interface( categoricalDefinition_manager+"/"+cat_def_name.toStdString() );
+
+	CategoricalPropertyDefinitionName* cat_def =
+	  dynamic_cast<CategoricalPropertyDefinitionName*>(ni.raw_ptr());
+
+
+	if(cat_def != 0) {
+	  for(unsigned int i=0; i<cat_def->number_of_category(); i++) {
+		  addItem( cat_def->get_category_name(i).c_str() );
+	  }
+	}
+
+
+}
+
+
+void MultipleCategorySelector::selection_size() {
+  int size=0;
+  for( unsigned int i = 0; i < count() ; i++ ) {
+    QListWidgetItem * it = item(i);
+    if( it->isSelected( ) && !it->text().isEmpty() ) {
+      size++;
+    }
+  }
+  emit( selected_count(size) );
+}
+

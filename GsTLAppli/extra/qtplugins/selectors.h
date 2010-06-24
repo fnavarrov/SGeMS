@@ -479,6 +479,7 @@ class QTPLUGINS_DECL  GridSelector : public QTabWidget {
 
 
  protected:
+ // QTabWidget* tab_;
   GridSelectorBasic* object_selector_;
   SingleRegionSelector* region_selector_;
 
