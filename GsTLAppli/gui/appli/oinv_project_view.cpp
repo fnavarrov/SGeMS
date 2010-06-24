@@ -915,17 +915,6 @@ void Project_view_gui::update_display(BaseTreeItem* item)
 		item->setVisible(!item->visible());
 		if (item->visible())
 		{
-			// set all other objects to not visible
-			QTreeWidgetItem* root = Object_tree->topLevelItem(0);
-			for (int i = 0; i < root->childCount(); ++i)
-			{
-				BaseTreeItem* child = dynamic_cast<BaseTreeItem*> (root->child(i));
-				if (child != item)
-				{
-					child->setVisible(false);
-				}
-			}
-
 			appli_message("displaying " << qstring2string(obj_name));
 			display_object(obj_name);
 		} else
