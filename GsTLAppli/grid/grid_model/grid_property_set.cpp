@@ -69,7 +69,7 @@ void GsTLGridPropertyGroup::set_group_info(const std::string& info_str) {
 }
 
 
-std::string GsTLGridPropertyGroup::get_group_info(){
+std::string GsTLGridPropertyGroup::get_group_info() const{
   std::map<std::string, std::string>::const_iterator it = info_.find("Info");
   if(it == info_.end()) return "";
   return it->second;
