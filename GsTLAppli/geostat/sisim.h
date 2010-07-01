@@ -75,6 +75,7 @@ class GEOSTAT_DECL Sisim : public Geostat_algo {
    
   long int seed_; 
   int nb_of_realizations_; 
+  bool is_categorical_;
  
   Geostat_grid* harddata_grid_;   
   GsTLGridProperty* harddata_property_; 

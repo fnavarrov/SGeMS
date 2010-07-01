@@ -15,7 +15,8 @@ HEADERS += common.h \
            gslib/filter_qt_dialogs.h \
            gslib/gslib_filter.h \
            csv_filter_qt_dialogs.h \
-           csv_filter.h
+           csv_filter.h \
+           sgems_folder_filter.h
 FORMS += gslib/gslib_pointset_import.ui \
          gslib/gslibgridimport.ui \
          gslib/gslibimportwizard.ui \
@@ -29,7 +30,8 @@ SOURCES += library_filters_init.cpp \
            gslib/filter_qt_dialogs.cpp \
            gslib/gslib_filter.cpp \
            csv_filter_qt_dialogs.cpp \
-           csv_filter.cpp           
+           csv_filter.cpp \
+           sgems_folder_filter.cpp           
 
 TARGET=GsTLAppli_filters
 QT += xml

@@ -12,11 +12,11 @@
 # PYTHON_SO: the name of the python .so file, eg python2.4 if the .so file is libpython2.4.so
 
 
-GSTLHOME = /home/aboucher/data/code-dev/GsTL
-GSTLAPPLI_HOME =  /home/aboucher/data/code-dev/GsTLAppli
+GSTLHOME = /home/aboucher/data/code-dev/linux/GsTL
+GSTLAPPLI_HOME =  /home/aboucher/data/code-dev/linux/sgems
 INVENTOR_LIB = /usr/lib
 INVENTOR_INCLUDE = /usr/include
-BOOST_INCLUDE = /home/aboucher/data/code-dev/boost/boost_1_38
+BOOST_INCLUDE = /usr/include
 PYTHON_LIB = /usr/lib
 PYTHON_INCLUDE = /usr/include/python2.6
 PYTHON_SO = python2.6

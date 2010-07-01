@@ -30,6 +30,7 @@
 #include <GsTLAppli/filters/gslib/gslib_filter.h>
 #include <GsTLAppli/filters/simulacre_filter.h>
 #include <GsTLAppli/filters/csv_filter.h>
+#include <GsTLAppli/filters/sgems_folder_filter.h>
 #include <GsTLAppli/utils/gstl_messages.h>
 
 int library_filters_init::references_ = 0;
@@ -148,6 +149,8 @@ bool library_filters_init::bind_toplevel_infilters_factories(Manager* dir) {
                 Simulacre_input_filter::create_new_interface );
   dir->factory( Csv_infilter().filter_name(),
                 Csv_infilter::create_new_interface );
+  dir->factory( Sgems_folder_input_filter().filter_name(),
+								Sgems_folder_input_filter::create_new_interface );
   return true;
 }
 
@@ -198,6 +201,8 @@ bool library_filters_init::bind_output_filters_factories(Manager* dir) {
 		Gslib_outfilter::create_new_interface );
   dir->factory( Simulacre_output_filter().filter_name(),
                 Simulacre_output_filter::create_new_interface );
+  dir->factory( Sgems_folder_output_filter().filter_name(),
+								Sgems_folder_output_filter::create_new_interface );
 
   return true;
 }

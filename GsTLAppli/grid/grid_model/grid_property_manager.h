@@ -139,6 +139,7 @@ class GRID_DECL Grid_property_manager {
    * existed ).  
    */ 
   GsTLGridProperty* add_property( const std::string& name ); 
+  GsTLGridProperty* add_property_from_disk( const std::string& name, const std::string& filename );
 
   /** Adds a new categorical property
    * @return a pointer to the new categroical property. The pointer is 0 if
@@ -148,6 +149,11 @@ class GRID_DECL Grid_property_manager {
   GsTLGridCategoricalProperty*
     add_categorical_property( const std::string& name,
   		const std::string definition_name = "Default");
+  GsTLGridCategoricalProperty*
+    add_categorical_property_from_disk( const std::string& name,
+    	const std::string& filename,
+  		const std::string definition_name = "Default");
+
 
   /** Removes a property, but does not change the properties' id: 
    * if there are 3 properties, "prop0", "prop1", and "prop2", with id 

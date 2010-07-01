@@ -92,7 +92,10 @@ GridSelectorBasic::~GridSelectorBasic() {
 }
 
 void GridSelectorBasic::setCurrentText( const QString& text ) {
-  setItemText(currentIndex(), text);
+	int id = findText(text);
+	if(id == currentIndex()) return;
+	setCurrentIndex(id);
+//  setItemText(currentIndex(), text);
   emit activated( text );
 }
 

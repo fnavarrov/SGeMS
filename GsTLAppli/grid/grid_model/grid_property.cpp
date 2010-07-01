@@ -43,6 +43,12 @@ GsTLGridProperty::GsTLGridProperty( GsTLInt size, const std::string& name,
   accessor_ = new MemoryAccessor( size, default_value );
 }
 
+GsTLGridProperty::GsTLGridProperty( GsTLInt size, const std::string& name,
+			const std::string& in_filename, property_type default_value)
+: name_( name ), region_(NULL) {
+accessor_ = new DiskAccessor( size, name, in_filename );
+}
+
 GsTLGridProperty::~GsTLGridProperty() {
   delete accessor_;
 }
@@ -230,6 +236,72 @@ DiskAccessor::DiskAccessor( GsTLInt size, const std::string& filename,
   }
 
   close_cache_stream();
+}
+
+DiskAccessor::DiskAccessor( GsTLInt size, const std::string& filename,
+						 const std::string& in_filename, const bool* flags )
+	 : buffer_size_( std::min( size, 10000 ) ) {
+
+	  cache_filename_ = DiskAccessor::cache_filename( filename );
+
+	  // if the file already exists, erase its content by opening it in write mode
+	  // (I don't know any other easy way to do that...)
+	  std::ofstream eraser( cache_filename_.c_str() );
+	  eraser.close();
+
+	  // Open a stream to the cache file in read/write mode
+	  cache_stream_.open( cache_filename_.c_str(),
+			      std::ios::in | std::ios::out | std::ios::binary );
+	  if( !cache_stream_ ) {
+	    GsTLcerr << "Can't write temporary file. Check that the directory is writable\n"
+	             << "and that there is enough disk space left" << gstlIO::end;
+	  }
+
+
+	  flags_position_begin_ = static_cast<long int>( sizeof( float ) ) *
+	                          static_cast<long int>( size );
+
+	  val_bound_indexes_.first = -9;
+	  val_bound_indexes_.second = -9;
+	  flags_bound_indexes_.first = -9;
+	  flags_bound_indexes_.second = -9;
+	  val_buffer_modified_ = false;
+	  size_ = size;
+
+	  val_buffer_ = new float[buffer_size_];
+	  flags_buffer_ = new bool[buffer_size_];
+
+
+	  std::fstream in_stream(in_filename.c_str());
+
+	  // If property values or flags were supplied, write them to file
+	  if( !in_stream.bad() ) {
+	  	cache_stream_ << in_stream.rdbuf();
+//	    long int remaining = static_cast<long int>( size_ ) *
+//	                         static_cast<long int>( sizeof(float) );
+//	    cache_stream_.write( (char*) in_stream., remaining );
+	  }
+	  else {
+	    // write arbitrary values
+	    float arbitrary = -9966699;
+	    for(GsTLInt i=0; i< size; i++ )
+	      cache_stream_.write( (char*) &arbitrary, 1 );
+	  }
+
+	  if( flags ) {
+	    long int remaining = static_cast<long int>( size_ ) *
+	                         static_cast<long int>( sizeof(bool) );
+	    cache_stream_.write( (char*) flags, remaining );
+	  }
+	  else {
+	    // write default flag value (false)
+	    bool default_value = false;
+	    for(GsTLInt i=0; i< size; i++ )
+	      cache_stream_.write( (char*) &default_value, 1 );
+	  }
+
+	  close_cache_stream();
+
 }
 
 

@@ -108,6 +108,11 @@ class APPLI_DECL GsTL_project : public Named_interface {
   void name( const std::string& name );
   std::string name() const { return project_name_; }
 
+  std::string last_input_path() const { return last_input_path_; }
+   void last_input_path(std::string path) { last_input_path_ = path; }
+
+  std::string last_output_path() const { return last_output_path_; }
+  void last_output_path(std::string path) { last_output_path_ = path; }
 
  private: 
 //  typedef std::list< SmartPtr<Project_view> >::iterator iterator; 
@@ -119,6 +124,11 @@ class APPLI_DECL GsTL_project : public Named_interface {
   bool project_modified_;
 
   std::string project_name_;
+
+
+  std::string last_input_path_;
+  std::string last_output_path_;
+
 }; 
  
  

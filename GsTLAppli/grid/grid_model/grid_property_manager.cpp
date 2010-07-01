@@ -28,6 +28,7 @@
 
 #include <GsTLAppli/grid/grid_model/grid_property_manager.h>
 #include <GsTLAppli/utils/string_manipulation.h> 
+#include <GsTLAppli/appli/manager_repository.h>
 
 #include <stdlib.h>
 #include <GsTLAppli/grid/grid_model/grid_property_manager.h>
@@ -39,6 +40,10 @@ MultiRealization_property::MultiRealization_property()
   : size_( 0 ),
     prop_manager_( 0 ),
     group_(0){
+	SmartPtr<Named_interface> ni =
+			Root::instance()->interface( categoricalDefinition_manager+"/Default"  );
+  definition_=
+    dynamic_cast<CategoricalPropertyDefinition*>(ni.raw_ptr());
 }
 
 MultiRealization_property::MultiRealization_property( const std::string& name,
@@ -47,7 +52,12 @@ MultiRealization_property::MultiRealization_property( const std::string& name,
     prop_manager_( manager ),
     group_(0){
   size_ = 0;
-  definition_ = 0;
+
+  SmartPtr<Named_interface> ni =
+  		Root::instance()->interface( categoricalDefinition_manager+"/Default"  );
+  definition_=
+    dynamic_cast<CategoricalPropertyDefinition*>(ni.raw_ptr());
+
 }
 
 MultiRealization_property::MultiRealization_property( const std::string& name,
@@ -57,7 +67,14 @@ MultiRealization_property::MultiRealization_property( const std::string& name,
     prop_manager_( manager ),
     group_(0){
   size_ = 0;
-  definition_ = cat_definition;
+  if(cat_definition == 0) {
+    SmartPtr<Named_interface> ni =
+    		Root::instance()->interface( categoricalDefinition_manager+"/Default"  );
+    definition_=
+      dynamic_cast<CategoricalPropertyDefinition*>(ni.raw_ptr());
+  }
+  else
+  	definition_ = cat_definition;
 }
 
 MultiRealization_property::
@@ -233,6 +250,37 @@ Grid_property_manager::add_property( const std::string& name ) {
 }
 
 
+GsTLGridProperty*
+Grid_property_manager::add_property_from_disk( const std::string& name, const std::string& filename ) {
+
+  appli_assert( size_ != 0 );
+  Property_map::iterator it = properties_map_.find( name );
+  if( it == properties_map_.end() ) {
+    int new_prop_id = properties_.size();
+    GsTLGridProperty* prop = new GsTLGridProperty( size_, name, filename );
+
+    // Check if the property has been correctly created
+    if(prop->size() == 0 ) {
+        delete prop;
+        GsTLcerr << "The property "<<name<<" could not be created,\n"<<
+          "probably running out of memory" << gstlIO::end;
+        return 0;
+
+    }
+    properties_map_[name] = new_prop_id;
+    properties_.push_back( prop );
+
+    // if no property was selected before, select the first one in the list
+    if( selected_property_ == -1 )
+      selected_property_ = new_prop_id;
+
+    return properties_[ new_prop_id ];
+  }
+  else
+    return 0 ;
+}
+
+
 GsTLGridCategoricalProperty*
 Grid_property_manager::add_categorical_property( const std::string& name,
                                                 const std::string definition_name) {
@@ -265,6 +313,40 @@ Grid_property_manager::add_categorical_property( const std::string& name,
     return 0 ;
 }
 
+
+
+GsTLGridCategoricalProperty*
+Grid_property_manager::add_categorical_property_from_disk( const std::string& name,
+																								const std::string& filename,
+                                                const std::string definition_name) {
+
+  appli_assert( size_ != 0 );
+  Property_map::iterator it = properties_map_.find( name );
+  if( it == properties_map_.end() ) {
+    int new_prop_id = properties_.size();
+    GsTLGridProperty* prop = new GsTLGridCategoricalProperty(filename, size_, name, definition_name);
+
+    // Check if the property has been correctly created
+    if(prop->size() == 0 ) {
+        delete prop;
+        GsTLcerr << "The property "<<name<<" could not be created,\n"<<
+          "probably running out of memory" << gstlIO::end;
+        return 0;
+
+    }
+    properties_map_[name] = new_prop_id;
+    properties_.push_back( prop );
+    //properties_.push_back( new GsTLGridProperty( size_, name ) );
+
+    // if no property was selected before, select the first one in the list
+    if( selected_property_ == -1 )
+      selected_property_ = new_prop_id;
+
+    return dynamic_cast<GsTLGridCategoricalProperty*>(properties_[ new_prop_id ]);
+  }
+  else
+    return 0 ;
+}
 
 bool 
 Grid_property_manager::remove_property( const std::string& name ) {

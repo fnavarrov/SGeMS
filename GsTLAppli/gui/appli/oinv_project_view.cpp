@@ -935,14 +935,20 @@ void Project_view_gui::update_display(BaseTreeItem* item)
 		// set all other properties to not visible
 		BaseTreeItem* grid_item = Object_tree->getGridItem(item);
 		BaseTreeItem* parent = dynamic_cast<BaseTreeItem*> (item->parent());
-		QList<BaseTreeItem*> allChildren = Object_tree->getAllChildItems(Object_tree->topLevelItem(0));
+	//	QList<BaseTreeItem*> allChildren = Object_tree->getAllChildItems(Object_tree->topLevelItem(0));
+		QList<BaseTreeItem*> allChildren = grid_item->children();
 		for (int i = 0; i < allChildren.size(); ++i)
 		{
 			BaseTreeItem* child = allChildren.at(i);
-			if (!((child == item) || (child == parent) || (child == grid_item)))
+			//if (!((child == item) || (child == parent) || (child == grid_item)))
+			if (child != item)
 			{
 				child->setVisible(false);
 			}
+		}
+
+		if (dynamic_cast<SimulationSetTreeItem*> (parent) ) {
+			parent->setVisible(item->visible());
 		}
 
 		if (item->visible())
@@ -1055,9 +1061,15 @@ void Project_view_gui::display_property(const QString& grid, const QString& prop
 	desc_pair.second->property_display_mode(Oinv::PAINTED);
 	QApplication::restoreOverrideCursor();
 
-#if defined(_WIN32) || defined(WIN32)
+/*
+ * AB: I do not know why this was restricted to windows system.  It is also needed
+ * for Linux to get the display to change once clicked.  When commented we need to
+ * force an update to have the display updated.
+ */
+
+//#if defined(_WIN32) || defined(WIN32)
 	desc_pair.second->oinv_node()->touch();
-#endif 
+//#endif
 
 }
 
@@ -1068,9 +1080,9 @@ void Project_view_gui::undisplay_property(const QString& grid, const QString&)
 	appli_assert(desc_pair.first == true);
 	desc_pair.second->property_display_mode(Oinv::NOT_PAINTED);
 
-#if defined(_WIN32) || defined(WIN32)
+//#if defined(_WIN32) || defined(WIN32)
 	desc_pair.second->oinv_node()->touch();
-#endif
+//#endif
 
 }
 

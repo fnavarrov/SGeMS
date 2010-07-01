@@ -123,7 +123,12 @@ int Sisim::median_ik( Progress_notifier* progress_notifier ) {
     // Create a new property to hold the realization and tell the simulation 
     // grid to use it as the current property 
     appli_message( "Creating new realization" );
-    GsTLGridProperty* prop = multireal_property_->new_realization();
+    GsTLGridProperty* prop;
+    if(is_categorical_)
+    	prop = multireal_property_->new_categorical_realization();
+    else
+    	prop = multireal_property_->new_realization();
+
     simul_grid_->select_property( prop->name() );
     neighborhood_->select_property( prop->name() );
 
@@ -330,7 +335,7 @@ bool Sisim::initialize( const Parameters_handler* parameters,
     return false;
   }
 
-  bool categorical = 
+  is_categorical_ =
     String_Op::to_number<bool>( 
 		    parameters->value( "Categorical_Variable_Flag.value" )
 	    );
@@ -347,7 +352,7 @@ bool Sisim::initialize( const Parameters_handler* parameters,
     return false;
   }
 
-  if( categorical ) {
+  if( is_categorical_ ) {
     // we ignore the input threshold values. The categories are numbered
     // from 0 to k (if there are k+1 categories).
     ccdf_ = new Categ_non_param_cdf<float>( marginal_probs.size() );
@@ -573,7 +578,7 @@ bool Sisim::initialize( const Parameters_handler* parameters,
   //-------------
   // Set-up the cdf estimator
 
-  if( categorical ) {
+  if( is_categorical_ ) {
     Indicator<double> indicator( new Class_indicator_function<double> );
 /*    cdf_estimator_ = 
       new CdfEstimator( covar_vector_.begin(), covar_vector_.end(),

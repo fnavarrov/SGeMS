@@ -71,11 +71,18 @@ class GRID_DECL Point_set : public Geostat_grid {
 
   //----------------------------
   // Properties management 
-  virtual GsTLGridProperty* add_property( const std::string& name ); 
+  virtual GsTLGridProperty* add_property( const std::string& name );
+
+  virtual GsTLGridProperty* add_property_from_disk( const std::string& name,
+																										const std::string& filename );
  
  
   virtual GsTLGridCategoricalProperty* add_categorical_property(
 			  const std::string& name,
+			  const std::string& definition_name = "Default");
+
+  virtual GsTLGridCategoricalProperty* add_categorical_property_from_disk(
+			  const std::string& name,const std::string& filename,
 			  const std::string& definition_name = "Default");
 
   virtual bool remove_property( const std::string& name ); 

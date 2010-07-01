@@ -88,11 +88,23 @@ GsTLGridProperty* RGrid::add_property( const std::string& name ) {
   return property_manager_.add_property( name );
 }
 
+GsTLGridProperty* RGrid::add_property_from_disk( const std::string& name, const std::string& filename ) {
+
+  return property_manager_.add_property_from_disk( name, filename );
+}
 
 GsTLGridCategoricalProperty* RGrid::add_categorical_property(
 		const std::string& name,
 		const std::string& definition_name){
 	return property_manager_.add_categorical_property( name, definition_name );
+}
+
+
+GsTLGridCategoricalProperty* RGrid::add_categorical_property_from_disk(
+		const std::string& name,
+		const std::string& filename,
+		const std::string& definition_name){
+	return property_manager_.add_categorical_property_from_disk( name, filename, definition_name );
 }
 
 bool RGrid::remove_property( const std::string& name ) {

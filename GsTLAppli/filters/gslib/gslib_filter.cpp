@@ -548,9 +548,9 @@ Geostat_grid* Gslib_mgrid_infilter::readPointsetFormat(std::ifstream& infile, Re
 */
     int node_id;
     Geostat_grid::location_type loc;
-	  loc[0] = String_Op::to_number<float>(buf[X_col_id]);
-	  loc[1] = String_Op::to_number<float>(buf[Y_col_id]);
-	  loc[2] = String_Op::to_number<float>(buf[Z_col_id]);
+	  loc[0] = String_Op::to_number<GsTLCoord>(buf[X_col_id]);
+	  loc[1] = String_Op::to_number<GsTLCoord>(buf[Y_col_id]);
+	  loc[2] = String_Op::to_number<GsTLCoord>(buf[Z_col_id]);
     GsTLGridNode ijk;
     grid->geometry()->grid_coordinates(ijk,loc);
     node_id = grid->cursor()->node_id(ijk[0],ijk[1],ijk[2]);

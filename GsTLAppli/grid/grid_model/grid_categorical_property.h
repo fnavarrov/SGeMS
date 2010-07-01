@@ -103,6 +103,9 @@ public:
 	GsTLGridCategoricalProperty( GsTLInt size, const std::string& name,
 				const std::string cat_definition_name = "Default",
 				property_type default_value = no_data_value );
+	GsTLGridCategoricalProperty(const std::string& in_filename, GsTLInt size, const std::string& name,
+				const std::string cat_definition_name = "Default",
+				property_type default_value = no_data_value );
 /*
 	GsTLGridCategoricalProperty( GsTLGridProperty* cont_prop,
 				const std::string cat_definition_name = "Default",

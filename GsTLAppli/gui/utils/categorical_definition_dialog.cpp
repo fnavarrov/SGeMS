@@ -120,19 +120,13 @@ void View_category_definition_dialog::display_properties(const QString& def_name
   appli_assert( ni );
 
   properties_viewer_->document()->clear();
-	CategoricalPropertyDefinitionName* cat_def = 
-    dynamic_cast<CategoricalPropertyDefinitionName*>(ni.raw_ptr());
-  if( cat_def ) {
-    CategoricalPropertyDefinition::property_set::const_iterator it = cat_def->begin_property();
-    for( ; it != cat_def->end_property(); ++it) {
-//        QTextLine line = properties_viewer_->createLine();
-        properties_viewer_->append(QString((*it)->name().c_str()));
-    }
-  } 
-  else {
-//    QTextLine line = properties_viewer_->createLine();
-    properties_viewer_->setText("Default naming convention");
-  }
+	CategoricalPropertyDefinition* cat_def =
+    dynamic_cast<CategoricalPropertyDefinition*>(ni.raw_ptr());
+
+	CategoricalPropertyDefinition::property_set::const_iterator it = cat_def->begin_property();
+	for( ; it != cat_def->end_property(); ++it) {
+			properties_viewer_->append(QString((*it)->name().c_str()));
+	}
 
 }
 

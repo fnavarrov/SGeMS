@@ -194,6 +194,30 @@ GsTLGridCategoricalProperty::GsTLGridCategoricalProperty(
 
 }
 
+
+GsTLGridCategoricalProperty::GsTLGridCategoricalProperty(
+		const std::string& in_filename, GsTLInt size, const std::string& name,
+    const std::string cat_definition_name,
+		property_type default_value)
+		: GsTLGridProperty(size,name,in_filename, no_data_value) {
+
+  SmartPtr<Named_interface> ni =
+    Root::instance()->interface( categoricalDefinition_manager+"/"+cat_definition_name  );
+  appli_assert( ni );
+
+  cat_definitions_ =
+    dynamic_cast<CategoricalPropertyDefinition*>(ni.raw_ptr());
+  if(cat_definitions_ == 0) {
+    ni = Root::instance()->interface( categoricalDefinition_manager+"/Default" );
+    cat_definitions_ =
+      dynamic_cast<CategoricalPropertyDefinition*>(ni.raw_ptr());
+  }
+  cat_definitions_->register_property(this);
+
+}
+
+
+
 /*
 GsTLGridCategoricalProperty::GsTLGridCategoricalProperty( 
         GsTLGridProperty* cont_prop, const std::string& name,

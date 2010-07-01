@@ -46,6 +46,7 @@
 #include <GsTLAppli/filters/filter.h>
 #include <GsTLAppli/grid/grid_model/geostat_grid.h>
 #include <GsTLAppli/grid/grid_model/cartesian_grid.h>
+#include <GsTLAppli/grid/grid_model/grid_categorical_property.h>
 
 // these 3 Qt files are needed by Load_project
 #include <qdir.h>
@@ -1154,6 +1155,92 @@ Set_region_from_property::create_new_interface( std::string& ) {
   return new Set_region_from_property; 
 }
 
+
+//================================================
+/* Set_region_from_categorical_property grid_name::region::prop::name1[::name2::]
+* will set the "region" based on property "prop" in grid "grid_name"
+* being in of of the category.  Uninformed values are automatically set as
+* outside the region
+*/
+bool Set_region_from_categorical_property::
+init( std::string& parameters, GsTL_project* proj,
+      Error_messages_handler* errors ) {
+
+  std::vector< std::string > params =
+    String_Op::decompose_string( parameters, Actions::separator,
+                      				   Actions::unique );
+
+  if( params.size() <4 ) {
+    errors->report( "some parameters are missing" );
+    return false;
+  }
+
+  SmartPtr<Named_interface> grid_ni =
+    Root::instance()->interface( gridModels_manager + "/" + params[0] );
+  Geostat_grid* grid = dynamic_cast<Geostat_grid*>( grid_ni.raw_ptr() );
+  if( !grid ) {
+    std::ostringstream message;
+    message << "No grid called \"" << params[0] << "\" was found";
+    errors->report( message.str() );
+    return false;
+  }
+
+
+
+  GsTLGridCategoricalProperty* prop = grid->categorical_property(params[2]);
+  if( !prop ) {
+    std::ostringstream message;
+    message << "Grid \"" << params[0] << "\" has no categorical property called \"" << params[2] << "\"";
+    errors->report( message.str() );
+    return false;
+  }
+
+  std::vector<int> in_region_code;
+  const CategoricalPropertyDefinition *cat_def = prop->get_category_definition();
+  for(int i=3; i< params.size(); i++) {
+	  if( !cat_def->is_category_exist(params[i]) ) {
+		    std::ostringstream message;
+		    message << "Property \"" << params[2] << "\" has no category called \"" << params[i] << "\"";
+		    errors->report( message.str() );
+		    return false;
+
+	  }
+	  in_region_code.push_back( cat_def->category_id(params[i]) );
+  }
+  std::sort(in_region_code.begin(), in_region_code.end());
+
+  GsTLGridRegion* region = grid->add_region(params[1]);
+
+  for( int i = 0 ; i < prop->size() ; i++ ) {
+    if( !prop->is_informed( i ) ) {
+    	region->set_region_value(false,i);
+    }
+    else {
+    	std::vector<int>::const_iterator it =
+    			std::find(in_region_code.begin(), in_region_code.end(), prop->get_value(i));
+    	if(it != in_region_code.end()) {
+    		region->set_region_value(true,i);
+    	}
+    	else {
+    		region->set_region_value(false,i);
+    	}
+    }
+  }
+
+  proj->update( params[0] );
+  return true;
+}
+
+
+bool Set_region_from_categorical_property::exec() {
+  return true;
+}
+
+
+Named_interface*
+Set_region_from_categorical_property::create_new_interface( std::string& ) {
+  return new Set_region_from_categorical_property;
+}
 
 //================================================
 /* Base class for combining regions

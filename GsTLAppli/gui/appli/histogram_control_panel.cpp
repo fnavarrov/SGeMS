@@ -147,9 +147,7 @@ Histogram_control_panel::get_region( const PropertySelector* object_selector ) {
   if( object_selector->selectedGrid().isEmpty() ||
       object_selector->selectedRegion().isEmpty() ) return 0;
 
-  QByteArray tmp;
-  tmp = object_selector->selectedGrid().toLatin1() ;
-  std::string grid_name( tmp.constData());
+  std::string grid_name = object_selector->selectedGrid().toStdString();
   Geostat_grid* grid = dynamic_cast<Geostat_grid*>(
                 Root::instance()->interface(
                                             gridModels_manager + "/" + grid_name
@@ -158,10 +156,9 @@ Histogram_control_panel::get_region( const PropertySelector* object_selector ) {
 
   appli_assert( grid );
 
-  tmp = object_selector->selectedRegion().toLatin1() ;
-  std::string region_name( tmp.constData());
+  std::string region_name = object_selector->selectedRegion().toStdString();
   GsTLGridRegion* region = grid->region( region_name );
-  appli_assert( region_name.empty() );
+//  appli_assert( region_name.empty() );
   return region;
 }
 

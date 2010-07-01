@@ -266,7 +266,9 @@ static PyObject* sgems_set_categorical_property_alpha( PyObject *self, PyObject 
 
   if(!cat_def) {
     //No catDef exist with that input name: need to create one
-	  ni = Root::instance()->new_interface( categoricalDefinition_manager, cat_def_name);
+    ni = Root::instance()->new_interface( "categoricaldefinition://"+cat_def_name,
+                                           categoricalDefinition_manager +"/"+cat_def_name );
+	//  ni = Root::instance()->new_interface( categoricalDefinition_manager, cat_def_name);
     cat_def = dynamic_cast<CategoricalPropertyDefinitionName*>(ni.raw_ptr());
 	  for( int i=0 ; i < size ; i++ ) {
 		  char* code;

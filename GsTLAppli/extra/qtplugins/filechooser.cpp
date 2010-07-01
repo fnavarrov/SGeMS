@@ -27,6 +27,8 @@
 **********************************************************************/
 
 #include <GsTLAppli/extra/qtplugins/filechooser.h>
+#include <GsTLAppli/appli/manager_repository.h>
+#include <GsTLAppli/appli/project.h>
 
 #include <qlineedit.h>
 #include <qpushbutton.h>
@@ -83,12 +85,31 @@ QString FileChooser::fileName() const
 void FileChooser::chooseFile()
 {
   QString fn;
+  QString path;
+  SmartPtr<Named_interface> ni =
+    Root::instance()->interface( projects_manager + "/" + "project" );
+  GsTL_project* project = dynamic_cast<GsTL_project*>( ni.raw_ptr() );
+
   switch( mode() ) {
   case File:
-    fn = QFileDialog::getOpenFileName( this, "", lineEdit->text(), QString::null);
+  	if ( lineEdit->text().isEmpty() && project)  {
+  		path = QString(project->last_input_path().c_str() );
+  	}
+  	else {
+  		path = lineEdit->text();
+  	}
+    fn = QFileDialog::getOpenFileName( this, "", path, QString::null);
+    if(!fn.isEmpty())  project->last_input_path(path.toStdString());
     break;
   case Any:
+  	if ( lineEdit->text().isEmpty() && project)  {
+  		path = QString(project->last_output_path().c_str() );
+  	}
+  	else {
+  		path = lineEdit->text();
+  	}
     fn = QFileDialog::getSaveFileName( this, "", lineEdit->text(), QString::null );
+    if(!fn.isEmpty())  project->last_output_path(path.toStdString());
     break;
   case Directory:
     fn = QFileDialog::getExistingDirectory( this, lineEdit->text() );

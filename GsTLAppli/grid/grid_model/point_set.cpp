@@ -67,18 +67,33 @@ Point_set::~Point_set()
    
 }
 
-GsTLGridProperty* Point_set::add_property( const std::string& name )
+GsTLGridProperty*
+Point_set::add_property( const std::string& name )
                                    
 {
   return point_prop_.add_property( name );
 }
 
-GsTLGridCategoricalProperty* Point_set::add_categorical_property(
+GsTLGridProperty*
+Point_set::add_property_from_disk(const std::string& name,
+																					const std::string& filename){
+	return point_prop_.add_property_from_disk( name, filename );
+}
+
+GsTLGridCategoricalProperty*
+Point_set::add_categorical_property(
 		const std::string& name,
 		const std::string& definition_name){
 	return point_prop_.add_categorical_property( name, definition_name );
 }
 
+GsTLGridCategoricalProperty*
+Point_set::add_categorical_property_from_disk(
+		const std::string& name,
+		const std::string& filename,
+		const std::string& definition_name){
+	return point_prop_.add_categorical_property_from_disk( name, filename, definition_name );
+}
 
 bool Point_set::remove_property(const std::string& name)
 {

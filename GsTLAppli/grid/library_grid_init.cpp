@@ -173,6 +173,16 @@ bool library_grid_init::init_categorical_definition_factory() {
     return false;
   }
   dir->factory( "categoricaldefinition", create_new_categorical_definition );
+
+// Add the Default definition
+  SmartPtr<Named_interface>  ni =
+  		Root::instance()->new_interface( "categoricaldefinition://Default",
+																				categoricalDefinition_manager +"/Default");
+
+  if(ni.raw_ptr() == 0) {
+    GsTLlog << "could not the default categorical definition \n";
+    return false;
+  }
   return true;
 }
 

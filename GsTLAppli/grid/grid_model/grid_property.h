@@ -60,6 +60,8 @@ class GRID_DECL GsTLGridProperty {
  public: 
   GsTLGridProperty( GsTLInt size, const std::string& name, 
 		    property_type default_value = no_data_value ); 
+  GsTLGridProperty( GsTLInt size, const std::string& name,
+				const std::string& in_filename, property_type default_value = no_data_value );
   virtual ~GsTLGridProperty();
      
   /** Tells whether the ith element of the property array is informed,
@@ -297,7 +299,8 @@ class GRID_DECL DiskAccessor : public PropertyAccessor {
  public: 
   DiskAccessor( GsTLInt size, const std::string& filename,  
 		            const float* prop, const bool* flags = 0 ); 
-//  DiskAccessor( GsTLInt size, const std::string& filename ); 
+  DiskAccessor( GsTLInt size, const std::string& filename,
+							 const std::string& in_filename, const bool* flags = 0 );
   virtual ~DiskAccessor(); 
    
   virtual float get_property_value( GsTLInt id ) ; 

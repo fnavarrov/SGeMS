@@ -92,7 +92,15 @@ class GRID_DECL Geostat_grid : public Named_interface {
    * for example because the property already existed, a null pointer 
    * is returned. 
    */ 
-  virtual GsTLGridProperty* add_property( const std::string& name ) = 0;  
+  virtual GsTLGridProperty* add_property( const std::string& name ) = 0;
+  /** Adds a new categorical property called \a name where the values
+   * are loaded from the file \a filename.
+   * A pointer to the new property is returned. If \a add_categorical_property(...)
+   * failed,for example because the property already existed, a null pointer
+   * is returned.
+   */
+  virtual GsTLGridProperty* add_property_from_disk( const std::string& name,
+																										const std::string& filename )=0;
 
   /** Adds a new categorical property called \a name.
    * A pointer to the new property is returned. If \a add_categorical_property(...)
@@ -102,7 +110,17 @@ class GRID_DECL Geostat_grid : public Named_interface {
   virtual GsTLGridCategoricalProperty* add_categorical_property(
 			  const std::string& name,
 			  const std::string& definition_name="Default") = 0;
-   
+
+  /** Adds a new categorical property called \a name where the values
+   * are loaded from the file @filename.
+   * A pointer to the new property is returned. If \a add_categorical_property(...)
+   * failed,for example because the property already existed, a null pointer
+   * is returned.
+   */
+  virtual GsTLGridCategoricalProperty* add_categorical_property_from_disk(
+			  const std::string& name, const std::string& filename,
+			  const std::string& definition_name="Default") = 0;
+
   /** Removes a given property from the property list 
    * @return false if the function failed, eg because the property 
    * did not exist 

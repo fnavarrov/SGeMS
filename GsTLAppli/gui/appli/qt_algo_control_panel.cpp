@@ -717,10 +717,11 @@ void Algo_control_panel::reset_param_input_widget() {
 void Algo_control_panel::save_parameters() {
   if( !param_input_ ) return;
   
-  QString filename = QFileDialog::getSaveFileName(  this, "Save Parameters");
+  QString filename = QFileDialog::getSaveFileName(  this, "Save Parameters", QString(project_->last_output_path().c_str()));
 
 
   if( filename == QString::null ) return;
+  project_->last_output_path(filename.toStdString());
 
   std::ofstream outfile( qstring2string(filename).c_str() );
   if( !outfile ) {
@@ -866,8 +867,8 @@ void Algo_control_panel::load_parameters() {
 void Algo_control_panel::load_parameters() {
 
   QString filename = 
-    QFileDialog::getOpenFileName( this, "Load Parameters",  QString(), "Parameter files (*.par)" );
-  
+    QFileDialog::getOpenFileName( this, "Load Parameters",  QString(project_->last_input_path().c_str()), "*.par *.par.xml (*.par *.par.xml);;All(*.*)" );
+  if( !filename.isEmpty() ) project_->last_input_path(filename.toStdString());
   Algo_control_panel::load_parameters( filename );
 
 }
