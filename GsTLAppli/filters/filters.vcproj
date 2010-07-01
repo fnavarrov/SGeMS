@@ -163,7 +163,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				IgnoreImportLibrary="true"
-				AdditionalDependencies="GsTLAppli_utils.lib GsTLAppli_math.lib GsTLAppli_grid.lib GsTLAppli_appli.lib QtGui4.lib QtCore4.lib"
+				AdditionalDependencies="GsTLAppli_utils.lib GsTLAppli_math.lib GsTLAppli_grid.lib GsTLAppli_appli.lib QtGui4.lib QtCore4.lib QtXml4.lib"
 				OutputFile="$(SGEMS_BUILD)\GsTLAppli-qt4\lib\win32\release\GsTLAppli_filters.dll"
 				LinkIncremental="0"
 				SuppressStartupBanner="true"
@@ -223,6 +223,10 @@
 			</File>
 			<File
 				RelativePath="library_filters_init.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\sgems_folder_filter.cpp"
 				>
 			</File>
 			<File
@@ -305,6 +309,10 @@
 			</File>
 			<File
 				RelativePath="library_filters_init.h"
+				>
+			</File>
+			<File
+				RelativePath=".\sgems_folder_filter.h"
 				>
 			</File>
 			<File

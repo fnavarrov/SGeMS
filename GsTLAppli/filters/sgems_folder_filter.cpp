@@ -205,7 +205,6 @@ Sgems_folder_input_filter::read_masked_grid(QDir dir,const QDomElement& elem, st
 #if QT_VERSION >= 0x040600
 	stream.setFloatingPointPrecision(QDataStream::SinglePrecision);
 #endif
-//
 
 	std::vector<bool> mask;
 	mask.reserve(nx*ny*nz);
@@ -765,9 +764,9 @@ QDomElement write_category_definition(QDomDocument& dom, const Geostat_grid* gri
 	  if(cat_definition == 0) continue;
 
 	  QStringList cat_names;
-	  std::vector<std::string>::const_iterator  it = cat_definition_name->begin_category_name();
-	  for( ; it != cat_definition_name->end_category_name(); it++ ) {
-	  	cat_names.append(it->c_str());
+	  std::vector<std::string>::const_iterator  it_prop = cat_definition_name->begin_category_name();
+	  for( ; it_prop != cat_definition_name->end_category_name(); it_prop++ ) {
+	  	cat_names.append(it_prop->c_str());
 	  }
 
 	  elemCat.setAttribute("categoryNames",cat_names.join(";"));
