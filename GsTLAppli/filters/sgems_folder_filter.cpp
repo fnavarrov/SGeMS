@@ -202,7 +202,10 @@ Sgems_folder_input_filter::read_masked_grid(QDir dir,const QDomElement& elem, st
   	return 0;
   }
 	QDataStream stream( &file );
+#if QT_VERSION >= 0x040600
 	stream.setFloatingPointPrecision(QDataStream::SinglePrecision);
+#endif
+//
 
 	std::vector<bool> mask;
 	mask.reserve(nx*ny*nz);
@@ -261,7 +264,9 @@ Sgems_folder_input_filter::read_point_set(QDir dir,const QDomElement& elem, std:
   }
 
 	QDataStream stream( &file );
+#if QT_VERSION >= 0x040600
 	stream.setFloatingPointPrecision(QDataStream::SinglePrecision);
+#endif
  /*
   // read the coordinates of the points
   std::string coordsfile = dir.absolutePath().toStdString()+"/coordinates.sgems";
@@ -324,7 +329,9 @@ bool Sgems_folder_input_filter::read_regions(const QDomElement& root, Geostat_gr
 			return false;
 	  }
 		QDataStream stream( &file );
-		stream.setFloatingPointPrecision(QDataStream::SinglePrecision);
+		#if QT_VERSION >= 0x040600
+			stream.setFloatingPointPrecision(QDataStream::SinglePrecision);
+		#endif
     for( GsTLInt k = 0; k < grid->size() ; k++ ) {
        bool val;
        stream >> val;
@@ -524,7 +531,9 @@ QDomElement Sgems_folder_output_filter::write_masked_grid_geometry(QDir dir, QDo
   	return elem;
   }
 	QDataStream stream( &file );
-	stream.setFloatingPointPrecision(QDataStream::SinglePrecision);
+	#if QT_VERSION >= 0x040600
+		stream.setFloatingPointPrecision(QDataStream::SinglePrecision);
+	#endif
 
 	const std::vector<bool> mask = mgrid->mask();
 	std::vector<bool>::const_iterator it_mask = mask.begin();
@@ -544,7 +553,9 @@ QDomElement Sgems_folder_output_filter::write_pointset_geometry( QDir dir, QDomD
   }
 
 	QDataStream stream( &file );
-	stream.setFloatingPointPrecision(QDataStream::SinglePrecision);
+	#if QT_VERSION >= 0x040600
+		stream.setFloatingPointPrecision(QDataStream::SinglePrecision);
+	#endif
 
 
 	elemGeom.setAttribute("size",pset->size());
@@ -644,9 +655,7 @@ Sgems_folder_output_filter::write_properties(QDir dir,
 }
 
 QDomElement
-Sgems_folder_output_filter::write_regions(QDir dir,
-																					QDomDocument& doc,
-																					const Geostat_grid* grid)
+Sgems_folder_output_filter::write_regions(QDir dir, QDomDocument& doc,const Geostat_grid* grid)
 {
 	QDomElement elemRegions = doc.createElement("Regions");
 	std::list<std::string> rlist = grid->region_list();
@@ -678,7 +687,9 @@ Sgems_folder_output_filter::write_regions(QDir dir,
 	  	continue;
 	  }
 		QDataStream stream( &file );
-		stream.setFloatingPointPrecision(QDataStream::SinglePrecision);
+		#if QT_VERSION >= 0x040600
+			stream.setFloatingPointPrecision(QDataStream::SinglePrecision);
+		#endif
 
     for(GsTLGridRegion::const_iterator it=region->begin(); it!=region->end(); ++it)  {
     	bool flag = *it;
