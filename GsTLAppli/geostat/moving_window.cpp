@@ -265,7 +265,7 @@ bool Moving_window::initialize( const Parameters_handler* parameters,
   grid_->select_property( prop_input->name() );
 
   neigh_->select_property( prop_input->name() );
-  neigh_->includes_center( true );
+//  neigh_->includes_center( true );
 
 
 
