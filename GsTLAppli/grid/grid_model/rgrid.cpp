@@ -108,7 +108,22 @@ GsTLGridCategoricalProperty* RGrid::add_categorical_property_from_disk(
 }
 
 bool RGrid::remove_property( const std::string& name ) {
-  return property_manager_.remove_property( name );
+ // return property_manager_.remove_property( name );
+
+  std::string name_group;
+
+  GsTLGridProperty* prop = property(name );
+  if(!prop) return false;
+  std::vector< GsTLGridPropertyGroup*> groups = prop->groups();
+  bool ok = property_manager_.remove_property( name);
+  if(!ok) return false;
+  for(int i=0; i<groups.size(); i++) {
+    if(groups[i]->size() == 0) {
+      remove_group(groups[i]->name());
+    }
+  }
+  return true;
+
 }
 
 GsTLGridProperty* RGrid::select_property(const std::string& prop_name) {

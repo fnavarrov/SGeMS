@@ -97,7 +97,20 @@ Point_set::add_categorical_property_from_disk(
 
 bool Point_set::remove_property(const std::string& name)
 {
-  return point_prop_.remove_property( name);
+  std::string name_group;
+  GsTLGridProperty* prop = property(name );
+  if(!prop) return false;
+  std::vector< GsTLGridPropertyGroup*> groups = prop->groups();
+  bool ok = point_prop_.remove_property( name);
+  if(!ok) return false;
+  for(int i=0; i<groups.size(); i++) {
+	  if(groups[i]->size() == 0) {
+		  remove_group(groups[i]->name());
+	  }
+  }
+  return true;
+
+//  return point_prop_.remove_property( name);
 }
 
 

@@ -116,6 +116,7 @@ class GRID_DECL Point_set : public Geostat_grid {
   virtual unsigned int group_size() const;   
   virtual GsTLGridPropertyGroup* get_group( const std::string& name );   
   virtual const GsTLGridPropertyGroup* get_group( const std::string& name ) const;  
+  virtual void remove_group( const std::string& name );
 
 
  //--------------------------- 
@@ -379,6 +380,11 @@ Point_set::get_group( const std::string& name ){
 inline const GsTLGridPropertyGroup* 
 Point_set::get_group( const std::string& name ) const{
   return group_manager_.get_group(name);
+}
+
+inline void
+Point_set::remove_group( const std::string& name ) {
+	group_manager_.remove_group(name);
 }
 
 #endif 

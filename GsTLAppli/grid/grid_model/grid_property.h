@@ -148,9 +148,10 @@ class GRID_DECL GsTLGridProperty {
   std::vector< std::pair<std::string,std::string> > group_pair_name_type() const;
   std::vector<std::string > group_names() const;
   std::vector<std::string > group_types() const;
-  const std::vector<const GsTLGridPropertyGroup*>& groups() const;
+  std::vector< GsTLGridPropertyGroup*>& groups();
   bool add_group_membership(GsTLGridPropertyGroup* group);
   bool remove_group_membership(GsTLGridPropertyGroup* group);
+  bool remove_group_membership(const std::string& group_name);
   int number_group_membership() const;
 
 
@@ -160,7 +161,7 @@ class GRID_DECL GsTLGridProperty {
   std::string name_; 
 
   const GsTLGridRegion* region_;
-  std::vector<const GsTLGridPropertyGroup*> groups_;
+  std::vector<GsTLGridPropertyGroup*> groups_;
   
 
    

@@ -178,6 +178,7 @@ class GRID_DECL Geostat_grid : public Named_interface {
   virtual unsigned int group_size() const=0;   
   virtual GsTLGridPropertyGroup* get_group( const std::string& name )=0;   
   virtual const GsTLGridPropertyGroup* get_group( const std::string& name ) const =0;  
+  virtual void remove_group( const std::string& name )=0;
 
   //--------------------------- 
   // Region management 

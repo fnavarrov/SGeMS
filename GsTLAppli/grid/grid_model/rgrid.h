@@ -142,7 +142,8 @@ public:
   virtual std::list<std::string> get_group_names(const std::string& type = "") const;   
   virtual unsigned int group_size() const;   
   virtual GsTLGridPropertyGroup* get_group( const std::string& name );   
-  virtual const GsTLGridPropertyGroup* get_group( const std::string& name ) const;   
+  virtual const GsTLGridPropertyGroup* get_group( const std::string& name ) const;
+  virtual void remove_group( const std::string& name );
 
   // Region  managment
   virtual const GsTLGridRegion* region(const std::string& name) const;
@@ -625,6 +626,11 @@ RGrid::get_group( const std::string& name ) const{
   return group_manager_.get_group(name);
 }
  
+inline void
+RGrid::remove_group( const std::string& name ){
+	group_manager_.remove_group(name);
+}
+
 #endif 
  
  

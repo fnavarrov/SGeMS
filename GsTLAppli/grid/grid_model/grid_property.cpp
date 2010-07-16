@@ -548,7 +548,7 @@ bool GsTLGridProperty::has_group_membership() const{
 inline 
 std::vector< std::pair<std::string,std::string> > GsTLGridProperty::group_pair_name_type() const{
   std::vector< std::pair<std::string,std::string> > group_ids;
-  std::vector< const GsTLGridPropertyGroup* >::const_iterator it = groups_.begin();
+  std::vector<  GsTLGridPropertyGroup* >::const_iterator it = groups_.begin();
   for(; it != groups_.end(); ++it) {
     std::pair<std::string, std::string > id( (*it)->name(), (*it)->type() );
     group_ids.push_back( id );
@@ -558,7 +558,7 @@ std::vector< std::pair<std::string,std::string> > GsTLGridProperty::group_pair_n
 
 std::vector<std::string > GsTLGridProperty::group_names() const{
   std::vector<std::string> names;
-  std::vector< const GsTLGridPropertyGroup* >::const_iterator it = groups_.begin();
+  std::vector<  GsTLGridPropertyGroup* >::const_iterator it = groups_.begin();
   for(; it != groups_.end(); ++it) {
     names.push_back( (*it)->name() );
   }
@@ -568,7 +568,7 @@ std::vector<std::string > GsTLGridProperty::group_names() const{
 
 std::vector<std::string > GsTLGridProperty::group_types() const{
   std::vector<std::string> types;
-  std::vector< const GsTLGridPropertyGroup* >::const_iterator it = groups_.begin();
+  std::vector< GsTLGridPropertyGroup* >::const_iterator it = groups_.begin();
   for(; it != groups_.end(); ++it) {
     types.push_back( (*it)->type() );
   }
@@ -576,13 +576,13 @@ std::vector<std::string > GsTLGridProperty::group_types() const{
 }
 
 
-const std::vector<const GsTLGridPropertyGroup*>& GsTLGridProperty::groups() const {
+ std::vector< GsTLGridPropertyGroup*>& GsTLGridProperty::groups() {
   return groups_;
 }
 
 
 bool GsTLGridProperty::add_group_membership(GsTLGridPropertyGroup* group) {
-  std::vector< const GsTLGridPropertyGroup* >::iterator it = groups_.begin();
+  std::vector<  GsTLGridPropertyGroup* >::iterator it = groups_.begin();
   std::string gname = group->name();
   for(; it != groups_.end(); ++it) {
     if(gname == (*it)->name()) return false;
@@ -591,11 +591,15 @@ bool GsTLGridProperty::add_group_membership(GsTLGridPropertyGroup* group) {
   return true;
 }
 
+
 bool GsTLGridProperty::remove_group_membership(GsTLGridPropertyGroup* group){
-  std::vector< const GsTLGridPropertyGroup* >::iterator it = groups_.begin();
-  std::string gname = group->name();
+  return remove_group_membership(group->name());
+}
+
+bool GsTLGridProperty::remove_group_membership(const std::string& group_name){
+  std::vector<  GsTLGridPropertyGroup* >::iterator it = groups_.begin();
   for(; it != groups_.end(); ++it) {
-    if(gname == (*it)->name()) {
+    if(group_name == (*it)->name()) {
       groups_.erase(it);
       return true;
     }
