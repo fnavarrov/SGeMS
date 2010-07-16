@@ -355,6 +355,7 @@ QList<BaseTreeItem*> SimulationSetTreeItem::children()
 	QList<BaseTreeItem*> allChildren;
 	for (int i = 0; i < childCount(); ++i)
 	{
+		allChildren.append(this);
 		allChildren.append(dynamic_cast<BaseTreeItem*> (child(i))->children());
 	}
 	return allChildren;

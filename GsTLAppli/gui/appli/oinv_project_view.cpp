@@ -927,30 +927,28 @@ void Project_view_gui::update_display(BaseTreeItem* item)
 	// The user clicked on a property name
 	else if (dynamic_cast<PropertyTreeItem*> (item))
 	{
+		// set all properties to not visible
+		BaseTreeItem* grid_item = Object_tree->getGridItem(item);
+		QList<BaseTreeItem*> allChildren = grid_item->children();
+		while(!allChildren.isEmpty()) {
+
+			BaseTreeItem* child = allChildren.front();
+			allChildren.pop_front();
+			//allChildren.append(child->children());
+			child->setVisible(false);
+
+		}
+
 		item->setVisible(!item->visible());
+		// Move up the parent up to the grid level
+		BaseTreeItem* parent = dynamic_cast<BaseTreeItem*> (item->parent());
+		while(dynamic_cast<ObjectTreeItem*> (parent) == 0 ) {
+			parent->setVisible(item->visible());
+			parent = dynamic_cast<BaseTreeItem*> (parent->parent());
+		}
 
 		// tell the grid to change the displayed property
 		QString grid_name = Object_tree->getGridName(item);
-
-		// set all other properties to not visible
-		BaseTreeItem* grid_item = Object_tree->getGridItem(item);
-		BaseTreeItem* parent = dynamic_cast<BaseTreeItem*> (item->parent());
-	//	QList<BaseTreeItem*> allChildren = Object_tree->getAllChildItems(Object_tree->topLevelItem(0));
-		QList<BaseTreeItem*> allChildren = grid_item->children();
-		for (int i = 0; i < allChildren.size(); ++i)
-		{
-			BaseTreeItem* child = allChildren.at(i);
-			//if (!((child == item) || (child == parent) || (child == grid_item)))
-			if (child != item)
-			{
-				child->setVisible(false);
-			}
-		}
-
-		if (dynamic_cast<SimulationSetTreeItem*> (parent) ) {
-			parent->setVisible(item->visible());
-		}
-
 		if (item->visible())
 		{
 			display_property(grid_name, obj_name);
@@ -1623,7 +1621,7 @@ void Oinv_view::update(std::string obj)
 				}
 			}
 			// delete all region entries
-			else
+			else if (dynamic_cast<RegionTreeItem*> (child))
 			{
 				child->parent()->removeChild(child);
 				delete child;
