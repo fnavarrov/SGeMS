@@ -96,6 +96,10 @@ bool GridSelector_accessor::set_value( const std::string& str ) {
   QString value = elem.attribute( "value" );
   
   // search if "value" is in the list of possible grids. If yes, select it
+  int id = selector_->findText(value);
+  selector_->setCurrentIndex(id);
+  selector_->update("");
+  /*
   int id = 0; 
   for( ; id < selector_->count() ; id++ ) {
     if( selector_->itemText(id) == value ) {
@@ -103,7 +107,7 @@ bool GridSelector_accessor::set_value( const std::string& str ) {
       break;
     }
   }
-  
+  */
   return true;
 }
 

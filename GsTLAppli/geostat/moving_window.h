@@ -84,7 +84,7 @@ class  Moving_window : public Geostat_algo {
 
    */
 
-	virtual std::string name() const { return "Moving_window"; }
+	virtual std::string name() const { return "moving_window"; }
 
    
 
