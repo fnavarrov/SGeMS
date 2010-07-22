@@ -529,4 +529,35 @@ class ACTIONS_DECL Create_trend : public Action {
 }; 
 
 
+class ACTIONS_DECL Create_indicator_properties : public Action {
+ public:
+  static Named_interface* create_new_interface( std::string& );
+
+ public:
+  Create_indicator_properties();
+  virtual ~Create_indicator_properties() {}
+
+  /** The parameters for this function are:
+   * - the name of the grid
+   * - Name of the property to be truncated
+   * [ type of truncation: userdefined, decile, quantile, decile ]
+   * if userdefined [tresholds]
+   * Note that categorical property do not need threshold specifications
+   */
+  virtual bool init( std::string& parameters, GsTL_project* proj,
+                     Error_messages_handler* errors );
+  virtual bool exec();
+
+ private:
+
+  void get_thresholds_from_data(std::string option);
+
+  std::vector<float> thresholds_;
+  Geostat_grid* grid_;
+  GsTLGridProperty* data_prop_;
+  std::vector<std::string > id_names_;
+  GsTL_project* proj_;
+  Error_messages_handler* errors_;
+};
+
 #endif 

@@ -116,6 +116,7 @@ public:
 
 public slots:
   void assign_definition();
+  void assign_definition_close();
   
 
   /*

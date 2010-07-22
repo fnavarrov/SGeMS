@@ -155,11 +155,15 @@ bool library_actions_init::bind_action_factories(Manager* dir)
 	dir->factory("ClearPropertyValueFromProperty", Clear_property_value_from_property::create_new_interface);
 	dir->factory("CreateTrend", Create_trend::create_new_interface);
 	dir->factory("CreateMgridFromCgrid", Create_mgrid_from_cgrid::create_new_interface);
+	dir->factory("IndicatorCoding", Create_indicator_properties::create_new_interface);
 
 	dir->factory("NewCategoricalDefinition", New_categorical_definition::create_new_interface);
+	dir->factory("AssignCategoricalDefinition", Assign_categorical_definition::create_new_interface);
 
 	dir->factory("NewPropertyGroup", New_property_group::create_new_interface);
 	dir->factory("AddPropertiesToGroup", Add_properties_to_group::create_new_interface);
+	dir->factory("RemoveAllPropertiesFromGroup", Delete_property_in_group::create_new_interface);
+	dir->factory("RemoveGroup", Remove_group::create_new_interface);
 
 	// algorithm related actions
 	dir->factory("RunGeostatAlgorithm", Run_geostat_algo::create_new_interface);
@@ -177,6 +181,8 @@ bool library_actions_init::bind_action_factories(Manager* dir)
 	dir->factory(Complement_transform_action().name(), Complement_transform_action::create_new_interface);
 	dir->factory(Logit_transform_action().name(), Logit_transform_action::create_new_interface);
 	dir->factory(Logistic_transform_action().name(), Logistic_transform_action::create_new_interface);
+	dir->factory(Square_transform_action().name(), Square_transform_action::create_new_interface);
+
 
 	return true;
 }

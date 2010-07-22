@@ -69,6 +69,7 @@ HEADERS += common.h \
            utils/merge_regions_dialog.h \
            utils/multichoice_dialog.h \
            utils/new_region_from_property_dialog.h \
+           utils/indicator_property_dialog.h \
            utils/new_mgrid_from_cgrid_dialog.h \
            utils/categorical_definition_dialog.h \
            utils/qdirdialog.h \
@@ -164,6 +165,7 @@ SOURCES += library_gui_init.cpp \
            utils/merge_regions_dialog.cpp \
            utils/multichoice_dialog.cpp \
            utils/new_region_from_property_dialog.cpp \
+           utils/indicator_property_dialog.cpp \
            utils/new_mgrid_from_cgrid_dialog.cpp \
            utils/categorical_definition_dialog.cpp \
            utils/qdirdialog.cpp \

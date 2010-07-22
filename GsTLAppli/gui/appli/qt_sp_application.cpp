@@ -40,6 +40,7 @@
 #include <GsTLAppli/gui/utils/delete_regions_dialog.h>
 #include <GsTLAppli/gui/utils/merge_regions_dialog.h>
 #include <GsTLAppli/gui/utils/new_region_from_property_dialog.h>
+#include <GsTLAppli/gui/utils/indicator_property_dialog.h>
 #include <GsTLAppli/gui/utils/new_mgrid_from_cgrid_dialog.h>
 #include <GsTLAppli/gui/utils/categorical_definition_dialog.h>
 #include <GsTLAppli/gui/utils/script_editor.h>
@@ -241,15 +242,24 @@ void QSP_application::init_menu_bar() {
   objects->addAction( "Save Object", this, SLOT( save_object() ) );
   objects->addSeparator();
   objects->addAction( "Delete Objects", this, SLOT( delete_geostat_objects() ) );
-  objects->addAction( "Delete Properties", this, SLOT( delete_object_properties() ) );
-  objects->addSeparator();
-  objects->addAction( "Copy Property", this, SLOT( copy_property() ) );  
-  objects->addSeparator();
 
-  QMenu* definitions = objects->addMenu(tr("&Categorical Definition"));
-  definitions->addAction( "New Categorical definition", this, SLOT( new_categorical_definition() ) );  
-  definitions->addAction( "Show Categorical definition", this, SLOT( show_categorical_definition() ) );  
-  definitions->addAction( "Assign Categorical definition", this, SLOT( assign_categorical_definition() ) );  
+
+
+
+
+
+  /*  Add a menu for property operations
+  * Alexandre Boucher
+  */
+    QMenu* property =   menuBar()->addMenu( "&Properties" );
+    property->addAction( "Copy Property", this, SLOT( copy_property() ) );
+    property->addAction( "Create Indicator Properties", this, SLOT( create_indicator_properties() ),Qt::CTRL+Qt::Key_I  );
+    property->addAction( "Delete Properties", this, SLOT( delete_object_properties() ) , Qt::CTRL+Qt::Key_D);
+    property->addSeparator();
+    QMenu* definitions = property->addMenu(tr("&Categorical Definition"));
+    definitions->addAction( "New Categorical definition", this, SLOT( new_categorical_definition() ) );
+    definitions->addAction( "Show Categorical definition", this, SLOT( show_categorical_definition() ) );
+    definitions->addAction( "Assign Categorical definition", this, SLOT( assign_categorical_definition() ) );
 
 /*  Add a menu for regions operations
 * Alexandre Boucher
@@ -258,7 +268,7 @@ void QSP_application::init_menu_bar() {
   region->addAction( "New region", this, SLOT( new_region_from_property() ), Qt::CTRL+Qt::Key_R );
   region->addAction( "Merge Regions", this, SLOT( merge_object_regions() ), Qt::CTRL+Qt::Key_M );
   region->addSeparator();
-  region->addAction( "Delete Regions", this, SLOT( delete_object_regions() ), Qt::CTRL+Qt::Key_D );
+  region->addAction( "Delete Regions", this, SLOT( delete_object_regions() ), Qt::Key_Delete+Qt::Key_R );
   
 
  
@@ -282,7 +292,7 @@ void QSP_application::init_menu_bar() {
   ap_->setCheckable(true);
   ap_->setChecked(true);
   cli_panel_id_ =
-    view_menu_->addAction( "Commands Panel", this, SLOT(show_commands_panel() ) );
+    view_menu_->addAction( "Commands Panel", this, SLOT(show_commands_panel() ),Qt::CTRL+Qt::Key_A );
   cli_panel_id_->setCheckable(true);
   cli_panel_id_->setChecked(false);
 
@@ -973,6 +983,14 @@ void QSP_application::copy_property() {
 }
 
 
+void QSP_application::create_indicator_properties(){
+	New_indicator_from_property_dialog* dialog =
+    new New_indicator_from_property_dialog( project_, this, "Indicator Properties" );
+  dialog->setWindowTitle( "Indicator property" );
+
+  dialog->show();
+ // delete dialog;
+}
 
 
 

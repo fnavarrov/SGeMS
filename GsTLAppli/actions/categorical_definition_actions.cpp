@@ -76,7 +76,7 @@ bool Assign_categorical_definition::init( std::string& parameters, GsTL_project*
 
   CategoricalPropertyDefinitionName* cat_def = 
             dynamic_cast<CategoricalPropertyDefinitionName*>(ni.raw_ptr());
-  if( cat_def ) {
+  if( !cat_def ) {
     errors->report("No definition named "+params[0] );
     return false;
   }
@@ -84,7 +84,7 @@ bool Assign_categorical_definition::init( std::string& parameters, GsTL_project*
 // Check if the grid exist
   ni = Root::instance()->interface( gridModels_manager + "/" + params[1] );
   Geostat_grid* grid = dynamic_cast<Geostat_grid*>( ni.raw_ptr() );
-  if( cat_def ) {
+  if( !grid ) {
     errors->report("No grid named "+params[1] );
     return false;
   }

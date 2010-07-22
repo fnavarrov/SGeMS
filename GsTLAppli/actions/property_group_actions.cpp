@@ -124,3 +124,91 @@ bool Add_properties_to_group::exec(){
 
   return true;
 }
+
+
+Named_interface*
+Delete_property_in_group::create_new_interface( std::string& ){
+	return new Delete_property_in_group;
+}
+
+bool Delete_property_in_group::init( std::string& parameters, GsTL_project* proj,
+                     Error_messages_handler* errors ){
+  std::vector< std::string > params =
+      String_Op::decompose_string( parameters, Actions::separator,
+				   Actions::unique );
+
+  if( params.size() != 2 ) {
+    errors->report( "Must have 2 parameters, name of the grid and name the group to be deleted" );
+    return false;
+  }
+
+  // Get the grid
+  SmartPtr<Named_interface> ni = Root::instance()->interface( gridModels_manager + "/" + params[0] );
+  Geostat_grid* grid = dynamic_cast<Geostat_grid*>( ni.raw_ptr() );
+  if(!grid)  {
+    errors->report( "The grid "+params[0]+" does not exist" );
+    return false;
+  }
+
+  GsTLGridPropertyGroup* group = grid->get_group(params[1]);
+  if(!group)  {
+    errors->report( "The goup "+params[1]+" does not exist" );
+    return false;
+  }
+
+  GsTLGridPropertyGroup::property_map::iterator it = group->begin_property();
+  for(; it != group->end_property(); ++it){
+  	grid->remove_property(it->second->name());
+  }
+  return true;
+}
+
+bool Delete_property_in_group::exec(){
+	return true;
+
+}
+
+/*
+ *  --------------------------------
+ */
+
+
+Named_interface*
+Remove_group::create_new_interface( std::string& ){
+	return new Remove_group;
+}
+
+bool Remove_group::init( std::string& parameters, GsTL_project* proj,
+                     Error_messages_handler* errors ){
+  std::vector< std::string > params =
+      String_Op::decompose_string( parameters, Actions::separator,
+				   Actions::unique );
+
+  if( params.size() != 2 ) {
+    errors->report( "Must have 2 parameters, name of the grid and name the group to be removed" );
+    return false;
+  }
+
+  // Get the grid
+  SmartPtr<Named_interface> ni = Root::instance()->interface( gridModels_manager + "/" + params[0] );
+  Geostat_grid* grid = dynamic_cast<Geostat_grid*>( ni.raw_ptr() );
+  if(!grid)  {
+    errors->report( "The grid "+params[0]+" does not exist" );
+    return false;
+  }
+
+  GsTLGridPropertyGroup* group = grid->get_group(params[1]);
+  if(!group)  {
+    errors->report( "The goup "+params[1]+" does not exist" );
+    return false;
+  }
+
+  grid->remove_group(params[1]);
+  return true;
+}
+
+bool Remove_group::exec(){
+	return true;
+
+}
+

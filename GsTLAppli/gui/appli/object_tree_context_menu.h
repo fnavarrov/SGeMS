@@ -97,19 +97,20 @@ protected:
 /**
  *
  */
-class GUI_DECL SimulationSetTreeItemMenu: public BaseTreeItemMenu
+class GUI_DECL PropertyGroupTreeItemMenu: public BaseTreeItemMenu
 {
 Q_OBJECT
 
 public:
-	SimulationSetTreeItemMenu(ObjectTree* _object_tree, QWidget* _parent);
-	virtual ~SimulationSetTreeItemMenu();
+	PropertyGroupTreeItemMenu(ObjectTree* _object_tree, QWidget* _parent);
+	virtual ~PropertyGroupTreeItemMenu();
 
 protected:
 	void handleContextMenuClick(QAction* _action);
 
 public slots:
 	void onPythonScriptAction(QAction* _action);
+	void onUnaryGroupActionClick(QAction* _action);
 
 protected:
 	std::vector<QMenu*> nested_menu_;

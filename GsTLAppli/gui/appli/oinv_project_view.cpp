@@ -367,6 +367,27 @@ void ObjectTree::onUnaryActionClick(QAction* _action)
 	selected_items_.clear();
 }
 
+// assumes that only ONE property were selected
+void ObjectTree::onUnaryGroupActionClick(QAction* _action)
+{
+	// must have only one item selected
+	if (selected_items_.size() != 1)
+	{
+		return;
+	}
+
+	QString action_name = _action->text();
+
+	QTreeWidgetItem* item = selected_items_.at(0);
+	QString grid_name = getGridName(item);
+
+	QString group_name = item->text(0);
+	QString params = grid_name + QString(Actions::separator.c_str()) + group_name;
+	emit action(action_name, params);
+	selected_items_.clear();
+}
+
+
 void ObjectTree::onPythonScriptClick(QAction* _action)
 {
 	SmartPtr<Named_interface> ni = Root::instance()->interface(python_script_manager + "/" + String_Op::qstring2string(_action->text()));
@@ -927,6 +948,7 @@ void Project_view_gui::update_display(BaseTreeItem* item)
 	// The user clicked on a property name
 	else if (dynamic_cast<PropertyTreeItem*> (item))
 	{
+		bool isVisible = item->visible();
 		// set all properties to not visible
 		BaseTreeItem* grid_item = Object_tree->getGridItem(item);
 		QList<BaseTreeItem*> allChildren = grid_item->children();
@@ -939,7 +961,7 @@ void Project_view_gui::update_display(BaseTreeItem* item)
 
 		}
 
-		item->setVisible(!item->visible());
+		item->setVisible(!isVisible);
 		// Move up the parent up to the grid level
 		BaseTreeItem* parent = dynamic_cast<BaseTreeItem*> (item->parent());
 		while(dynamic_cast<ObjectTreeItem*> (parent) == 0 ) {

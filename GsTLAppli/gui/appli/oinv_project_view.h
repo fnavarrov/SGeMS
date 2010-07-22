@@ -179,6 +179,7 @@ public slots:
 	void onPythonGroupScriptClick(QAction* _action);
 	void onObjectContextMenuClick(QAction* _action);
 	void onTrendActionClick(QAction* _action);
+	void onUnaryGroupActionClick(QAction* _action);
 
 public:
 

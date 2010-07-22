@@ -17,6 +17,7 @@
 #include <GsTLAppli/actions/defines.h>
 #include <GsTLAppli/utils/error_messages_handler.h>
 
+
 Named_interface* Sgems_folder_input_filter::create_new_interface( std::string& ) {
   return new Sgems_folder_input_filter();
 }
@@ -113,12 +114,12 @@ Geostat_grid* Sgems_folder_input_filter::read( const std::string& filename,
   	errors->append("Could not read the categorical definition");
   	return grid;
   }
-  ok = read_properties(root.firstChildElement("Properties"), grid, errors);
+  ok = read_properties(dir,root.firstChildElement("Properties"), grid, errors);
   if(!ok) {
   	errors->append("Could not read the properties");
   	return grid;
   }
-  ok  = read_regions(root.firstChildElement("Regions"), grid, errors);
+  ok  = read_regions(dir, root.firstChildElement("Regions"), grid, errors);
   if(!ok) {
   	errors->append("Could not read the regions");
   	return grid;
@@ -286,7 +287,7 @@ Sgems_folder_input_filter::read_point_set(QDir dir,const QDomElement& elem, std:
   return grid;
 }
 
-bool Sgems_folder_input_filter::read_properties(const QDomElement& root, Geostat_grid* grid, std::string* errors){
+bool Sgems_folder_input_filter::read_properties(QDir dir,const QDomElement& root, Geostat_grid* grid, std::string* errors){
 
   long int filesize = grid->size()*sizeof( float );
 
@@ -295,14 +296,14 @@ bool Sgems_folder_input_filter::read_properties(const QDomElement& root, Geostat
 		std::string prop_name = elem.attribute("name").toStdString();
 		bool isCategorical = elem.attribute("type") == "Categorical";
     GsTLGridProperty* prop;
+    QString filepath =  dir.absoluteFilePath(elem.attribute("filepath"));
     if(isCategorical) {
-    	GsTLGridCategoricalProperty* cprop = grid->add_categorical_property( prop_name );
     	std::string  cdef_name = elem.attribute("categoryDefinition").toStdString();
-    	cprop->set_category_definition(cdef_name);
+    	GsTLGridCategoricalProperty* cprop = grid->add_categorical_property( filepath.toStdString().c_str(), cdef_name );
     	prop = dynamic_cast<GsTLGridProperty*>(cprop);
     }
     else
-    	 prop = grid->add_property_from_disk( prop_name, elem.attribute("filepath").toStdString().c_str() );
+    	 prop = grid->add_property_from_disk( prop_name, filepath.toStdString().c_str() );
 
 
   //  std::fstream stream(elem.attribute("filepath").toStdString().c_str());
@@ -313,16 +314,16 @@ bool Sgems_folder_input_filter::read_properties(const QDomElement& root, Geostat
 
 }
 
-bool Sgems_folder_input_filter::read_regions(const QDomElement& root, Geostat_grid* grid, std::string* errors){
+bool Sgems_folder_input_filter::read_regions(QDir dir,const QDomElement& root, Geostat_grid* grid, std::string* errors){
 	QDomElement elem = root.firstChildElement("GsTLGridRegion");
 
 	for(; !elem.isNull(); elem = elem.nextSiblingElement("GsTLGridRegion") ) {
 		std::string region_name = elem.attribute("name").toStdString();
 		GsTLGridRegion*	region = grid->add_region( region_name );
 //		std::fstream stream;
-		std::string filepath= elem.attribute("filepath").toStdString();
+		QString filepath =  dir.absoluteFilePath(elem.attribute("filepath"));
 
-	  QFile file(elem.attribute("filepath") );
+	  QFile file(filepath );
 	  if( !file.open( QIODevice::ReadOnly ) ) {
 			errors->append("Could not open file for region "+region_name);
 			return false;
@@ -502,7 +503,8 @@ bool Sgems_folder_output_filter::write( std::string outfile,
 	 root.appendChild(elemGroup);
 
 
-  QFile file( dir.absolutePath()+"/grid_geometry.xml" );
+  //QFile file( dir.absolutePath()+"/grid_geometry.xml" );
+  QFile file( dir.absoluteFilePath("grid_geometry.xml" ) );
   if( !file.open( QIODevice::WriteOnly ) ) {
 	if( errors )
 	  errors->append( "can't write to file: " + outfile );
@@ -524,7 +526,7 @@ QDomElement Sgems_folder_output_filter::write_masked_grid_geometry(QDir dir, QDo
 	QDomElement elem = write_cartesian_grid_geometry(dir, dom, grid);
 	elem.setAttribute("nActiveCells",mgrid->size());
 
-  QFile file( dir.absolutePath()+"/gridmask.sgems" );
+  QFile file( dir.absoluteFilePath("gridmask.sgems" ) );
   if( !file.open( QIODevice::WriteOnly ) ) {
   	elem.clear();
   	return elem;
@@ -545,7 +547,7 @@ QDomElement Sgems_folder_output_filter::write_pointset_geometry( QDir dir, QDomD
 	const Point_set* pset = dynamic_cast<const Point_set*>(grid);
 	QDomElement elemGeom = doc.createElement("Geometry");
 
-  QFile file( dir.absolutePath()+"/coordinates.sgems" );
+  QFile file( dir.absoluteFilePath("coordinates.sgems" ) );
   if( !file.open( QIODevice::WriteOnly ) ) {
   	elemGeom.clear();
   	return elemGeom;
@@ -599,7 +601,7 @@ Sgems_folder_output_filter::write_properties(QDir dir,
 	QDomElement elemProps = doc.createElement("Properties");
 	std::list<std::string> plist = grid->property_list();
 	std::list<std::string>::iterator it = plist.begin();
-	QString prop_path = dir.absolutePath()+"/properties";
+	QString prop_path = dir.absoluteFilePath("properties");
 	if( !dir.exists(prop_path)) {
 		bool ok = dir.mkdir(prop_path );
 		if(ok == false) {
@@ -622,9 +624,12 @@ Sgems_folder_output_filter::write_properties(QDir dir,
 			elemProp.setAttribute("categoryDefinition",cprop->get_category_definition()->name().c_str());
 		}
 
-		std::string prop_filename = prop_path.toStdString()+"/property__"+prop->name()+".sgems";
+		std::string prop_filename = "properties/property__"+prop->name()+".sgems";
+	//	QString qfilepath = dir.relativeFilePath(""+filename.c_str());
+//		std::string prop_filename = qfilepath.toStdString();
 		elemProp.setAttribute("filepath",prop_filename.c_str());
 		elemProps.appendChild(elemProp);
+		prop_filename = dir.absoluteFilePath(prop_filename.c_str()).toStdString();
 
 		// We use the same format than the DiskAccessor, so that we may be able to
 		// construct the properties without having to load them in memory
@@ -643,11 +648,21 @@ Sgems_folder_output_filter::write_properties(QDir dir,
 			GsTLcerr << "Can't write file. Check that the directory is writable\n"
 							 << "and that there is enough disk space left" << gstlIO::end;
 		}
+		if(prop->is_in_memory()) {
+			long int remaining = static_cast<long int>( prop->size() ) *
+													 static_cast<long int>( sizeof(float) );
+			prop_stream.write( (char*) prop->data(), remaining );
+		}
+		else { // The file is already on disk.  Should find a way to simply copy the stream from the os
 
+			for( int i=0; i < prop->size() ; i++  ) {
+				float z = prop->get_value(i);
+				prop_stream.write( (char*) (&z),  sizeof(float) );
+				//prop_stream<<(char*)(&z);
+			}
 
-		long int remaining = static_cast<long int>( prop->size() ) *
-												 static_cast<long int>( sizeof(float) );
-		prop_stream.write( (char*) prop->data(), remaining );
+//			dstStream << srcStream.rdbuf();
+		}
 		prop_stream.close();
 	}
 	return elemProps;
@@ -659,7 +674,7 @@ Sgems_folder_output_filter::write_regions(QDir dir, QDomDocument& doc,const Geos
 	QDomElement elemRegions = doc.createElement("Regions");
 	std::list<std::string> rlist = grid->region_list();
 	std::list<std::string>::iterator it = rlist.begin();
-	QString region_path =  dir.absolutePath()+"/regions";
+	QString region_path =  dir.absoluteFilePath("regions");
 	if( !dir.exists( region_path )) {
 		bool ok = dir.mkdir( region_path );
 		if(ok == false) {
@@ -676,11 +691,14 @@ Sgems_folder_output_filter::write_regions(QDir dir, QDomDocument& doc,const Geos
 		elemRegion.setAttribute("name",region->name().c_str());
 
 
-		std::string region_filename = region_path.toStdString()+"/region__"+region->name()+".sgems";
-		elemRegion.setAttribute("filepath",region_filename.c_str());
+		QString region_filename = "regions/region__";
+		region_filename.append(region->name().c_str());
+		region_filename.append(".sgems");
+		elemRegion.setAttribute("filepath",region_filename);
 		elemRegions.appendChild(elemRegion);
 
-	  QFile file(region_filename.c_str() );
+		region_filename = dir.absoluteFilePath(region_filename);
+	  QFile file(region_filename );
 	  if( !file.open( QIODevice::WriteOnly ) ) {
 	  	elemRegion.clear();
 	  	continue;

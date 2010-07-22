@@ -4,6 +4,17 @@
 #include <GsTLAppli/grid/grid_model/grid_categorical_property.h> 
 //#include <QtXml/QDomElement>
 
+GsTLGridPropertyGroup*
+Create_new_property_group(const std::string& name, const std::string& type) {
+	if(type == "") return new GsTLGridPropertyGroup(name);
+	else if(type == "Simulation") return new SimulationPropertyGroup(name);
+	else if(type == "CategoricalIndicator") return new IndicatorCategoricalPropertyGroup(name);
+	else if(type == "ContinuousIndicator") return new IndicatorContinuousPropertyGroup(name);
+	else return 0;
+
+}
+
+
 Named_interface* GsTLGridPropertyGroup::create_new_interface( std::string& name) {
   return new GsTLGridPropertyGroup(name);
 }
@@ -87,7 +98,8 @@ GsTLGridPropertyGroup* Grid_property_group_manager::add_group(const std::string&
   group_map::iterator it_group = groups_.find(name);
   if(it_group != groups_.end()) return 0;
   // The group does not already exist
-  GsTLGridPropertyGroup* group = new GsTLGridPropertyGroup(name);  // Need to get it from the manager
+  GsTLGridPropertyGroup* group = Create_new_property_group(name, type);
+ // GsTLGridPropertyGroup* group = new GsTLGridPropertyGroup(name);  // Need to get it from the manager
   if(group == 0) return 0; //failed to initialize maybe unknown type
   groups_[name] = group;
  
@@ -102,20 +114,28 @@ GsTLGridPropertyGroup* Grid_property_group_manager::add_group(const std::string&
 }
 
 void Grid_property_group_manager::remove_group(const std::string& name) {
-  group_map::iterator it = groups_.find(name);
-  if(it == groups_.end()) return;
+  group_map::iterator it_group = groups_.find(name);
+  if(it_group == groups_.end()) return;
+  GsTLGridPropertyGroup* group = it_group->second;
 
 // remove the group type to the list (or to the decrease the count is type already present)
-  std::string type = it->second->type();
+  std::string type = group->type();
   int count = group_type_[type];
   if(count == 1) 
     group_type_.erase(type);
   else
     group_type_[type]--;
 
+// remove property membership from group
+  GsTLGridPropertyGroup::property_map::iterator it = group->begin_property();
+  for( ; it != group->end_property(); ++it) {
+  	group->remove_property(it->second);
+  }
+
+
 // Remove the group from the manager
-  delete (it->second);
-  groups_.erase(it);
+  delete (group);
+  groups_.erase(it_group);
 
 
 }

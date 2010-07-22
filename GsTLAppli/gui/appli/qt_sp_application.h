@@ -136,6 +136,8 @@ class GUI_DECL QSP_application : public QMainWindow {
   void new_categorical_definition();
   void assign_categorical_definition();
 
+  void create_indicator_properties();
+
   void show_script_editor();
   void run_script();
 

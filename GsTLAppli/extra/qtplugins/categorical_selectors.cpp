@@ -107,7 +107,8 @@ void MultiCategoricalPropertySelector::show_properties( const QString& grid_name
 //    const GsTLGridCategoricalProperty* prop = grid->categorical_property(name);
     const CategoricalPropertyDefinition* cdef = grid->categorical_property(name)->get_category_definition();
     QString def_name( cdef->name().c_str() );
-    addItem( prop_name + "  ("+def_name+")" );
+    //addItem( prop_name + "  ("+def_name+")" );
+    addItem( prop_name );
   }
   
 }

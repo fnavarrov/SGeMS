@@ -273,7 +273,7 @@ Assign_category_definition_dialog( GsTL_project* proj, QWidget* parent, const ch
   main_layout->addStretch();
   main_layout->addLayout(bottom_layout);
 
-  QObject::connect( grid_selector_, SIGNAL( activated(QString&) ),
+  QObject::connect( grid_selector_, SIGNAL(  activated( const QString& ) ),
                     props_selector_, SLOT( show_properties(const QString&) ) );
 
 
@@ -282,9 +282,8 @@ Assign_category_definition_dialog( GsTL_project* proj, QWidget* parent, const ch
   QObject::connect( close, SIGNAL( clicked() ),
                     this, SLOT( accept() ) );
   QObject::connect( assign_close, SIGNAL( clicked() ),
-                    this, SLOT( assign_definition() ) );
-  QObject::connect( assign_close, SIGNAL( clicked() ),
-                    this, SLOT( accept() ) );
+                    this, SLOT( assign_definition_close() ) );
+
 
 }
 
@@ -323,10 +322,11 @@ void Assign_category_definition_dialog::assign_definition(){
     return;
   }
   QStringList list;
+  list.append(def_name);
+  list.append(grid_name);
   for (int i = 0; i < listWidget.size(); ++i)
     list.append(listWidget.at(i)->text());
 
-  list.prepend(grid_name);
 
   QString sep = Actions::separator.c_str();
   std::string parameters = list.join( sep ).toStdString();
@@ -346,5 +346,11 @@ void Assign_category_definition_dialog::assign_definition(){
 //update the property field
   props_selector_->show_properties(grid_name);
   QApplication::restoreOverrideCursor();
+
+}
+
+void Assign_category_definition_dialog::assign_definition_close(){
+	assign_definition();
+	accept();
 
 }

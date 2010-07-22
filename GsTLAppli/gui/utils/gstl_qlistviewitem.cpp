@@ -372,7 +372,7 @@ BaseTreeItemMenu* SimulationSetTreeItem::getMenu(ObjectTree* _object_tree, bool 
 
 	if (_singleInstance == 0)
 	{
-		_singleInstance = new SimulationSetTreeItemMenu(_object_tree, _object_tree);
+		_singleInstance = new PropertyGroupTreeItemMenu(_object_tree, _object_tree);
 	}
 
 	_singleInstance->setObjectTree(_object_tree);

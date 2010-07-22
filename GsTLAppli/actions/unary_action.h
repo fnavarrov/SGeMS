@@ -6,26 +6,23 @@
 #include <GsTLAppli/grid/grid_model/geostat_grid.h>
 #include <GsTLAppli/grid/grid_model/geovalue.h>
 
-class ACTIONS_DECL Unary_action: public Action {
+class ACTIONS_DECL Unary_action: public PropertyNoParameterAction {
 protected:
 	Unary_action(const std::string& _name) :
-		name_(_name) {
+		PropertyNoParameterAction(_name) {
 	}
 
 public:
 	virtual ~Unary_action() {
 	}
 
-	inline std::string name() const {
-		return name_;
-	}
 
 	virtual bool init(std::string& parameters, GsTL_project* proj, Error_messages_handler* errors);
 	virtual bool exec();
   virtual bool transform(const Geovalue::property_type& _val, Geovalue::property_type& _new_val){return true;}
 
 protected:
-	std::string name_;
+//	std::string name_;
 	std::string grid_name_;
 	std::string property_name_;
 	std::string new_property_name_;
@@ -183,6 +180,21 @@ public:
 	}
 };
 
+
+class Square_transform_action: public Unary_action {
+public:
+	static Named_interface* create_new_interface(std::string&) {
+		return new Square_transform_action();
+	}
+
+public:
+	Square_transform_action(): Unary_action("square"){}
+	virtual ~Square_transform_action(){}
+	bool transform(const Geovalue::property_type& _val, Geovalue::property_type& _new_val){
+		_new_val = _val*_val;
+		return true;
+	}
+};
 
 class Logistic_transform_action: public Unary_action {
 public:

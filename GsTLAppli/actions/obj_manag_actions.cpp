@@ -1560,4 +1560,146 @@ Named_interface* Create_trend::create_new_interface( std::string& ) {
 }
 
 
+/** The parameters for this function are:
+ * - the name of the grid
+ * - Name of the property to be truncated
+ * [ type of truncation: userdefined, decile, quantile, decile ]
+ * if userdefined [tresholds]
+ * Note that categorical property do not need threshold specifications
+ */
+Create_indicator_properties::Create_indicator_properties(){
+
+}
+
+Named_interface*
+Create_indicator_properties::create_new_interface( std::string& ){
+	return new Create_indicator_properties;
+}
+
+bool Create_indicator_properties::init( std::string& parameters, GsTL_project* proj,
+                     Error_messages_handler* errors ){
+	proj_ = proj;
+  std::vector< std::string > params =
+    String_Op::decompose_string( parameters, Actions::separator,
+                      				   Actions::unique );
+
+  if( params.size() < 2 ) {
+  	errors->report( "Need at least 2 parameters for categorical property and 3 for continuous property" );
+  	return false;
+  }
+
+  std::string grid_name = params[0];
+  SmartPtr<Named_interface> grid_ni =
+    Root::instance()->interface( gridModels_manager + "/" + grid_name );
+  grid_ = dynamic_cast<Geostat_grid*>( grid_ni.raw_ptr() );
+  if( !grid_ ) {
+    std::ostringstream message;
+    message << "No grid called \"" << grid_name << "\" was found";
+    errors->report( message.str() );
+    return false;
+  }
+  data_prop_ = grid_->property(params[1]);
+  if(data_prop_ == 0) {
+    errors->report( "No property named "+params[1]+" exists");
+    return false;
+  }
+  GsTLGridCategoricalProperty* cprop = grid_->categorical_property(params[1]);
+  if( cprop == 0 && params.size() == 2 ) {
+    errors->report( "The thresholding options must be specified for continous property");
+    return false;
+  }
+
+  if(cprop == 0 ) {
+  	if(params[2] == "Decile" || params[2] == "Quartile" || params[2] == "Quintile") {
+  		get_thresholds_from_data(params[2]);
+  	}
+  	else if(params[2] == "UserDefined") {
+  		for(int i=3; i< params.size(); i++) {
+  			thresholds_.push_back(String_Op::to_number<float>(params[i]));
+  		}
+  	}
+  	else {
+      errors->report( "The thresholding option is not recognized");
+      return false;
+    }
+  }
+
+  return true;
+
+}
+
+void Create_indicator_properties::get_thresholds_from_data(std::string option){
+	std::vector<float> data(data_prop_->begin(true),data_prop_->end());
+	std::sort(data.begin(),data.end());
+	int size = data.size();
+	float quant;
+	if(option == "Decile") {
+		quant = 0.1;
+	}
+	else if(option == "Quartile"){
+		quant = 0.25;
+	}
+	else if(option == "Quintile"){
+		quant = 0.2;
+	}
+	for(float i=quant; i < 1; i+=quant ) {
+		thresholds_.push_back( data[int(i*size)] );
+	}
+}
+
+bool Create_indicator_properties::exec(){
+	GsTLGridCategoricalProperty* cprop = dynamic_cast<GsTLGridCategoricalProperty*>(data_prop_);
+	if(cprop == 0) {
+		IndicatorContinuousPropertyGroup* group =
+				dynamic_cast<IndicatorContinuousPropertyGroup*>(
+						grid_->add_group(data_prop_->name()+"  indicator","ContinuousIndicator")
+						);
+		group->set_thresholds(thresholds_);
+
+		for(int t =0; t< thresholds_.size(); t++) {
+			std::string name = data_prop_->name()+"__less_than_"+String_Op::to_string(thresholds_[t]);
+			GsTLGridProperty* prop =  grid_->add_property(name);
+			if(!prop) continue;
+			for(int i = 0; i < prop->size(); ++i) {
+				if( data_prop_->is_informed(i) ) {
+					int id = data_prop_->get_value(i) < thresholds_[t];
+					prop->set_value(id, i);
+				}
+			}
+			group->add_property(prop);
+		}
+	} else { // This is a categorical property
+		IndicatorCategoricalPropertyGroup* group =
+				dynamic_cast<IndicatorCategoricalPropertyGroup*>(
+						grid_->add_group(data_prop_->name()+"  indicator","CategoricalIndicator"));
+
+		const CategoricalPropertyDefinition* def = cprop->get_category_definition();
+		const CategoricalPropertyDefinitionName* defname =
+				dynamic_cast<const CategoricalPropertyDefinitionName*>(def);
+
+		int ncat;
+		if(defname) ncat = defname->number_of_category();
+		else {
+			ncat = -1;
+			GsTLGridProperty::const_iterator it = cprop->begin(true);
+			for( ; it != cprop->end(); ++it) {
+				if(*it > ncat ) ncat = *it;
+			}
+		}
+		ncat++;
+		for(int c=0 ; c < ncat ; c++ ) {
+			std::string name = data_prop_->name()+"__indicator__"+def->get_category_name(c);
+			GsTLGridProperty* prop =  grid_->add_property(name);
+			if(!prop) continue;
+			for(int i = 0; i < prop->size(); ++i) {
+				if( data_prop_->is_informed(i) )
+					prop->set_value(static_cast<float>(data_prop_->get_value(i) == c), i);
+			}
+			group->add_property(prop);
+		}
+	}
+	return true;
+
+}
+
 

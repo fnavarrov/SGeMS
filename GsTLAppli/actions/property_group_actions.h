@@ -73,4 +73,39 @@ class ACTIONS_DECL Add_properties_to_group : public Action {
 
 }; 
 
+class ACTIONS_DECL Delete_property_in_group : public GroupNoParameterAction {
+ public:
+  static Named_interface* create_new_interface( std::string& );
+
+ public:
+  Delete_property_in_group():GroupNoParameterAction("RemoveAllPropertiesFromGroup") {}
+  virtual ~Delete_property_in_group() {}
+
+  virtual bool init( std::string& parameters, GsTL_project* proj,
+                     Error_messages_handler* errors );
+  virtual bool exec();
+
+ private:
+
+};
+
+
+class ACTIONS_DECL Remove_group : public GroupNoParameterAction {
+ public:
+  static Named_interface* create_new_interface( std::string& );
+
+ public:
+  Remove_group():GroupNoParameterAction("RemoveGroup") { }
+  virtual ~Remove_group() {}
+
+  virtual bool init( std::string& parameters, GsTL_project* proj,
+                     Error_messages_handler* errors );
+  virtual bool exec();
+
+ private:
+
+};
+
+
+
 #endif

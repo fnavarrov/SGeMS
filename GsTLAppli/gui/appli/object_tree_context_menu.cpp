@@ -115,7 +115,7 @@ PropertyTreeItemMenu_Single::PropertyTreeItemMenu_Single(ObjectTree* _object_tre
 				std::string name = *begin;
 				QString menuItemName(name.c_str());
 				SmartPtr<Named_interface> instance = manager->new_interface(name, name, &name);
-				Unary_action* uaction = dynamic_cast<Unary_action*> (instance.raw_ptr());
+				PropertyNoParameterAction* uaction = dynamic_cast<PropertyNoParameterAction*> (instance.raw_ptr());
 				if (uaction)
 				{
 					action_.push_back(unary_action_menu->addAction(menuItemName));
@@ -176,7 +176,6 @@ void PropertyTreeItemMenu_Single::onPythonScriptAction(QAction* _action)
 PropertyTreeItemMenu_Multiple::PropertyTreeItemMenu_Multiple(ObjectTree* _object_tree, QWidget* _parent) :
 	BaseTreeItemMenu(_object_tree, _parent)
 {
-	action_.push_back(addAction("Delete"));
 
 	// add python scripts
 	{
@@ -217,9 +216,33 @@ void PropertyTreeItemMenu_Multiple::onPythonScriptAction(QAction* _action)
 /**
  *
  */
-SimulationSetTreeItemMenu::SimulationSetTreeItemMenu(ObjectTree* _object_tree, QWidget* _parent) :
+PropertyGroupTreeItemMenu::PropertyGroupTreeItemMenu(ObjectTree* _object_tree, QWidget* _parent) :
 	BaseTreeItemMenu(_object_tree, _parent)
 {
+	// add unary actions
+	{
+		SmartPtr<Named_interface> ni = Root::instance()->interface(actions_manager);
+		Manager* manager = dynamic_cast<Manager*> (ni.raw_ptr());
+		if (manager)
+		{
+			QObject::connect(this, SIGNAL(triggered(QAction*)), this, SLOT(onUnaryGroupActionClick(QAction*)));
+
+			Manager::type_iterator begin = manager->begin();
+			Manager::type_iterator end = manager->end();
+			for (; begin != end; ++begin)
+			{
+				std::string name = *begin;
+				QString menuItemName(name.c_str());
+				SmartPtr<Named_interface> instance = manager->new_interface(name, name, &name);
+				GroupNoParameterAction* uaction = dynamic_cast<GroupNoParameterAction*> (instance.raw_ptr());
+				if (uaction)
+				{
+					action_.push_back(addAction(menuItemName));
+				}
+				manager->delete_interface(name);
+			}
+		}
+	}
 	// add group python scripts
 	{
 		SmartPtr<Named_interface> ni = Root::instance()->interface(python_group_script_manager);
@@ -242,7 +265,7 @@ SimulationSetTreeItemMenu::SimulationSetTreeItemMenu(ObjectTree* _object_tree, Q
 	}
 }
 
-SimulationSetTreeItemMenu::~SimulationSetTreeItemMenu()
+PropertyGroupTreeItemMenu::~PropertyGroupTreeItemMenu()
 {
 	for (std::vector<QMenu*>::iterator iter = nested_menu_.begin(); iter != nested_menu_.end(); ++iter)
 	{
@@ -250,11 +273,17 @@ SimulationSetTreeItemMenu::~SimulationSetTreeItemMenu()
 	}
 }
 
-void SimulationSetTreeItemMenu::handleContextMenuClick(QAction* _action)
+void PropertyGroupTreeItemMenu::handleContextMenuClick(QAction* _action)
 {
 }
 
-void SimulationSetTreeItemMenu::onPythonScriptAction(QAction* _action)
+void PropertyGroupTreeItemMenu::onPythonScriptAction(QAction* _action)
 {
 	object_tree_->onPythonGroupScriptClick(_action);
+}
+
+
+void PropertyGroupTreeItemMenu::onUnaryGroupActionClick(QAction* _action)
+{
+	object_tree_->onUnaryGroupActionClick(_action);
 }

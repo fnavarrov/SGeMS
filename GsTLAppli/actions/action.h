@@ -51,4 +51,46 @@ class ACTIONS_DECL Action : public Named_interface {
  
 }; // end of class Action 
  
+/** The base class for all actions on property that may not need parameters.
+ * Parameters may be optional
+ */
+class ACTIONS_DECL PropertyNoParameterAction : public Action {
+
+ public:
+	PropertyNoParameterAction(){}
+	PropertyNoParameterAction(std::string name):name_(name){}
+  virtual ~PropertyNoParameterAction() {}
+  virtual bool init( std::string& parameters, GsTL_project* proj,
+                     Error_messages_handler* errors ) = 0;
+  virtual bool exec() = 0;
+
+	virtual std::string name() const {
+		return name_;
+	}
+
+ protected :
+	std::string name_;
+
+};
+
+/** The base class for all actions on property group that may not need parameters.
+ * Parameters may be optional
+ */
+class ACTIONS_DECL GroupNoParameterAction : public Action {
+
+ public:
+	GroupNoParameterAction(){}
+	GroupNoParameterAction(std::string name):name_(name){}
+  virtual ~GroupNoParameterAction() {}
+  virtual bool init( std::string& parameters, GsTL_project* proj,
+                     Error_messages_handler* errors ) = 0;
+  virtual bool exec() = 0;
+
+  virtual std::string name() const {
+		return name_;
+	}
+
+ protected :
+	std::string name_;
+};
 #endif 

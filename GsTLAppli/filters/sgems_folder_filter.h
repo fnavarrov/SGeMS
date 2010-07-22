@@ -36,8 +36,8 @@ protected :
   Geostat_grid* read_masked_grid(QDir dir,const QDomElement& elem, std::string* errors);
   Geostat_grid* read_point_set(QDir dir,const QDomElement& elem, std::string* errors);
 
-  bool read_properties(const QDomElement& dom, Geostat_grid* grid, std::string* errors);
-  bool read_regions(const QDomElement& dom, Geostat_grid* grid, std::string* errors);
+  bool read_properties(QDir dir,const QDomElement& dom, Geostat_grid* grid, std::string* errors);
+  bool read_regions(QDir dir,const QDomElement& dom, Geostat_grid* grid, std::string* errors);
   bool read_group(const QDomElement& dom, Geostat_grid* grid, std::string* errors);
   bool read_category_definition(const QDomElement& root, Geostat_grid* grid, std::string* errors);
 

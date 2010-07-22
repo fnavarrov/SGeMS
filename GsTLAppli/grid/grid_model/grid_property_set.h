@@ -44,7 +44,6 @@
 //#include <QtXml/QDomDocument>
 
 
-
  
 class GRID_DECL GsTLGridPropertyGroup :public Named_interface {
 public:
@@ -90,6 +89,8 @@ protected :
 };
 
 
+GsTLGridPropertyGroup*
+Create_new_property_group(const std::string& name,const std::string& type="");
 
 class GRID_DECL Grid_property_group_manager {
 public :
