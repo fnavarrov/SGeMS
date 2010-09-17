@@ -449,7 +449,7 @@ void Oinv_cgrid::set_transparency( const QString& str ) {
   if( min == max ) return;
 
   QString cleaned_intervals;
-  const float alpha = 0.001f;
+  const float alpha = 0.01f;
 //  volrend_colormap_->colorMap.set1Value( 3, alpha );
 //  volrend_colormap_->colorMap.set1Value( 7, alpha );
 
@@ -497,7 +497,7 @@ void Oinv_cgrid::set_transparency() {
   float max = cmap_->upper_bound();
   if( min == max ) return;
 
-  const float alpha = 0.001f;
+  const float alpha = 0.01f;
 
   // Trying to automatically set the uninformed transparent
  // unsigned int not_inf = (low  - min) / ( max - min ) * 255;
