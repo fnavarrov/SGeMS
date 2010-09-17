@@ -44,14 +44,18 @@ Named_interface* create_reduced_grid( std::string& size_str){
 
 }
 
-Reduced_grid::Reduced_grid(int size) : active_size_(size) {
+Reduced_grid::Reduced_grid(int size) : active_size_(size),mgrid_cursor_(0) {
 	property_manager_.set_prop_size( size );
   region_manager_.set_region_size( size );
 }
 
-Reduced_grid::Reduced_grid() : active_size_(0)  {}
+Reduced_grid::Reduced_grid() : active_size_(0),mgrid_cursor_(0)  {}
 
-
+Reduced_grid::~Reduced_grid(){
+  delete mgrid_cursor_;
+  // to vaoid grid_cursor_ of being deleted  once more by the rgrid destructor.
+  grid_cursor_ = 0;
+}
 
 Neighborhood* Reduced_grid::neighborhood( double x, double y, double z,
 				   double ang1, double ang2, double ang3,
@@ -301,7 +305,9 @@ void Reduced_grid::mask( const std::vector<location_type>& xyzCoords)
 void Reduced_grid::mask( const std::vector<bool>& grid_mask)
 {
 
-  mask_ = grid_mask;
+  mask_.clear();
+  mask_.insert(mask_.begin(),grid_mask.begin(),grid_mask.end());
+  //mask_ = grid_mask;
   build_ijkmap_from_mask();
 	mgrid_cursor_->set_mask(&original2reduced_, &reduced2original_, &mask_ );
   

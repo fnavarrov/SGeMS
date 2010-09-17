@@ -56,7 +56,7 @@ class GRID_DECL Reduced_grid : public Cartesian_grid
 public:
 	Reduced_grid(int size); 
 	Reduced_grid();   
-  virtual ~Reduced_grid(){} 
+  virtual ~Reduced_grid();
 
 	virtual std::string classname() const { return "Masked_grid"; } 
 
