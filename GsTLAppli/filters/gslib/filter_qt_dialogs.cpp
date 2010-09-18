@@ -256,6 +256,7 @@ bool Gslib_input_mgrid_dialog::use_no_data_value() const {
 
 float Gslib_input_mgrid_dialog::no_data_value() const {
   QString val = no_data_value_edit_->text();
+  if(val.isEmpty()) return -9966699;
   return val.toFloat();
 }
 
