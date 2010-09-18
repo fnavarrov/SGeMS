@@ -80,8 +80,9 @@ static PyObject* sgems_execute(PyObject *self, PyObject *args)
     
     *GsTLAppli_Python_cerr::instance() << message.str() << gstlIO::end;
   }
-  Py_INCREF(Py_None);
-  return Py_None;
+  PyObject* success = Py_BuildValue("b", ok);
+  Py_INCREF(success);
+  return success;
 }
 
 

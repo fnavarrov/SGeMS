@@ -160,6 +160,7 @@ bool Delete_property_in_group::init( std::string& parameters, GsTL_project* proj
   for(; it != group->end_property(); ++it){
   	grid->remove_property(it->second->name());
   }
+  grid->remove_group(params[1]);
   return true;
 }
 
