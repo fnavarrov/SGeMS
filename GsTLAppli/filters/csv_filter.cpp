@@ -728,3 +728,97 @@ bool Csv_mgrid_infilter::has_valid_parameters() const{
   ok = ok && !dialog_->name().isEmpty();
   return ok;
 }
+
+/*
+ * csv outfilter
+ */
+
+bool Csv_outfilter::write( std::string outfile_name, const Geostat_grid* grid, std::string* errors ) {
+  /* Not all objects are saved the same way: if we are dealing with a
+   * stratigraphic grid, we don't need to save the point coordinates.
+   */
+  std::ofstream outfile( outfile_name.c_str() );
+  if( !outfile ) {
+    if( errors )
+      errors->append( "can't write to file: " + outfile_name );
+    return false;
+  }
+
+  typedef std::list<std::string>::const_iterator string_iterator;
+  std::list<std::string> & property_names = _list_to_write;
+  //std::list<std::string> property_names = grid->property_list();
+  std::vector< const GsTLGridProperty* > properties;
+
+  bool output_locations = false;
+  int nb_properties = property_names.size();
+
+  //TL modified
+  if( dynamic_cast<const Point_set*>( grid ) || dynamic_cast<const Reduced_grid*>(grid)) {
+    output_locations = true;
+    nb_properties += 3;
+  }
+
+
+  // write property names
+  if( output_locations )
+    outfile << "X ,Y,Z, ";
+  string_iterator it = property_names.begin();
+  if(it != property_names.end()) {
+  	outfile << *it;
+  	properties.push_back( grid->property( *it ) );
+  	it++;
+  }
+  for( ; it != property_names.end();
+       ++ it ) {
+    outfile <<","<< *it;
+    properties.push_back( grid->property( *it ) );
+  }
+  outfile<<std::endl;
+
+  int grid_size;
+  if( properties.empty() )
+    grid_size = 0;
+  else
+    grid_size = properties[0]->size();
+
+  // Write the property values
+  for( int i=0; i < grid_size ; i++ ) {
+    if( output_locations ) {
+
+	  Geostat_grid::location_type loc = grid->location( i );
+		std::stringstream ss_x, ss_y, ss_z;
+
+		ss_x.precision(std::numeric_limits<GsTLCoord>::digits10);//override the default
+    ss_y.precision(std::numeric_limits<GsTLCoord>::digits10);//override the default
+    ss_z.precision(std::numeric_limits<GsTLCoord>::digits10);//override the default
+		ss_x << loc.x();
+    ss_y << loc.y();
+    ss_z << loc.z();
+
+    outfile << ss_x.str()<<","<<ss_y.str() << "," << ss_z.str()<< ",";
+
+		}
+
+		for( unsigned int j=0; j < property_names.size(); ++j ) {
+			if( properties[j]->is_informed( i ) ) {
+				const GsTLGridCategoricalProperty* cprop =
+						dynamic_cast<const GsTLGridCategoricalProperty*>(properties[j]);
+				if(cprop)
+					outfile << cprop->get_category_name(i);
+				else
+					outfile << properties[j]->get_value( i );
+			}
+
+
+			else
+				outfile << GsTLGridProperty::no_data_value;
+			if( j < property_names.size()-1 ) outfile<<",";
+		}
+
+		outfile << std::endl;
+  }
+  return true;
+}
+
+
+

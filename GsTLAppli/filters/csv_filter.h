@@ -147,4 +147,22 @@ class FILTERS_DECL Csv_mgrid_infilter : public Csv_specialized_infilter {
 };  
  
 
+/*
+ * -----------------------
+ * Output filter
+ */
+class Csv_outfilter: public Output_filter {
+public:
+  static Named_interface* create_new_interface( std::string& );
+public:
+  Csv_outfilter();
+  virtual ~Csv_outfilter();
+
+  virtual std::string filter_name() const { return "csv" ; }
+  virtual std::string file_extensions() const { return "*.csv"; }
+
+  virtual bool write( std::string outfile_name, const Geostat_grid* grid,
+                      std::string* errors = 0 );
+};
+
 #endif
