@@ -50,6 +50,10 @@ accessor_ = new DiskAccessor( size, name, in_filename );
 }
 
 GsTLGridProperty::~GsTLGridProperty() {
+	std::vector<GsTLGridPropertyGroup*> groups = this->groups();
+	for(int i=0; i<groups.size(); ++i ) {
+		this->remove_group_membership(groups[i]->name());
+	}
   delete accessor_;
 }
 

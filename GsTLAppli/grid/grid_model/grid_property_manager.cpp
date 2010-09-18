@@ -356,11 +356,8 @@ Grid_property_manager::remove_property( const std::string& name ) {
     // ex: if property 2 is deleted, property 3 does not become property 2,
     // but remains property 3.
     int ind = it->second;
-    std::vector<GsTLGridPropertyGroup*> groups = properties_[ind]->groups();
-    for(int i=0; i<groups.size(); ++i ) {
-    	groups[i]->remove_property(properties_[ind]);
-    	//properties_[ind]->remove_group_membership(groups[i]->name());
-    }
+ //   The removal of the membership si done by the destructor.
+
     delete properties_[ind];
     properties_[ind] = 0;
     properties_map_.erase( it );
