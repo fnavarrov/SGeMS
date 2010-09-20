@@ -733,6 +733,14 @@ bool Csv_mgrid_infilter::has_valid_parameters() const{
  * csv outfilter
  */
 
+Named_interface* Csv_outfilter::create_new_interface( std::string& ) {
+	return new Csv_outfilter;
+}
+
+Csv_outfilter::Csv_outfilter() {}
+
+Csv_outfilter::~Csv_outfilter() {}
+
 bool Csv_outfilter::write( std::string outfile_name, const Geostat_grid* grid, std::string* errors ) {
   /* Not all objects are saved the same way: if we are dealing with a
    * stratigraphic grid, we don't need to save the point coordinates.

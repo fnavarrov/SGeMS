@@ -203,7 +203,8 @@ bool library_filters_init::bind_output_filters_factories(Manager* dir) {
                 Simulacre_output_filter::create_new_interface );
   dir->factory( Sgems_folder_output_filter().filter_name(),
 								Sgems_folder_output_filter::create_new_interface );
-
+  dir->factory( Csv_outfilter().filter_name(),
+								Csv_outfilter::create_new_interface );
   return true;
 }
 
