@@ -200,7 +200,7 @@ bool Remove_group::init( std::string& parameters, GsTL_project* proj,
 
   GsTLGridPropertyGroup* group = grid->get_group(params[1]);
   if(!group)  {
-    errors->report( "The goup "+params[1]+" does not exist" );
+    errors->report( "The group "+params[1]+" does not exist" );
     return false;
   }
 

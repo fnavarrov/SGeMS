@@ -1605,7 +1605,7 @@ bool Create_indicator_properties::init( std::string& parameters, GsTL_project* p
   }
   GsTLGridCategoricalProperty* cprop = grid_->categorical_property(params[1]);
   if( cprop == 0 && params.size() == 2 ) {
-    errors->report( "The thresholding options must be specified for continous property");
+    errors->report( "The thresholding options must be specified for continuous property");
     return false;
   }
 
@@ -1622,7 +1622,19 @@ bool Create_indicator_properties::init( std::string& parameters, GsTL_project* p
       errors->report( "The thresholding option is not recognized");
       return false;
     }
+  	group_name_ = data_prop_->name()+" "+params[2]+" indicator";
   }
+  else {
+  	group_name_ = data_prop_->name()+" categorical indicator";
+
+  }
+// Check if it already exists
+  GsTLGridPropertyGroup* group =  grid_->get_group( group_name_ );
+  if(group) {
+    errors->report( "A group with the indicators already exists");
+    return false;
+  }
+
 
   return true;
 
@@ -1652,12 +1664,12 @@ bool Create_indicator_properties::exec(){
 	if(cprop == 0) {
 		IndicatorContinuousPropertyGroup* group =
 				dynamic_cast<IndicatorContinuousPropertyGroup*>(
-						grid_->add_group(data_prop_->name()+"  indicator","ContinuousIndicator")
+						grid_->add_group(group_name_,"ContinuousIndicator")
 						);
 		group->set_thresholds(thresholds_);
 
 		for(int t =0; t< thresholds_.size(); t++) {
-			std::string name = data_prop_->name()+"__less_than_"+String_Op::to_string(thresholds_[t]);
+			std::string name = data_prop_->name()+" less than "+String_Op::to_string(thresholds_[t]);
 			GsTLGridProperty* prop =  grid_->add_property(name);
 			if(!prop) continue;
 			for(int i = 0; i < prop->size(); ++i) {
@@ -1671,7 +1683,7 @@ bool Create_indicator_properties::exec(){
 	} else { // This is a categorical property
 		IndicatorCategoricalPropertyGroup* group =
 				dynamic_cast<IndicatorCategoricalPropertyGroup*>(
-						grid_->add_group(data_prop_->name()+"  indicator","CategoricalIndicator"));
+						grid_->add_group(group_name_,"CategoricalIndicator"));
 
 		const CategoricalPropertyDefinition* def = cprop->get_category_definition();
 		const CategoricalPropertyDefinitionName* defname =
@@ -1688,7 +1700,7 @@ bool Create_indicator_properties::exec(){
 		}
 		ncat++;
 		for(int c=0 ; c < ncat ; c++ ) {
-			std::string name = data_prop_->name()+"__indicator__"+def->get_category_name(c);
+			std::string name = data_prop_->name()+" indicator "+def->get_category_name(c);
 			GsTLGridProperty* prop =  grid_->add_property(name);
 			if(!prop) continue;
 			for(int i = 0; i < prop->size(); ++i) {

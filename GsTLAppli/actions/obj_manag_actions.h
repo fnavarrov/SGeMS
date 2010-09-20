@@ -553,6 +553,7 @@ class ACTIONS_DECL Create_indicator_properties : public Action {
   void get_thresholds_from_data(std::string option);
 
   std::vector<float> thresholds_;
+  std::string group_name_;
   Geostat_grid* grid_;
   GsTLGridProperty* data_prop_;
   std::vector<std::string > id_names_;
