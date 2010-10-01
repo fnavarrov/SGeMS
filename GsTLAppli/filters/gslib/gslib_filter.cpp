@@ -989,6 +989,7 @@ bool Gslib_outfilter::write( std::string outfile, const Geostat_grid* grid,
                             std::string* errors ) 
 {
   std::ofstream out( outfile.c_str() );
+  out.precision(12);
   if( !out ) {
     if( errors )
       errors->append( "can't write to file: " + outfile );
@@ -1120,7 +1121,7 @@ bool Gslib_outfilter::write( std::ofstream& outfile, const Geostat_grid* grid ) 
       if( properties[j]->is_informed( i ) )
         outfile << properties[j]->get_value( i ) << " ";
       else
-        outfile << GsTLGridProperty::no_data_value;
+        outfile << static_cast<int>(GsTLGridProperty::no_data_value)<<" ";
 	
     }
 	
