@@ -1,6 +1,6 @@
 CONFIG += thread
 MOC_DIR = .moc
-LIBS += -lGsTLAppli_utils -lGsTLAppli_appli 
+LIBS += -lGsTLAppli_utils -lGsTLAppli_appli -lGsTLAppli_grid
 contains( CONFIG, plugin ) {
   DESTDIR=$$GSTLAPPLI_HOME/plugins/designer
   TARGET=GsTLwidgets
