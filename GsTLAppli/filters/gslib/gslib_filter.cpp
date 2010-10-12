@@ -466,7 +466,6 @@ read_one_realization( std::ifstream& infile,
     
 	  for (int i = 0; i < property_count; ++i){
       if (nums.size() == property_count && i == maskColumnNum-1) {
-        prop_index++;
         continue;
       }
 		 // val = String_Op::to_number<float>(nums[i]);
