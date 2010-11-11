@@ -41,5 +41,7 @@ typedef unsigned long GsTLULong;
 typedef float GsTLFloat; 
 typedef double GsTLDouble; 
 typedef double GsTLCoord; 
+
+typedef unsigned long int GsTLIndex;
  
 #endif 

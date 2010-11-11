@@ -59,6 +59,8 @@ public:
                       std::string* errors = 0 );
 
 protected :
+
+
   QDomElement write_grid_geometry(QDir dir,QDomDocument& dom, const Geostat_grid* grid);
   QDomElement write_masked_grid_geometry( QDir dir, QDomDocument& dom, const  Geostat_grid* grid);
   QDomElement write_pointset_geometry( QDir dir,  QDomDocument& dom, const Geostat_grid* grid );

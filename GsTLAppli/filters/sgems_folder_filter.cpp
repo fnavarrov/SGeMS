@@ -299,7 +299,7 @@ bool Sgems_folder_input_filter::read_properties(QDir dir,const QDomElement& root
     QString filepath =  dir.absoluteFilePath(elem.attribute("filepath"));
     if(isCategorical) {
     	std::string  cdef_name = elem.attribute("categoryDefinition").toStdString();
-    	GsTLGridCategoricalProperty* cprop = grid->add_categorical_property( filepath.toStdString().c_str(), cdef_name );
+    	GsTLGridCategoricalProperty* cprop = grid->add_categorical_property_from_disk( prop_name, filepath.toStdString().c_str(), cdef_name );
     	prop = dynamic_cast<GsTLGridProperty*>(cprop);
     }
     else
@@ -502,6 +502,8 @@ bool Sgems_folder_output_filter::write( std::string outfile,
 	 QDomElement elemGroup = write_group(doc,grid);
 	 root.appendChild(elemGroup);
 
+	 QDomElement elemCatDef = write_category_definition(doc,grid);
+	 root.appendChild(elemCatDef);
 
   //QFile file( dir.absolutePath()+"/grid_geometry.xml" );
   QFile file( dir.absoluteFilePath("grid_geometry.xml" ) );
@@ -656,7 +658,9 @@ Sgems_folder_output_filter::write_properties(QDir dir,
 		else { // The file is already on disk.  Should find a way to simply copy the stream from the os
 
 			for( int i=0; i < prop->size() ; i++  ) {
-				float z = prop->get_value(i);
+				float z;
+				if(prop->is_informed(i))  z = prop->get_value(i);
+				else z = GsTLGridProperty::no_data_value;
 				prop_stream.write( (char*) (&z),  sizeof(float) );
 				//prop_stream<<(char*)(&z);
 			}
@@ -749,14 +753,21 @@ Sgems_folder_output_filter::write_group(QDomDocument& doc, const Geostat_grid* g
 	return elemGroups;
 }
 
-QDomElement write_category_definition(QDomDocument& dom, const Geostat_grid* grid){
+QDomElement Sgems_folder_output_filter::write_category_definition(QDomDocument& dom, const Geostat_grid* grid){
 
 	QDomElement elemCats = dom.createElement("CategoricalDefinitions");
 
-	std::list<std::string> cat_defs = grid->categorical_property_list();
-	if(cat_defs.empty()) {
+	std::list<std::string> cat_props = grid->categorical_property_list();
+	if(cat_props.empty()) {
 		elemCats.clear();
 		return elemCats;
+	}
+	// Get the categorical definition used by the grid
+	std::list<std::string> cat_defs;
+	std::list<std::string>::const_iterator it = cat_props.begin();
+	for( ; it != cat_props.end(); ++it) {
+		const GsTLGridCategoricalProperty* cprop = grid->categorical_property(*it);
+		cat_defs.push_back( cprop->get_category_definition()->name() );
 	}
 	cat_defs.sort();
 	std::list<std::string>::iterator unique_end = std::unique(cat_defs.begin(), cat_defs.end());

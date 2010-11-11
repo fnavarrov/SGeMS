@@ -101,6 +101,7 @@ public:
   bool add_location(GsTLCoord x, GsTLCoord y, GsTLCoord z);
   bool add_location(int CartesianGridNodeId);
 
+  GsTLInt closest_node( const location_type& P );
 
   const std::vector<bool>& mask() const;
   void mask(const std::vector<bool>& mask);
@@ -141,10 +142,11 @@ public:
 protected:
 	
 	// translates from an id in reduced grid to an id in the full grid
-	std::map<int,int> reduced2original_;
-
+//	std::map<int,int> reduced2original_;
+	std::vector<int> reduced2original_;
 	// the other direction
-	std::map<int,int> original2reduced_;
+//	std::map<int,int> original2reduced_;
+	std::vector<int> original2reduced_;
 
 	// stores coordinates of active cells
 	std::vector<GsTLGridNode> active_coords_;
@@ -154,6 +156,7 @@ protected:
 
 	// number of active cells
 	GsTLInt active_size_;
+	GsTLInt rgrid_size_;
 
   MaskedGridCursor* mgrid_cursor_;
 

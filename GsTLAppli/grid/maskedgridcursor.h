@@ -80,7 +80,7 @@ public:
 	}
 
 	MaskedGridCursor(GsTLInt nx, GsTLInt ny, GsTLInt nz, 
-        std::map<int,int> *full2masked, std::map<int,int> * masked2full, 
+        std::vector<int> *full2masked, std::vector<int> * masked2full,
         std::vector<bool> * mask, GsTLInt level = 1, bool use_anistropic=false)
         :SGrid_cursor(nx,ny,nz){ 
  //   this->setDims(nx,ny,nz);
@@ -100,7 +100,7 @@ public:
 		set_multigrid_level(1); 
 	} 
 */
-	void set_mask(std::map<int,int> *orr, std::map<int,int> * ro, bit_vector * p) { 
+	void set_mask(std::vector<int> *orr, std::vector<int> * ro, bit_vector * p) {
 		full2reduced_ = orr; 
 		reduced2full_ = ro;
 		active_size_ = reduced2full_->size();
@@ -261,10 +261,11 @@ public:
 protected:
 
 	// translates from a full grid index to reduced grid node id
-	std::map<int,int> * full2reduced_;
+//	std::map<int,int> * full2reduced_;
+	std::vector<int> * full2reduced_;
 
 	// the other way around
-	std::map<int,int> * reduced2full_;
+	std::vector<int> * reduced2full_;
 
 	// builds the correspondence between a level number and the list of active cells that
 	// are actually on that level

@@ -43,6 +43,7 @@
 class Geostat_grid; 
 class Cartesian_grid;
 class Point_set; 
+class Reduced_grid;
 
 
 
@@ -155,14 +156,16 @@ public:
                      Geostat_grid* client, 
                      GsTLGridProperty* client_prop );
 
-  virtual bool undo_copy(){return false;}
+  virtual bool undo_copy();
 
 
 protected:
-  const Geostat_grid* server_;
-  const Geostat_grid* client_;
-  const GsTLGridProperty* server_prop_;
+  const Point_set* server_;
+  Reduced_grid* client_;
+  const GsTLGridProperty* server_property_;
   GsTLGridProperty* client_property_;
+  std::map<int,GsTLGridProperty::property_type> back_up_;
+
 };
 
 /*

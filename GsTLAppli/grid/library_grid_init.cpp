@@ -180,7 +180,7 @@ bool library_grid_init::init_categorical_definition_factory() {
 																				categoricalDefinition_manager +"/Default");
 
   if(ni.raw_ptr() == 0) {
-    GsTLlog << "could not the default categorical definition \n";
+    GsTLlog << "could not create the default categorical definition \n";
     return false;
   }
   return true;

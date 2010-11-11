@@ -170,21 +170,21 @@ GsTLInt Reduced_grid::rgrid_size() const {
 }
 
 const int Reduced_grid::full2reduced(int idInFullGrid)	const {
-	std::map<int,int>::const_iterator itr = original2reduced_.find(idInFullGrid);
-	if (itr == original2reduced_.end()) return -1;
-	return itr->second;
+	if(idInFullGrid >= rgrid_size() ) return -1;
+	return original2reduced_[idInFullGrid];
+//	std::map<int,int>::const_iterator itr = original2reduced_.find(idInFullGrid);
+//	if (itr == original2reduced_.end()) return -1;
+//	return itr->second;
 }
 
 const int Reduced_grid::reduced2full(int idInReducedGrid) const{
-	std::map<int,int>::const_iterator itr = reduced2original_.find(idInReducedGrid);
-	if (itr == reduced2original_.end()) return -1;
-	return itr->second;
+	if(idInReducedGrid >= active_size_) return -1;
+	return reduced2original_[idInReducedGrid];
 }
 
 
-inline Geostat_grid::location_type Reduced_grid::location( int node_id ) const { 
-	std::map<int,int>::const_iterator itr = reduced2original_.find(node_id);
-	node_id = itr->second;
+inline Geostat_grid::location_type Reduced_grid::location( int reduced_node_id ) const {
+	GsTLInt node_id =reduced2full(reduced_node_id);
 	GsTLInt max_nxy = geometry_->dim(0)*geometry_->dim(1);
 	GsTLInt inxy = node_id % max_nxy; 
 	GsTLInt k = (node_id - inxy)/max_nxy; 
@@ -256,6 +256,8 @@ void Reduced_grid::set_dimensions( int nx, int ny, int nz,
   mask_ = mask;
   mgrid_cursor_ = new MaskedGridCursor(nx, ny, nz);
   grid_cursor_ = dynamic_cast<SGrid_cursor*>(mgrid_cursor_);
+
+
   build_ijkmap_from_mask();
 	mgrid_cursor_->set_mask(&original2reduced_, &reduced2original_, &mask_ );
 //  mgrid_cursor_ = new MaskedGridCursor(nx, ny, nz,
@@ -278,6 +280,8 @@ void Reduced_grid::set_dimensions( int nx, int ny, int nz,
   mgrid_cursor_ = new MaskedGridCursor(nx, ny, nz);
   grid_cursor_ = dynamic_cast<SGrid_cursor*>(mgrid_cursor_);
 
+  original2reduced_.clear();
+  original2reduced_.assign(nx*ny*nz,-1);
 }
 
 void Reduced_grid::mask( const std::vector<GsTLGridNode>& ijkCoords)
@@ -293,6 +297,7 @@ void Reduced_grid::mask( const std::vector<GsTLGridNode>& ijkCoords)
 
 void Reduced_grid::mask( const std::vector<location_type>& xyzCoords)
 {
+
   build_mask_from_xyz(xyzCoords);
   mgrid_cursor_->set_mask(&original2reduced_, &reduced2original_, &mask_ );
 
@@ -308,6 +313,7 @@ void Reduced_grid::mask( const std::vector<bool>& grid_mask)
   mask_.clear();
   mask_.insert(mask_.begin(),grid_mask.begin(),grid_mask.end());
   //mask_ = grid_mask;
+
   build_ijkmap_from_mask();
 	mgrid_cursor_->set_mask(&original2reduced_, &reduced2original_, &mask_ );
   
@@ -349,7 +355,6 @@ void Reduced_grid::set_dimensions( int nx, int ny, int nz,
   mgrid_cursor_ = new MaskedGridCursor(nx, ny, nz);
   grid_cursor_ = dynamic_cast<SGrid_cursor*>(mgrid_cursor_);
 
-
   build_mask_from_xyz(xyzCoords);
 	mgrid_cursor_->set_mask(&original2reduced_, &reduced2original_, &mask_ );
 
@@ -364,12 +369,23 @@ void Reduced_grid::build_ijkmap_from_mask() {
   int index = 0;
   int m_index = 0;
 
-  std::vector<bool>::const_iterator it = mask_.begin();
+  original2reduced_.clear();
+  original2reduced_.assign(mask_.size(),-1);
 
-  for( ; it!= mask_.end(); ++it, ++index) {
+  std::vector<bool>::const_iterator it = mask_.begin();
+  GsTLInt num_active_cells = 0;
+  for( ; it!= mask_.end(); ++it) {
+  	if(*it) num_active_cells++;
+  }
+
+  reduced2original_.clear();
+  reduced2original_.reserve(num_active_cells);
+
+  for(it = mask_.begin() ; it!= mask_.end(); ++it, ++index) {
     if(!(*it) ) continue;
     mgrid_cursor_->cartesian_coords(index,i,j,k);
-    reduced2original_[m_index] = index;
+//    reduced2original_[m_index] = index;
+    reduced2original_.push_back(index);
     original2reduced_[index] = m_index;
     m_index++;
 
@@ -443,4 +459,40 @@ bool Reduced_grid::add_location(GsTLCoord x, GsTLCoord y, GsTLCoord z)
 
 const std::vector<bool>& Reduced_grid::mask() const{
   return mask_;
+}
+
+
+
+
+GsTLInt Reduced_grid::closest_node( const location_type& P ) {
+  location_type origin = geometry_->origin();
+  location_type P0;
+  P0.x() = P.x() - origin.x();
+  P0.y() = P.y() - origin.y();
+  P0.z() = P.z() - origin.z();
+
+  GsTLCoordVector cell_sizes = geometry_->cell_dims();
+  int spacing = grid_cursor_->multigrid_spacing();
+
+  // Account for the multi-grid spacing
+  cell_sizes.x() = cell_sizes.x() * spacing;
+  cell_sizes.y() = cell_sizes.y() * spacing;
+  cell_sizes.z() = cell_sizes.z() * spacing;
+
+  GsTLInt i = std::max( GsTL::floor( P0.x()/cell_sizes.x() + 0.5 ), 0 );
+  GsTLInt j = std::max( GsTL::floor( P0.y()/cell_sizes.y() + 0.5 ), 0 );
+  GsTLInt k = std::max( GsTL::floor( P0.z()/cell_sizes.z() + 0.5 ), 0 );
+
+  // The function will return a valid node even if P is outside the
+  // grid's bounding box
+  if( i >= grid_cursor_->max_iter( SGrid_cursor::X ) )
+    i = grid_cursor_->max_iter( SGrid_cursor::X ) - 1;
+  if( j >= grid_cursor_->max_iter( SGrid_cursor::Y ) )
+    j = grid_cursor_->max_iter( SGrid_cursor::Y ) - 1;
+  if( k >= grid_cursor_->max_iter( SGrid_cursor::Z ) )
+    k = grid_cursor_->max_iter( SGrid_cursor::Z ) - 1;
+
+  // Need to check if the i,j,k is within the active_region of the grid
+
+  return mgrid_cursor_->node_id( i, j, k );
 }

@@ -44,7 +44,11 @@ bool New_property_group::init( std::string& parameters, GsTL_project* proj,
     return false;
   }
 
-  group = grid->add_group(params[1],params[2]);
+  std::string type;
+  if( params[2] == "General" ) type = "";
+  else type = params[2];
+
+  group = grid->add_group(params[1],type);
   if(!group)  {
     errors->report( "The goup "+params[1]+" could no be created; possibly type undefined" );
     return false;

@@ -6,7 +6,7 @@
 
 GsTLGridPropertyGroup*
 Create_new_property_group(const std::string& name, const std::string& type) {
-	if(type == "") return new GsTLGridPropertyGroup(name);
+	if(type == "" || type == "General") return new GsTLGridPropertyGroup(name);
 	else if(type == "Simulation") return new SimulationPropertyGroup(name);
 	else if(type == "CategoricalIndicator") return new IndicatorCategoricalPropertyGroup(name);
 	else if(type == "ContinuousIndicator") return new IndicatorContinuousPropertyGroup(name);

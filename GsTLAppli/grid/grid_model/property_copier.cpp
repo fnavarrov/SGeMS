@@ -501,7 +501,7 @@ Pset_to_mask_copier::Pset_to_mask_copier()
   : Property_copier() {
   server_ = 0;
   client_ = 0;
-  server_prop_ = 0;
+  server_property_ = 0;
   client_property_ = 0;
   
 
@@ -511,32 +511,65 @@ bool Pset_to_mask_copier::copy( const Geostat_grid* server,
                                   const GsTLGridProperty* server_prop,
                                   Geostat_grid* client, 
                                   GsTLGridProperty* client_prop ) {
-  Reduced_grid* to_grid = dynamic_cast< Reduced_grid* >( client );
-  const Point_set* from_grid = dynamic_cast< const Point_set* >( server );
-  int nx = to_grid->nx();
-  int ny = to_grid->ny();
-  int nz = to_grid->nz();
-  GsTLPoint o = to_grid->origin();
+
+  if(client == 0 || server == 0 || client_prop==0 || server_prop==0) return false;
+  client_ = dynamic_cast< Reduced_grid* >( client );
+  server_ = dynamic_cast< const Point_set* >( server );
+  client_property_ = client_prop;
+  server_property_ = server_prop;
+
+  int nx = client_->nx();
+  int ny = client_->ny();
+  int nz = client_->nz();
+  GsTLPoint o = client_->origin();
   int xy = nx*ny;
-  int id;
+  back_up_.clear();
 
-  if( !from_grid || !to_grid ) return false;
 
-  copy_categorical_definition(server_prop,client_prop);
+  copy_categorical_definition(server_property_,client_property_);
+
 
   // Copy the property
-  Point_set::location_type l;
-   for( int i=0; i < server_prop->size() ; i++ ) {
-	   l = from_grid->location(i);
-	   id = int(l[2])*xy/o[0]+int(l[1])*nx/o[1]+int(l[0])/o[2];
-	   if (!to_grid->is_inside_mask(id)) continue;
-	  if( server_prop->is_informed( i ) ) 
-		  client_prop->set_value( server_prop->get_value( i ), to_grid->full2reduced(id) );
-	  else if(overwrite_)
-		  client_prop->set_not_informed( to_grid->full2reduced(id) );
-    }
-   return true;
+
+   for( int i=0; i < server_property_->size() ; i++ ) {
+  	 Point_set::location_type loc = server_->location(i);
+	   GsTLInt id = client_->closest_node(loc);
+//	   if (!to_grid->is_inside_mask(id)) continue;
+	   if(id < 0) continue;
+
+		GsTLGridProperty::property_type val = GsTLGridProperty::no_data_value;
+		if(client_property_->is_informed(id))
+			val = client_property_->get_value( id );
+
+		//First use the find method to check if the original value had already been backuped
+		std::map<int,GsTLGridProperty::property_type>::iterator  it = back_up_.find(id);
+		if(it == back_up_.end()) back_up_[id] = val;
+
+		if( server_prop->is_informed( i ) ) {
+			client_property_->set_value( server_property_->get_value( i ), id );
+		}
+		else if(overwrite_) {
+			client_property_->set_not_informed( id );
+		}
+  }
+
+  return true;
 }
+
+bool Pset_to_mask_copier::undo_copy( ) {
+
+	if(server_property_==0 || client_property_==0) return false;
+
+	std::map<int,GsTLGridProperty::property_type>::const_iterator it = back_up_.begin();
+
+	for( ; it != back_up_.end(); ++it) {
+		client_property_->set_value(it->second,it->first);
+	}
+
+  return true;
+}
+
+
 
 Pset_to_pset_copier::Pset_to_pset_copier() 
   : Property_copier() {

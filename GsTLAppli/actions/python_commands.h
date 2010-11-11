@@ -568,7 +568,7 @@ static PyObject* get_nan_value( PyObject *self, PyObject *args)
 	return nan;
 }
 
-//TL  modified
+
 static PyObject* sgems_get_dims( PyObject *self, PyObject *args)
 {
 	RGrid * grid;
@@ -596,6 +596,29 @@ static PyObject* sgems_get_dims( PyObject *self, PyObject *args)
 	return list;
 }
 
+
+static PyObject* sgems_get_grid_size( PyObject *self, PyObject *args)
+{
+	Geostat_grid * grid;
+	char * obj_str;
+
+	if( !PyArg_ParseTuple(args, "s", &obj_str) )
+		return NULL;
+
+	std::string object(obj_str);
+
+	SmartPtr<Named_interface> grid_ni =
+		Root::instance()->interface( gridModels_manager + "/" + object );
+	grid = dynamic_cast<Geostat_grid*>( grid_ni.raw_ptr() );
+	if( !grid ) {
+		*GsTLAppli_Python_cerr::instance() << "The grid " <<object << " does not exist." << gstlIO::end;
+		Py_INCREF(Py_None);
+		return Py_BuildValue("i", -1);
+	}
+
+	return Py_BuildValue("i", grid->size());
+
+}
 
 
 static PyObject* sgems_get_property_list( PyObject *self, PyObject *args)
@@ -800,7 +823,8 @@ static PyMethodDef SGemsMethods[] = {
      "Return a vector."},
     {"set_property", sgems_set_property, METH_VARARGS,
      "Change or create a property of a grid."},
-	{"get_dims", sgems_get_dims, METH_VARARGS, "Get dimension of a regular grid"},
+    {"get_dims", sgems_get_dims, METH_VARARGS, "Get dimension of a regular grid"},
+		{"get_grid_size", sgems_get_grid_size, METH_VARARGS, "Get the size of a property of a grid"},
     {"set_region", sgems_set_region, METH_VARARGS,
      "Import a region to a grid."},
      {"get_region", sgems_get_region, METH_VARARGS,
@@ -828,6 +852,7 @@ static PyMethodDef SGemsMethods[] = {
     {NULL, NULL, 0, NULL}
 };
 
+//TODO: add get categorical property in alpha mode
 
 
 
