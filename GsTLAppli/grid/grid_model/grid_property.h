@@ -29,6 +29,8 @@
 #ifndef __GSTLAPPLI_GRID_PROPERTY_H__ 
 #define __GSTLAPPLI_GRID_PROPERTY_H__ 
  
+
+
 #include <GsTLAppli/grid/common.h>
 #include <GsTLAppli/utils/gstl_types.h> 
 #include <GsTLAppli/utils/gstl_messages.h> 
@@ -100,9 +102,17 @@ class GRID_DECL GsTLGridProperty {
   * disk rather than in RAM (see functions \c swap_to_disk() and 
   * \c swap_to_memory() ), the function returns a null pointer.
   */
+#ifdef SGEMS_ACCESSOR_LARGE_FILE
+
+  inline std::vector<float*> data();
+  inline const std::vector<float*> data() const;
+
+  //virtual float** data()=0;
+  //virtual const float* const* data() const=0 ;
+#else
   inline property_type* data(); 
   inline const property_type* data() const; 
- 
+#endif
   /** Returns the name of the property
   */
   inline std::string name() const { return name_; } 
@@ -251,8 +261,15 @@ class GRID_DECL PropertyAccessor {
   virtual bool get_flag( int flag_id, GsTLInt id ) = 0; 
   virtual void set_flag( bool flag, int flag_id, GsTLInt id ) = 0; 
    
-  virtual float* data() = 0; 
-  virtual const float* data() const = 0; 
+#ifdef SGEMS_ACCESSOR_LARGE_FILE
+  //virtual float** data()=0;
+  //virtual const float* const* data() const=0 ;
+  virtual std::vector<GsTLGridProperty::property_type*> data()=0;
+  virtual const std::vector<GsTLGridProperty::property_type*> data() const=0 ;
+#else
+  virtual float* data()=0;
+  virtual const float* data() const =0;
+#endif
   virtual bool* flags( int flag_id ) = 0; 
   virtual const bool* flags( int flag_id ) const = 0; 
    
@@ -264,6 +281,10 @@ class GRID_DECL PropertyAccessor {
  */ 
 class GRID_DECL MemoryAccessor : public PropertyAccessor { 
  public: 
+  #ifdef SGEMS_ACCESSOR_LARGE_FILE
+  static const int MEM_SIZE_ARRAY=1048576;
+  #endif
+
   MemoryAccessor( GsTLInt size ); 
   MemoryAccessor( GsTLInt size, float default_value ); 
   MemoryAccessor( GsTLInt size, std::fstream& stream ); 
@@ -274,9 +295,19 @@ class GRID_DECL MemoryAccessor : public PropertyAccessor {
   virtual bool get_flag( int flag_id, GsTLInt id ) ; 
   virtual void set_flag( bool flag, int flag_id, GsTLInt id ); 
  
-  virtual float* data(); 
+#ifdef SGEMS_ACCESSOR_LARGE_FILE
+  virtual std::vector<float*> data();
+  virtual const std::vector<float*> data() const;
+//  virtual float** data();
+//  virtual const float* const* data() const ;
+#else
+  virtual float* data();
+  virtual const float* data() const ;
+#endif
+
+ // virtual float* data(); 
   virtual bool* flags( int flag_id ); 
-  virtual const float* data() const ; 
+  //virtual const float* data() const ; 
   virtual const bool* flags( int flag_id ) const; 
  
   virtual GsTLInt size() const { return size_; } 
@@ -285,7 +316,16 @@ class GRID_DECL MemoryAccessor : public PropertyAccessor {
 
  
  protected: 
+
+#ifdef SGEMS_ACCESSOR_LARGE_FILE
+// the data are store in arrrays of size of 1e6 values
+  std::vector<float*> values_;
+  std::vector<float*> new_data_structure(int size);
+  int last_array_length_;
+#else
   float* values_; 
+#endif
+
   bool* flags_; 
   GsTLInt size_; 
 }; 
@@ -300,6 +340,10 @@ class GRID_DECL DiskAccessor : public PropertyAccessor {
  public: 
   DiskAccessor( GsTLInt size, const std::string& filename,  
 		            const float* prop, const bool* flags = 0 ); 
+#ifdef SGEMS_ACCESSOR_LARGE_FILE
+  DiskAccessor( GsTLInt size, const std::string& filename,  
+    const std::vector<float*> prop, const bool* flags = 0 );
+#endif
   DiskAccessor( GsTLInt size, const std::string& filename,
 							 const std::string& in_filename, const bool* flags = 0 );
   virtual ~DiskAccessor(); 
@@ -309,9 +353,29 @@ class GRID_DECL DiskAccessor : public PropertyAccessor {
   virtual bool get_flag( int flag_id, GsTLInt id ); 
   virtual void set_flag( bool flag, int flag_id, GsTLInt id ); 
  
-  virtual float* data() {return 0; } 
+#ifdef SGEMS_ACCESSOR_LARGE_FILE
+
+inline 
+std::vector<float*> data() { 
+  std::vector< float*> vec;
+  return vec; 
+}
+
+const std::vector< float*> data() const { 
+  std::vector< float*> vec;
+  return vec;
+}
+ /*
+  virtual float** data(){ return 0; }
+  virtual const float* const* data() const { return 0; }
+  */
+#else
+  virtual float* data(){ return 0; }
+  virtual const float* data() const { return 0; }
+#endif
+ // virtual float* data() {return 0; } 
   virtual bool* flags( int flag_id ) { return 0; } 
-  virtual const float* data() const { return 0; } 
+//  virtual const float* data() const { return 0; } 
   virtual const bool* flags( int flag_id ) const { return 0; } 
  
   virtual GsTLInt size() const { return size_; } 
@@ -486,15 +550,51 @@ GsTLGridProperty::get_value_no_check( GsTLInt id ) const {
   return accessor_->get_property_value( id ); 
 } 
 
+#ifdef SGEMS_ACCESSOR_LARGE_FILE
+
+inline 
+std::vector<float*> GsTLGridProperty::data()  { 
+  return accessor_->data(); 
+} 
+
+inline 
+const std::vector< float*> GsTLGridProperty::data() const { 
+  return accessor_->data(); 
+} 
+/*
+inline 
+GsTLGridProperty::property_type** GsTLGridProperty::data()  { 
+  return accessor_->data(); 
+} 
+
+inline 
+const GsTLGridProperty::property_type* const* GsTLGridProperty::data() const { 
+  return accessor_->data(); 
+  }
+  */
+ 
+#else
 inline 
 GsTLGridProperty::property_type* GsTLGridProperty::data()  { 
   return accessor_->data(); 
 } 
- 
+
 inline 
 const GsTLGridProperty::property_type* GsTLGridProperty::data() const { 
   return accessor_->data(); 
 } 
+#endif
+/*
+inline 
+GsTLGridProperty::property_type* GsTLGridProperty::data()  { 
+  return accessor_->data(); 
+} 
+
+inline 
+const GsTLGridProperty::property_type* GsTLGridProperty::data() const { 
+  return accessor_->data(); 
+} 
+*/ 
  
 inline 
 bool GsTLGridProperty::is_inside_region(GsTLInt id) const {

@@ -78,6 +78,8 @@ GridSelectorBasic::GridSelectorBasic( QWidget* parent, const char* name,
   insertItem( 0,no_selection );
   setCurrentIndex(0);
 
+  setCurrentIndex(0);
+
 }
 
 

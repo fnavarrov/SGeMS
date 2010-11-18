@@ -372,7 +372,7 @@ void Rgrid_ellips_neighborhood::find_neighbors( const Geovalue& center ) {
 
     it++;
   }
-  if(!neigh_filter_->is_neighborhood_valid()) neighbors_.clear();
+ // if(!neigh_filter_->is_neighborhood_valid()) neighbors_.clear();
 
 }
 

@@ -414,11 +414,16 @@ void Point_set_neighborhood::find_neighbors(const Geovalue& center) {
     //  }
     }
   }
+
+  std::sort(neighbors_.begin(), neighbors_.end(),
+          Covariance_distance_( center.location(), *cov_ ) );
+/*  
   if( neigh_filter_->is_neighborhood_valid() ) 
     std::sort(neighbors_.begin(), neighbors_.end(),
           Covariance_distance_( center.location(), *cov_ ) );
   else
     neighbors_.clear();
+*/
 #endif
 
 }

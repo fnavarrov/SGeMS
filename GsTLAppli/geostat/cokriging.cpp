@@ -110,10 +110,15 @@ int Cokriging::execute( GsTL_project* ) {
     
 //    if( neighborhood_vector_[0].is_empty() &&
 //      	neighborhood_vector_[1].is_empty() ) {
-      if( neighborhood_vector_[0].size() < min_neigh_1_ &&
+    if( neighborhood_vector_[0].size() < min_neigh_1_ &&
       	neighborhood_vector_[1].size() < min_neigh_2_ ) {
       //if we don't have any conditioning data, skip the node
       issue_no_conditioning_data_warning = true;
+      continue;
+    }
+
+    if( !neighborhood_vector_[0].is_valid() ||
+      	!neighborhood_vector_[1].is_valid() ) {
       continue;
     }
 /*

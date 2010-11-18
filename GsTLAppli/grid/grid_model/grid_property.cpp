@@ -37,6 +37,7 @@
 const float GsTLGridProperty::no_data_value = -9966699;
 
 
+
 GsTLGridProperty::GsTLGridProperty( GsTLInt size, const std::string& name,
 				    property_type default_value )
   : name_( name ), region_(NULL) {
@@ -89,21 +90,50 @@ bool GsTLGridProperty::is_in_memory() const{
 
 //===========================================================
 MemoryAccessor::MemoryAccessor( GsTLInt size ) {
-  values_ = new(std::nothrow) float[size];
+#ifdef SGEMS_ACCESSOR_LARGE_FILE
+// the data are store in arrrays of size of 1e6 values
+  values_ =  new_data_structure( size);
+#else
+  values_ = new(std::nothrow) float[size];  
+#endif
   flags_ = new(std::nothrow) bool[size];
   size_ = size;
-  if(values_ ==NULL || flags_ == NULL) size_ = 0;
+#ifdef SGEMS_ACCESSOR_LARGE_FILE
+  if(values_.empty()|| flags_ == NULL) size_ = 0;;
+#else
+   if(values_ == NULL || flags_ == NULL) size_ = 0;
+#endif
+ 
 }
 
 MemoryAccessor::MemoryAccessor( GsTLInt size, float default_value ) {
-  values_ = new(std::nothrow) float[size];
+
+
+#ifdef SGEMS_ACCESSOR_LARGE_FILE
+// the data are store in arrrays of size of 1e6 values
+  values_ =  new_data_structure( size);
+#else
+  values_ = new(std::nothrow) float[size];  
+#endif
+
   flags_ = new(std::nothrow) bool[size];
-  
+  #ifdef SGEMS_ACCESSOR_LARGE_FILE
+  if(values_.empty() || flags_ == NULL) size_ = 0;
+  #else
   if(values_ == NULL || flags_ == NULL) size_ = 0;
+  #endif
   else {
     size_ = size;
     for( GsTLInt i = 0; i < size ; i++ ) {
-      values_[i] = default_value;
+      #ifdef SGEMS_ACCESSOR_LARGE_FILE
+        int arr_id = i/MEM_SIZE_ARRAY;
+        int val_id = i - arr_id*MEM_SIZE_ARRAY;
+
+        values_[arr_id][val_id] =  default_value;
+      #else
+        values_[i] = default_value; 
+      #endif
+     // values_[i] = default_value;
       flags_[i] = false;
     }
   }
@@ -111,9 +141,20 @@ MemoryAccessor::MemoryAccessor( GsTLInt size, float default_value ) {
 
 MemoryAccessor::MemoryAccessor( GsTLInt size, std::fstream& stream ) {
 
-  values_ = new(std::nothrow) float[size];
+#ifdef SGEMS_ACCESSOR_LARGE_FILE
+// the data are store in arrrays of size of 1e6 values
+  values_ =  new_data_structure( size);
+#else
+  values_ = new(std::nothrow) float[size];  
+#endif
+
   flags_ = new(std::nothrow) bool[size];
-  if(values_ == NULL || flags_ == NULL) size_ = 0;
+#ifdef SGEMS_ACCESSOR_LARGE_FILE
+ if(values_.empty() || flags_ == NULL) size_ = 0;
+#else
+   if(values_ == NULL || flags_ == NULL) size_ = 0;
+#endif
+ 
   else {
     size_ = size;
 
@@ -122,9 +163,19 @@ MemoryAccessor::MemoryAccessor( GsTLInt size, std::fstream& stream ) {
               << gstlIO::end;
     }
     stream.seekg(0);
-    
+
     long int remaining = size*sizeof( float );
-    stream.read( (char*) values_, remaining );
+    #ifdef SGEMS_ACCESSOR_LARGE_FILE
+    for(int i=0; (i<values_.size()-1) ; i++ ) {
+      stream.read( (char*) values_[i], MemoryAccessor::MEM_SIZE_ARRAY*sizeof( float ) );
+    }
+    stream.read( (char*) values_[values_.size()-1], last_array_length_*sizeof( float ) );
+    #else
+  //    long int remaining = size*sizeof( float );
+      stream.read( (char*) values_, remaining );
+    #endif
+
+
     
     // read the flags
     remaining = size*sizeof( bool );
@@ -134,7 +185,13 @@ MemoryAccessor::MemoryAccessor( GsTLInt size, std::fstream& stream ) {
 
 
 MemoryAccessor::~MemoryAccessor() {
+  #ifdef SGEMS_ACCESSOR_LARGE_FILE
+  for(int i=0; i<values_.size(); i++)
+    delete [] values_[i];
+  #else
   delete [] values_;
+  #endif
+  
   delete [] flags_;
 }
 
@@ -142,12 +199,30 @@ MemoryAccessor::~MemoryAccessor() {
 float MemoryAccessor::get_property_value( GsTLInt id ) {
 
   appli_assert( id >= 0 && id < size_ );
-  return values_[id];
+  #ifdef SGEMS_ACCESSOR_LARGE_FILE
+    int arr_id = id/MEM_SIZE_ARRAY;
+    int val_id = id - arr_id*MEM_SIZE_ARRAY;
+
+    return values_[arr_id][val_id];
+  #else
+    return values_[id];
+
+  #endif
+  //return values_[id];
 }
 
 void MemoryAccessor::set_property_value( float val, GsTLInt id ) {
   appli_assert( id >= 0 && id < size_ );
-  values_[id] = val;
+  #ifdef SGEMS_ACCESSOR_LARGE_FILE
+    int arr_id = id/MEM_SIZE_ARRAY;
+    int val_id = id - arr_id*MEM_SIZE_ARRAY;
+
+    values_[arr_id][val_id] = val;
+  #else
+    values_[id] = val;
+
+  #endif
+//  values_[id] = val;
 }
 
 // The current implementation only supports one set of flags
@@ -162,7 +237,26 @@ void MemoryAccessor::set_flag( bool flag, int, GsTLInt id ) {
   flags_[id] = flag;
 }
 
+#ifdef SGEMS_ACCESSOR_LARGE_FILE
+std::vector<float*> MemoryAccessor::data() {
+    return values_;
+  }
 
+  const std::vector< float*> MemoryAccessor::data() const {
+    return values_;
+  }
+
+
+/*
+  float** MemoryAccessor::data() {
+    return values_;
+  }
+
+  const float* const* MemoryAccessor::data() const {
+    return values_;
+  }
+  */
+#else
 float* MemoryAccessor::data() {
   return values_;
 }
@@ -170,6 +264,10 @@ float* MemoryAccessor::data() {
 const float* MemoryAccessor::data() const {
   return values_;
 }
+#endif
+
+
+
 
 bool* MemoryAccessor::flags( int ) {
   return flags_;
@@ -178,7 +276,35 @@ bool* MemoryAccessor::flags( int ) {
 const bool* MemoryAccessor::flags( int ) const {
   return flags_;
 }
+#ifdef SGEMS_ACCESSOR_LARGE_FILE
+std::vector<float*> MemoryAccessor::new_data_structure(int size){
+  int n_array = size/MEM_SIZE_ARRAY +1;
+  values_.insert(values_.begin(),n_array,0);
+//  for(int i=0; i < n_array; i++  ) values_[i] = 0;
+  bool ok = true;
+  for(int i=0; i < (n_array-1) ; i++  ) {
+    values_[i] = new(std::nothrow) float[MEM_SIZE_ARRAY];
+    if(values_[i] == 0) {
+      ok = false;
+      break;
+    }
+  }
+  //Allocate the remainder
+  if(ok) {
+    last_array_length_ = size - (n_array-1)*MEM_SIZE_ARRAY ;
+    values_[n_array-1] = new(std::nothrow) float[last_array_length_];
+    if(values_[n_array-1] == 0) ok = false;
 
+  }
+  // free the allocate memory if needed
+  if(!ok) {
+     for(int i=0; i < n_array; i++  ) delete[] values_[i];
+    // values_ = 0;
+     values_.clear();
+  }
+  return values_;
+}
+#endif
 //===============================================
 DiskAccessor::DiskAccessor( GsTLInt size, const std::string& filename, 
 			    const float* prop, const bool* flags ) 
@@ -242,6 +368,78 @@ DiskAccessor::DiskAccessor( GsTLInt size, const std::string& filename,
   close_cache_stream();
 }
 
+//DiskAccessor::DiskAccessor( GsTLInt size, const std::string& filename, 
+//			    const float* const* prop, const bool* flags )
+#ifdef SGEMS_ACCESSOR_LARGE_FILE
+DiskAccessor::DiskAccessor( GsTLInt size, const std::string& filename, 
+                            const std::vector<float*> prop, const bool* flags ) 
+  : buffer_size_( std::min( size, 10000 ) ) {
+
+  cache_filename_ = DiskAccessor::cache_filename( filename );
+
+  // if the file already exists, erase its content by opening it in write mode
+  // (I don't know any other easy way to do that...)
+  std::ofstream eraser( cache_filename_.c_str() );
+  eraser.close();
+
+  // Open a stream to the cache file in read/write mode
+  cache_stream_.open( cache_filename_.c_str(), 
+		      std::ios::in | std::ios::out | std::ios::binary );
+  if( !cache_stream_ ) {
+    GsTLcerr << "Can't write temporary file. Check that the directory is writable\n" 
+             << "and that there is enough disk space left" << gstlIO::end;
+  }
+
+
+  flags_position_begin_ = static_cast<long int>( sizeof( float ) ) *
+                          static_cast<long int>( size );
+
+  val_bound_indexes_.first = -9;
+  val_bound_indexes_.second = -9;
+  flags_bound_indexes_.first = -9;
+  flags_bound_indexes_.second = -9;
+  val_buffer_modified_ = false;
+  size_ = size;
+
+  val_buffer_ = new float[buffer_size_];
+  flags_buffer_ = new bool[buffer_size_];
+
+
+  // If property values or flags were supplied, write them to file
+  if( !prop.empty() ) {
+    int n_array = size/MemoryAccessor::MEM_SIZE_ARRAY;
+    for(int i=0; i<(n_array-1); i++) {
+      long int remaining = static_cast<long int>( MemoryAccessor::MEM_SIZE_ARRAY ) * 
+                           static_cast<long int>( sizeof(float) );
+      cache_stream_.write( (char*) prop[i], remaining );
+    }
+    
+    long int remaining = static_cast<long int>( size_ - n_array*MemoryAccessor::MEM_SIZE_ARRAY ) * 
+                         static_cast<long int>( sizeof(float) );
+    cache_stream_.write( (char*) prop[n_array], remaining );
+  }
+  else {
+    // write arbitrary values
+    float arbitrary = -9966699;
+    for(GsTLInt i=0; i< size; i++ )
+      cache_stream_.write( (char*) &arbitrary, 1 );
+  }
+
+  if( flags ) {
+    long int remaining = static_cast<long int>( size_ ) * 
+                         static_cast<long int>( sizeof(bool) );
+    cache_stream_.write( (char*) flags, remaining );
+  }
+  else {
+    // write default flag value (false)
+    bool default_value = false;
+    for(GsTLInt i=0; i< size; i++ )
+      cache_stream_.write( (char*) &default_value, 1 );
+  }
+
+  close_cache_stream();
+}
+#endif
 DiskAccessor::DiskAccessor( GsTLInt size, const std::string& filename,
 						 const std::string& in_filename, const bool* flags )
 	 : buffer_size_( std::min( size, 10000 ) ) {

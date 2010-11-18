@@ -651,9 +651,22 @@ Sgems_folder_output_filter::write_properties(QDir dir,
 							 << "and that there is enough disk space left" << gstlIO::end;
 		}
 		if(prop->is_in_memory()) {
+#ifdef SGEMS_ACCESSOR_LARGE_FILE
+      std::vector<float*> data = prop->data();
+      long int array_size = static_cast<long int>( MemoryAccessor::MEM_SIZE_ARRAY ) * 
+                             static_cast<long int>( sizeof(float) );
+      for(int i=0; i<(data.size()-1); i++) {
+        prop_stream.write( (char*) data[i], array_size );
+      }
+      
+      array_size = static_cast<long int>( prop->size() - (data.size()-1)*MemoryAccessor::MEM_SIZE_ARRAY ) * 
+                           static_cast<long int>( sizeof(float) );
+      prop_stream.write( (char*) data[data.size()-1], array_size );
+#else
 			long int remaining = static_cast<long int>( prop->size() ) *
 													 static_cast<long int>( sizeof(float) );
 			prop_stream.write( (char*) prop->data(), remaining );
+#endif
 		}
 		else { // The file is already on disk.  Should find a way to simply copy the stream from the os
 

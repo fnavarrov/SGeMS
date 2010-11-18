@@ -73,11 +73,18 @@ class GRID_DECL Combined_neighborhood : public Neighborhood {
   virtual Geovalue center() const { return center_; } 
  
   virtual void set_neighbors( const_iterator begin, const_iterator end );
-  
+
+  virtual bool is_valid() { return first_->is_valid(); }
+
+  /* The filter only affect the first neighborhood 
+    This should be changed such that each neighborhood coud have its own filter
+  */
   virtual void search_neighborhood_filter(Search_filter *filter) {
+//    Neighborhood::search_neighborhood_filter(filter);
     first_->search_neighborhood_filter(filter);
-    second_->search_neighborhood_filter(filter->clone());
+//    second_->search_neighborhood_filter(filter->clone());
   }
+  
   protected: 
   SmartPtr<Neighborhood> first_; 
   SmartPtr<Neighborhood> second_;

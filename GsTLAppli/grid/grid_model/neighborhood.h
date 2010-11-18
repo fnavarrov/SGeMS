@@ -94,6 +94,8 @@ class GRID_DECL Neighborhood : public SmartPtr_interface<Neighborhood> {
   }
   Search_filter* search_neighborhood_filter() { return neigh_filter_;}
 
+  virtual bool is_valid() { return neigh_filter_->is_neighborhood_valid();}
+
   /** Set the neighbors to geovalues in range [begin,end). Geovalues of range
   * [begin,end) that are not compatible with the neighborhood are ignored 
   * (a geovalue g is deemed compatible with a neighborhood N if there exists 
@@ -160,6 +162,8 @@ class GsTL_neighborhood {
   int max_size() const { return neighborhood_->max_size(); } 
  
   bool is_empty() const { return neighborhood_->is_empty(); } 
+
+  bool is_valid() { return neighborhood_->is_valid(); } 
 
   void set_neighbors( const_iterator begin, const_iterator end ) {
     neighborhood_->set_neighbors( begin, end );

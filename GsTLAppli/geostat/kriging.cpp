@@ -112,16 +112,20 @@ int Kriging::execute( GsTL_project* ) {
     }
 
     if( begin->is_informed() ) continue;
+    
       
     neighborhood_->find_neighbors( *begin );
+    if( neighborhood_->size() < min_neigh_ )  continue;
+    if(!neighborhood_->is_valid()) continue;
     
+/*
  //   if( neighborhood_->is_empty() ) {
     if( neighborhood_->size() < min_neigh_ ) {
       //if we don't have any conditioning data, skip the node
       issue_no_conditioning_data_warning = true;
       continue;
     }
-
+*/
     double variance;
 
 

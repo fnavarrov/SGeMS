@@ -100,6 +100,9 @@ class Octant_search_filter : public Search_filter{
         coord_transform_ = NULL;
       else
         coord_transform_ = new CoordTransform(*o.coord_transform_);
+      min_octant_ = o.min_octant_;
+      min_per_octant_ = o.min_per_octant_;
+      max_per_octant_ = o.max_per_octant_;
     }
 
     ~Octant_search_filter(){delete coord_transform_;}

@@ -99,12 +99,20 @@ class GRID_DECL Const_geovalue {
       return false; 
      
     appli_assert( node_id_ < property_array_->size() ); 
-    return ( values_array_[ node_id_ ] != GsTLGridProperty::no_data_value ); 
+#ifdef SGEMS_ACCESSOR_LARGE_FILE
+    return property_array_->is_informed(node_id_);
+#else
+    return ( values_array_[ node_id_ ] != GsTLGridProperty::no_data_value );
+#endif
   } 
    
   property_type property_value() const {  
     appli_assert( node_id_ >= 0 && node_id_ < property_array_->size() ); 
+#ifdef SGEMS_ACCESSOR_LARGE_FILE
+    return property_array_->get_value(node_id_);
+#else
     return values_array_[ node_id_ ]; 
+#endif
   } 
    
   const location_type& location() const {  
@@ -200,16 +208,29 @@ class GRID_DECL Geovalue {
       return false; 
      
     appli_assert( node_id_ < property_array_->size() ); 
-    return ( values_array_[ node_id_ ] != GsTLGridProperty::no_data_value ); 
+#ifdef SGEMS_ACCESSOR_LARGE_FILE
+    return property_array_->is_informed(node_id_);
+#else
+    return ( values_array_[ node_id_ ] != GsTLGridProperty::no_data_value );
+#endif
   } 
    
   property_type property_value() const {  
     appli_assert( node_id_ >= 0 && node_id_ < property_array_->size() ); 
+#ifdef SGEMS_ACCESSOR_LARGE_FILE
+    return property_array_->get_value(node_id_);
+#else
     return values_array_[ node_id_ ]; 
+#endif
   } 
   void set_property_value( const property_type& val ) { 
-    appli_assert( node_id_ >= 0 && node_id_ < property_array_->size() ); 
-    values_array_[ node_id_ ] = val;     
+    appli_assert( node_id_ >= 0 && node_id_ < property_array_->size() );
+#ifdef SGEMS_ACCESSOR_LARGE_FILE
+    return property_array_->set_value(val,node_id_);
+#else
+    values_array_[ node_id_ ] = val;
+#endif
+         
   } 
    
   const location_type& location() const {  

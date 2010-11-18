@@ -55,12 +55,14 @@ Geovalue::Geovalue( Geostat_grid* grid, GsTLGridProperty* prop,
     loc_( invalid_coord_, invalid_coord_, invalid_coord_ ) {
 
   appli_assert( prop );
+#ifndef SGEMS_ACCESSOR_LARGE_FILE
   values_array_ = prop->data() ;
   if( !values_array_ ) {
     prop->swap_to_memory();
     values_array_ = prop->data() ;
   }
   appli_assert( values_array_ );
+#endif
 }
 
 Geovalue& Geovalue::operator = ( const Geovalue& rhs ) {
@@ -81,12 +83,14 @@ void Geovalue::init( Geostat_grid* grid, GsTLGridProperty* prop,
   appli_assert( prop );
   grid_ = grid;
   property_array_ = prop;
+#ifndef SGEMS_ACCESSOR_LARGE_FILE
   values_array_ = prop->data();
   if( !values_array_ ) {
     prop->swap_to_memory();
     values_array_ = prop->data() ;
   }
   appli_assert( values_array_ );
+#endif
 
   node_id_ = node_id;  
   //loc_ = grid->location( node_id );
@@ -96,12 +100,14 @@ void Geovalue::init( Geostat_grid* grid, GsTLGridProperty* prop,
 void Geovalue::set_property_array( GsTLGridProperty* prop ) {
   appli_assert( prop );
   property_array_ = prop;
+#ifndef SGEMS_ACCESSOR_LARGE_FILE
   values_array_ = prop->data();
   if( !values_array_ ) {
     prop->swap_to_memory();
     values_array_ = prop->data() ;
   }
   appli_assert( values_array_ );
+#endif
 }
 
 void Geovalue::set_node_id( int id ) {
@@ -164,12 +170,14 @@ Const_geovalue::Const_geovalue( const Geostat_grid* grid,
     loc_( invalid_coord_, invalid_coord_, invalid_coord_ ) {
 
   appli_assert( prop );
+#ifndef SGEMS_ACCESSOR_LARGE_FILE
   values_array_ = prop->data() ;
   if( !values_array_ ) {
     prop->swap_to_memory();
     values_array_ = prop->data() ;
   }
   appli_assert( values_array_ );
+#endif
 }
 
 Const_geovalue& Const_geovalue::operator = ( const Const_geovalue& rhs ) {
@@ -190,13 +198,14 @@ void Const_geovalue::init( const Geostat_grid* grid, const GsTLGridProperty* pro
   appli_assert( prop );
   grid_ = grid;
   property_array_ = prop;
+#ifndef SGEMS_ACCESSOR_LARGE_FILE
   values_array_ = prop->data();
   if( !values_array_ ) {
     prop->swap_to_memory();
     values_array_ = prop->data() ;
   }
   appli_assert( values_array_ );
-
+#endif
   node_id_ = node_id;  
   //loc_ = grid->location( node_id );
 }
@@ -205,12 +214,14 @@ void Const_geovalue::init( const Geostat_grid* grid, const GsTLGridProperty* pro
 void Const_geovalue::set_property_array( const GsTLGridProperty* prop ) {
   appli_assert( prop );
   property_array_ = prop;
+#ifndef SGEMS_ACCESSOR_LARGE_FILE
   values_array_ = prop->data();
   if( !values_array_ ) {
     prop->swap_to_memory();
     values_array_ = prop->data() ;
   }
   appli_assert( values_array_ );
+#endif
 }
 
 void Const_geovalue::set_node_id( int id ) {

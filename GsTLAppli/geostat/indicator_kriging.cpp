@@ -110,7 +110,7 @@ int Indicator_kriging::median_ik( Progress_notifier* progress_notifier ) {
       
     neighborhood_->find_neighbors( *begin );
 //    if( neighborhood_->is_empty() ){
-    if( neighborhood_->size() < min_neigh_ ){
+    if( neighborhood_->size() < min_neigh_ || !neighborhood_->is_valid()){
       //if we don't have any conditioning data, skip the node
       continue;
     }
@@ -199,12 +199,22 @@ int Indicator_kriging::full_ik( Progress_notifier* progress_notifier ) {
     if( !progress_notifier->notify() ) return 1;
 
     if( begin->is_informed() ) continue;
+
+    bool are_neighborhoods_valid = true;
     
+    for( int thres = 0; thres < thres_count_ && are_neighborhoods_valid; thres++ ) {
+      neighborhoods_vector_[thres]->find_neighbors( *begin );
+      if( !neighborhoods_vector_[thres]->is_valid() ){
+        are_neighborhoods_valid = false;
+      }
+    }
+
+    if(!are_neighborhoods_valid) continue;
 
     // for each threshold / class:
     Non_parametric_cdf<float>::p_iterator p_it = ccdf_->p_begin();
     for( int thres = 0; thres < thres_count_; thres++, ++p_it ) {
-      neighborhoods_vector_[thres]->find_neighbors( *begin );
+  //    neighborhoods_vector_[thres]->find_neighbors( *begin );
  
       if( neighborhoods_vector_[thres]->is_empty() ){
         //if we don't have any conditioning data, use the marginal
@@ -212,6 +222,8 @@ int Indicator_kriging::full_ik( Progress_notifier* progress_notifier ) {
         continue;
       }
       
+
+
       int status = kriging_weights( krig_weights,
 	                          			  begin->location(), 
 				                            *(neighborhoods_vector_[thres].raw_ptr()),

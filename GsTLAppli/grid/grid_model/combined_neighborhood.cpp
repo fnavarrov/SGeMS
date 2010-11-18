@@ -156,6 +156,7 @@ void Combined_neighborhood::includes_center( bool on ) {
 void Combined_neighborhood::find_neighbors( const Geovalue& center ) {
   neighbors_.clear();
   center_ = center;
+  neigh_filter_->clear();
 
   /* this version was not good
   first_->find_neighbors( center );
@@ -172,22 +173,34 @@ void Combined_neighborhood::find_neighbors( const Geovalue& center ) {
   // ask both neighborhoods to search neighbors
   first_->find_neighbors( center );
   second_->find_neighbors( center );
+  std::sort(second_->begin(), second_->end(),Geovalue_covariance_comparator(center.location(), *cov_));
+  
 
-  neighbors_.resize( first_->size() + second_->size() );
+  std::vector<Geovalue> neighbors_temp;
+  neighbors_temp.resize( first_->size() + second_->size() );
+  neighbors_.reserve( first_->size() + second_->size() );
   // select those that are closest to "center" from both neighborhoods
   if( cov_ )
     std::merge( first_->begin(), first_->end(), 
                 second_->begin(), second_->end(), 
-                neighbors_.begin(), 
+                neighbors_temp.begin(), 
                 Geovalue_covariance_comparator(center.location(), *cov_)  );
   else
     std::merge( first_->begin(), first_->end(), 
                 second_->begin(), second_->end(), 
-                neighbors_.begin(), Geovalue_comparator(center.location() )  );
+                neighbors_temp.begin(), Geovalue_comparator(center.location() )  );
 
   Neighborhood::iterator it_unique = 
-    std::unique(neighbors_.begin(), neighbors_.end(),Geovalue_location_comparator() );
-  neighbors_.erase( it_unique, neighbors_.end() );
+    std::unique(neighbors_temp.begin(), neighbors_temp.end(),Geovalue_location_comparator() );
+ // neighbors_temp.erase( it_unique, neighbors_temp.end() );
+
+  Neighborhood::iterator it_neigh = neighbors_temp.begin();
+  for( ; it_neigh != it_unique; ++it_neigh ) {
+    if(neigh_filter_->is_admissible(*it_neigh, center)) {
+      neighbors_.push_back( *it_neigh );
+    }
+  }
+
 
   if( neighbors_.size() > max_size_ )
     neighbors_.erase( neighbors_.begin() + max_size_, neighbors_.end() );
