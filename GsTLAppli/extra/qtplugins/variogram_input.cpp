@@ -834,8 +834,10 @@ QString Variogram_structure_input::variogram_type() const {
 
 
 void Variogram_structure_input::set_variogram_type( const QString& type ) {
+  int id = type_selector_->findText(type);
+  type_selector_->setCurrentIndex(id);
 
-  type_selector_->setItemText( type_selector_->currentIndex(), type );
+//  type_selector_->setItemText( type_selector_->currentIndex(), type );
 
 } 
 
