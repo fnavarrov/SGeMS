@@ -146,7 +146,6 @@ class FILTERS_DECL Gslib_mgrid_infilter : public Gslib_specialized_infilter {
  protected: 
   Gslib_input_mgrid_dialog* dialog_; 
 
- private: 
   Gslib_mgrid_infilter( const Gslib_mgrid_infilter& ); 
   Gslib_mgrid_infilter& operator=( const Gslib_mgrid_infilter& ); 
 
@@ -162,6 +161,11 @@ class FILTERS_DECL Gslib_mgrid_infilter : public Gslib_specialized_infilter {
     float x_size, float y_size, float z_size);
 
   bool get_mgrid_ijk_dimensions(
+    std::ifstream& infile, Reduced_grid* grid, 
+    int X_col_id, int Y_col_id, int Z_col_id,
+    float x_size, float y_size, float z_size);
+
+  bool read_data(
     std::ifstream& infile, Reduced_grid* grid, 
     int X_col_id, int Y_col_id, int Z_col_id,
     float x_size, float y_size, float z_size);
@@ -187,7 +191,6 @@ class FILTERS_DECL Gslib_poinset_infilter : public Gslib_specialized_infilter {
  protected: 
   Gslib_input_pointset_dialog* dialog_; 
 
- private: 
   Gslib_poinset_infilter( const Gslib_poinset_infilter& ); 
   Gslib_poinset_infilter& operator=( const Gslib_poinset_infilter& ); 
 }; 
