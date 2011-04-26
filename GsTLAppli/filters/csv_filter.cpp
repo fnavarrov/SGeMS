@@ -141,6 +141,13 @@ Geostat_grid* Csv_poinset_infilter::read( std::ifstream& infile ) {
     return 0;
   }
 
+  bool use_no_data_value = dialog_->use_no_data_value();
+  float no_data_value;
+  if( dialog_->use_no_data_value() ) {
+    no_data_value = dialog_->no_data_value();
+  }
+
+
   std::string str;
   std::getline(infile, str);
   QString qstr(str.c_str());
@@ -789,6 +796,9 @@ bool Csv_outfilter::write( std::string outfile_name, const Geostat_grid* grid, s
   else
     grid_size = properties[0]->size();
 
+  int nan = static_cast<int>(GsTLGridProperty::no_data_value);
+
+
   // Write the property values
   for( int i=0; i < grid_size ; i++ ) {
     if( output_locations ) {
@@ -817,9 +827,9 @@ bool Csv_outfilter::write( std::string outfile_name, const Geostat_grid* grid, s
 					outfile << properties[j]->get_value( i );
 			}
 
-
+//If nan print nothing (output ,,)
 			else
-				outfile << GsTLGridProperty::no_data_value;
+				outfile << -999;
 			if( j < property_names.size()-1 ) outfile<<",";
 		}
 

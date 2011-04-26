@@ -511,6 +511,9 @@ Geostat_grid* Gslib_mgrid_infilter::readPointsetFormat(std::ifstream& infile, Re
   infile.clear();
   infile.seekg(0, ios::beg);
 
+  this->read_data(infile,grid,X_col_id,Y_col_id,Z_col_id,
+                             x_size,y_size,z_size);
+/*
 	std::string buffer;
 	// read title
 	std::getline( infile, buffer, '\n');
@@ -549,24 +552,7 @@ Geostat_grid* Gslib_mgrid_infilter::readPointsetFormat(std::ifstream& infile, Re
 
    // std::vector<std::string> buf = String_Op::decompose_string( buffer, " ", false );
     
-/*
-    int node_id;
-    if(dialog_->is_ijk()) {
-      GsTLGridNode node;
-		  node[0] = String_Op::to_number<int>(buf[X_col_id]);
-		  node[1] = String_Op::to_number<int>(buf[Y_col_id]);
-		  node[2] = String_Op::to_number<int>(buf[Z_col_id]);
-      node_id = grid->cursor()->node_id(node[0],node[1],node[2]);
-    } else {
-      Geostat_grid::location_type loc;
-		  loc[0] = String_Op::to_number<float>(buf[X_col_id]);
-		  loc[1] = String_Op::to_number<float>(buf[Y_col_id]);
-		  loc[2] = String_Op::to_number<float>(buf[Z_col_id]);
-      GsTLGridNode ijk;
-      grid->geometry()->grid_coordinates(ijk,loc);
-      node_id = grid->cursor()->node_id(ijk[0],ijk[1],ijk[2]);
-    }
-*/
+
     int node_id;
     Geostat_grid::location_type loc;
     loc[0] = buf[X_col_id].toDouble();
@@ -596,11 +582,85 @@ Geostat_grid* Gslib_mgrid_infilter::readPointsetFormat(std::ifstream& infile, Re
 		}
 	}
   infile.close();
+  */
   std::cout<<"Finished reading mgrid as pointset"<<std::endl;
 
 
 	return grid;
 }
+
+bool Gslib_mgrid_infilter::read_data(
+    std::ifstream& infile, Reduced_grid* grid, 
+    int X_col_id, int Y_col_id, int Z_col_id,
+    float x_size, float y_size, float z_size){
+
+
+	std::string buffer;
+	// read title
+	std::getline( infile, buffer, '\n');
+  std::cout<<buffer<<std::endl;
+
+
+	// read nb of columns
+	int columns_count;  
+	infile >> columns_count;
+  std::cout<<columns_count;
+	std::getline( infile, buffer, '\n');
+
+	// read property names 
+	std::vector<GsTLGridProperty*> properties;
+	for( int i=0; i<columns_count; i++ ) {
+		std::getline( infile, buffer, '\n');
+		if( i != X_col_id && i != Y_col_id && i != Z_col_id ) {
+      GsTLGridProperty* prop = grid->add_property( buffer);
+      properties.push_back( prop );
+		}
+	}
+
+	// read the property values
+	float val;
+	int count = 0;
+	bool use_no_data_value = dialog_->use_no_data_value();
+	float no_data_value = dialog_->no_data_value();
+
+	while( infile ) {
+		std::getline( infile, buffer, '\n');
+    if (buffer.empty()) break;
+
+    QString qbuffer(buffer.c_str());
+    QStringList buf = qbuffer.split(" ",QString::SkipEmptyParts);
+
+    int node_id;
+    Geostat_grid::location_type loc;
+    loc[0] = buf[X_col_id].toDouble();
+		loc[1] = buf[Y_col_id].toDouble();
+		loc[2] = buf[Z_col_id].toDouble();
+
+    GsTLGridNode ijk;
+    grid->geometry()->grid_coordinates(ijk,loc);
+    node_id = grid->cursor()->node_id(ijk[0],ijk[1],ijk[2]);
+
+    if(node_id < 0) continue;
+    int property_index = 0;
+		for( int j=0; j< columns_count; j++ ) {
+			if (j != X_col_id && j != Y_col_id && j != Z_col_id){	
+				//val = String_Op::to_number<float>(buf[j]);
+        val = buf[j].toFloat();
+				if( use_no_data_value ) {
+					if( val == no_data_value )
+						val = GsTLGridProperty::no_data_value;          
+				}
+        properties[ property_index ]->set_value(val,node_id);
+				property_index++;
+			}
+
+		}
+	}
+  return true;
+
+}
+
+
 
 Geostat_grid* Gslib_mgrid_infilter::read( std::ifstream& infile ) 
 {
