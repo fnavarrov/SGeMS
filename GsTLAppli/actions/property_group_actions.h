@@ -54,7 +54,8 @@ class ACTIONS_DECL New_property_group : public Action {
   virtual bool exec(); 
  
  private: 
-
+  GsTL_project* project_;
+  std::string grid_name_;
 }; 
 
 class ACTIONS_DECL Add_properties_to_group : public Action { 
@@ -72,6 +73,23 @@ class ACTIONS_DECL Add_properties_to_group : public Action {
  private: 
 
 }; 
+
+class ACTIONS_DECL Remove_properties_from_group : public Action { 
+ public: 
+  static Named_interface* create_new_interface( std::string& ); 
+ 
+ public: 
+  Remove_properties_from_group() {} 
+  virtual ~Remove_properties_from_group() {} 
+   
+  virtual bool init( std::string& parameters, GsTL_project* proj,
+                     Error_messages_handler* errors ); 
+  virtual bool exec(); 
+ 
+ private: 
+
+};
+
 
 class ACTIONS_DECL Delete_property_in_group : public GroupNoParameterAction {
  public:
