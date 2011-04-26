@@ -1531,7 +1531,7 @@ bool Create_trend::exec() {
     it->set_property_value((t-min)/(max-min));
   }
 
-//  proj_->update( grid_name_ );
+ // proj_->update( grid_name_ );
   return true;
 }
 
@@ -1697,8 +1697,9 @@ bool Create_indicator_properties::exec(){
 			for( ; it != cprop->end(); ++it) {
 				if(*it > ncat ) ncat = *it;
 			}
+      ncat++;
 		}
-		ncat++;
+		
 		for(int c=0 ; c < ncat ; c++ ) {
 			std::string name = data_prop_->name()+" indicator "+def->get_category_name(c);
 			GsTLGridProperty* prop =  grid_->add_property(name);

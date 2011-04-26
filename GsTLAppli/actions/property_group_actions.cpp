@@ -25,13 +25,14 @@ bool New_property_group::init( std::string& parameters, GsTL_project* proj,
       String_Op::decompose_string( parameters, Actions::separator,
 				   Actions::unique );
 
-  if( params.size() < 3 ) {
-    errors->report( "Must have at least 3 parameters, name of the grid and name and type of the group" );
+  if( params.size() < 2 ) {
+    errors->report( "Must have at least 2 parameters, name of the grid and name the group" );
     return false;
   }
 
   // Get the grid
-  SmartPtr<Named_interface> ni = Root::instance()->interface( gridModels_manager + "/" + params[0] );
+  std::string grid_name = params[0];
+  SmartPtr<Named_interface> ni = Root::instance()->interface( gridModels_manager + "/" + grid_name);
   Geostat_grid* grid = dynamic_cast<Geostat_grid*>( ni.raw_ptr() );
   if(!grid)  {
     errors->report( "The grid "+params[0]+" does not exist" );
@@ -44,9 +45,11 @@ bool New_property_group::init( std::string& parameters, GsTL_project* proj,
     return false;
   }
 
-  std::string type;
-  if( params[2] == "General" ) type = "";
-  else type = params[2];
+  std::string type = "";
+  if( params.size() == 3 ) {
+    if( params[2] == "General" ) type = "";
+    else type = params[2];
+  }
 
   group = grid->add_group(params[1],type);
   if(!group)  {
@@ -66,12 +69,13 @@ bool New_property_group::init( std::string& parameters, GsTL_project* proj,
     group->add_property(grid->property(params[i]));
   }
 
+  proj->update();
+
   return true;
 }
 
 bool New_property_group::exec(){
-
-return true;
+  return true;
 }
  
 
@@ -128,6 +132,67 @@ bool Add_properties_to_group::exec(){
 
   return true;
 }
+
+
+/*---------------------------*/
+
+/**
+* Add_properties_to_group::
+*/
+Named_interface* Remove_properties_from_group::create_new_interface( std::string& ){
+  return new Remove_properties_from_group;
+}
+
+ 
+bool Remove_properties_from_group::init( std::string& parameters, GsTL_project* proj,
+                     Error_messages_handler* errors ){
+
+  std::vector< std::string > params = 
+      String_Op::decompose_string( parameters, Actions::separator,
+				   Actions::unique );
+
+  if( params.size() < 3 ) {
+    errors->report( "Must have at least 3 parameters, name of the grid and name the group and at least one property" );
+    return false;
+  }
+
+  // Get the grid
+  SmartPtr<Named_interface> ni = Root::instance()->interface( gridModels_manager + "/" + params[0] );
+  Geostat_grid* grid = dynamic_cast<Geostat_grid*>( ni.raw_ptr() );
+  if(!grid)  {
+    errors->report( "The grid "+params[0]+" does not exist" );
+    return false;
+  }
+
+  GsTLGridPropertyGroup* group = grid->get_group(params[1]);
+  if(!group)  {
+    errors->report( "The goup "+params[1]+" does not exist" );
+    return false;
+  }
+
+  for(int i=2; i< params.size(); i++) {
+    GsTLGridProperty* prop = grid->property(params[i]);
+    if(prop == NULL)  {
+      errors->report( "The property "+params[i]+" does not exist" );
+      return false;
+    }
+  }
+
+  for(int i=2; i< params.size(); i++) {
+    if( group->is_member_property( params[i] ) )
+      group->remove_property(grid->property(params[i]));
+  }
+
+  return true;
+}
+bool Remove_properties_from_group::exec(){
+
+  return true;
+}
+
+
+/*-------------------*/
+
 
 
 Named_interface*

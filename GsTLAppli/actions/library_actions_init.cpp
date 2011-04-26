@@ -162,6 +162,7 @@ bool library_actions_init::bind_action_factories(Manager* dir)
 
 	dir->factory("NewPropertyGroup", New_property_group::create_new_interface);
 	dir->factory("AddPropertiesToGroup", Add_properties_to_group::create_new_interface);
+  dir->factory("RemovePropertiesToGroup", Remove_properties_from_group::create_new_interface);
 	dir->factory("RemoveAllPropertiesFromGroup", Delete_property_in_group::create_new_interface);
 	dir->factory("RemoveGroup", Remove_group::create_new_interface);
 
@@ -203,6 +204,8 @@ int libGsTLAppli_actions_release()
 
 void init_python_interpreter()
 {
+	//TODO : Needed for python 64bits distribution.  Not practical
+	//Py_NoSiteFlag = 1;  // Do not load external libraries such as scipy.   
 	Py_Initialize();
 	Py_InitModule("sgems", SGemsMethods);
 	Py_InitModule("redirect", RedirectMethods);
