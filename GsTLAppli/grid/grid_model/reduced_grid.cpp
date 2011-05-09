@@ -91,12 +91,12 @@ Neighborhood* Reduced_grid::neighborhood( double x, double y, double z,
     return new MgridNeighborhood_hd( this, 
 					     property_manager_.selected_property(),
 					     nx,ny,nz, ang1,ang2,ang3,
-					     20, cov_copy );
+					     nx*ny*nz, cov_copy );
   else
     return new MgridNeighborhood( this, 
 					  property_manager_.selected_property(),
 					  nx,ny,nz, ang1,ang2,ang3,
-					  20, cov_copy );
+					  nx*ny*nz, cov_copy );
 
   delete cov_copy;
 }
@@ -130,13 +130,13 @@ Neighborhood* Reduced_grid::neighborhood( const GsTLTripletTmpl<double>& dim,
 					     property_manager_.selected_property(),
 					     nx,ny,nz,
 					     angles[0], angles[1], angles[2],
-					     20, cov_copy );
+					     nx*ny*nz, cov_copy );
   else
     return new MgridNeighborhood( this, 
 					  property_manager_.selected_property(),
 					  nx,ny,nz,
 					  angles[0], angles[1], angles[2],
-					  20, cov_copy );
+					  nx*ny*nz, cov_copy );
 }
 
 Window_neighborhood* Reduced_grid::window_neighborhood( const Grid_template& templ) {

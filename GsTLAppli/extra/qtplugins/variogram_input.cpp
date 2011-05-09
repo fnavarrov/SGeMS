@@ -824,9 +824,7 @@ float Variogram_structure_input::contribution() const {
 
 
 QString Variogram_structure_input::variogram_type() const {
-
   return type_selector_->currentText(); 
-
 }
 
 

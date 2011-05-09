@@ -93,7 +93,7 @@ public:
 		max_dim_[2] = nz; 
 		max_nxy_ = nx * ny; 
 		max_size_ = nx * ny * nz; 
-        use_anistropic_ = use_anistropic;
+    use_anistropic_ = use_anistropic;
 		set_multigrid_level(level); 
 	} 
 	
@@ -114,7 +114,7 @@ public:
 		spacing_y_ = gc.spacing_y_; 
 		spacing_z_ = gc.spacing_z_; 
 
-        use_anistropic_ = gc.use_anistropic_;
+    use_anistropic_ = gc.use_anistropic_;
 		
 		max_size_ = gc.max_size_; 
 		nxy_ = gc.nxy_; 
@@ -147,13 +147,13 @@ public:
 			
 			multigrid_level_ = gc.multigrid_level_; 
 			multigrid_spacing_ = gc.multigrid_spacing_; 
-            multigrid_spacing_z_ = gc.multigrid_spacing_z_; 
-            multigrid_spacing_x_ = gc.multigrid_spacing_x_; 
-            multigrid_spacing_y_ = gc.multigrid_spacing_y_; 
+      multigrid_spacing_z_ = gc.multigrid_spacing_z_; 
+      multigrid_spacing_x_ = gc.multigrid_spacing_x_; 
+      multigrid_spacing_y_ = gc.multigrid_spacing_y_; 
 
-            spacing_x_ = gc.spacing_x_; 
-            spacing_y_ = gc.spacing_y_; 
-            spacing_z_ = gc.spacing_z_; 
+      spacing_x_ = gc.spacing_x_; 
+      spacing_y_ = gc.spacing_y_; 
+      spacing_z_ = gc.spacing_z_; 
 
 			use_anistropic_ = gc.use_anistropic_;
 			
@@ -216,17 +216,17 @@ public:
         multigrid_spacing_ = (int) pow(2.0, (double) ng); 
 
 		if ( use_anistropic_ )
-        {
+    {
 			multigrid_spacing_x_ = spacing_x_[ng];
 			multigrid_spacing_y_ = spacing_y_[ng];
 			multigrid_spacing_z_ = spacing_z_[ng];
-        }
-        else
-        {
+    }
+    else
+    {
 			multigrid_spacing_x_ = multigrid_spacing_;
 			multigrid_spacing_y_ = multigrid_spacing_;
 			multigrid_spacing_z_ = multigrid_spacing_;
-        }
+    }
 
 		one_step_[0] = multigrid_spacing_x_; 
 		one_step_[1] = multigrid_spacing_y_*max_dim_[0]; 
@@ -330,8 +330,8 @@ public:
 	{ 
 		if (!use_anistropic_ && multigrid_spacing_==1)    
 			return index;         // isotropic expansion
-        else if ( multigrid_spacing_x_==1 && multigrid_spacing_y_==1 && multigrid_spacing_z_==1)
-            return index;         // anisotropic expansion
+    else if ( multigrid_spacing_x_==1 && multigrid_spacing_y_==1 && multigrid_spacing_z_==1)
+      return index;         // anisotropic expansion
 		else { 
 			GsTLInt inxy = index % nxy_; 
 			GsTLInt k = (index - inxy)/nxy_; 

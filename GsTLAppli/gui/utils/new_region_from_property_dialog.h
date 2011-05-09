@@ -60,6 +60,7 @@ public:
   bool isCategorical() const;
 
 protected slots:
+  void populate_categories();
   void set_filter_type();
   void create_region();
   void create_region_and_close();

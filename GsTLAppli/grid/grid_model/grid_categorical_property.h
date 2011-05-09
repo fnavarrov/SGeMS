@@ -84,7 +84,7 @@ protected :
 class GRID_DECL CategoricalPropertyDefinitionDefault :public CategoricalPropertyDefinition {
 
 public:
-	CategoricalPropertyDefinitionDefault(){}
+  CategoricalPropertyDefinitionDefault(){}
 	virtual ~CategoricalPropertyDefinitionDefault(){}
 
 	virtual std::string get_category_name(unsigned int id) const;
@@ -117,6 +117,16 @@ public:
 	  */
 	inline std::string get_category_name( GsTLInt id ) const;
 
+	/** Returns the an indicator (0-1) for a given category. 
+  * Return -1, if the category does not exist
+	*/
+	inline int get_indicator_value( GsTLInt id, int category ) const;
+
+	/** Returns the an indicator (0-1) for a given category.
+  * Return -1, if the category does not exist
+	*/
+  inline int get_indicator_value( GsTLInt id, std::string category_name ) const;
+
 	/** Changes the value of the ith element to \a val.
 	*/
 	inline void set_value( property_type val, GsTLInt id );
@@ -129,6 +139,11 @@ public:
   */
   inline const CategoricalPropertyDefinition* get_category_definition() const;
 
+
+  /** Get the number of category
+  */
+  inline int get_number_of_category() const;
+
   /** Set the coding definition for the categories
   */
   bool set_category_definition( std::string cat_definition_name);
@@ -137,6 +152,7 @@ public:
 
 protected :
 	  CategoricalPropertyDefinition* cat_definitions_;
+    unsigned int number_of_categories_;
 };
 
 inline std::string
@@ -146,16 +162,33 @@ GsTLGridCategoricalProperty::get_category_name( GsTLInt id ) const {
   return cat_definitions_->get_category_name(val);
 }
 
+inline int 
+GsTLGridCategoricalProperty::get_indicator_value( GsTLInt id, int category ) const{
+  return this->get_value(id)==category?1:0;
+}
+
+	/** Returns the an indicator (0-1) for a given category.
+	*/
+inline int 
+GsTLGridCategoricalProperty::get_indicator_value( GsTLInt id, std::string category_name ) const{
+  int code = cat_definitions_->category_id(category_name);
+  if( code <0 ) return -1;
+  return this->get_indicator_value(id,code);
+}
+
 
 inline
 void GsTLGridCategoricalProperty::set_value( property_type val, GsTLInt id ) {
-  accessor_->set_property_value( val, id );
+  unsigned int cat = static_cast<unsigned int>(val);
+  if( cat > number_of_categories_) number_of_categories_ = cat;
+  accessor_->set_property_value( cat, id );
 }
 
 
 inline
 void GsTLGridCategoricalProperty::set_value( std::string val, GsTLInt id ) {
   int code = cat_definitions_->category_id(val);
+  if( code > number_of_categories_) number_of_categories_ = code;
   if( code >= 0 )
 	  accessor_->set_property_value( code, id );
 }
@@ -165,6 +198,11 @@ inline
 const CategoricalPropertyDefinition*
 	GsTLGridCategoricalProperty::get_category_definition( ) const {
 	return cat_definitions_;
+}
+
+inline 
+int GsTLGridCategoricalProperty::get_number_of_category() const{
+  return number_of_categories_;
 }
 
 

@@ -24,11 +24,9 @@ public:
 
   virtual ~GsTL_filter(){}
 
-
-
   virtual float operator()(Window_neighborhood& neigh, int filter_id) = 0;
-
-
+  virtual float operator()(std::vector<float>::iterator begin, 
+    std::vector<float>::iterator end, int filter_id ) {return -9966699;}
 
   virtual std::string name(int filter_number = 0 ) = 0;
 
@@ -190,11 +188,7 @@ template<
 
 class Functional_filter : public GsTL_filter<Window_neighborhood> {
 
-
-
-  typedef GsTL_filter<Window_neighborhood> Parent;
-
-
+typedef GsTL_filter<Window_neighborhood> Parent;
 
 public:
 
@@ -209,89 +203,52 @@ public:
 
 
   Functional_filter(Functor func, bool skip_uninf=true, bool normalize = true ):skip_uninformed_(skip_uninf),
-
     is_raster_(false),normalize_(normalize),func_(func){}
 
-
-
   virtual std::string name(int filter_number ) {return func_.name();}
-
   virtual int number_filters(void ) {return 1;}
 
-
-
-
-
   template< 
-
     typename Grid_geometry,
-
     typename Iter_window
-
   >
 
   void pre_compute_weights(Grid_geometry geom,
-
       Iter_window begin,Iter_window end ) 
-
   {
-
     //is_raster_ = true;
-
     for(; begin != end; ++begin ) weights_.push_back( func_(*begin) );
-
-
-
   }
 
 
 
     virtual float operator()(Window_neighborhood& neigh, int filter_id=0) {
-
       if( neigh.is_empty() ) return -9966699;
-
       float score=0.;
-
       float sum_weight=0.;
-
       std::vector<float>::iterator it_w = weights_.begin();
-
-
 
       typename Window_neighborhood::iterator it = neigh.begin();
 
       for(; it != neigh.end(); ++it, ++it_w ) {
-
         if( !it->is_informed() ) {
-
           if(!skip_uninformed_) return -9966699;
-
           continue;
-
         }
 
         if(is_raster_) {
-
           score += *it_w*it->property_value();
-
           sum_weight += *it_w;
-
         }
 
         else {
-
           float weight  = func_( it->location(), (neigh.center()).location() );
-
           sum_weight += weight;
-
           score += weight*it->property_value();
-
         }
-
       }
 
       if(normalize_) return score/sum_weight;
-
       else return score;
 
       //else return -996699; //indicates not informed
@@ -301,17 +258,11 @@ public:
 
 
 protected :
-
   bool is_raster_;
-
   bool skip_uninformed_;
-
   bool normalize_;
-
   std::vector<float> weights_;
-
   Functor func_;
-
 };
 
 
@@ -319,139 +270,96 @@ protected :
 
 
 template<
-
   typename Window_neighborhood,
-
   typename  Rasterized_weights
-
 >
 
 class Rasterized_filter : public GsTL_filter<Window_neighborhood> {
 
-
-
   typedef GsTL_filter<Window_neighborhood> Parent;
-
-
 
 public :
 
-
-
   Rasterized_filter() {}
-
   ~Rasterized_filter() {}
 
-
-
-
-
   Rasterized_filter(Rasterized_weights filters)
-
     : skip_uninformed_(true),filters_(filters) {
-
       n_weights_ = std::distance(filters_.weights_begin(0),filters_.weights_end(0));
-
-
-
   }
 
 
 
   virtual std::string name(int filter_number ) { return filters_.names(filter_number); }
-
   virtual int number_filters(void ) {return filters_.number_filters();}
 
 
-
   virtual void operator()(Window_neighborhood& neigh,
-
       std::vector<float>& scores ) 
-
   {
-
     scores.clear();
-
     if(neigh.is_empty()) {
-
       scores.insert(scores.begin(),
-
                     Parent::nfilter_,
-
                     -9966699);
-
       return;
-
     }
 
     scores.insert(scores.begin(),Parent::nfilter_,0.);
 
-
-
     for(int i=0; i < Parent::nfilter_; i++ ) {
-
       std::vector<float>::iterator it_w = filters_.weights_begin(i);
-
       typename Window_neighborhood::iterator it = neigh.begin();
-
       for(; it != neigh.end(); ++it, ++it_w ) {
-
         scores[i] += *it_w * it->property_value();
-
       }
-
     }
-
   }
-
 
 
   virtual float operator()(Window_neighborhood& neigh, int filter_id )
 
   {
-
     if(neigh.is_empty()) return -9966699;
-
     if( n_weights_ != neigh.size() ) return -9966699;
 
-
-
     std::vector<float>::iterator it_w = filters_.weights_begin(filter_id);
-
     typename Window_neighborhood::iterator it = neigh.begin();
 
-    float scores = 0.;
-
-    
+    float scores = 0.;    
 
     for(; it != neigh.end(); ++it, ++it_w ) {
-
       if( !it->is_informed() ) return -9966699;
-
       scores += *it_w * it->property_value();
-
     }
-
     return scores;
-
-
-
   }
 
+  
+  virtual float operator()(std::vector<float>::iterator begin, 
+        std::vector<float>::iterator end, int filter_id )
 
+  {
+    if(begin == end) return -9966699;
+    if( n_weights_ != std::distance(begin,end) ) return -9966699;
+
+    std::vector<float>::iterator it_w = filters_.weights_begin(filter_id);
+ //   typename Window_neighborhood::iterator it = neigh.begin();
+
+    float scores = 0.;    
+
+    for( ; begin != end ; ++begin, ++it_w ) {
+      if( *begin == -9966699 ) return -9966699;
+      scores += *it_w * (*begin);
+    }
+    return scores;
+  }
 
 protected : 
 
-
-
   bool skip_uninformed_;
-
   int n_weights_;
-
   Rasterized_weights filters_;
-
-
-
 };
 
 

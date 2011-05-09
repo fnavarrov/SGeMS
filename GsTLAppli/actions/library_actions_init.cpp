@@ -205,7 +205,7 @@ int libGsTLAppli_actions_release()
 void init_python_interpreter()
 {
 	//TODO : Needed for python 64bits distribution.  Not practical
-	//Py_NoSiteFlag = 1;  // Do not load external libraries such as scipy.   
+	Py_NoSiteFlag = 1;  // Do not load external libraries such as scipy.   
 	Py_Initialize();
 	Py_InitModule("sgems", SGemsMethods);
 	Py_InitModule("redirect", RedirectMethods);

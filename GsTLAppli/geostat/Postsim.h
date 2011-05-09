@@ -62,6 +62,9 @@ class  Postsim : public Geostat_algo {
    
   private:
 
+    int execute_continous();
+    int execute_categorical();
+
 	typedef std::vector< GsTLGridProperty* > prop_vecT;
 
 	Geostat_grid* grid_;

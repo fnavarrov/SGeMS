@@ -182,7 +182,8 @@ const std::string Algo_control_panel::utils_manager_( xmlGeostatParamUtils_manag
 
 Algo_control_panel::Algo_control_panel( GsTL_project* project,
 					QWidget* parent, 
-					const char* name, Qt::WFlags f ) 
+					const char* name,
+					Qt::WFlags f )
   : QWidget( parent, f ), project_( project ),
     param_input_(0), selected_algo_("") {
 
@@ -362,12 +363,25 @@ void Algo_control_panel::add_algorithm( Geostat_algo* algo,
 */
   // make the algorithm available in the algorithm list, 
   // in the correct category.
-  algo_selector_->addItem( category + "/" + QString( entry_name.c_str() ),
-			   "/",
-			   description );
   
+
+	algo_selector_->addItem( category + "/" + QString( entry_name.c_str() ),
+				 "/",
+				 description );
+
+
 }
 
+
+void Algo_control_panel::filter_algo_by_category(const QString& top_level_filter){
+	QTreeWidgetItem* rootItem = algo_selector_->invisibleRootItem();
+	int nChild = rootItem->childCount();
+	for(int i=0; i<nChild; ++i) {
+		QTreeWidgetItem* item = rootItem->child(i);
+		if( item->text(0) != top_level_filter )
+			item->setHidden(true);
+	}
+}
 
 
 /** Generate the widget that prompts for the parameters specific to the 

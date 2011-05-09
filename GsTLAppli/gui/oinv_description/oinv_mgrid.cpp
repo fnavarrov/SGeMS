@@ -388,6 +388,7 @@ void Oinv_mgrid::refresh() {
   int low=1;
   int high=65535;
   int true_size;
+ 
 
   if( current_property_ && cmap_ ) {
     // recompute the voxel data
@@ -403,7 +404,7 @@ void Oinv_mgrid::refresh() {
 		if (rindex == -1) {voxel_data_[i] = 0; continue;}
 		if (current_property_->is_informed(rindex)) {
 			float pval= std::max( std::min( current_property_->get_value(rindex), max ), min );
-			uint8_t val = (pval - min) / (max-min)*255+1;        
+			uint8_t val = (pval - min) / (max-min)*254+1;        
 			voxel_data_[i] = val; 
 		}
 		else

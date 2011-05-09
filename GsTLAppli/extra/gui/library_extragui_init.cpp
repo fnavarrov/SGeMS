@@ -34,6 +34,7 @@
 
 #include <GsTLAppli/extra/qtplugins/filechooser.h>
 #include <GsTLAppli/extra/qtplugins/selectors.h>
+#include <GsTLAppli/extra/qtplugins/categorical_selectors.h>
 #include <GsTLAppli/extra/qtplugins/variogram_input.h>
 #include <GsTLAppli/extra/qtplugins/kriging_type_selector.h>
 #include <GsTLAppli/extra/qtplugins/gstl_table.h>
@@ -180,6 +181,15 @@ bool library_extragui_init::bind_qt_wrappers_factories(Manager* dir) {
   PropertySelector prop_region_selector;
   classname = prop_region_selector.metaObject()->className();
   dir->factory(classname, PropertyRegionSelector_accessor::create_new_interface);
+
+
+/*  --  Categorical selector 
+*/
+
+  // MultiPropertySelector
+  OrderedCategoricalPropertySelector cat_order_prop_select;
+  classname = std::string( cat_order_prop_select.metaObject()->className() );
+  dir->factory(classname, OrderedPropertySelector_accessor::create_new_interface);
 
   return true;
 

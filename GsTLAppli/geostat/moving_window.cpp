@@ -1,103 +1,55 @@
 #include "moving_window.h"
-
 #include <GsTLAppli/geostat/parameters_handler.h>
-
 #include <GsTLAppli/utils/gstl_plugins.h>
-
 #include <GsTLAppli/utils/error_messages_handler.h>
-
 #include <GsTLAppli/utils/string_manipulation.h>
-
 #include <GsTLAppli/grid/grid_model/geostat_grid.h>
-
 #include <GsTLAppli/grid/grid_model/rgrid_neighborhood.h>
-
 #include <GsTLAppli/grid/grid_model/gval_iterator.h>
-
 #include <GsTLAppli/math/gstlpoint.h>
-
 #include <GsTLAppli/geostat/utilities.h>
-
 #include <algorithm>
 
 
 
 
-
 Moving_window::Moving_window() {
-
 	filters_ = NULL;
-
 	neigh_ = NULL;
-
+  catdef_ = NULL;
 }
-
-
-
-
 
 Moving_window::~Moving_window( void) {
-
   if(filters_) delete filters_;
-
   if(neigh_) delete neigh_;
-
 }
 
-
-
-
-
 bool Moving_window::initialize( const Parameters_handler* parameters,
-
 			Error_messages_handler* errors ) {
-
-
 
 	std::cout << "initializing algorithm Moving_window \n";
 
-
-
 	std::string grid_name = parameters->value( "Input_data.grid" );
-
-	errors->report( grid_name.empty(),"Input_data", "No grid specified" );
-
- 
+	errors->report( grid_name.empty(),"Input_data", "No grid specified" ); 
 
 	if( !grid_name.empty() ) {
-
   	bool ok = geostat_utils::create( grid_, grid_name,
-
 				 "Grid_Name", errors );
-
 		if( !ok || !grid_ ) return false;
-
 	}
-
 	else 
-
 		return false;
 
 
-
   bool is_neigh_rect = parameters->value( "is_neigh_rect.value" )=="1";
-
   std::string type = parameters->value( "filter_type.value" );
 
-
-
-
-
   if(type == "User defined" ||  type == "Default Filtersim filters"  || type == "Sobel" ) {
-
     if( !dynamic_cast<RGrid*>( grid_ ) ) 
-
       errors->report( "Input_data", "The selected filter requires a regular grid" );
-
   }
 
   if( is_neigh_rect && !dynamic_cast<RGrid*>( grid_ ) ) 
-
     errors->report( "Input_data", "A rectangular neighborhood requires a regular grid" );
 
   if(!errors->empty()) return false;
@@ -105,8 +57,19 @@ bool Moving_window::initialize( const Parameters_handler* parameters,
 
 
   std::string prop_name = parameters->value("Input_data.property");
-
   GsTLGridProperty* prop_input = grid_->property( prop_name );
+  GsTLGridCategoricalProperty* cprop = dynamic_cast<GsTLGridCategoricalProperty*>(prop_input);
+  nCategory_ = 0;
+  if(cprop) {
+    catdef_ = cprop->get_category_definition();
+    GsTLGridProperty::const_iterator it = cprop->begin();
+    for( ; it!= cprop->end(); ++it) {
+      if(*it > nCategory_)  nCategory_ = *it;
+    }
+    nCategory_++;  //cat goes from 0 to N-1
+  }
+
+    
 
   grid_->select_property( prop_name );
 
@@ -130,7 +93,11 @@ bool Moving_window::initialize( const Parameters_handler* parameters,
 
     Grid_template* window_tpl = user_def_filters.get_geometry();
 
-    neigh_ = new Rgrid_window_neighborhood (*window_tpl, dynamic_cast<RGrid*>( grid_ ),grid_->selected_property());
+    Strati_grid* sgrid = dynamic_cast<Strati_grid*>(grid_);
+    neigh_ = sgrid->window_neighborhood(*window_tpl);
+    neigh_->select_property(prop_input->name());
+
+ //   neigh_ = new Rgrid_window_neighborhood (*window_tpl, dynamic_cast<RGrid*>( grid_ ),grid_->selected_property());
 
     filters_ = new Rasterized_filter<Smart_Neighborhood,Filtersim_filters>( user_def_filters );
 
@@ -150,7 +117,11 @@ bool Moving_window::initialize( const Parameters_handler* parameters,
 
     Grid_template* window_tpl = default_Filtersim_filters.get_geometry();
 
-    neigh_ = new Rgrid_window_neighborhood (*window_tpl, dynamic_cast<RGrid*>( grid_ ),grid_->selected_property());
+    Strati_grid* sgrid = dynamic_cast<Strati_grid*>(grid_);
+    neigh_ = sgrid->window_neighborhood(*window_tpl);
+    neigh_->select_property(prop_input->name());
+
+ //   neigh_ = new Rgrid_window_neighborhood (*window_tpl, dynamic_cast<RGrid*>( grid_ ),grid_->selected_property());
 
     filters_ = new Rasterized_filter<Smart_Neighborhood,Filtersim_filters>( default_Filtersim_filters );
 
@@ -170,9 +141,11 @@ bool Moving_window::initialize( const Parameters_handler* parameters,
 
     else errors->report("Sobel_orientation","An orientation must be selected");
 
+    Strati_grid* sgrid = dynamic_cast<Strati_grid*>(grid_);
+    neigh_ = sgrid->window_neighborhood(tpl);
+    neigh_->select_property(prop_input->name());
 
-
-    neigh_ = new Rgrid_window_neighborhood (tpl, dynamic_cast<RGrid*>( grid_ ),prop_input);
+ //   neigh_ = new Rgrid_window_neighborhood (tpl, dynamic_cast<RGrid*>( grid_ ),prop_input);
 
   }
 
@@ -200,7 +173,11 @@ bool Moving_window::initialize( const Parameters_handler* parameters,
 
       Grid_template tpl = create_neigh_template(nx,ny,nz);
 
-      neigh_ = new Rgrid_window_neighborhood (tpl, dynamic_cast<RGrid*>( grid_ ),prop_input );
+      Strati_grid* sgrid = dynamic_cast<Strati_grid*>(grid_);
+      neigh_ = sgrid->window_neighborhood(tpl);
+      neigh_->select_property(prop_input->name());
+
+//      neigh_ = new Rgrid_window_neighborhood (tpl, dynamic_cast<RGrid*>( grid_ ),prop_input );
 
     }
 
@@ -250,22 +227,32 @@ bool Moving_window::initialize( const Parameters_handler* parameters,
 
    std::string prefix = parameters->value("prefix_out.value");
 
+  GsTLGridPropertyGroup* group = geostat_utils::add_group_to_grid( grid_, prefix,"General");
 
-
-  for(int i=0; i<filters_->number_filters(); i++ ) {
-
-    std::string filter_name = prefix + filters_->name(i);
-
-    props_.push_back( geostat_utils::add_property_to_grid( grid_, filter_name ) );
-
-  }
+  
+ if(nCategory_ > 0) {
+    for( int c=0; c<nCategory_ ; c++ ) {
+      for(int i=0; i<filters_->number_filters(); i++ ) {
+        std::string filter_name = prefix + " "+filters_->name(i) + " "+catdef_->get_category_name(c);
+        props_.push_back( geostat_utils::add_property_to_grid( grid_, filter_name ) );
+        group->add_property(props_.back());
+      }
+    }
+ }
+ else {
+   for(int i=0; i<filters_->number_filters(); i++ ) {
+      std::string filter_name = prefix + " "+filters_->name(i);
+      props_.push_back( geostat_utils::add_property_to_grid( grid_, filter_name ) );
+      group->add_property(props_.back());
+   }
+}
 
 
 
   grid_->select_property( prop_input->name() );
 
   neigh_->select_property( prop_input->name() );
-//  neigh_->includes_center( true );
+ // neigh_->includes_center( true );
 
 
 
@@ -279,38 +266,44 @@ bool Moving_window::initialize( const Parameters_handler* parameters,
 
 int Moving_window::execute(GsTL_project *) { 
 
-
-
   Geostat_grid::iterator it_gval = grid_->begin();
-
   std::vector< float > scores;
 
-
-
+  
   for(; it_gval != grid_->end(); ++it_gval ) {
-
     neigh_->find_neighbors ( *it_gval );
+    
+    if( nCategory_ > 0 ) {
 
-    for(int i=0; i<props_.size(); i++ ) 
+      int index = 0;
 
-      props_[i]->set_value((*filters_)(*neigh_, i ),it_gval->node_id() );
+      std::vector< GsTLGridProperty::property_type >  data;
+      Neighborhood::iterator it_neigh = neigh_->begin();
+      for( ; it_neigh != neigh_->end() ; ++it_neigh ) {
+        if( it_neigh->is_informed() )  data.push_back( it_neigh->property_value() );
+      }
+      for(int c = 0; c< nCategory_; c++ ) {
+        std::vector< GsTLGridProperty::property_type >  data_id;
+        for( int i=0; i<data.size(); ++i )
+          data_id.push_back( (data[i]==c)?1.0:0.0 );
 
+        for(int i=0; i<filters_->number_filters(); i++ ) {
+          props_[index]->set_value((*filters_)(data_id.begin(),data_id.end(), i ),it_gval->node_id() );
+          index++;
+        } 
+      }
+    }
+    else {
+      for(int i=0; i<props_.size(); i++ )  
+        props_[i]->set_value((*filters_)(*neigh_, i ),it_gval->node_id() );
+    }
 
 
  //   (*filters_)(*neigh_, i );
-
-    
-
  //   if(scores.size() != props_.size() ) continue;
-
-
-
  //   for(int i=0; i<scores.size(); i++ ) 
-
  //     props_[i]->set_value(scores[i],it_gval->node_id() );
-
   }
-
   return 0;
 
 }
@@ -324,17 +317,11 @@ Grid_template Moving_window::create_neigh_template( int nx, int ny, int nz )
 {
 
   Grid_template tpl;
-
   for(int k =-nz; k<=nz; ++k ) {
-
     for(int j =-ny; j<=ny; ++j ) {
-
       for(int i =-nx; i<=nx; ++i ) tpl.add_vector(i,j,k);
-
     }
-
   }
-
   return tpl;
 
 }
@@ -344,9 +331,7 @@ Grid_template Moving_window::create_neigh_template( int nx, int ny, int nz )
 
 
 Named_interface* Moving_window::create_new_interface( std::string& ) {
-
   return new Moving_window;
-
 }
 
 

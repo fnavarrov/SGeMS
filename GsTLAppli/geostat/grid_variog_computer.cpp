@@ -77,6 +77,20 @@ compute_variogram_values( Discrete_function &experim_variog,
   const int ny = grid_->ny();
   const int nz = grid_->nz();
 
+
+  // We need a rgrid to be able to extract the size of a block!
+  // This variogram computation should be revisited
+
+  const RGrid* rgrid = dynamic_cast<const RGrid*>(grid_);
+  double sx = 1;
+  double sy = 1;
+  double sz = 1;
+  if( rgrid ) {
+    sx = rgrid->geometry()->cell_dims()[0];
+    sy = rgrid->geometry()->cell_dims()[0];
+    sz = rgrid->geometry()->cell_dims()[0];
+  }
+
   SGrid_cursor cursor = *( grid_->cursor() );
   cursor.set_multigrid_level(1);
 
@@ -125,8 +139,9 @@ compute_variogram_values( Discrete_function &experim_variog,
         }
       }
     }
-      
-    x_values.push_back( euclidean_norm( step ) );
+    // Need to have the real x-y-z coordinates as the x axis not pixel size
+    GsTLVector< double > xyz_step( step[0]*sx, step[1]*sy,step[2]*sz  );
+    x_values.push_back( euclidean_norm( xyz_step ) );
     double correl_value = correl_measure->correlation();
     if( !GsTL::equals( correl_value, Correlation_measure::NaN, 0.0001 ) )
       y_values.push_back( correl_measure->correlation() / covar ); 

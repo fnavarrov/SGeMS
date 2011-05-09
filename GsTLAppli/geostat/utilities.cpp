@@ -125,6 +125,7 @@ bool initialize_covariance( Covariance<Location>* cov,
     convert_to_math_standard_angles_rad( a1, a2, a3 );
 
     // check that the ranges are in decreasing order:
+    /*
     if( R1 < R2 || R2 < R3 ) {
       std::string tag = String_Op::split_string( tag_name, "." ).first;
       std::ostringstream message;
@@ -133,7 +134,7 @@ bool initialize_covariance( Covariance<Location>* cov,
       errors->report( tag, message.str() );
       return false;
     }
-
+*/
     // set the ranges and angles of the current structure
     cov->set_geometry( i-1, R1,R2,R3, a1,a2,a3 );
   }
@@ -635,7 +636,7 @@ bool extract_ellipsoid_definition( GsTLTriplet& ranges,
   ranges[0] = param_vals[0];
   ranges[1] = param_vals[1];
   ranges[2] = param_vals[2];
-
+/*
   if( ranges[0] < ranges[1] || ranges[1] < ranges[2] ) {
     std::string tag = String_Op::split_string( tag_name, "." ).first;
     std::ostringstream message;
@@ -644,7 +645,7 @@ bool extract_ellipsoid_definition( GsTLTriplet& ranges,
     errors->report( tag, message.str() );
     return false;
   }
-
+*/
   angles[0] = degree_to_radian( param_vals[3] );
   angles[1] = degree_to_radian( param_vals[4] );
   angles[2] = degree_to_radian( param_vals[5] );
@@ -738,6 +739,26 @@ GsTLGridProperty* add_property_to_grid( Geostat_grid* grid,
   }
 
   return new_prop;
+}
+
+
+GsTLGridPropertyGroup* 
+  add_group_to_grid( Geostat_grid* grid, 
+                        const std::string& group_name,
+                        std::string group_type ) {
+  std::ostringstream new_group_name_stream;
+  new_group_name_stream << group_name;
+
+  GsTLGridPropertyGroup* new_group =
+    grid->add_group( group_name, group_type );
+
+  while( !new_group ) {
+    // if the property already exists, try appending "_0" to the name
+    new_group_name_stream << "_0";
+    new_group = grid->add_group( new_group_name_stream.str(), group_type );
+  }
+
+  return new_group;
 }
 
 

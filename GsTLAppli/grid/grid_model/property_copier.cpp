@@ -538,6 +538,23 @@ bool Pset_to_mask_copier::copy( const Geostat_grid* server,
 	   if(id < 0) continue;
 
 		GsTLGridProperty::property_type val = GsTLGridProperty::no_data_value;
+    if(client_property_->is_informed(id)) {
+      if (!overwrite_) continue;
+			val = client_property_->get_value( id );
+    }
+
+		//First use the find method to check if the original value had already been backuped
+		std::map<int,GsTLGridProperty::property_type>::iterator  it = back_up_.find(id);
+		if(it == back_up_.end()) back_up_[id] = val;
+
+		if( server_prop->is_informed( i ) ) {
+			client_property_->set_value( server_property_->get_value( i ), id );
+		}
+    else {
+			client_property_->set_not_informed( id );
+		}
+/*
+		GsTLGridProperty::property_type val = GsTLGridProperty::no_data_value;
 		if(client_property_->is_informed(id))
 			val = client_property_->get_value( id );
 
@@ -551,6 +568,7 @@ bool Pset_to_mask_copier::copy( const Geostat_grid* server,
 		else if(overwrite_) {
 			client_property_->set_not_informed( id );
 		}
+    */
   }
 
   return true;

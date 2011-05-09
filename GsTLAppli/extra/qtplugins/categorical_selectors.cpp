@@ -350,6 +350,26 @@ void MultipleCategorySelector::show_categories( const QString& cat_def_name ) {
 }
 
 
+void MultipleCategorySelector::show_default_categories( int number_of_category ) {
+  QListWidget::clear();
+
+  if(number_of_category <= 0) return;
+
+  SmartPtr<Named_interface> ni = 
+    Root::instance()->interface( categoricalDefinition_manager+"/Default" );
+  CategoricalPropertyDefinitionDefault* cat_definitions_ =
+    dynamic_cast<CategoricalPropertyDefinitionDefault*>(ni.raw_ptr());
+
+
+	if(cat_definitions_ != 0) {
+	  for(unsigned int i=0; i<number_of_category; i++) {
+		  addItem( cat_definitions_->get_category_name(i).c_str() );
+	  }
+	}
+
+
+}
+
 void MultipleCategorySelector::selection_size() {
   int size=0;
   for( unsigned int i = 0; i < count() ; i++ ) {

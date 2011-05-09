@@ -193,6 +193,8 @@ class GRID_DECL Geovalue {
   bool operator != ( const Geovalue& rhs ) const;  
 
   bool is_harddata() const { return property_array_->is_harddata( node_id_ ); }
+  
+  void set_harddata(bool is_hardata) const { property_array_->set_harddata( is_hardata,node_id_ ); }
 
   void set_not_informed() { property_array_->set_not_informed(node_id_); }
 

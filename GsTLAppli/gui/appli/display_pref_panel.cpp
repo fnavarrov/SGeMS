@@ -566,11 +566,18 @@ Display_pref_panel::Display_pref_panel( Oinv_description* oinv_desc,
 		    this, SLOT( add_slice() ) );
   
 
+  
+
   // If the object is a strati grid, show enable 3 slices by default
   if( oinv_strati_desc_ ) {
     add_slice( Oinv::X_AXIS );
     add_slice( Oinv::Y_AXIS );
     add_slice( Oinv::Z_AXIS );
+
+// Hack to solve the simvoleon crash 
+//    oinv_strati_desc_->hide_volume( true );
+//    hide_volume_checkbox_->setChecked(true);
+//    hide_volume_checkbox_->setDisabled(true);
   }
 
   //parent->layout()->addWidget(this);

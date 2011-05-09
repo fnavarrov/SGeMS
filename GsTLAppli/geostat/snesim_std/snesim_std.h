@@ -175,7 +175,7 @@ private:
     // for initialize() function
     bool get_rotation_data( const Parameters_handler* parameters, Error_messages_handler* error_mesgs );
     bool get_affinity_data( const Parameters_handler* parameters, Error_messages_handler* error_mesgs );
-    bool get_region_data( const Parameters_handler* parameters, Error_messages_handler* error_mesgs );
+    bool get_pre_simulation_gridded_data( const Parameters_handler* parameters, Error_messages_handler* error_mesgs );
     bool get_soft_prob_data( const Parameters_handler* parameters, Error_messages_handler* error_mesgs );
     bool get_vert_prob_data( const Parameters_handler* parameters, Error_messages_handler* error_mesgs );
     bool get_simul_grid( const Parameters_handler* parameters, Error_messages_handler* error_mesgs );
@@ -240,8 +240,8 @@ private:
 	
 	//  for simulation with regions
 	GsTLGridProperty* region_property_;
-	GsTLGridProperty* region_simulated_;
-	std::string region_property_name_;
+	GsTLGridProperty* pre_simulated_property_;
+
 	std::string pre_region_property_name_;
 
 	int use_region_;

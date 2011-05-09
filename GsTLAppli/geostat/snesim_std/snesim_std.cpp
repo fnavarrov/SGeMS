@@ -98,18 +98,18 @@ Snesim_Std::Snesim_Std()
 	seed_ = 21111975;
 	nb_multigrids_ = 3;
 
-    revisitNodesProp_ = 0.0;
-    revisit_criterion_ = -1;
-    revisit_iter_nb_ = 1;
+  revisitNodesProp_ = 0.0;
+  revisit_criterion_ = -1;
+  revisit_iter_nb_ = 1;
 
-    is_power_factor_ = true;
-    iso_expansion_ == 1;
+  is_power_factor_ = true;
+  iso_expansion_ == 1;
 
-    is_view_intermediate_ = 0;
-    is_view_node_drop_ = 0;
+  is_view_intermediate_ = 0;
+  is_view_node_drop_ = 0;
 
-    for(int nw = 0; nw<=3; nw++)
-		window_geom_sg_[nw] = 0;
+  for(int nw = 0; nw<=3; nw++)
+	  window_geom_sg_[nw] = 0;
 	
     // grid or property pointers
 	simul_grid_ = 0;
@@ -119,14 +119,14 @@ Snesim_Std::Snesim_Std()
 	aff_property_ = 0;
 	harddata_grid_ = 0;
 	harddata_property_ = 0;
-    region_property_ = 0;
-    region_simulated_ = 0;
+  region_property_ = 0;
+  pre_simulated_property_ = 0;
 
 	use_vertical_ = false;
 	use_soft_cube_ = false;
 
-    sampler1_ = 0;
-    sampler2_ = 0;
+  sampler1_ = 0;
+  sampler2_ = 0;
 
 	// un-used parameters
     /*
@@ -215,7 +215,7 @@ bool Snesim_Std::initialize( const Parameters_handler* parameters,
     if ( !get_affinity_data( parameters, error_mesgs ) )
         return false;
 	
-    if ( !get_region_data( parameters, error_mesgs ) )
+    if ( !get_pre_simulation_gridded_data( parameters, error_mesgs ) )
         return false;
 
     if ( !get_soft_prob_data( parameters, error_mesgs ) )
@@ -288,7 +288,7 @@ int Snesim_Std::execute( GsTL_project* proj )
 
         appli_message("realization " << nreal );
 
-        GsTLGridProperty* prop = multireal_property_->new_realization();
+        GsTLGridProperty* prop = multireal_property_->new_categorical_realization();
         simul_grid_->select_property( prop->name() );
 
         simul_grid_->set_level(1);	
@@ -1211,7 +1211,7 @@ bool Snesim_Std::get_rotation_data( const Parameters_handler* parameters,
     return true;
 }
 
-
+/*
 bool Snesim_Std::get_region_data( const Parameters_handler* parameters,
                                    Error_messages_handler* error_mesgs )
 {	
@@ -1260,28 +1260,22 @@ bool Snesim_Std::get_region_data( const Parameters_handler* parameters,
                 return false;
             }
             
-            region_simulated_ = simul_grid_->property( pre_region_property_name_ );
-            if( !region_simulated_ ) return false;
+            pre_simulated_property_ = simul_grid_->property( pre_region_property_name_ );
+            if( !pre_simulated_property_ ) return false;
 
             int nb_faceis_simulated;
-            if ( !is_integer_prop(region_simulated_, nb_faceis_simulated) )
+            if ( !is_integer_prop(pre_simulated_property_, nb_faceis_simulated) )
             {
                 error_mesgs->report( "Previous_Simulation_Prop", "Previously simulation value must be integer" );
                 return false;
             }
 
-            /*
-            if ( nb_faceis_simulated > nb_facies_)
-            {
-                error_mesgs->report( "Previous_Simulation_Prop", "Previously simulated region contains more facies" );
-                return false;
-            }
-            */
+
         }
     }
     return true;
 }
-
+*/
 
 bool Snesim_Std::get_affinity_data( const Parameters_handler* parameters,
                                    Error_messages_handler* error_mesgs )
@@ -1701,8 +1695,8 @@ void Snesim_Std::copy_pre_simulation_data()
     //for (int i=0; i<simul_grid_->nxyz(); i++) 
     for (int i=0; i<simul_grid_->size(); i++) 
     {
-        if ( region_simulated_->is_informed(i) )
-            prop->set_value(region_simulated_->get_value(i), i);
+        if ( pre_simulated_property_->is_informed(i) )
+            prop->set_value(pre_simulated_property_->get_value(i), i);
     }
 }
 
@@ -1947,7 +1941,7 @@ bool Snesim_Std::get_simulation_choice(int sg_no, int ncoarse)
     if( subgrid_choice_==0 )    // no subgrid
         return (sg_no==NUM_SG); 
     else if( ncoarse == nb_multigrids_ ) 
-        return (sg_no ==NUM_SG);       // no subgrid for the coursest grid
+        return (sg_no ==NUM_SG);       // no subgrid for the coarsest grid
     else if( iso_expansion_==0 && !is_expansion_factor_dividable(ncoarse) )
         return (sg_no==NUM_SG); 
     else  // with subgrid
@@ -2009,6 +2003,19 @@ int Snesim_Std::Nint(double x)
 	return x>=0 ? static_cast<int> (x + 0.5) : static_cast<int> (x - 0.5) ;
 }
 
+bool Snesim_Std::get_pre_simulation_gridded_data( const Parameters_handler* parameters,
+											Error_messages_handler* error_mesgs ){
+	if(parameters->value("use_pre_simulated_gridded_data.value") == "1") {
+		std::string pre_simulated_property_name = parameters->value("Pre_Simulated_Gridded_Data.value");
+		pre_simulated_property_ = simul_grid_->property(pre_simulated_property_name);
+		if(pre_simulated_property_  == 0) {
+			error_mesgs->report( "Pre_Simulated_Gridded_Data",
+				"The property "+pre_simulated_property_name+" does not exist on the simulation grid");
+			return false;
+		}
+	}
+	return true;
+}
 
 bool Snesim_Std::simulate_one_realization( SmartPtr<Progress_notifier>& progress_notifier, 
                                           GsTLGridProperty* prop, int nreal )
@@ -2017,8 +2024,10 @@ bool Snesim_Std::simulate_one_realization( SmartPtr<Progress_notifier>& progress
     std::vector<CdfType> vert_ccdf = vert_ccdf_;
 
     // having property with previous region simulatation + hard data
-    if ( use_pre_region_ == 1)
+    if ( pre_simulated_property_ != NULL)
+    {
         copy_pre_simulation_data();
+    }
 
     // loop on all coarse grids
     for( int ncoarse = nb_multigrids_ ; ncoarse >=1 ; ncoarse-- ) 

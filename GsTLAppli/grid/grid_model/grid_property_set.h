@@ -152,10 +152,46 @@ protected :
 
 class CategoricalPropertyDefinition;
 
+
+class GRID_DECL CategoricalPropertyGroup : public GsTLGridPropertyGroup {
+public:
+
+  static Named_interface* create_new_interface( std::string& name);
+
+  CategoricalPropertyGroup();
+  CategoricalPropertyGroup(std::string name);
+  virtual ~CategoricalPropertyGroup (){}
+
+  virtual void set_categorical_definition(std::string cat_def_name);
+  virtual void set_categorical_definition(const CategoricalPropertyDefinition* cat_def);
+  virtual std::string get_categorical_definition_name() const;
+  virtual  const CategoricalPropertyDefinition* get_categorical_definition() const;
+
+
+protected :
+  const CategoricalPropertyDefinition* cat_def_;
+
+};
+
+
+class GRID_DECL CategoricalProbabilityPropertyGroup : public CategoricalPropertyGroup {
+public:
+
+  static Named_interface* create_new_interface( std::string& name);
+
+  CategoricalProbabilityPropertyGroup();
+  CategoricalProbabilityPropertyGroup(std::string name);
+  virtual ~CategoricalProbabilityPropertyGroup (){}
+
+
+  Categ_non_param_cdf<int>  get_distribution(int node_id) const;
+
+};
+
+
 //indicator for categorical attribute
-// note: the indicator property are continuous values modeling
-// a categorical attributes
-class GRID_DECL IndicatorCategoricalPropertyGroup : public GsTLGridPropertyGroup {
+// note: There is only one non-zero indicator per node-id
+class GRID_DECL IndicatorCategoricalPropertyGroup : public CategoricalPropertyGroup {
 public:
 
   static Named_interface* create_new_interface( std::string& name);
@@ -164,13 +200,9 @@ public:
   IndicatorCategoricalPropertyGroup(std::string name);
   virtual ~IndicatorCategoricalPropertyGroup (){}
 
-  std::string get_categorical_definition_name() const;
-  const CategoricalPropertyDefinition* get_categorical_definition() const;
+  int get_category(int node_id) const;
+  std::string get_category_name(int node_id) const;
 
-  Categ_non_param_cdf<int>  get_distribution(int node_id) const;
-
-
-protected :
 
 };
 

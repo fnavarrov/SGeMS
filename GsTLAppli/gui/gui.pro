@@ -80,6 +80,7 @@ HEADERS += common.h \
            utils/script_editor.h \
            utils/script_syntax_highlighter.h \
            utils/std_output_redirect.h \
+           utils/group_property_dialog.h \
            variogram2/a.h \
            variogram2/first_scr.h \
            variogram2/plot_settings_dialog.h \
@@ -176,6 +177,7 @@ SOURCES += library_gui_init.cpp \
            utils/script_editor.cpp \
            utils/script_syntax_highlighter.cpp \
            utils/std_output_redirect.cpp \
+           utils/group_property_dialog.cpp \
            variogram2/first_scr.cpp \
            variogram2/plot_settings_dialog.cpp \
            variogram2/print_plots_dialog.cpp \

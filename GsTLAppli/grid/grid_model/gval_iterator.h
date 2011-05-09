@@ -196,7 +196,6 @@ Gval_iterator<MapIndex>::Gval_iterator( Geostat_grid* grid, GsTLGridProperty* pr
     map_(map), gval_() { 
  
     if( index >=0 && index_ < max_index_ ) {
-      int id = map_.map(index_ );
       if( !grid_->is_inside_selected_region(map_.map(index_ )) )
         ++(*this);
       gval_.init( grid, prop, grid_->node_id( map_.map(index_ )) );
@@ -243,6 +242,19 @@ Gval_iterator<MapIndex>::operator=( const Gval_iterator<MapIndex>& it ) {
 template<class MapIndex> 
 inline Gval_iterator<MapIndex>& 
 Gval_iterator<MapIndex>::operator++() { 
+  if(index_ == max_index_) return *this;
+  
+  if(++index_ == max_index_) return *this;
+  int id = grid_->node_id( map_.map(index_ ) );
+
+  while( !grid_->is_inside_selected_region(id) ) {
+    if(++index_ == max_index_) return *this;
+    id = grid_->node_id( map_.map(index_ ) );
+  }
+  gval_.set_node_id( id );
+  return *this;
+
+/*
   index_ ++; 
   if( index_ >= max_index_ ) return *this;
 
@@ -253,11 +265,26 @@ Gval_iterator<MapIndex>::operator++() {
   else ++(*this);
   
   return *this;
+  */
 } 
  
 template<class MapIndex> 
 inline Gval_iterator<MapIndex>& 
 Gval_iterator<MapIndex>::operator++( int ) { 
+
+
+  if(index_ == max_index_) return *this;
+  
+  if(++index_ == max_index_) return *this;
+  int id = grid_->node_id( map_.map(index_ ) );
+
+  while( !grid_->is_inside_selected_region(id) ) {
+    if(++index_ == max_index_) return *this;
+    id = grid_->node_id( map_.map(index_ ) );
+  }
+  gval_.set_node_id( id );
+  return *this;
+/*
   index_ ++; 
   if( index_ == max_index_ ) 
     return *this;
@@ -269,6 +296,7 @@ Gval_iterator<MapIndex>::operator++( int ) {
   else (*this)++;
   
   return *this;
+  */
 } 
  
 
@@ -340,6 +368,19 @@ Gval_const_iterator<MapIndex>::operator=( const Gval_const_iterator<MapIndex>& i
 template<class MapIndex> 
 inline Gval_const_iterator<MapIndex>& 
 Gval_const_iterator<MapIndex>::operator++() { 
+
+  if(index_ == max_index_) return *this;
+  
+  if(++index_ == max_index_) return *this;
+  int id = grid_->node_id( map_.map(index_ ) );
+
+  while( !grid_->is_inside_selected_region(id) ) {
+    if(++index_ == max_index_) return *this;
+    id = grid_->node_id( map_.map(index_ ) );
+  }
+  gval_.set_node_id( id );
+  return *this;
+/*
   index_ ++; 
   if( index_ >= max_index_ ) return *this;
 
@@ -350,13 +391,26 @@ Gval_const_iterator<MapIndex>::operator++() {
   else ++(*this);
   
   return *this;
-
+*/
    
 } 
  
 template<class MapIndex> 
 inline Gval_const_iterator<MapIndex>& 
 Gval_const_iterator<MapIndex>::operator++( int ) { 
+
+  if(index_ == max_index_) return *this;
+  
+  if(++index_ == max_index_) return *this;
+  int id = grid_->node_id( map_.map(index_ ) );
+
+  while( !grid_->is_inside_selected_region(id) ) {
+    if(++index_ == max_index_) return *this;
+    id = grid_->node_id( map_.map(index_ ) );
+  }
+  gval_.set_node_id( id );
+  return *this;
+  /*
   index_ ++; 
   if( index_ >= max_index_ ) return *this;
 
@@ -367,7 +421,9 @@ Gval_const_iterator<MapIndex>::operator++( int ) {
   else return (*this)++;
 
   return *this; 
-} 
+  */
+}
+
  
 
 

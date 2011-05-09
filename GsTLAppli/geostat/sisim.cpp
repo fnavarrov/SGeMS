@@ -137,9 +137,6 @@ int Sisim::median_ik( Progress_notifier* progress_notifier ) {
       property_copier_->copy( harddata_grid_, harddata_property_,
                               simul_grid_, prop );
     }
-    //if( initializer_ )
-    //  initializer_->assign( prop, harddata_grid_, harddata_property_->name() );
-    
 
     // do the simulation
     appli_message( "Doing simulation" );
@@ -284,10 +281,6 @@ bool Sisim::initialize( const Parameters_handler* parameters,
  
   if( assign_harddata ) {
 
-    assign_harddata = true;
-  //    String_Op::to_number<bool>( parameters->value( "Assign_Hard_Data.value" ) );
-  
-//    if( assign_harddata ) {
     property_copier_ = 
       Property_copier_factory::get_copier( harddata_grid_, simul_grid_ );
     if( !property_copier_ ) {
@@ -322,11 +315,18 @@ bool Sisim::initialize( const Parameters_handler* parameters,
     }
   }
 
+  if( !errors->empty() ) return false;
+
 
   //-------------
   // The cdf parameters (# of thresholds, marginal, ...)
   int nb_indicators = 
     String_Op::to_number<int>( parameters->value( "Nb_Indicators.value" ) );
+
+  if (nb_indicators < 2) {
+    errors->report( "Nb_Indicators", "Must have at least 2 categories" );
+    return false;
+  }
 
   if(is_data_coded_ && coded_props.size() != nb_indicators ) {
     std::ostringstream message;
@@ -568,6 +568,7 @@ bool Sisim::initialize( const Parameters_handler* parameters,
 		}
     geostat_utils::set_advanced_search(neighborhoods_vector_[j], 
        "AdvancedSearch", parameters, errors);
+    if( !errors->empty() ) return false;
 		
    }
 

@@ -211,6 +211,9 @@ public slots:
   void show_properties( const QString& grid_name );
   void set_current_selection( const QStringList& list );
  
+signals :
+	void selectedProperties(const QStringList&);
+
 protected slots:
   void move_selected_item_up();
   void move_selected_item_down();
@@ -352,9 +355,11 @@ public:
 public slots:
   void show_properties( const QString& grid_name );
   void show_selection_dialog();
+  void forwardSelection(int);
 
 signals:
   void selected_count( int );
+  void forwardSelectedProperties(const QStringList&);
 
 protected:
   MultiPropertySelector* selected_properties_;

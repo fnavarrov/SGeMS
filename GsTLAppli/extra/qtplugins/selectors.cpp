@@ -714,7 +714,10 @@ set_current_selection( const QStringList& list ) {
     if( result.empty() ) continue;
 
     selected_properties_->addItem( result[0]->text() );
+    delete result[0];
   }
+  QStringList currentSelections = this->selection();
+  emit selectedProperties( currentSelections );
 
 //  selected_properties_->insertStringList( list );
 }
@@ -748,6 +751,9 @@ OrderedPropertySelector( QWidget* parent, const char* name )
 
   QObject::connect( choose_button, SIGNAL( clicked() ),
                     this, SLOT( show_selection_dialog() ) );
+
+  QObject::connect( this, SIGNAL( selected_count( int ) ),
+                    this, SLOT( forwardSelection(int) ) );
 }
 
 
@@ -834,9 +840,9 @@ void OrderedPropertySelector::set_selected_properties( QStringList name_list ) {
   for( unsigned int i=0; i < name_list.size() ; i++ ) {
     if( name_list[i] == QString::null ) continue;
 
-    QByteArray tt = name_list[i].toLatin1();
+    std::string prop_name = name_list[i].toStdString();
     bool found = std::binary_search( properties.begin(), properties.end(), 
-                                     std::string( tt.constData() ) );
+                                     prop_name );
     if( found )
       selected_properties_->addItem( name_list[i] );
   }
@@ -844,6 +850,10 @@ void OrderedPropertySelector::set_selected_properties( QStringList name_list ) {
 }
 
 
+void OrderedPropertySelector::forwardSelection(int i){
+	QStringList selection = this->selected_properties();
+	emit this->forwardSelectedProperties(selection);
+}
 
 
 //=======================================================

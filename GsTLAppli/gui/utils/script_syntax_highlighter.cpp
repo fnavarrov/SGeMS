@@ -45,6 +45,17 @@ void Script_syntax_highlighter::highlightBlock( const QString& text){
   {
     pos = 0 ;
     QRegExp r("\\b("
+              "and|"
+              "as|"
+              "except|"
+              "finally|"
+              "global|"
+              "is|"
+              "lambda|"
+              "not|"
+              "or|"
+              "with|"
+              "yield|"
               "while|"
               "do|"
               "for|"
@@ -53,7 +64,10 @@ void Script_syntax_highlighter::highlightBlock( const QString& text){
               "print|"
               "range|"
               "def|"
+              "class|"
+              "self|"
               "if|"
+              "elif|"
               "elseif|"
               "else|"
               "try|"
@@ -67,6 +81,7 @@ void Script_syntax_highlighter::highlightBlock( const QString& text){
               "dict|"
               "import|"
               "from|"
+              "open|"
               "pass"
               ")\\b") ;
     r.setMinimal(true) ;

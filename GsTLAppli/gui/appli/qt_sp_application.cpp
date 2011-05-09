@@ -25,6 +25,8 @@
 ** if any conditions of this licensing are not clear to you.
 **
 **********************************************************************/
+#include <GsTLAppli/gui/appli/oinv_project_view.h>
+
 #ifdef _DEBUG
 #undef _DEBUG
 #include <Python.h>
@@ -43,6 +45,7 @@
 #include <GsTLAppli/gui/utils/indicator_property_dialog.h>
 #include <GsTLAppli/gui/utils/new_mgrid_from_cgrid_dialog.h>
 #include <GsTLAppli/gui/utils/categorical_definition_dialog.h>
+#include <GsTLAppli/gui/utils/group_property_dialog.h>
 #include <GsTLAppli/gui/utils/script_editor.h>
 #include <GsTLAppli/gui/utils/qdirdialog.h>
 #include <GsTLAppli/gui/appli/qt_sp_application.h>
@@ -51,7 +54,7 @@
 #include <GsTLAppli/gui/appli/qt_algo_control_panel.h>
 #include <GsTLAppli/gui/appli/new_cartesian_grid_dialog.h>
 #include <GsTLAppli/gui/appli/scatterplot_gui.h>
-#include <GsTLAppli/gui/appli/oinv_project_view.h>
+
 #include <GsTLAppli/gui/appli/cli_commands_panel.h>
 #include <GsTLAppli/gui/variogram2/variogram_modeler_gui.h>
 #include <GsTLAppli/appli/manager_repository.h>
@@ -194,7 +197,7 @@ void QSP_application::init() {
   // project_->add_view( default_3dview_ );
   
   setCentralWidget( default_3dview_ );
-  
+
 
   // drag and drop
   setAcceptDrops( true );
@@ -251,24 +254,35 @@ void QSP_application::init_menu_bar() {
   /*  Add a menu for property operations
   * Alexandre Boucher
   */
-    QMenu* property =   menuBar()->addMenu( "&Properties" );
-    property->addAction( "Copy Property", this, SLOT( copy_property() ) );
-    property->addAction( "Create Indicator Properties", this, SLOT( create_indicator_properties() ),Qt::CTRL+Qt::Key_I  );
-    property->addAction( "Delete Properties", this, SLOT( delete_object_properties() ) , Qt::CTRL+Qt::Key_D);
-    property->addSeparator();
-    QMenu* definitions = property->addMenu(tr("&Categorical Definition"));
-    definitions->addAction( "New Categorical definition", this, SLOT( new_categorical_definition() ) );
-    definitions->addAction( "Show Categorical definition", this, SLOT( show_categorical_definition() ) );
-    definitions->addAction( "Assign Categorical definition", this, SLOT( assign_categorical_definition() ) );
+  QMenu* property_menu =   menuBar()->addMenu( "&Properties" );
+  property_menu->addAction( "Copy Property", this, SLOT( copy_property() ) );
+  property_menu->addAction( "Create Indicator Properties", this, SLOT( create_indicator_properties() ),Qt::CTRL+Qt::Key_I  );
+  property_menu->addAction( "Delete Properties", this, SLOT( delete_object_properties() ) , Qt::CTRL+Qt::Key_D);
+  property_menu->addSeparator();
+  QMenu* definitions = property_menu->addMenu(tr("&Categorical Definition"));
+  definitions->addAction( "New Categorical definition", this, SLOT( new_categorical_definition() ) );
+  definitions->addAction( "Show Categorical definition", this, SLOT( show_categorical_definition() ) );
+  definitions->addAction( "Assign Categorical definition", this, SLOT( assign_categorical_definition() ) );
 
-/*  Add a menu for regions operations
+
+  QMenu* group = property_menu->addMenu(tr("&Group"));
+  group->addAction( "New Group", this, SLOT( new_property_group() ), Qt::CTRL+Qt::Key_G );
+  group->addAction( "Delete Group", this, SLOT( delete_property_group() ), Qt::Key_Delete+Qt::Key_R );
+  group->addAction( "View Group", this, SLOT( show_property_group() ) );
+  group->addAction( "Modify Group", this, SLOT( modify_property_group() ), Qt::SHIFT+Qt::Key_G );
+
+
+/*  Add a menu for region operations
 * Alexandre Boucher
 */
   QMenu* region =   menuBar()->addMenu( "&Regions" );
-  region->addAction( "New region", this, SLOT( new_region_from_property() ), Qt::CTRL+Qt::Key_R );
+  region->addAction( "New Region", this, SLOT( new_region_from_property() ), Qt::CTRL+Qt::Key_R );
   region->addAction( "Merge Regions", this, SLOT( merge_object_regions() ), Qt::CTRL+Qt::Key_M );
   region->addSeparator();
   region->addAction( "Delete Regions", this, SLOT( delete_object_regions() ), Qt::Key_Delete+Qt::Key_R );
+  
+
+
   
 
  
@@ -1067,7 +1081,7 @@ About_sgems::About_sgems(QWidget * p) : QDialog(p)
   QVBoxLayout* _vlayout = new QVBoxLayout( );
   _vlayout->addStretch();
   setLayout(_vlayout);
-  _pixmap.load( "new_splash2.png" );
+  _pixmap.load( "new_splash2-beta.png" );
   
 }
 
@@ -1168,6 +1182,7 @@ void QSP_application::show_variogram_analyser() {
 
 
 void QSP_application::new_camera() {
+	/*
   // create a new view of the project 
 //  std::string view_name( "camera" );
 //  view_name.append( String_Op::to_string( additional_views_.size() + 1 ) );
@@ -1188,6 +1203,7 @@ void QSP_application::new_camera() {
                          default_3dview_->width(), default_3dview_->height() );
 
   new_view->show();
+  */
 }
 
 
@@ -1324,6 +1340,33 @@ void QSP_application::assign_categorical_definition(){
   dialog->setWindowTitle( "Assign Categorical Definition" );
   if( dialog->exec() == QDialog::Rejected ) return;
 }
+
+void QSP_application::show_property_group(){
+  View_group_property_dialog* dialog = 
+    new View_group_property_dialog( project_, this, "View Property Group Dialog" );
+  dialog->setWindowTitle( "View Property Group" );
+  if( dialog->exec() == QDialog::Rejected ) return;
+}
+void QSP_application::new_property_group(){
+  New_group_property_dialog* dialog = 
+    new New_group_property_dialog( project_, this, "New Property Group Dialog" );
+  dialog->setWindowTitle( "New Property Group" );
+  if( dialog->exec() == QDialog::Rejected ) return;
+}
+void QSP_application::modify_property_group(){
+  Modify_group_property_dialog* dialog = 
+    new Modify_group_property_dialog( project_, this, "Modify Property Group Dialog" );
+  dialog->setWindowTitle( "Modify Property Group" );
+  if( dialog->exec() == QDialog::Rejected ) return;
+}
+
+void QSP_application::delete_property_group(){
+  Delete_group_property_dialog* dialog = 
+    new Delete_group_property_dialog( project_, this, "Remove Property Group Dialog" );
+  dialog->setWindowTitle( "Remove Property Group" );
+  if( dialog->exec() == QDialog::Rejected ) return;
+}
+
 
 void QSP_application::new_region_from_property(){
   New_region_from_property_dialog* dialog = 

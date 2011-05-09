@@ -35,6 +35,9 @@ HEADERS += cokriging.h \
            trans.h \
            transcat.h \
            utilities.h \
+           difference_with_base.h \
+           kriging_mean.h \
+           Postsim_categorical.h \
            filtersim_std/dev_finder.h \
            filtersim_std/distance.h \
            filtersim_std/distance_kernels.h \
@@ -90,6 +93,9 @@ SOURCES += cokriging.cpp \
            trans.cpp \
            transcat.cpp \
            utilities.cpp \
+           difference_with_base.cpp \
+           kriging_mean.cpp \
+           Postsim_categorical.cpp \           
            filtersim_std/dev_finder.cpp \
            filtersim_std/filters.cpp \
            filtersim_std/filtersim.cpp \

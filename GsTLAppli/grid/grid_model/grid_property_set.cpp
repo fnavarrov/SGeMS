@@ -2,14 +2,17 @@
 #include <GsTLAppli/grid/grid_model/grid_property_set.h>
 #include <GsTLAppli/grid/grid_model/grid_property.h> 
 #include <GsTLAppli/grid/grid_model/grid_categorical_property.h> 
+#include <GsTLAppli/appli/manager_repository.h> 
 //#include <QtXml/QDomElement>
 
 GsTLGridPropertyGroup*
 Create_new_property_group(const std::string& name, const std::string& type) {
 	if(type == "" || type == "General") return new GsTLGridPropertyGroup(name);
 	else if(type == "Simulation") return new SimulationPropertyGroup(name);
+  else if(type == "Categorical") return new CategoricalPropertyGroup(name);
 	else if(type == "CategoricalIndicator") return new IndicatorCategoricalPropertyGroup(name);
-	else if(type == "ContinuousIndicator") return new IndicatorContinuousPropertyGroup(name);
+	else if(type == "CategoricalProbability") return new CategoricalProbabilityPropertyGroup(name);
+  else if(type == "ContinuousIndicator") return new IndicatorContinuousPropertyGroup(name);
 	else return 0;
 
 }
@@ -128,10 +131,14 @@ void Grid_property_group_manager::remove_group(const std::string& name) {
 
 // remove property membership from group
   GsTLGridPropertyGroup::property_map::iterator it = group->begin_property();
+  std::vector<GsTLGridProperty*> props;
   for( ; it != group->end_property(); ++it) {
-  	group->remove_property(it->second);
+  	props.push_back(it->second);
   }
-
+  std::vector<GsTLGridProperty*>::iterator it_props = props.begin();
+  for( ; it_props != props.end(); ++it_props) {
+  	group->remove_property(*it_props);
+  }
 
 // Remove the group from the manager
   delete (group);
@@ -242,6 +249,102 @@ std::string SimulationPropertyGroup::get_algo_command(){
 
 }
 
+/* Categorical Property group 
+*
+*/
+
+Named_interface* CategoricalPropertyGroup::create_new_interface( std::string& name) {
+  return new CategoricalPropertyGroup(name);
+}
+
+CategoricalPropertyGroup::CategoricalPropertyGroup()
+{
+  type_ = "Categorical";
+  cat_def_ = 0;
+//  root_ = meta_data_.createElement(type_.c_str());
+//  meta_data_.appendChild(root_);
+
+}
+
+CategoricalPropertyGroup::CategoricalPropertyGroup(std::string name)
+{
+  name_ = name;
+  cat_def_ = 0;
+  type_ = "Categorical";
+//  root_ = meta_data_.createElement("type_.c_str()");
+//  meta_data_.appendChild(root_);
+}
+
+
+void 
+CategoricalPropertyGroup::set_categorical_definition(std::string cat_def_name){
+  SmartPtr<Named_interface> ni = 
+    Root::instance()->interface( categoricalDefinition_manager+"/"+cat_def_name  );
+
+  if(ni.raw_ptr() == 0) 
+    cat_def_=0;
+	else 
+    cat_def_ = dynamic_cast<CategoricalPropertyDefinition*>(ni.raw_ptr()); 
+}
+
+void
+CategoricalPropertyGroup::set_categorical_definition(const CategoricalPropertyDefinition* cat_def){
+  cat_def_  = cat_def;
+}
+
+
+const CategoricalPropertyDefinition* 
+CategoricalPropertyGroup::get_categorical_definition() const{
+  return cat_def_;
+}
+
+std::string CategoricalPropertyGroup::get_categorical_definition_name() const {
+  return cat_def_->name();
+}
+
+
+
+/* Categorical Probability Property group 
+*
+*/
+
+Named_interface* CategoricalProbabilityPropertyGroup::create_new_interface( std::string& name) {
+  return new CategoricalProbabilityPropertyGroup(name);
+}
+
+CategoricalProbabilityPropertyGroup::CategoricalProbabilityPropertyGroup()
+:CategoricalPropertyGroup(){
+  type_ = "CategoricalProbability";
+  cat_def_ = 0;
+//  root_ = meta_data_.createElement(type_.c_str());
+//  meta_data_.appendChild(root_);
+
+}
+
+CategoricalProbabilityPropertyGroup::
+CategoricalProbabilityPropertyGroup(std::string name)
+:CategoricalPropertyGroup(name)
+{
+  name_ = name;
+  cat_def_ = 0;
+//  type_ = "CategoricalIndicator";
+//  root_ = meta_data_.createElement("type_.c_str()");
+//  meta_data_.appendChild(root_);
+}
+
+
+Categ_non_param_cdf<int>  
+CategoricalProbabilityPropertyGroup::get_distribution(int node_id) const{
+  std::vector<GsTLGridProperty::property_type> prob = get_vector_data( node_id );
+  return Categ_non_param_cdf<int>(prob.size(), prob.begin());
+}
+
+
+
+/* Indicator Probability  group
+*
+*/
+
 
 Named_interface* IndicatorCategoricalPropertyGroup::create_new_interface( std::string& name) {
   return new IndicatorCategoricalPropertyGroup(name);
@@ -264,35 +367,29 @@ IndicatorCategoricalPropertyGroup::IndicatorCategoricalPropertyGroup(std::string
 }
 
 
-Categ_non_param_cdf<int>  
-IndicatorCategoricalPropertyGroup::get_distribution(int node_id) const{
-  std::vector<GsTLGridProperty::property_type> prob = get_vector_data( node_id );
-  return Categ_non_param_cdf<int>(prob.size(), prob.begin());
+
+
+int IndicatorCategoricalPropertyGroup::get_category(int node_id) const{
+  float cat;
+  property_map::const_iterator it = properties_.begin();
+  for( ; it!= properties_.end(); ++it) {
+    if( it->second->get_value(node_id) == 1 ) {
+      return std::distance(properties_.begin(),it );
+    }
+  }
+  return -1;
 }
 
-std::string IndicatorCategoricalPropertyGroup::get_categorical_definition_name() const {
-  if(properties_.empty()) return "";
-  const CategoricalPropertyDefinition* def = get_categorical_definition();
-  if(!def) return 0;
-  return def->name();
+std::string IndicatorCategoricalPropertyGroup::get_category_name(int node_id) const{
+  int cat = this->get_category(node_id);
+  return cat_def_->get_category_name(cat);
 }
-/*
-CategoricalPropertyDefinition* 
-IndicatorCategoricalPropertyGroup::get_categorical_definition(){
-  if(properties_.empty()) return 0;
-  GsTLGridCategoricalProperty* prop = dynamic_cast<GsTLGridCategoricalProperty*>(properties_[0]);
-  if(prop) return 0;
-  return prop->get_category_definition();
-}
+
+
+
+/* Group for indicator of continuous property
+*
 */
-const CategoricalPropertyDefinition* 
-IndicatorCategoricalPropertyGroup::get_categorical_definition() const{
-  if(properties_.empty()) return 0;
-  const GsTLGridCategoricalProperty* prop = 
-    dynamic_cast<const GsTLGridCategoricalProperty*>( properties_.begin()->second );
-  if(prop) return 0;
-  return prop->get_category_definition();
-}
 
 
 Named_interface* IndicatorContinuousPropertyGroup::create_new_interface( std::string& name) {

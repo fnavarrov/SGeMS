@@ -39,6 +39,7 @@
 #include <GsTLAppli/geostat/snesim_std/snesim_std.h>
 #include <GsTLAppli/geostat/PostKriging.h>
 #include <GsTLAppli/geostat/Postsim.h>
+#include <GsTLAppli/geostat/Postsim_categorical.h>
 #include <GsTLAppli/geostat/trans.h>
 #include <GsTLAppli/geostat/dssim.h>
 #include <GsTLAppli/geostat/LU_sim.h>
@@ -50,6 +51,8 @@
 #include <GsTLAppli/geostat/ImageProcess.h>
 #include <GsTLAppli/geostat/nuTauModel.h>
 #include <GsTLAppli/geostat/moving_window.h>
+#include <GsTLAppli/geostat/difference_with_base.h>
+#include <GsTLAppli/geostat/kriging_mean.h>
 
 int library_geostat_init::references_ = 0;
  
@@ -148,19 +151,23 @@ bool library_geostat_init::bind_geostat_factories( Manager* dir ) {
   dir->factory( Snesim_Std().name(), Snesim_Std::create_new_interface );
 
   dir->factory( Postsim().name(), Postsim::create_new_interface );
+  dir->factory( Postsim_categorical().name(), Postsim_categorical::create_new_interface );
   dir->factory( PostKriging().name(), PostKriging::create_new_interface );
   dir->factory( trans().name(), trans::create_new_interface );
   dir->factory( transcat().name(), transcat::create_new_interface );
   dir->factory( ImageProcess().name(), ImageProcess::create_new_interface );
 
-   dir->factory( transcat().name(), transcat::create_new_interface );
- dir->factory( dssim().name(), dssim::create_new_interface );
+  dir->factory( transcat().name(), transcat::create_new_interface );
+  dir->factory( dssim().name(), dssim::create_new_interface );
   dir->factory( LU_sim().name(), LU_sim::create_new_interface );
   dir->factory( LU_sim().name(), LU_sim::create_new_interface );
   dir->factory( Filtersim_Cate().name(), Filtersim_Cate::create_new_interface );
   dir->factory( Filtersim_Cont().name(), Filtersim_Cont::create_new_interface );
   dir->factory( NuTauModel().name(), NuTauModel::create_new_interface );
   dir->factory( Moving_window().name(), Moving_window::create_new_interface );
+  dir->factory( DiffProperties().name(), DiffProperties::create_new_interface );
+  dir->factory( KrigingMean().name(), KrigingMean::create_new_interface );
+  
 
 
   return true;

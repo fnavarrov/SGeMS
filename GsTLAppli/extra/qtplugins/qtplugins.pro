@@ -20,7 +20,8 @@ HEADERS += common.h \
            selectors.h \
            variogram_input.h \
            icons/selectors_icons.h \
-           categorical_selectors.h
+           categorical_selectors.h \
+           group_selectors.h
 FORMS += order_properties_dialog.ui \
          variogram_input_base.ui \
          variogram_structure_base.ui
@@ -34,7 +35,8 @@ SOURCES += ellipsoid_input.cpp \
            non_param_cdf_input.cpp \
            selectors.cpp \
            variogram_input.cpp \
-           categorical_selectors.cpp
+           categorical_selectors.cpp \
+           group_selectors.cpp
 RESOURCES += icons.qrc
 
 TARGET=GsTLAppli_qtplugins

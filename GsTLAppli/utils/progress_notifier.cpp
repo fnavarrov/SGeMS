@@ -106,7 +106,7 @@ bool Text_progress_notifier::notify(){
   if( steps_done_ < progress_bar_.size() )
     progress_bar_[steps_done_] = '#';
   
-  std::cout << "\r" << progress_bar_ << "|    " << percent << "%" << std::flush;
+  std::cout << "\r" << progress_bar_ << "|    " << percent << "%" << std::flush<<std::endl;
 
   /*
   for( int i=0; i < steps_done_; i++ )

@@ -83,7 +83,7 @@ class GRID_DECL GsTLGridRegion {
   inline GsTLInt active_size() const {
     region::const_iterator it = accessor_.begin();
     int n_active = 0;
-    for( ; it != accessor_.begin(); ++it) {
+    for( ; it != accessor_.end(); ++it) {
       if(*it) n_active++;
     }
     return n_active;

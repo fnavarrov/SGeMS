@@ -230,12 +230,12 @@ Neighborhood* RGrid::neighborhood( double x, double y, double z,
     return new Rgrid_ellips_neighborhood_hd( this, 
 					     property_manager_.selected_property(),
 					     nx,ny,nz, ang1,ang2,ang3,
-					     20, cov_copy );
+					     nx*ny*nz, cov_copy );
   else
     return new Rgrid_ellips_neighborhood( this, 
 					  property_manager_.selected_property(),
 					  nx,ny,nz, ang1,ang2,ang3,
-					  20, cov_copy );
+					  nx*ny*nz, cov_copy );
 
   delete cov_copy;
 }
@@ -269,13 +269,13 @@ Neighborhood* RGrid::neighborhood( const GsTLTripletTmpl<double>& dim,
 					     property_manager_.selected_property(),
 					     nx,ny,nz,
 					     angles[0], angles[1], angles[2],
-					     20, cov_copy );
+					     nx*ny*nz, cov_copy );
   else
     return new Rgrid_ellips_neighborhood( this, 
 					  property_manager_.selected_property(),
 					  nx,ny,nz,
 					  angles[0], angles[1], angles[2],
-					  20, cov_copy );
+					  nx*ny*nz, cov_copy );
 }
 
 Window_neighborhood* RGrid::window_neighborhood( const Grid_template& templ) {

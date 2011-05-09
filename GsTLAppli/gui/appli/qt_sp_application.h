@@ -64,6 +64,13 @@ class QCheckBox;
  
 /** QT-single-project-application. 
  */ 
+/*
+class Oinv_view {
+	Oinv_view(){}
+	~Oinv_view(){}
+
+};
+*/
 class GUI_DECL QSP_application : public QMainWindow { 
  
   Q_OBJECT 
@@ -137,6 +144,11 @@ class GUI_DECL QSP_application : public QMainWindow {
   void assign_categorical_definition();
 
   void create_indicator_properties();
+
+  void show_property_group();
+  void new_property_group();
+  void modify_property_group();
+  void delete_property_group();
 
   void show_script_editor();
   void run_script();

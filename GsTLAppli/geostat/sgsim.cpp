@@ -295,13 +295,14 @@ bool Sgsim::initialize( const Parameters_handler* parameters,
                                 					       "Search_Ellipsoid.value",
 		  			                                     parameters, errors );
   if( !extract_ok ) return false;
+  /*
   extract_ok = geostat_utils::is_valid_range_triplet( ranges );
   errors->report( !extract_ok,
                   "Search_Ellipsoid",
                   "Ranges must verify: major range >= " 
                   "medium range >= minor range >= 0" );
   if( !extract_ok ) return false;
-
+*/
   // If the hard data are not "relocated" on the simulation grid,
   // use a "combined neighborhood", otherwise use a single 
   // neighborhood

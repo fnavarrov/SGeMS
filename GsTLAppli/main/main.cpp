@@ -25,7 +25,7 @@
  ** if any conditions of this licensing are not clear to you.
  **
  **********************************************************************/
-
+/*
 #ifdef _DEBUG
 #undef _DEBUG
 #include <Python.h>
@@ -33,6 +33,7 @@
 #else
 #include <Python.h>
 #endif
+*/
 
 #include <GsTLAppli/main/lib_initializer.h>
 #include <GsTLAppli/gui/oinv_description/gstl_SoNode.h>
@@ -64,6 +65,14 @@
 #include <iostream>
 #include <fstream>
 #include <cstdio>
+
+#ifdef _DEBUG
+#undef _DEBUG
+#include <Python.h>
+#define _DEBUG
+#else
+#include <Python.h>
+#endif
 
 using namespace String_Op;
 
@@ -252,7 +261,7 @@ int nogui_main(int argc, char** argv) {
 
 QString path_to_splash_image() {
 	QFileInfo finfo;
-	QString image_file("new_splash2.png");
+	QString image_file("new_splash2-beta.png");
 
 	char* env = getenv("GSTLAPPLIHOME");
 	if (env) {
@@ -342,7 +351,7 @@ int gui_main(int argc, char **argv) {
 	statusbar_scribe->subscribe(GsTLcout);
 
 	appli->init();
-	appli->setWindowTitle("SGeMS");
+	appli->setWindowTitle("SGeMS beta");
 
 	// restore preferences
 	QSettings settings;
@@ -354,7 +363,9 @@ int gui_main(int argc, char **argv) {
 	bool show_algo_panel = settings.value("/panels/algo", true).toBool();
 	bool show_cli_panel = settings.value("/panels/cli", false).toBool();
 
-	appli->setWindowIcon(QPixmap("new_icon6_32x32.bmp"));
+	appli->setWindowIcon(QIcon("d:/code-dev/GsTLAppli-qt4/GsTLAppli/main/new_icon6_32x32.bmp"));
+  //QIcon windowIcon("d:/code-dev/GsTLAppli-qt4/GsTLAppli/main/new_icon6_32x32.bmp");
+  //appli->setWindowIcon(windowIcon);
 	appli->show();
 	appli->show_algo_panel(show_algo_panel);
 	appli->show_commands_panel(show_cli_panel);

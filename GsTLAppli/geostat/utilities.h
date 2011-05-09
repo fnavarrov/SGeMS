@@ -269,6 +269,25 @@ namespace geostat_utils {
 
 
 
+  /** This function adds a new group to Geostat_grid \c grid. Contrary to 
+  * the \c add_group member function of Geostat_grid, \c add_group_to_grid
+  * ensures that a new group is added to the grid: if \c grid already has
+  * a group called \c group_name, the name of the new group will be 
+  * modified so that it is unique (while the \c add_group member function 
+  * of Geostat_grid would return null pointer). 
+  * The returned pointer is ensured to be non-null. The actual name of the new
+  * function can be accessed from the returned group:
+  * \code
+  * GsTLGridPropertyGroup* new_group = add_property_to_grid( grid, name );
+  * std::string actual_name = new_group->name();
+  * \endcode
+  */
+  GEOSTAT_DECL GsTLGridPropertyGroup* 
+    add_group_to_grid( Geostat_grid* grid, 
+                          const std::string& group_name,
+                          std::string group_type = "General" );
+
+
   /** This function sets-up the tail extrapolators of cdf \c cdf.
   * \c min_tag anc \c max_tag are the tags containing the min and
   * max values of the distribution. This function replaces the 

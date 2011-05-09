@@ -154,7 +154,8 @@ class GUI_DECL Algo_control_panel : public QWidget, public Ui::Algo_control_pane
  public: 
   Algo_control_panel( GsTL_project* project, 
 		      QWidget* parent = 0,  
-		      const char* name = 0, Qt::WFlags f = 0 ); 
+		      const char* name = 0,
+		      Qt::WFlags f = 0);
   virtual ~Algo_control_panel() {
 #ifndef _DEBUG
 	  delete _loader;
@@ -167,6 +168,8 @@ class GUI_DECL Algo_control_panel : public QWidget, public Ui::Algo_control_pane
  public slots: 
   void prompt_for_parameters(Qt::MouseButton button, QTreeWidgetItem* item,int);
   
+  void filter_algo_by_category(const QString& top_level_filter);
+
   void run_geostat_algo(); 
   void load_parameters(); 
   void load_parameters( const QString& ); 

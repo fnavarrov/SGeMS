@@ -34,6 +34,7 @@
 #include <GsTLAppli/actions/common.h>
 #include <GsTLAppli/actions/defines.h>
 #include <GsTLAppli/grid/grid_model/geostat_grid.h>
+#include <GsTLAppli/grid/grid_model/grid_categorical_property.h>
 #include <GsTLAppli/appli/manager_repository.h>
 #include <GsTLAppli/appli/project.h>
 
@@ -145,6 +146,10 @@ New_region_from_property_dialog( GsTL_project* proj,
   QObject::connect( propSelector_, SIGNAL( activated( const QString& ) ),
                     this, SLOT( set_filter_type(  ) ) );
 
+  QObject::connect( propSelector_, SIGNAL( activated( const QString& ) ),
+                    this, SLOT( populate_categories( ) ) );
+
+
   QObject::connect( ok, SIGNAL( clicked() ),
                     this, SLOT( create_region() ) );
   QObject::connect( close, SIGNAL( clicked() ),
@@ -208,6 +213,33 @@ void New_region_from_property_dialog::set_filter_type(){
   }
 
 }
+
+void New_region_from_property_dialog::populate_categories(){
+  if( !isCategorical_ ) return;
+
+  QString grid_name = selected_grid();
+  QString prop_name = selected_property();
+  if(grid_name.isEmpty() || prop_name.isEmpty()) return;
+  SmartPtr< Named_interface > ni =
+	Root::instance()->interface( gridModels_manager + "/" + grid_name.toStdString() );
+  Geostat_grid* grid = dynamic_cast<Geostat_grid*>(ni.raw_ptr());
+  GsTLGridCategoricalProperty *prop = grid->categorical_property(prop_name.toStdString());
+
+  if(!prop) return;
+
+  const CategoricalPropertyDefinition* cat_def = prop->get_category_definition();
+  CategoricalPropertyDefinitionName* cat_def_name =
+	  dynamic_cast<CategoricalPropertyDefinitionName*>(ni.raw_ptr());
+
+  if( cat_def_name ) {
+    cat_selector_->show_categories( cat_def_name->name().c_str() );
+  }
+  else {
+    cat_selector_->show_default_categories( prop->get_number_of_category() );
+  }
+
+}
+
 
 bool New_region_from_property_dialog::isCategorical() const{
 	return isCategorical_;

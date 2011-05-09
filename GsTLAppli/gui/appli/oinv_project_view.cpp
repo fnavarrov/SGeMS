@@ -1072,7 +1072,7 @@ void Project_view_gui::display_property(const QString& grid, const QString& prop
 	if (gr->classname() == temp.classname())
 	{
 		Oinv_strati_grid * g = dynamic_cast<Oinv_strati_grid*> (desc_pair.second);
-		g->display_mode(Oinv_strati_grid::RENDERING);
+//		g->display_mode(Oinv_strati_grid::RENDERING);
 	}
 
 	QApplication::setOverrideCursor(Qt::WaitCursor);

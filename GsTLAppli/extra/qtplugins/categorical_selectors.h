@@ -186,6 +186,7 @@ class QTPLUGINS_DECL  MultipleCategorySelector : public QListWidget {
 
   public slots:
     void show_categories( const QString& cat_def_name);
+    void show_default_categories( int number_of_category );
 
   protected slots:
     void selection_size();

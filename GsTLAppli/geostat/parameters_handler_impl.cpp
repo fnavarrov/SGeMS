@@ -76,6 +76,7 @@ Parameters_handler_xml::value( const std::string& parameter ) const {
 
 QDomElement
 Parameters_handler_xml::xmlDomElement( const std::string& parameter ) const {
+	if(parameter.empty()) return root_element_;
   QDomNodeList nodes = root_element_.elementsByTagName( parameter.c_str() );
     if( nodes.count() == 0 ) {
       appli_warning( "No element called \"" <<  parameter << "\"" << std::endl 
@@ -138,7 +139,3 @@ Parameters_handler_xml::get_value( QDomElement start,
     return get_value( start, split.second );
   }
 }
-
-
-
-
