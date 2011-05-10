@@ -149,7 +149,7 @@ std::string CategoricalPropertyDefinitionDefault::get_category_name(unsigned int
 int CategoricalPropertyDefinitionDefault::category_id(std::string name) const{
 	if( name.substr(0,9) != "category_" ) return -1;
 	int id;
-	std::istringstream name_istr(name);
+	std::istringstream name_istr(name.substr(9));
 
 	if (name_istr>>id)
 		return id;

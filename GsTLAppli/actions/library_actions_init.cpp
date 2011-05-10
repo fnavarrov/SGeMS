@@ -47,6 +47,7 @@
 #include <GsTLAppli/actions/maskedgrid_actions.h>
 #include <GsTLAppli/actions/categorical_definition_actions.h>
 #include <GsTLAppli/actions/property_group_actions.h>
+#include "Categorical_conversion_table.h"
 
 void init_python_interpreter();
 
@@ -160,9 +161,16 @@ bool library_actions_init::bind_action_factories(Manager* dir)
 	dir->factory("NewCategoricalDefinition", New_categorical_definition::create_new_interface);
 	dir->factory("AssignCategoricalDefinition", Assign_categorical_definition::create_new_interface);
 
+	dir->factory( "Build_conversion_table", 
+            Build_categorical_conversion_table::create_new_interface );
+	dir->factory( "Categorical_Conversion_to_sgems_in_place", 
+            Conversion_to_sgems_category_in_place::create_new_interface );
+	dir->factory( "Categorical_Conversion_from_sgems_group_in_place", 
+            Conversion_from_sgems_category_group_in_place::create_new_interface );
+
 	dir->factory("NewPropertyGroup", New_property_group::create_new_interface);
 	dir->factory("AddPropertiesToGroup", Add_properties_to_group::create_new_interface);
-  dir->factory("RemovePropertiesToGroup", Remove_properties_from_group::create_new_interface);
+	dir->factory("RemovePropertiesToGroup", Remove_properties_from_group::create_new_interface);
 	dir->factory("RemoveAllPropertiesFromGroup", Delete_property_in_group::create_new_interface);
 	dir->factory("RemoveGroup", Remove_group::create_new_interface);
 

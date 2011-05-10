@@ -279,7 +279,7 @@ void QSP_application::init_menu_bar() {
   region->addAction( "New Region", this, SLOT( new_region_from_property() ), Qt::CTRL+Qt::Key_R );
   region->addAction( "Merge Regions", this, SLOT( merge_object_regions() ), Qt::CTRL+Qt::Key_M );
   region->addSeparator();
-  region->addAction( "Delete Regions", this, SLOT( delete_object_regions() ), Qt::Key_Delete+Qt::Key_R );
+  region->addAction( "Delete Regions", this, SLOT( delete_object_regions() ), Qt::CTRL+Qt::Key_E );
   
 
 
@@ -306,7 +306,7 @@ void QSP_application::init_menu_bar() {
   ap_->setCheckable(true);
   ap_->setChecked(true);
   cli_panel_id_ =
-    view_menu_->addAction( "Commands Panel", this, SLOT(show_commands_panel() ),Qt::CTRL+Qt::Key_A );
+    view_menu_->addAction( "Commands Panel", this, SLOT(show_commands_panel() ),Qt::CTRL+Qt::Key_C );
   cli_panel_id_->setCheckable(true);
   cli_panel_id_->setChecked(false);
 
@@ -553,7 +553,7 @@ void QSP_application::save_project( const QString& dirName ) {
     std::string abs_file_path( qstring2string(qabs_file_path) ); 
     std::string param( *it + Actions::separator + 
 	              	     abs_file_path + Actions::separator +
-		                   "sgems" );
+		                   "sgems_beta" );
     bool ok = project_->execute( "SaveGeostatGrid", param, &error_messages );
     if( !ok ) 
       error_messages.report( "... this error occurred while saving " + *it );

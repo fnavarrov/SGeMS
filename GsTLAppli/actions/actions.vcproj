@@ -394,6 +394,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Categorical_conversion_table.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\categorical_definition_actions.cpp"
 				>
 			</File>
@@ -449,6 +453,10 @@
 			</File>
 			<File
 				RelativePath="algorithms_actions.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Categorical_conversion_table.h"
 				>
 			</File>
 			<File

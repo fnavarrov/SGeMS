@@ -624,13 +624,13 @@ bool Load_project::exec() {
   proj_->name( std::string( dirname_.toAscii() ) );
 
   QFileInfoList files_info = 
-    dir->entryInfoList( QDir::Files | QDir::NoSymLinks );
+    dir->entryInfoList(QDir::Dirs | QDir::Files | QDir::NoSymLinks | QDir::NoDotAndDotDot );
   QFileInfoList::iterator it= files_info.begin();
 
   while( it != files_info.end() ) {
     QByteArray tmp = (*it).absoluteFilePath().toAscii();
     std::string param( std::string( tmp.constData() ) + 
-                       Actions::separator + "sgems" );
+                       Actions::separator + "All" );
     bool ok = proj_->execute( "LoadObjectFromFile", param, errors_ );
     if( !ok ) {
       QByteArray tt = (*it).fileName().toAscii();

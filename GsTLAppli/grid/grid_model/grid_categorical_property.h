@@ -202,7 +202,20 @@ const CategoricalPropertyDefinition*
 
 inline 
 int GsTLGridCategoricalProperty::get_number_of_category() const{
-  return number_of_categories_;
+	const CategoricalPropertyDefinitionName* cat_def = 
+		dynamic_cast<const CategoricalPropertyDefinitionName*>(cat_definitions_);
+	if(cat_def) {
+		return cat_def->number_of_category();
+	}
+	else {
+		int max_cat = -1e8;
+		const_iterator it = this->begin();
+		for( ; it != this->end(); ++it) {
+			if(*it > max_cat) max_cat = *it;
+		}
+		return max_cat+1;
+	}
+
 }
 
 

@@ -245,12 +245,19 @@ bool New_region_from_property_dialog::isCategorical() const{
 	return isCategorical_;
 }
 
-void New_region_from_property_dialog::create_region(){
+bool New_region_from_property_dialog::create_region(){
 	  QString grid_name = selected_grid();
 	  QString prop_name = selected_property();
 	  QString region_name = new_region_name();
 
-	  if( grid_name.isEmpty() || region_name.isEmpty() || prop_name.isEmpty()) return;
+	  if( grid_name.isEmpty() || prop_name.isEmpty()) return false;
+
+	  if( region_name.isEmpty() ) {
+	    GsTLcerr << "Must provide a name for the region.";
+	    GsTLcerr << gstlIO::end;
+		return false;
+	  }
+
 
 
 	  QApplication::setOverrideCursor( Qt::WaitCursor );
@@ -272,7 +279,11 @@ void New_region_from_property_dialog::create_region(){
 		command = "SetRegionFromPropertyIf";
 	  }
 	  std::string parameters = list.join( sep ).toStdString();
-	  if( parameters.empty() ) return;
+	  if( parameters.empty() ) {
+	    GsTLcerr << "Errors with the parameters selected";
+	    GsTLcerr << gstlIO::end;
+		return false;
+	  }
 
 	  // call the DeleteObjectProperties action
 	  Error_messages_handler error_messages;
@@ -287,14 +298,16 @@ void New_region_from_property_dialog::create_region(){
 	      GsTLcerr << error_messages.errors();
 	    }
 	    GsTLcerr << gstlIO::end;
+		return false;
 	  }
 
 	  QApplication::restoreOverrideCursor();
 	  project_->update();
+	  return true;
 
 }
 
 void New_region_from_property_dialog::create_region_and_close(){
-	create_region();
-	accept();
+	bool ok = create_region();
+	if(ok) accept();
 }

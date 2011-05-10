@@ -2,32 +2,38 @@
 <ui version="4.0">
  <class>Snesim_Std</class>
  <widget class="QWidget" name="Snesim_Std">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>272</width>
+    <height>986</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Partition Snesim</string>
+  </property>
   <property name="AlgorithmCategory" stdset="0">
    <string>Simulation</string>
   </property>
   <property name="AlgorithmDescription" stdset="0">
    <string>SNESIM with search tree partitionning</string>
   </property>
-  <property name="geometry">
-   <rect>
-    <x>0</x>
-    <y>0</y>
-    <width>337</width>
-    <height>852</height>
-   </rect>
-  </property>
-  <property name="windowTitle">
-   <string>Partition Snesim</string>
-  </property>
-  <layout class="QGridLayout">
-   <item row="0" column="0">
+  <layout class="QVBoxLayout" name="verticalLayout_3">
+   <item>
     <widget class="QTabWidget" name="tabWidget2">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
+     <property name="currentIndex">
+      <number>0</number>
+     </property>
      <widget class="QWidget" name="tab">
       <attribute name="title">
        <string>General</string>
       </attribute>
-      <layout class="QGridLayout">
-       <item row="0" column="0">
+      <layout class="QGridLayout" name="gridLayout">
+       <item row="0" column="0" colspan="2">
         <widget class="Q3GroupBox" name="SimulationGrid">
          <property name="maximumSize">
           <size>
@@ -91,7 +97,7 @@
          </layout>
         </widget>
        </item>
-       <item row="1" column="0">
+       <item row="1" column="1">
         <spacer name="Spacer7_5_3">
          <property name="orientation">
           <enum>Qt::Vertical</enum>
@@ -107,7 +113,7 @@
          </property>
         </spacer>
        </item>
-       <item row="2" column="0">
+       <item row="2" column="0" colspan="2">
         <layout class="QHBoxLayout">
          <property name="spacing">
           <number>6</number>
@@ -167,7 +173,7 @@
          </item>
         </layout>
        </item>
-       <item row="4" column="0">
+       <item row="4" column="1">
         <spacer name="Spacer20">
          <property name="orientation">
           <enum>Qt::Vertical</enum>
@@ -183,7 +189,7 @@
          </property>
         </spacer>
        </item>
-       <item row="5" column="0">
+       <item row="5" column="0" colspan="2">
         <widget class="Q3GroupBox" name="SimulationGrid_2">
          <property name="maximumSize">
           <size>
@@ -219,7 +225,7 @@
          </layout>
         </widget>
        </item>
-       <item row="7" column="0">
+       <item row="7" column="0" colspan="2">
         <layout class="QHBoxLayout">
          <property name="spacing">
           <number>6</number>
@@ -246,7 +252,7 @@
          </item>
         </layout>
        </item>
-       <item row="8" column="0">
+       <item row="8" column="0" colspan="2">
         <widget class="Q3GroupBox" name="GroupBox4">
          <property name="title">
           <string>Marginal Distribution</string>
@@ -268,7 +274,7 @@
          </layout>
         </widget>
        </item>
-       <item row="9" column="0">
+       <item row="9" column="0" colspan="2">
         <widget class="Q3GroupBox" name="groupBox6">
          <property name="title">
           <string>Conditioning Data</string>
@@ -351,7 +357,7 @@
          </layout>
         </widget>
        </item>
-       <item row="10" column="0">
+       <item row="10" column="1">
         <spacer name="Spacer21">
          <property name="orientation">
           <enum>Qt::Vertical</enum>
@@ -373,7 +379,7 @@
       <attribute name="title">
        <string>Conditioning</string>
       </attribute>
-      <layout class="QVBoxLayout">
+      <layout class="QVBoxLayout" name="verticalLayout">
        <item>
         <widget class="Q3GroupBox" name="GroupBox3">
          <property name="title">
@@ -394,6 +400,49 @@
          <layout class="QVBoxLayout">
           <item>
            <widget class="SinglePropertySelector" name="data_partition"/>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QCheckBox" name="use_pre_simulated_gridded_data">
+         <property name="text">
+          <string>Use pre-simulated gridded data</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QGroupBox" name="pre_sim_box">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
+         <property name="title">
+          <string/>
+         </property>
+         <layout class="QGridLayout" name="gridLayout_2">
+          <item row="0" column="0">
+           <widget class="QLabel" name="label">
+            <property name="text">
+             <string>Property</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="SinglePropertySelector" name="Pre_Simulated_Gridded_Data">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="label_2">
+            <property name="text">
+             <string>Region</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="SingleRegionSelector" name="Pre_Simulated_Gridded_Region"/>
           </item>
          </layout>
         </widget>
@@ -589,16 +638,6 @@
  <pixmapfunction>qPixmapFromMimeSource</pixmapfunction>
  <customwidgets>
   <customwidget>
-   <class>GridSelector</class>
-   <extends>QComboBox</extends>
-   <header>GsTLAppli/extra/qtplugins/selectors.h</header>
-  </customwidget>
-  <customwidget>
-   <class>PropertySelector</class>
-   <extends>QWidget</extends>
-   <header>GsTLAppli/extra/qtplugins/selectors.h</header>
-  </customwidget>
-  <customwidget>
    <class>SinglePropertySelector</class>
    <extends>QComboBox</extends>
    <header>GsTLAppli/extra/qtplugins/selectors.h</header>
@@ -619,6 +658,21 @@
    <header>GsTLAppli/extra/qtplugins/selectors.h</header>
   </customwidget>
   <customwidget>
+   <class>SingleRegionSelector</class>
+   <extends>QComboBox</extends>
+   <header>GsTLAppli/extra/qtplugins/selectors.h</header>
+  </customwidget>
+  <customwidget>
+   <class>GridSelector</class>
+   <extends>QTabWidget</extends>
+   <header>GsTLAppli/extra/qtplugins/selectors.h</header>
+  </customwidget>
+  <customwidget>
+   <class>PropertySelector</class>
+   <extends>QWidget</extends>
+   <header>GsTLAppli/extra/qtplugins/selectors.h</header>
+  </customwidget>
+  <customwidget>
    <class>Q3GroupBox</class>
    <extends>QGroupBox</extends>
    <header>Qt3Support/Q3GroupBox</header>
@@ -626,7 +680,6 @@
   </customwidget>
  </customwidgets>
  <tabstops>
-  <tabstop>tabWidget2</tabstop>
   <tabstop>GridSelector_Sim</tabstop>
   <tabstop>Property_Name_Sim</tabstop>
   <tabstop>Nb_Realizations</tabstop>
@@ -713,6 +766,70 @@
     <hint type="destinationlabel">
      <x>20</x>
      <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>GridSelector_Sim</sender>
+   <signal>activated(QString)</signal>
+   <receiver>Pre_Simulated_Gridded_Data</receiver>
+   <slot>show_properties(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>168</x>
+     <y>117</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>73</x>
+     <y>353</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>use_pre_simulated_gridded_data</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>Pre_Simulated_Gridded_Data</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>141</x>
+     <y>320</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>73</x>
+     <y>353</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>GridSelector_Sim</sender>
+   <signal>activated(QString)</signal>
+   <receiver>Pre_Simulated_Gridded_Region</receiver>
+   <slot>show_regions(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>208</x>
+     <y>101</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>113</x>
+     <y>394</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>use_pre_simulated_gridded_data</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>pre_sim_box</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>106</x>
+     <y>322</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>89</x>
+     <y>380</y>
     </hint>
    </hints>
   </connection>
