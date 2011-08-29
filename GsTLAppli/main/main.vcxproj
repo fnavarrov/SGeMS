@@ -125,7 +125,7 @@
     <ClCompile>
       <AdditionalOptions>-Zm200 -w34100 -w34189 -Zm200 -w34100 -w34189 -w34100 -w34189 %(AdditionalOptions)</AdditionalOptions>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>$(SGEMS_BUILD)\GsTL;$(SGEMS_BUILD)\GsTLAppli-qt4;$(QTDIRx64)\include\QtUiTools;$(QTDIRx64)\include\QtCore;$(QTDIRx64)\include\QtGui;$(QTDIRx64)\include\QtXml;$(QTDIRx64)\include;.;$(COINDIR)\include;c:\code-dev\Python-2.7.1\Include\;c:\code-dev\Python-2.7.1\PC;release;$(COINDIR)\build\msvc9\include;$(SGEMS_BUILD)/SIMVoleon/build/msvc9/lib/;$(SGEMS_BUILD)/SoQT/build/msvc9/src;$(SGEMS_BUILD)/SoQt/src;$(SGEMS_BUILD)/SIMVoleon/lib/;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SGEMS_BUILD)\GsTL;$(SGEMS_BUILD)\GsTLAppli-qt4;$(QTDIRx64)\include\QtUiTools;$(QTDIRx64)\include\QtCore;$(QTDIRx64)\include\QtGui;$(QTDIRx64)\include\QtXml;$(QTDIRx64)\include;.;$(COINDIR)\include;$(SGEMS_BUILD)\Python-2.7.1\Include\;$(SGEMS_BUILD)\Python-2.7.1\PC;release;$(COINDIR)\build\msvc9\include;$(SGEMS_BUILD)/SIMVoleon/build/msvc9/lib/;$(SGEMS_BUILD)/SoQT/build/msvc9/src;$(SGEMS_BUILD)/SoQt/src;$(SGEMS_BUILD)/SIMVoleon/lib/;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>QT_NO_PLUGIN_CHECK; SOQT_DLL;SIMVOLEON_DLL;COIN_DLL;_WINDOWS;UNICODE;WIN32;QT_LARGEFILE_SUPPORT;SIMVOLEON_DLL;QT_DLL;QT_XML_LIB;QT_GUI_LIB;QT_CORE_LIB;QT_THREAD_SUPPORT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PreprocessToFile>false</PreprocessToFile>
       <PreprocessSuppressLineNumbers>false</PreprocessSuppressLineNumbers>
@@ -209,7 +209,7 @@
     <ClCompile>
       <AdditionalOptions>-Zm200 -w34100 -w34189 -Zm200 -w34100 -w34189 -w34100 -w34189 %(AdditionalOptions)</AdditionalOptions>
       <Optimization>MaxSpeed</Optimization>
-      <AdditionalIncludeDirectories>$(SGEMS_BUILD)\GsTL;$(SGEMS_BUILD)\GsTLAppli-qt4;$(QTDIRx64)\include\QtUiTools;$(QTDIRx64)\include\QtCore;$(QTDIRx64)\include\QtGui;$(QTDIRx64)\include\QtXml;$(QTDIRx64)\include;.;$(COINDIR)\include;c:\code-dev\Python-2.7.1\Include\;c:\code-dev\Python-2.7.1\PC;release;$(COINDIR)\build\msvc9\include;$(SGEMS_BUILD)/SIMVoleon/build/msvc9/lib/;$(SGEMS_BUILD)/SoQT/build/msvc9/src;$(SGEMS_BUILD)/SoQt/src;$(SGEMS_BUILD)/SIMVoleon/lib/;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SGEMS_BUILD)\GsTL;$(SGEMS_BUILD)\GsTLAppli-qt4;$(QTDIRx64)\include\QtUiTools;$(QTDIRx64)\include\QtCore;$(QTDIRx64)\include\QtGui;$(QTDIRx64)\include\QtXml;$(QTDIRx64)\include;.;$(COINDIR)\include;$(SGEMS_BUILD)\Python-2.7.1\Include\;$(SGEMS_BUILD)\Python-2.7.1\PC;release;$(COINDIR)\build\msvc9\include;$(SGEMS_BUILD)/SIMVoleon/build/msvc9/lib/;$(SGEMS_BUILD)/SoQT/build/msvc9/src;$(SGEMS_BUILD)/SoQt/src;$(SGEMS_BUILD)/SIMVoleon/lib/;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>QT_NO_DEBUG;NDEBUG;_WINDOWS;UNICODE;WIN32;QT_LARGEFILE_SUPPORT;SIMVOLEON_DLL;SOQT_DLL;COIN_DLL;QT_DLL;QT_XML_LIB;QT_GUI_LIB;QT_CORE_LIB;QT_THREAD_SUPPORT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PreprocessToFile>false</PreprocessToFile>
       <PreprocessSuppressLineNumbers>false</PreprocessSuppressLineNumbers>
@@ -222,6 +222,10 @@
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <DebugInformationFormat>
       </DebugInformationFormat>
+      <PrecompiledHeaderFile>
+      </PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile>
+      </PrecompiledHeaderOutputFile>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>QT_NO_DEBUG;NDEBUG;_WINDOWS;UNICODE;WIN32;QT_LARGEFILE_SUPPORT;SIMVOLEON_DLL;QT_DLL;QT_NO_DEBUG;QT_XML_LIB;QT_GUI_LIB;QT_CORE_LIB;QT_THREAD_SUPPORT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -257,7 +261,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="lib_initializer.h" />
-    <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\actions\actions.vcxproj">
@@ -304,9 +307,6 @@
       <Project>{c52740f0-2a21-4416-997a-ac11d019b75f}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="main1.rc" />
   </ItemGroup>
   <ItemGroup>
     <None Include="new_icon6_32x32.bmp" />
