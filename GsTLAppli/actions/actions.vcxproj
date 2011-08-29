@@ -129,7 +129,7 @@
     <ClCompile>
       <AdditionalOptions>-Zm300 -w34100 -w34189 -Zm300 -w34100 -w34189 -w34100 -w34189 %(AdditionalOptions)</AdditionalOptions>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>$(SGEMS_BUILD)\GsTL;$(SGEMS_BUILD)\GsTLAppli-qt4;$(BOOSTDIR);$(QTDIRx64)\include\QtCore;$(QTDIRx64)\include\QtGui;$(QTDIRx64)\include;.;$(QTDIRx64)\include\ActiveQt;debug;c:\code-dev\Python-2.7.1\Include\;c:\code-dev\Python-2.7.1\PC\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SGEMS_BUILD)\GsTL;$(SGEMS_BUILD)\GsTLAppli-qt4;$(BOOSTDIR);$(QTDIRx64)\include\QtCore;$(QTDIRx64)\include\QtGui;$(QTDIRx64)\include;.;$(QTDIRx64)\include\ActiveQt;debug;$(PYTHONDIRx64)\Include\;$(PYTHONDIRx64)\Include\PC\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_WINDOWS;UNICODE;WIN32;QT_LARGEFILE_SUPPORT;ACTIONS_EXPORTS;QT_DLL;_DEBUG;_USRDLL;SOQT_DLL;COIN_DLL;QWT_DLL;QT_THREAD_SUPPORT;QT_GUI_LIB;QT_CORE_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PreprocessToFile>false</PreprocessToFile>
       <PreprocessSuppressLineNumbers>false</PreprocessSuppressLineNumbers>
@@ -211,7 +211,7 @@
     <ClCompile>
       <AdditionalOptions>-Zm300 -w34100 -w34189 -Zm300 -w34100 -w34189 -w34100 -w34189 %(AdditionalOptions)</AdditionalOptions>
       <Optimization>MaxSpeed</Optimization>
-      <AdditionalIncludeDirectories>$(SGEMS_BUILD)\GsTL;$(SGEMS_BUILD)\GsTLAppli-qt4;$(BOOSTDIR);$(QTDIRx64)\include\QtCore;$(QTDIRx64)\include\QtGui;$(QTDIRx64)\include;.;$(QTDIRx64)\include\ActiveQt;release;c:\code-dev\Python-2.7.1\Include;c:\code-dev\Python-2.7.1\PC;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SGEMS_BUILD)\GsTL;$(SGEMS_BUILD)\GsTLAppli-qt4;$(BOOSTDIR);$(QTDIRx64)\include\QtCore;$(QTDIRx64)\include\QtGui;$(QTDIRx64)\include;.;$(QTDIRx64)\include\ActiveQt;release;$(PYTHONDIRx64)\Include\;$(PYTHONDIRx64)\PC;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>GSTLAPPLI_NDEBUG;QT_NO_DEBUG;NDEBUG;_WINDOWS;UNICODE;WIN32;QT_LARGEFILE_SUPPORT;ACTIONS_EXPORTS;QT_DLL;QT_NO_DEBUG;QT_GUI_LIB;QT_CORE_LIB;QT_THREAD_SUPPORT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PreprocessToFile>false</PreprocessToFile>
       <PreprocessSuppressLineNumbers>false</PreprocessSuppressLineNumbers>
