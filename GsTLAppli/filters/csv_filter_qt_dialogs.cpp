@@ -182,8 +182,45 @@ Csv_input_mgrid_dialog::Csv_input_mgrid_dialog( QWidget* parent,
  : QWidget( parent )
 {
         setupUi(this);
+
+
+
 	name_->setFocus();
 }
+
+
+Csv_input_mgrid_dialog::Csv_input_mgrid_dialog(std::ifstream& infile, QWidget* parent, 
+												   const char* name ) 
+ : QWidget( parent )
+{
+        setupUi(this);
+
+
+
+  std::streampos mark = infile.tellg();
+  std::string str;
+  std::getline(infile, str);
+  QString qstr(str.c_str());
+
+  QStringList property_names = qstr.split(",");
+
+  X_col_name_->addItems(property_names);
+  X_col_name_->addItem("None");
+  Y_col_name_->addItems(property_names);
+  Y_col_name_->addItem("None");
+  Z_col_name_->addItems(property_names);
+  Z_col_name_->addItem("None");
+
+
+  //Set default selection
+  X_col_name_->setCurrentIndex(0);
+  Y_col_name_->setCurrentIndex(std::min(1,property_names.size()));
+  Z_col_name_->setCurrentIndex(std::min(2,property_names.size())); 
+
+  mask_col_name_->addItems(property_names);
+
+	name_->setFocus();
+} 
 
 float Csv_input_mgrid_dialog::x_size() const {
   QString val = x_size_->text();

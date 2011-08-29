@@ -60,6 +60,7 @@ public:
 
 protected :
 
+  bool removeDir(const QString &dirName);
 
   QDomElement write_grid_geometry(QDir dir,QDomDocument& dom, const Geostat_grid* grid);
   QDomElement write_masked_grid_geometry( QDir dir, QDomDocument& dom, const  Geostat_grid* grid);

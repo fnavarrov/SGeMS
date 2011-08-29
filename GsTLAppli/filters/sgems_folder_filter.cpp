@@ -377,23 +377,23 @@ bool Sgems_folder_input_filter::read_category_definition(const QDomElement& root
 	  CategoricalPropertyDefinitionName* cat_definition =
 	    dynamic_cast<CategoricalPropertyDefinitionName*>(ni.raw_ptr());
 
-	  if(cat_definition == 0)
-	  	return create_categorial_definition( name,  cat_names );
-	  //If the definition already exist check if it the same
-	  bool is_conflict = check_for_conflict(cat_definition, cat_names);
-	  // Nothing to be done, already loaded
-	  if(is_conflict == false) return true;
+	  if(cat_definition == 0) {
+	  	bool ok = create_categorial_definition( name,  cat_names );
+    }
+    else {
+	    //If the definition already exist check if it the same
+	    bool is_conflict = check_for_conflict(cat_definition, cat_names);
+	    // Nothing to be done, already loaded
 
-	  while( is_conflict ) {
-	  	name.append("_0");
-		  ni = Root::instance()->interface( categoricalDefinition_manager+"/"+name.toStdString()  );
-		  cat_definition = dynamic_cast<CategoricalPropertyDefinitionName*>(ni.raw_ptr());
-		  if(cat_definition == 0)
-		  	return create_categorial_definition( name,  cat_names );
-		  is_conflict = check_for_conflict(cat_definition, cat_names );
-	  }
-	  return false;
-
+	    while( is_conflict ) {
+	  	  name.append("_0");
+		    ni = Root::instance()->interface( categoricalDefinition_manager+"/"+name.toStdString()  );
+		    cat_definition = dynamic_cast<CategoricalPropertyDefinitionName*>(ni.raw_ptr());
+		    if(cat_definition == 0)
+		  	  return create_categorial_definition( name,  cat_names );
+		    is_conflict = check_for_conflict(cat_definition, cat_names );
+	    }
+    }
 	}
 	return true;
 
@@ -440,6 +440,31 @@ Sgems_folder_output_filter::Sgems_folder_output_filter() {
 
 }
 
+
+bool Sgems_folder_output_filter::removeDir(const QString &dirName)
+{
+    bool result = true;
+    QDir dir(dirName);
+ 
+    if (dir.exists(dirName)) {
+        Q_FOREACH(QFileInfo info, dir.entryInfoList(QDir::NoDotAndDotDot | QDir::System | QDir::Hidden  | QDir::AllDirs | QDir::Files, QDir::DirsFirst)) {
+            if (info.isDir()) {
+                result = removeDir(info.absoluteFilePath());
+            }
+            else {
+                result = QFile::remove(info.absoluteFilePath());
+            }
+ 
+            if (!result) {
+                return result;
+            }
+        }
+        result = dir.rmdir(dirName);
+    }
+ 
+    return result;
+}
+
 Sgems_folder_output_filter::~Sgems_folder_output_filter() {
 	// TODO Auto-generated destructor stub
 }
@@ -461,7 +486,8 @@ bool Sgems_folder_output_filter::write( std::string outfile,
 
   QDir dir(dirname);
   if (dir.exists()) {
-	  bool ok = dir.rmdir(dirname);
+	  //bool ok = dir.rmdir(dirname);
+    bool ok = this->removeDir(dirname);
 		if( !ok ) {
 		  errors->append( "can't overwrite directory: " + dirname.toStdString() );
 		  return false;

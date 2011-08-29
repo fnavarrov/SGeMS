@@ -228,8 +228,8 @@ void New_region_from_property_dialog::populate_categories(){
   if(!prop) return;
 
   const CategoricalPropertyDefinition* cat_def = prop->get_category_definition();
-  CategoricalPropertyDefinitionName* cat_def_name =
-	  dynamic_cast<CategoricalPropertyDefinitionName*>(ni.raw_ptr());
+  const CategoricalPropertyDefinitionName* cat_def_name =
+	  dynamic_cast<const CategoricalPropertyDefinitionName*>(cat_def);
 
   if( cat_def_name ) {
     cat_selector_->show_categories( cat_def_name->name().c_str() );

@@ -25,6 +25,7 @@
 ** if any conditions of this licensing are not clear to you.
 **
 **********************************************************************/
+/*
 #ifdef _DEBUG
 #undef _DEBUG
 #include <Python.h>
@@ -32,6 +33,9 @@
 #else
 #include <Python.h>
 #endif
+*/
+
+#include <Python.h>
 
 #include <GsTLAppli/gui/utils/script_editor.h>
 #include <GsTLAppli/gui/utils/script_syntax_highlighter.h>

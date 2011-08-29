@@ -1,0 +1,677 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectName>GsTLwidgets</ProjectName>
+    <ProjectGuid>{227552D8-AD8A-32F7-968B-91C0ADE1FA31}</ProjectGuid>
+    <Keyword>Qt4VSv1.0</Keyword>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseOfMfc>false</UseOfMfc>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseOfMfc>false</UseOfMfc>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseOfMfc>false</UseOfMfc>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseOfMfc>false</UseOfMfc>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.30319.1</_ProjectFileVersion>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">debug\</IntDir>
+    <IgnoreImportLibrary Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</IgnoreImportLibrary>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</LinkIncremental>
+    <EmbedManifest Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</EmbedManifest>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(Platform)\$(Configuration)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(Platform)\$(Configuration)\</IntDir>
+    <IgnoreImportLibrary Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</IgnoreImportLibrary>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</LinkIncremental>
+    <EmbedManifest Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</EmbedManifest>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">release\</IntDir>
+    <IgnoreImportLibrary Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</IgnoreImportLibrary>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkIncremental>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</GenerateManifest>
+    <EmbedManifest Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</EmbedManifest>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(Platform)\$(Configuration)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(Platform)\$(Configuration)\</IntDir>
+    <IgnoreImportLibrary Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</IgnoreImportLibrary>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkIncremental>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</GenerateManifest>
+    <EmbedManifest Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</EmbedManifest>
+    <CustomBuildAfterTargets Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    </CustomBuildAfterTargets>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Midl>
+      <WarningLevel>0</WarningLevel>
+      <DefaultCharType>Unsigned</DefaultCharType>
+      <EnableErrorChecks>None</EnableErrorChecks>
+    </Midl>
+    <ClCompile>
+      <AdditionalOptions>-Zm200 -w34100 -w34189 -Zm200 -w34100 -w34189 -w34100 -w34189 %(AdditionalOptions)</AdditionalOptions>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>$(SGEMS_BUILD)\GsTL;$(SGEMS_BUILD)\GsTLAppli-qt4;$(QTDIR)\include\QtDesigner;$(QTDIR)\include\QtUiTools;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtXml;$(QTDIR)\include;.;$(QTDIR)\tools\designer\interfaces;$(QTDIR)\include\ActiveQt;.moc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_WINDOWS;UNICODE;WIN32;QT_LARGEFILE_SUPPORT;QTPLUGINS_EXPORTS;QT_DLL;QT_PLUGIN;QT_XML_LIB;QT_GUI_LIB;QT_CORE_LIB;QT_THREAD_SUPPORT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessToFile>false</PreprocessToFile>
+      <PreprocessSuppressLineNumbers>false</PreprocessSuppressLineNumbers>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
+      <TreatWChar_tAsBuiltInType>false</TreatWChar_tAsBuiltInType>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <AssemblerListingLocation>debug\</AssemblerListingLocation>
+      <ObjectFileName>debug\</ObjectFileName>
+      <ProgramDataBaseFileName>.\</ProgramDataBaseFileName>
+      <WarningLevel>Level3</WarningLevel>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>_WINDOWS;UNICODE;WIN32;QT_LARGEFILE_SUPPORT;QTPLUGINS_EXPORTS;QT_DLL;QT_PLUGIN;QT_XML_LIB;QT_GUI_LIB;QT_CORE_LIB;QT_THREAD_SUPPORT;QDESIGNER_EXPORT_WIDGETS;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ResourceCompile>
+    <Link>
+      <AdditionalDependencies>GsTLAppli_utils.lib;GsTLAppli_appli.lib;GsTLAppli_grid.lib;$(QTDIR)\lib\QtXmld4.lib;$(QTDIR)\lib\QtGuid4.lib;$(QTDIR)\lib\QtCored4.lib;$(QTDIR)\lib\QtUiToolsd.lib;$(QTDIR)\lib\QtDesignerd4.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <OutputFile>$(SGEMS_BUILD)\GsTLAppli-qt4\lib\win32\debug\GsTLwidgets.dll</OutputFile>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <AdditionalLibraryDirectories>$(QTDIR)\lib;$(SGEMS_BUILD)\GsTLAppli-qt4\lib\win32\debug\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <ProgramDatabaseFile>
+      </ProgramDatabaseFile>
+      <SubSystem>Windows</SubSystem>
+      <RandomizedBaseAddress>false</RandomizedBaseAddress>
+      <DataExecutionPrevention>
+      </DataExecutionPrevention>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Midl>
+      <WarningLevel>0</WarningLevel>
+      <DefaultCharType>Unsigned</DefaultCharType>
+      <TargetEnvironment>X64</TargetEnvironment>
+      <EnableErrorChecks>None</EnableErrorChecks>
+    </Midl>
+    <ClCompile>
+      <AdditionalOptions>-Zm200 -w34100 -w34189 -Zm200 -w34100 -w34189 -w34100 -w34189 %(AdditionalOptions)</AdditionalOptions>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>$(SGEMS_BUILD)\GsTL;$(SGEMS_BUILD)\GsTLAppli-qt4;$(QTDIRx64)\include\QtDesigner;$(QTDIRx64)\include\QtUiTools;$(QTDIRx64)\include\QtCore;$(QTDIRx64)\include\QtGui;$(QTDIRx64)\include\QtXml;$(QTDIRx64)\include;.;$(QTDIRx64)\tools\designer\interfaces;$(QTDIRx64)\include\ActiveQt;.moc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_WINDOWS;UNICODE;WIN32;QT_LARGEFILE_SUPPORT;QTPLUGINS_EXPORTS;QT_DLL;QT_PLUGIN;QT_XML_LIB;QT_GUI_LIB;QT_CORE_LIB;QT_THREAD_SUPPORT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessToFile>false</PreprocessToFile>
+      <PreprocessSuppressLineNumbers>false</PreprocessSuppressLineNumbers>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
+      <TreatWChar_tAsBuiltInType>false</TreatWChar_tAsBuiltInType>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <WarningLevel>Level3</WarningLevel>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>_WINDOWS;UNICODE;WIN32;QT_LARGEFILE_SUPPORT;QTPLUGINS_EXPORTS;QT_DLL;QT_PLUGIN;QT_XML_LIB;QT_GUI_LIB;QT_CORE_LIB;QT_THREAD_SUPPORT;QDESIGNER_EXPORT_WIDGETS;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ResourceCompile>
+    <Link>
+      <AdditionalDependencies>GsTLAppli_utils.lib;GsTLAppli_appli.lib;GsTLAppli_grid.lib;QtXmld4.lib;QtGuid4.lib;QtCored4.lib;QtUiToolsd.lib;QtDesignerd4.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <OutputFile>$(SGEMS_BUILD)\GsTLAppli-qt4\lib\x64\debug\GsTLwidgets.dll</OutputFile>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <AdditionalLibraryDirectories>$(QTDIRx64)\lib;$(SGEMS_BUILD)\GsTLAppli-qt4\lib\x64\debug\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <ProgramDatabaseFile>
+      </ProgramDatabaseFile>
+      <SubSystem>Windows</SubSystem>
+      <RandomizedBaseAddress>false</RandomizedBaseAddress>
+      <DataExecutionPrevention>
+      </DataExecutionPrevention>
+      <TargetMachine>MachineX64</TargetMachine>
+    </Link>
+    <CustomBuildStep>
+      <Command>
+      </Command>
+      <Outputs>
+      </Outputs>
+    </CustomBuildStep>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Midl>
+      <WarningLevel>0</WarningLevel>
+      <DefaultCharType>Unsigned</DefaultCharType>
+      <EnableErrorChecks>None</EnableErrorChecks>
+    </Midl>
+    <ClCompile>
+      <AdditionalOptions>-Zm200 -w34100 -w34189 -Zm200 -w34100 -w34189 -w34100 -w34189 %(AdditionalOptions)</AdditionalOptions>
+      <Optimization>MaxSpeed</Optimization>
+      <AdditionalIncludeDirectories>$(SGEMS_BUILD)\GsTL;$(SGEMS_BUILD)\GsTLAppli-qt4;$(QTDIR)\include\QtDesigner;$(QTDIR)\include\QtUiTools;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtXml;$(QTDIR)\include;.;$(QTDIR)\tools\designer\interfaces;$(QTDIR)\include\ActiveQt;.moc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>QT_NO_DEBUG;GSTLAPPLI_NDEBUG;_WINDOWS;UNICODE;WIN32;QT_LARGEFILE_SUPPORT;QTPLUGINS_EXPORTS;QT_DLL;QT_PLUGIN;QT_XML_LIB;QT_GUI_LIB;QT_CORE_LIB;QT_THREAD_SUPPORT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessToFile>false</PreprocessToFile>
+      <PreprocessSuppressLineNumbers>false</PreprocessSuppressLineNumbers>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
+      <TreatWChar_tAsBuiltInType>false</TreatWChar_tAsBuiltInType>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <AssemblerListingLocation>release\</AssemblerListingLocation>
+      <ObjectFileName>release\</ObjectFileName>
+      <ProgramDataBaseFileName>.\</ProgramDataBaseFileName>
+      <WarningLevel>Level3</WarningLevel>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <DebugInformationFormat>
+      </DebugInformationFormat>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>QT_NO_DEBUG;NDEBUG;_WINDOWS;UNICODE;WIN32;QT_LARGEFILE_SUPPORT;QTPLUGINS_EXPORTS;QT_DLL;QT_NO_DEBUG;QT_PLUGIN;QT_XML_LIB;QT_GUI_LIB;QT_CORE_LIB;QT_THREAD_SUPPORT;QDESIGNER_EXPORT_WIDGETS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ResourceCompile>
+    <Link>
+      <AdditionalDependencies>GsTLAppli_utils.lib;GsTLAppli_appli.lib;GsTLAppli_grid.lib;QtXml4.lib;QtGui4.lib;QtCore4.lib;$(QTDIR)\lib\QtUiTools.lib;$(QTDIR)\lib\QtDesigner4.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <OutputFile>$(SGEMS_BUILD)\GsTLAppli-qt4\lib\win32\release\GsTLwidgets.dll</OutputFile>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <AdditionalLibraryDirectories>$(QTDIR)\lib;$(SGEMS_BUILD)\GsTLAppli-qt4\lib\win32\release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <ProgramDatabaseFile>
+      </ProgramDatabaseFile>
+      <SubSystem>Windows</SubSystem>
+      <RandomizedBaseAddress>false</RandomizedBaseAddress>
+      <DataExecutionPrevention>
+      </DataExecutionPrevention>
+    </Link>
+    <PostBuildEvent>
+      <Message>Copying into plugins/designer</Message>
+      <Command>copy $(SGEMS_BUILD)\GsTLAppli-qt4\lib\win32\release\GsTLwidgets.dll $(QTDIR)\plugins\designer</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Midl>
+      <WarningLevel>0</WarningLevel>
+      <DefaultCharType>Unsigned</DefaultCharType>
+      <TargetEnvironment>X64</TargetEnvironment>
+      <EnableErrorChecks>None</EnableErrorChecks>
+    </Midl>
+    <ClCompile>
+      <AdditionalOptions>-Zm200 -w34100 -w34189 -Zm200 -w34100 -w34189 -w34100 -w34189 %(AdditionalOptions)</AdditionalOptions>
+      <Optimization>MaxSpeed</Optimization>
+      <AdditionalIncludeDirectories>$(SGEMS_BUILD)\GsTL;$(SGEMS_BUILD)\GsTLAppli-qt4;$(QTDIRx64)\include\QtDesigner;$(QTDIRx64)\include\QtUiTools;$(QTDIRx64)\include\QtCore;$(QTDIRx64)\include\QtGui;$(QTDIRx64)\include\QtXml;$(QTDIRx64)\include;.;$(QTDIRx64)\tools\designer\interfaces;$(QTDIRx64)\include\ActiveQt;.moc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>QT_NO_DEBUG;GSTLAPPLI_NDEBUG;_WINDOWS;UNICODE;WIN32;QT_LARGEFILE_SUPPORT;QTPLUGINS_EXPORTS;QT_DLL;QT_PLUGIN;QT_XML_LIB;QT_GUI_LIB;QT_CORE_LIB;QT_THREAD_SUPPORT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessToFile>false</PreprocessToFile>
+      <PreprocessSuppressLineNumbers>false</PreprocessSuppressLineNumbers>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
+      <TreatWChar_tAsBuiltInType>false</TreatWChar_tAsBuiltInType>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <WarningLevel>Level3</WarningLevel>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <DebugInformationFormat>
+      </DebugInformationFormat>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>QT_NO_DEBUG;NDEBUG;_WINDOWS;UNICODE;WIN32;QT_LARGEFILE_SUPPORT;QTPLUGINS_EXPORTS;QT_DLL;QT_NO_DEBUG;QT_PLUGIN;QT_XML_LIB;QT_GUI_LIB;QT_CORE_LIB;QT_THREAD_SUPPORT;QDESIGNER_EXPORT_WIDGETS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ResourceCompile>
+    <Link>
+      <AdditionalDependencies>GsTLAppli_utils.lib;GsTLAppli_appli.lib;GsTLAppli_grid.lib;QtXml4.lib;QtGui4.lib;QtCore4.lib;QtUiTools.lib;QtDesigner4.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <OutputFile>$(SGEMS_BUILD)\GsTLAppli-qt4\lib\x64\release\GsTLwidgets.dll</OutputFile>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <AdditionalLibraryDirectories>$(QTDIRx64)\lib;$(SGEMS_BUILD)\GsTLAppli-qt4\lib\x64\release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <ProgramDatabaseFile>
+      </ProgramDatabaseFile>
+      <SubSystem>Windows</SubSystem>
+      <RandomizedBaseAddress>false</RandomizedBaseAddress>
+      <DataExecutionPrevention>
+      </DataExecutionPrevention>
+      <TargetMachine>MachineX64</TargetMachine>
+    </Link>
+    <PostBuildEvent>
+      <Message>Copying into plugins/designer</Message>
+      <Command>copy $(SGEMS_BUILD)\GsTLAppli-qt4\lib\x64\release\GsTLwidgets.dll $(QTDIRx64)\plugins\designer</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="categorical_selectors.cpp" />
+    <ClCompile Include="ellipsoid_input.cpp" />
+    <ClCompile Include="filechooser.cpp" />
+    <ClCompile Include="group_selectors.cpp" />
+    <ClCompile Include="gstl_table.cpp" />
+    <ClCompile Include="gstl_widgets_plugin.cpp" />
+    <ClCompile Include="kriging_type_selector.cpp" />
+    <ClCompile Include="kriging_type_selector_base.cpp" />
+    <ClCompile Include="neighborhood_filter_input.cpp" />
+    <ClCompile Include="non_param_cdf_input.cpp" />
+    <ClCompile Include=".rcc\qrc_icons.cpp" />
+    <ClCompile Include="selectors.cpp" />
+    <ClCompile Include="variogram_input.cpp" />
+    <ClCompile Include=".moc\moc_categorical_selectors.cpp" />
+    <ClCompile Include=".moc\moc_ellipsoid_input.cpp" />
+    <ClCompile Include=".moc\moc_filechooser.cpp" />
+    <ClCompile Include=".moc\moc_group_selectors.cpp" />
+    <ClCompile Include=".moc\moc_gstl_table.cpp" />
+    <ClCompile Include=".moc\moc_gstl_widgets_plugin.cpp" />
+    <ClCompile Include=".moc\moc_kriging_type_selector.cpp" />
+    <ClCompile Include=".moc\moc_kriging_type_selector_base.cpp" />
+    <ClCompile Include=".moc\moc_neighborhood_filter_input.cpp" />
+    <ClCompile Include=".moc\moc_non_param_cdf_input.cpp" />
+    <ClCompile Include=".moc\moc_selectors.cpp" />
+    <ClCompile Include=".moc\moc_variogram_input.cpp" />
+    <ClCompile Include="debug\qrc_icons.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="categorical_selectors.h">
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">MOC categorical_selectors.h</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQTPLUGINS_EXPORTS -DQT_DLL -DQT_PLUGIN -DQT_XML_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -DQDESIGNER_EXPORT_WIDGETS -I"$(QTDIR)\include\QtDesigner" -I"$(QTDIR)\include\QtUiTools" -I"$(QTDIR)\include\QtCore" -I"$(QTDIR)\include\QtCore" -I"$(QTDIR)\include\QtGui" -I"$(QTDIR)\include\QtGui" -I"$(QTDIR)\include\QtXml" -I"$(QTDIR)\include\QtXml" -I"$(QTDIR)\include" -I"." -I"$(QTDIR)\tools\designer\interfaces" -I"$(QTDIR)\include\ActiveQt" -I".moc" -I"." -D_MSC_VER=1400 -DWIN32 categorical_selectors.h -o .moc\moc_categorical_selectors.cpp
+</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\moc.exe;categorical_selectors.h;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.moc\moc_categorical_selectors.cpp;%(Outputs)</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">MOC categorical_selectors.h</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(QTDIR)\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQTPLUGINS_EXPORTS -DQT_DLL -DQT_PLUGIN -DQT_XML_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -DQDESIGNER_EXPORT_WIDGETS -I"$(QTDIR)\include\QtDesigner" -I"$(QTDIR)\include\QtUiTools" -I"$(QTDIR)\include\QtCore" -I"$(QTDIR)\include\QtCore" -I"$(QTDIR)\include\QtGui" -I"$(QTDIR)\include\QtGui" -I"$(QTDIR)\include\QtXml" -I"$(QTDIR)\include\QtXml" -I"$(QTDIR)\include" -I"." -I"$(QTDIR)\tools\designer\interfaces" -I"$(QTDIR)\include\ActiveQt" -I".moc" -I"." -D_MSC_VER=1400 -DWIN32 categorical_selectors.h -o .moc\moc_categorical_selectors.cpp
+</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(QTDIR)\bin\moc.exe;categorical_selectors.h;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.moc\moc_categorical_selectors.cpp;%(Outputs)</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MOC categorical_selectors.h</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(QTDIR)\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQTPLUGINS_EXPORTS -DQT_DLL -DQT_PLUGIN -DQT_XML_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -DQDESIGNER_EXPORT_WIDGETS -I"$(QTDIR)\include\QtDesigner" -I"$(QTDIR)\include\QtUiTools" -I"$(QTDIR)\include\QtCore" -I"$(QTDIR)\include\QtCore" -I"$(QTDIR)\include\QtGui" -I"$(QTDIR)\include\QtGui" -I"$(QTDIR)\include\QtXml" -I"$(QTDIR)\include\QtXml" -I"$(QTDIR)\include" -I"." -I"$(QTDIR)\tools\designer\interfaces" -I"$(QTDIR)\include\ActiveQt" -I".moc" -I"." -D_MSC_VER=1400 -DWIN32 categorical_selectors.h -o .moc\moc_categorical_selectors.cpp
+</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(QTDIR)\bin\moc.exe;categorical_selectors.h;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.moc\moc_categorical_selectors.cpp;%(Outputs)</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">MOC categorical_selectors.h</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(QTDIR)\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQTPLUGINS_EXPORTS -DQT_DLL -DQT_PLUGIN -DQT_XML_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -DQDESIGNER_EXPORT_WIDGETS -I"$(QTDIR)\include\QtDesigner" -I"$(QTDIR)\include\QtUiTools" -I"$(QTDIR)\include\QtCore" -I"$(QTDIR)\include\QtCore" -I"$(QTDIR)\include\QtGui" -I"$(QTDIR)\include\QtGui" -I"$(QTDIR)\include\QtXml" -I"$(QTDIR)\include\QtXml" -I"$(QTDIR)\include" -I"." -I"$(QTDIR)\tools\designer\interfaces" -I"$(QTDIR)\include\ActiveQt" -I".moc" -I"." -D_MSC_VER=1400 -DWIN32 categorical_selectors.h -o .moc\moc_categorical_selectors.cpp
+</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(QTDIR)\bin\moc.exe;categorical_selectors.h;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.moc\moc_categorical_selectors.cpp;%(Outputs)</Outputs>
+    </CustomBuild>
+    <ClInclude Include="common.h" />
+    <CustomBuild Include="ellipsoid_input.h">
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">MOC ellipsoid_input.h</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQTPLUGINS_EXPORTS -DQT_DLL -DQT_PLUGIN -DQT_XML_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -DQDESIGNER_EXPORT_WIDGETS -I"$(QTDIR)\include\QtDesigner" -I"$(QTDIR)\include\QtUiTools" -I"$(QTDIR)\include\QtCore" -I"$(QTDIR)\include\QtCore" -I"$(QTDIR)\include\QtGui" -I"$(QTDIR)\include\QtGui" -I"$(QTDIR)\include\QtXml" -I"$(QTDIR)\include\QtXml" -I"$(QTDIR)\include" -I"." -I"$(QTDIR)\tools\designer\interfaces" -I"$(QTDIR)\include\ActiveQt" -I".moc" -I"." -I$(QTDIR)\mkspecs\win32-msvc2005 -D_MSC_VER=1400 -DWIN32 ellipsoid_input.h -o .moc\moc_ellipsoid_input.cpp
+</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\moc.exe;ellipsoid_input.h;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.moc\moc_ellipsoid_input.cpp;%(Outputs)</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">MOC ellipsoid_input.h</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(QTDIR)\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQTPLUGINS_EXPORTS -DQT_DLL -DQT_PLUGIN -DQT_XML_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -DQDESIGNER_EXPORT_WIDGETS -I"$(QTDIR)\include\QtDesigner" -I"$(QTDIR)\include\QtUiTools" -I"$(QTDIR)\include\QtCore" -I"$(QTDIR)\include\QtCore" -I"$(QTDIR)\include\QtGui" -I"$(QTDIR)\include\QtGui" -I"$(QTDIR)\include\QtXml" -I"$(QTDIR)\include\QtXml" -I"$(QTDIR)\include" -I"." -I"$(QTDIR)\tools\designer\interfaces" -I"$(QTDIR)\include\ActiveQt" -I".moc" -I"." -I$(QTDIR)\mkspecs\win32-msvc2005 -D_MSC_VER=1400 -DWIN32 ellipsoid_input.h -o .moc\moc_ellipsoid_input.cpp
+</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(QTDIR)\bin\moc.exe;ellipsoid_input.h;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.moc\moc_ellipsoid_input.cpp;%(Outputs)</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MOC ellipsoid_input.h</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(QTDIR)\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQTPLUGINS_EXPORTS -DQT_DLL -DQT_NO_DEBUG -DQT_PLUGIN -DQT_XML_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -DQDESIGNER_EXPORT_WIDGETS -I"$(QTDIR)\include\QtDesigner" -I"$(QTDIR)\include\QtUiTools" -I"$(QTDIR)\include\QtCore" -I"$(QTDIR)\include\QtCore" -I"$(QTDIR)\include\QtGui" -I"$(QTDIR)\include\QtGui" -I"$(QTDIR)\include\QtXml" -I"$(QTDIR)\include\QtXml" -I"$(QTDIR)\include" -I"." -I"$(QTDIR)\tools\designer\interfaces" -I"$(QTDIR)\include\ActiveQt" -I".moc" -I"." -I$(QTDIR)\mkspecs\win32-msvc2005 -D_MSC_VER=1400 -DWIN32 ellipsoid_input.h -o .moc\moc_ellipsoid_input.cpp
+</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(QTDIR)\bin\moc.exe;ellipsoid_input.h;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.moc\moc_ellipsoid_input.cpp;%(Outputs)</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">MOC ellipsoid_input.h</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(QTDIR)\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQTPLUGINS_EXPORTS -DQT_DLL -DQT_NO_DEBUG -DQT_PLUGIN -DQT_XML_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -DQDESIGNER_EXPORT_WIDGETS -I"$(QTDIR)\include\QtDesigner" -I"$(QTDIR)\include\QtUiTools" -I"$(QTDIR)\include\QtCore" -I"$(QTDIR)\include\QtCore" -I"$(QTDIR)\include\QtGui" -I"$(QTDIR)\include\QtGui" -I"$(QTDIR)\include\QtXml" -I"$(QTDIR)\include\QtXml" -I"$(QTDIR)\include" -I"." -I"$(QTDIR)\tools\designer\interfaces" -I"$(QTDIR)\include\ActiveQt" -I".moc" -I"." -I$(QTDIR)\mkspecs\win32-msvc2005 -D_MSC_VER=1400 -DWIN32 ellipsoid_input.h -o .moc\moc_ellipsoid_input.cpp
+</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(QTDIR)\bin\moc.exe;ellipsoid_input.h;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.moc\moc_ellipsoid_input.cpp;%(Outputs)</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="filechooser.h">
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">MOC filechooser.h</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQTPLUGINS_EXPORTS -DQT_DLL -DQT_PLUGIN -DQT_XML_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -DQDESIGNER_EXPORT_WIDGETS -I"$(QTDIR)\include\QtDesigner" -I"$(QTDIR)\include\QtUiTools" -I"$(QTDIR)\include\QtCore" -I"$(QTDIR)\include\QtCore" -I"$(QTDIR)\include\QtGui" -I"$(QTDIR)\include\QtGui" -I"$(QTDIR)\include\QtXml" -I"$(QTDIR)\include\QtXml" -I"$(QTDIR)\include" -I"." -I"$(QTDIR)\tools\designer\interfaces" -I"$(QTDIR)\include\ActiveQt" -I".moc" -I"." -I$(QTDIR)\mkspecs\win32-msvc2005 -D_MSC_VER=1400 -DWIN32 filechooser.h -o .moc\moc_filechooser.cpp
+</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\moc.exe;filechooser.h;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.moc\moc_filechooser.cpp;%(Outputs)</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">MOC filechooser.h</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(QTDIR)\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQTPLUGINS_EXPORTS -DQT_DLL -DQT_PLUGIN -DQT_XML_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -DQDESIGNER_EXPORT_WIDGETS -I"$(QTDIR)\include\QtDesigner" -I"$(QTDIR)\include\QtUiTools" -I"$(QTDIR)\include\QtCore" -I"$(QTDIR)\include\QtCore" -I"$(QTDIR)\include\QtGui" -I"$(QTDIR)\include\QtGui" -I"$(QTDIR)\include\QtXml" -I"$(QTDIR)\include\QtXml" -I"$(QTDIR)\include" -I"." -I"$(QTDIR)\tools\designer\interfaces" -I"$(QTDIR)\include\ActiveQt" -I".moc" -I"." -I$(QTDIR)\mkspecs\win32-msvc2005 -D_MSC_VER=1400 -DWIN32 filechooser.h -o .moc\moc_filechooser.cpp
+</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(QTDIR)\bin\moc.exe;filechooser.h;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.moc\moc_filechooser.cpp;%(Outputs)</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MOC filechooser.h</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(QTDIR)\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQTPLUGINS_EXPORTS -DQT_DLL -DQT_NO_DEBUG -DQT_PLUGIN -DQT_XML_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -DQDESIGNER_EXPORT_WIDGETS -I"$(QTDIR)\include\QtDesigner" -I"$(QTDIR)\include\QtUiTools" -I"$(QTDIR)\include\QtCore" -I"$(QTDIR)\include\QtCore" -I"$(QTDIR)\include\QtGui" -I"$(QTDIR)\include\QtGui" -I"$(QTDIR)\include\QtXml" -I"$(QTDIR)\include\QtXml" -I"$(QTDIR)\include" -I"." -I"$(QTDIR)\tools\designer\interfaces" -I"$(QTDIR)\include\ActiveQt" -I".moc" -I"." -I$(QTDIR)\mkspecs\win32-msvc2005 -D_MSC_VER=1400 -DWIN32 filechooser.h -o .moc\moc_filechooser.cpp
+</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(QTDIR)\bin\moc.exe;filechooser.h;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.moc\moc_filechooser.cpp;%(Outputs)</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">MOC filechooser.h</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(QTDIR)\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQTPLUGINS_EXPORTS -DQT_DLL -DQT_NO_DEBUG -DQT_PLUGIN -DQT_XML_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -DQDESIGNER_EXPORT_WIDGETS -I"$(QTDIR)\include\QtDesigner" -I"$(QTDIR)\include\QtUiTools" -I"$(QTDIR)\include\QtCore" -I"$(QTDIR)\include\QtCore" -I"$(QTDIR)\include\QtGui" -I"$(QTDIR)\include\QtGui" -I"$(QTDIR)\include\QtXml" -I"$(QTDIR)\include\QtXml" -I"$(QTDIR)\include" -I"." -I"$(QTDIR)\tools\designer\interfaces" -I"$(QTDIR)\include\ActiveQt" -I".moc" -I"." -I$(QTDIR)\mkspecs\win32-msvc2005 -D_MSC_VER=1400 -DWIN32 filechooser.h -o .moc\moc_filechooser.cpp
+</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(QTDIR)\bin\moc.exe;filechooser.h;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.moc\moc_filechooser.cpp;%(Outputs)</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="group_selectors.h">
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">MOC group_selectors.h</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQTPLUGINS_EXPORTS -DQT_DLL -DQT_NO_DEBUG -DQT_PLUGIN -DQT_XML_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -DQDESIGNER_EXPORT_WIDGETS -I"$(QTDIR)\include\QtDesigner" -I"$(QTDIR)\include\QtUiTools" -I"$(QTDIR)\include\QtCore" -I"$(QTDIR)\include\QtCore" -I"$(QTDIR)\include\QtGui" -I"$(QTDIR)\include\QtGui" -I"$(QTDIR)\include\QtXml" -I"$(QTDIR)\include\QtXml" -I"$(QTDIR)\include" -I"." -I"$(QTDIR)\tools\designer\interfaces" -I"$(QTDIR)\include\ActiveQt" -I".moc" -I"." -D_MSC_VER=1400 -DWIN32 group_selectors.h -o .moc\moc_group_selectors.cpp
+</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\moc.exe;group_selectors.h;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.moc\moc_group_selectors.cpp;%(Outputs)</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">MOC group_selectors.h</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(QTDIR)\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQTPLUGINS_EXPORTS -DQT_DLL -DQT_NO_DEBUG -DQT_PLUGIN -DQT_XML_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -DQDESIGNER_EXPORT_WIDGETS -I"$(QTDIR)\include\QtDesigner" -I"$(QTDIR)\include\QtUiTools" -I"$(QTDIR)\include\QtCore" -I"$(QTDIR)\include\QtCore" -I"$(QTDIR)\include\QtGui" -I"$(QTDIR)\include\QtGui" -I"$(QTDIR)\include\QtXml" -I"$(QTDIR)\include\QtXml" -I"$(QTDIR)\include" -I"." -I"$(QTDIR)\tools\designer\interfaces" -I"$(QTDIR)\include\ActiveQt" -I".moc" -I"." -D_MSC_VER=1400 -DWIN32 group_selectors.h -o .moc\moc_group_selectors.cpp
+</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(QTDIR)\bin\moc.exe;group_selectors.h;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.moc\moc_group_selectors.cpp;%(Outputs)</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MOC group_selectors.h</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(QTDIR)\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQTPLUGINS_EXPORTS -DQT_DLL -DQT_NO_DEBUG -DQT_PLUGIN -DQT_XML_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -DQDESIGNER_EXPORT_WIDGETS -I"$(QTDIR)\include\QtDesigner" -I"$(QTDIR)\include\QtUiTools" -I"$(QTDIR)\include\QtCore" -I"$(QTDIR)\include\QtCore" -I"$(QTDIR)\include\QtGui" -I"$(QTDIR)\include\QtGui" -I"$(QTDIR)\include\QtXml" -I"$(QTDIR)\include\QtXml" -I"$(QTDIR)\include" -I"." -I"$(QTDIR)\tools\designer\interfaces" -I"$(QTDIR)\include\ActiveQt" -I".moc" -I"." -D_MSC_VER=1400 -DWIN32 group_selectors.h -o .moc\moc_group_selectors.cpp
+</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(QTDIR)\bin\moc.exe;group_selectors.h;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.moc\moc_group_selectors.cpp;%(Outputs)</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">MOC group_selectors.h</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(QTDIR)\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQTPLUGINS_EXPORTS -DQT_DLL -DQT_NO_DEBUG -DQT_PLUGIN -DQT_XML_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -DQDESIGNER_EXPORT_WIDGETS -I"$(QTDIR)\include\QtDesigner" -I"$(QTDIR)\include\QtUiTools" -I"$(QTDIR)\include\QtCore" -I"$(QTDIR)\include\QtCore" -I"$(QTDIR)\include\QtGui" -I"$(QTDIR)\include\QtGui" -I"$(QTDIR)\include\QtXml" -I"$(QTDIR)\include\QtXml" -I"$(QTDIR)\include" -I"." -I"$(QTDIR)\tools\designer\interfaces" -I"$(QTDIR)\include\ActiveQt" -I".moc" -I"." -D_MSC_VER=1400 -DWIN32 group_selectors.h -o .moc\moc_group_selectors.cpp
+</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(QTDIR)\bin\moc.exe;group_selectors.h;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.moc\moc_group_selectors.cpp;%(Outputs)</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="gstl_table.h">
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">MOC gstl_table.h</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQTPLUGINS_EXPORTS -DQT_DLL -DQT_PLUGIN -DQT_XML_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -DQDESIGNER_EXPORT_WIDGETS -I"$(QTDIR)\include\QtDesigner" -I"$(QTDIR)\include\QtUiTools" -I"$(QTDIR)\include\QtCore" -I"$(QTDIR)\include\QtCore" -I"$(QTDIR)\include\QtGui" -I"$(QTDIR)\include\QtGui" -I"$(QTDIR)\include\QtXml" -I"$(QTDIR)\include\QtXml" -I"$(QTDIR)\include" -I"." -I"$(QTDIR)\tools\designer\interfaces" -I"$(QTDIR)\include\ActiveQt" -I".moc" -I"." -I$(QTDIR)\mkspecs\win32-msvc2005 -D_MSC_VER=1400 -DWIN32 gstl_table.h -o .moc\moc_gstl_table.cpp
+</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\moc.exe;gstl_table.h;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.moc\moc_gstl_table.cpp;%(Outputs)</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">MOC gstl_table.h</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(QTDIR)\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQTPLUGINS_EXPORTS -DQT_DLL -DQT_PLUGIN -DQT_XML_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -DQDESIGNER_EXPORT_WIDGETS -I"$(QTDIR)\include\QtDesigner" -I"$(QTDIR)\include\QtUiTools" -I"$(QTDIR)\include\QtCore" -I"$(QTDIR)\include\QtCore" -I"$(QTDIR)\include\QtGui" -I"$(QTDIR)\include\QtGui" -I"$(QTDIR)\include\QtXml" -I"$(QTDIR)\include\QtXml" -I"$(QTDIR)\include" -I"." -I"$(QTDIR)\tools\designer\interfaces" -I"$(QTDIR)\include\ActiveQt" -I".moc" -I"." -I$(QTDIR)\mkspecs\win32-msvc2005 -D_MSC_VER=1400 -DWIN32 gstl_table.h -o .moc\moc_gstl_table.cpp
+</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(QTDIR)\bin\moc.exe;gstl_table.h;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.moc\moc_gstl_table.cpp;%(Outputs)</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MOC gstl_table.h</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(QTDIR)\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQTPLUGINS_EXPORTS -DQT_DLL -DQT_NO_DEBUG -DQT_PLUGIN -DQT_XML_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -DQDESIGNER_EXPORT_WIDGETS -I"$(QTDIR)\include\QtDesigner" -I"$(QTDIR)\include\QtUiTools" -I"$(QTDIR)\include\QtCore" -I"$(QTDIR)\include\QtCore" -I"$(QTDIR)\include\QtGui" -I"$(QTDIR)\include\QtGui" -I"$(QTDIR)\include\QtXml" -I"$(QTDIR)\include\QtXml" -I"$(QTDIR)\include" -I"." -I"$(QTDIR)\tools\designer\interfaces" -I"$(QTDIR)\include\ActiveQt" -I".moc" -I"." -I$(QTDIR)\mkspecs\win32-msvc2005 -D_MSC_VER=1400 -DWIN32 gstl_table.h -o .moc\moc_gstl_table.cpp
+</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(QTDIR)\bin\moc.exe;gstl_table.h;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.moc\moc_gstl_table.cpp;%(Outputs)</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">MOC gstl_table.h</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(QTDIR)\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQTPLUGINS_EXPORTS -DQT_DLL -DQT_NO_DEBUG -DQT_PLUGIN -DQT_XML_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -DQDESIGNER_EXPORT_WIDGETS -I"$(QTDIR)\include\QtDesigner" -I"$(QTDIR)\include\QtUiTools" -I"$(QTDIR)\include\QtCore" -I"$(QTDIR)\include\QtCore" -I"$(QTDIR)\include\QtGui" -I"$(QTDIR)\include\QtGui" -I"$(QTDIR)\include\QtXml" -I"$(QTDIR)\include\QtXml" -I"$(QTDIR)\include" -I"." -I"$(QTDIR)\tools\designer\interfaces" -I"$(QTDIR)\include\ActiveQt" -I".moc" -I"." -I$(QTDIR)\mkspecs\win32-msvc2005 -D_MSC_VER=1400 -DWIN32 gstl_table.h -o .moc\moc_gstl_table.cpp
+</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(QTDIR)\bin\moc.exe;gstl_table.h;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.moc\moc_gstl_table.cpp;%(Outputs)</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="gstl_widgets_plugin.h">
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">MOC gstl_widgets_plugin.h</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQTPLUGINS_EXPORTS -DQT_DLL -DQT_PLUGIN -DQT_XML_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -DQDESIGNER_EXPORT_WIDGETS -I"$(QTDIR)\include\QtDesigner" -I"$(QTDIR)\include\QtUiTools" -I"$(QTDIR)\include\QtCore" -I"$(QTDIR)\include\QtCore" -I"$(QTDIR)\include\QtGui" -I"$(QTDIR)\include\QtGui" -I"$(QTDIR)\include\QtXml" -I"$(QTDIR)\include\QtXml" -I"$(QTDIR)\include" -I"." -I"$(QTDIR)\tools\designer\interfaces" -I"$(QTDIR)\include\ActiveQt" -I".moc" -I"." -I$(QTDIR)\mkspecs\win32-msvc2005 -D_MSC_VER=1400 -DWIN32 gstl_widgets_plugin.h -o .moc\moc_gstl_widgets_plugin.cpp
+</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\moc.exe;gstl_widgets_plugin.h;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.moc\moc_gstl_widgets_plugin.cpp;%(Outputs)</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">MOC gstl_widgets_plugin.h</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(QTDIR)\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQTPLUGINS_EXPORTS -DQT_DLL -DQT_PLUGIN -DQT_XML_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -DQDESIGNER_EXPORT_WIDGETS -I"$(QTDIR)\include\QtDesigner" -I"$(QTDIR)\include\QtUiTools" -I"$(QTDIR)\include\QtCore" -I"$(QTDIR)\include\QtCore" -I"$(QTDIR)\include\QtGui" -I"$(QTDIR)\include\QtGui" -I"$(QTDIR)\include\QtXml" -I"$(QTDIR)\include\QtXml" -I"$(QTDIR)\include" -I"." -I"$(QTDIR)\tools\designer\interfaces" -I"$(QTDIR)\include\ActiveQt" -I".moc" -I"." -I$(QTDIR)\mkspecs\win32-msvc2005 -D_MSC_VER=1400 -DWIN32 gstl_widgets_plugin.h -o .moc\moc_gstl_widgets_plugin.cpp
+</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(QTDIR)\bin\moc.exe;gstl_widgets_plugin.h;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.moc\moc_gstl_widgets_plugin.cpp;%(Outputs)</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MOC gstl_widgets_plugin.h</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(QTDIR)\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQTPLUGINS_EXPORTS -DQT_DLL -DQT_NO_DEBUG -DQT_PLUGIN -DQT_XML_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -DQDESIGNER_EXPORT_WIDGETS -I"$(QTDIR)\include\QtDesigner" -I"$(QTDIR)\include\QtUiTools" -I"$(QTDIR)\include\QtCore" -I"$(QTDIR)\include\QtCore" -I"$(QTDIR)\include\QtGui" -I"$(QTDIR)\include\QtGui" -I"$(QTDIR)\include\QtXml" -I"$(QTDIR)\include\QtXml" -I"$(QTDIR)\include" -I"." -I"$(QTDIR)\tools\designer\interfaces" -I"$(QTDIR)\include\ActiveQt" -I".moc" -I"." -I$(QTDIR)\mkspecs\win32-msvc2005 -D_MSC_VER=1400 -DWIN32 gstl_widgets_plugin.h -o .moc\moc_gstl_widgets_plugin.cpp
+</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(QTDIR)\bin\moc.exe;gstl_widgets_plugin.h;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.moc\moc_gstl_widgets_plugin.cpp;%(Outputs)</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">MOC gstl_widgets_plugin.h</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(QTDIR)\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQTPLUGINS_EXPORTS -DQT_DLL -DQT_NO_DEBUG -DQT_PLUGIN -DQT_XML_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -DQDESIGNER_EXPORT_WIDGETS -I"$(QTDIR)\include\QtDesigner" -I"$(QTDIR)\include\QtUiTools" -I"$(QTDIR)\include\QtCore" -I"$(QTDIR)\include\QtCore" -I"$(QTDIR)\include\QtGui" -I"$(QTDIR)\include\QtGui" -I"$(QTDIR)\include\QtXml" -I"$(QTDIR)\include\QtXml" -I"$(QTDIR)\include" -I"." -I"$(QTDIR)\tools\designer\interfaces" -I"$(QTDIR)\include\ActiveQt" -I".moc" -I"." -I$(QTDIR)\mkspecs\win32-msvc2005 -D_MSC_VER=1400 -DWIN32 gstl_widgets_plugin.h -o .moc\moc_gstl_widgets_plugin.cpp
+</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(QTDIR)\bin\moc.exe;gstl_widgets_plugin.h;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.moc\moc_gstl_widgets_plugin.cpp;%(Outputs)</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="kriging_type_selector.h">
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">MOC kriging_type_selector.h</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQTPLUGINS_EXPORTS -DQT_DLL -DQT_PLUGIN -DQT_XML_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -DQDESIGNER_EXPORT_WIDGETS -I"$(QTDIR)\include\QtDesigner" -I"$(QTDIR)\include\QtUiTools" -I"$(QTDIR)\include\QtCore" -I"$(QTDIR)\include\QtCore" -I"$(QTDIR)\include\QtGui" -I"$(QTDIR)\include\QtGui" -I"$(QTDIR)\include\QtXml" -I"$(QTDIR)\include\QtXml" -I"$(QTDIR)\include" -I"." -I"$(QTDIR)\tools\designer\interfaces" -I"$(QTDIR)\include\ActiveQt" -I".moc" -I"." -I$(QTDIR)\mkspecs\win32-msvc2005 -D_MSC_VER=1400 -DWIN32 kriging_type_selector.h -o .moc\moc_kriging_type_selector.cpp
+</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\moc.exe;kriging_type_selector.h;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.moc\moc_kriging_type_selector.cpp;%(Outputs)</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">MOC kriging_type_selector.h</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(QTDIR)\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQTPLUGINS_EXPORTS -DQT_DLL -DQT_PLUGIN -DQT_XML_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -DQDESIGNER_EXPORT_WIDGETS -I"$(QTDIR)\include\QtDesigner" -I"$(QTDIR)\include\QtUiTools" -I"$(QTDIR)\include\QtCore" -I"$(QTDIR)\include\QtCore" -I"$(QTDIR)\include\QtGui" -I"$(QTDIR)\include\QtGui" -I"$(QTDIR)\include\QtXml" -I"$(QTDIR)\include\QtXml" -I"$(QTDIR)\include" -I"." -I"$(QTDIR)\tools\designer\interfaces" -I"$(QTDIR)\include\ActiveQt" -I".moc" -I"." -I$(QTDIR)\mkspecs\win32-msvc2005 -D_MSC_VER=1400 -DWIN32 kriging_type_selector.h -o .moc\moc_kriging_type_selector.cpp
+</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(QTDIR)\bin\moc.exe;kriging_type_selector.h;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.moc\moc_kriging_type_selector.cpp;%(Outputs)</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MOC kriging_type_selector.h</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(QTDIR)\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQTPLUGINS_EXPORTS -DQT_DLL -DQT_NO_DEBUG -DQT_PLUGIN -DQT_XML_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -DQDESIGNER_EXPORT_WIDGETS -I"$(QTDIR)\include\QtDesigner" -I"$(QTDIR)\include\QtUiTools" -I"$(QTDIR)\include\QtCore" -I"$(QTDIR)\include\QtCore" -I"$(QTDIR)\include\QtGui" -I"$(QTDIR)\include\QtGui" -I"$(QTDIR)\include\QtXml" -I"$(QTDIR)\include\QtXml" -I"$(QTDIR)\include" -I"." -I"$(QTDIR)\tools\designer\interfaces" -I"$(QTDIR)\include\ActiveQt" -I".moc" -I"." -I$(QTDIR)\mkspecs\win32-msvc2005 -D_MSC_VER=1400 -DWIN32 kriging_type_selector.h -o .moc\moc_kriging_type_selector.cpp
+</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(QTDIR)\bin\moc.exe;kriging_type_selector.h;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.moc\moc_kriging_type_selector.cpp;%(Outputs)</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">MOC kriging_type_selector.h</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(QTDIR)\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQTPLUGINS_EXPORTS -DQT_DLL -DQT_NO_DEBUG -DQT_PLUGIN -DQT_XML_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -DQDESIGNER_EXPORT_WIDGETS -I"$(QTDIR)\include\QtDesigner" -I"$(QTDIR)\include\QtUiTools" -I"$(QTDIR)\include\QtCore" -I"$(QTDIR)\include\QtCore" -I"$(QTDIR)\include\QtGui" -I"$(QTDIR)\include\QtGui" -I"$(QTDIR)\include\QtXml" -I"$(QTDIR)\include\QtXml" -I"$(QTDIR)\include" -I"." -I"$(QTDIR)\tools\designer\interfaces" -I"$(QTDIR)\include\ActiveQt" -I".moc" -I"." -I$(QTDIR)\mkspecs\win32-msvc2005 -D_MSC_VER=1400 -DWIN32 kriging_type_selector.h -o .moc\moc_kriging_type_selector.cpp
+</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(QTDIR)\bin\moc.exe;kriging_type_selector.h;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.moc\moc_kriging_type_selector.cpp;%(Outputs)</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="kriging_type_selector_base.h">
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">MOC kriging_type_selector_base.h</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQTPLUGINS_EXPORTS -DQT_DLL -DQT_PLUGIN -DQT_XML_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -DQDESIGNER_EXPORT_WIDGETS -I"$(QTDIR)\include\QtDesigner" -I"$(QTDIR)\include\QtUiTools" -I"$(QTDIR)\include\QtCore" -I"$(QTDIR)\include\QtCore" -I"$(QTDIR)\include\QtGui" -I"$(QTDIR)\include\QtGui" -I"$(QTDIR)\include\QtXml" -I"$(QTDIR)\include\QtXml" -I"$(QTDIR)\include" -I"." -I"$(QTDIR)\tools\designer\interfaces" -I"$(QTDIR)\include\ActiveQt" -I".moc" -I"." -I$(QTDIR)\mkspecs\win32-msvc2005 -D_MSC_VER=1400 -DWIN32 kriging_type_selector_base.h -o .moc\moc_kriging_type_selector_base.cpp
+</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\moc.exe;kriging_type_selector_base.h;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.moc\moc_kriging_type_selector_base.cpp;%(Outputs)</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">MOC kriging_type_selector_base.h</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(QTDIR)\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQTPLUGINS_EXPORTS -DQT_DLL -DQT_PLUGIN -DQT_XML_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -DQDESIGNER_EXPORT_WIDGETS -I"$(QTDIR)\include\QtDesigner" -I"$(QTDIR)\include\QtUiTools" -I"$(QTDIR)\include\QtCore" -I"$(QTDIR)\include\QtCore" -I"$(QTDIR)\include\QtGui" -I"$(QTDIR)\include\QtGui" -I"$(QTDIR)\include\QtXml" -I"$(QTDIR)\include\QtXml" -I"$(QTDIR)\include" -I"." -I"$(QTDIR)\tools\designer\interfaces" -I"$(QTDIR)\include\ActiveQt" -I".moc" -I"." -I$(QTDIR)\mkspecs\win32-msvc2005 -D_MSC_VER=1400 -DWIN32 kriging_type_selector_base.h -o .moc\moc_kriging_type_selector_base.cpp
+</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(QTDIR)\bin\moc.exe;kriging_type_selector_base.h;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.moc\moc_kriging_type_selector_base.cpp;%(Outputs)</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MOC kriging_type_selector_base.h</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(QTDIR)\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQTPLUGINS_EXPORTS -DQT_DLL -DQT_NO_DEBUG -DQT_PLUGIN -DQT_XML_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -DQDESIGNER_EXPORT_WIDGETS -I"$(QTDIR)\include\QtDesigner" -I"$(QTDIR)\include\QtUiTools" -I"$(QTDIR)\include\QtCore" -I"$(QTDIR)\include\QtCore" -I"$(QTDIR)\include\QtGui" -I"$(QTDIR)\include\QtGui" -I"$(QTDIR)\include\QtXml" -I"$(QTDIR)\include\QtXml" -I"$(QTDIR)\include" -I"." -I"$(QTDIR)\tools\designer\interfaces" -I"$(QTDIR)\include\ActiveQt" -I".moc" -I"." -I$(QTDIR)\mkspecs\win32-msvc2005 -D_MSC_VER=1400 -DWIN32 kriging_type_selector_base.h -o .moc\moc_kriging_type_selector_base.cpp
+</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(QTDIR)\bin\moc.exe;kriging_type_selector_base.h;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.moc\moc_kriging_type_selector_base.cpp;%(Outputs)</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">MOC kriging_type_selector_base.h</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(QTDIR)\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQTPLUGINS_EXPORTS -DQT_DLL -DQT_NO_DEBUG -DQT_PLUGIN -DQT_XML_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -DQDESIGNER_EXPORT_WIDGETS -I"$(QTDIR)\include\QtDesigner" -I"$(QTDIR)\include\QtUiTools" -I"$(QTDIR)\include\QtCore" -I"$(QTDIR)\include\QtCore" -I"$(QTDIR)\include\QtGui" -I"$(QTDIR)\include\QtGui" -I"$(QTDIR)\include\QtXml" -I"$(QTDIR)\include\QtXml" -I"$(QTDIR)\include" -I"." -I"$(QTDIR)\tools\designer\interfaces" -I"$(QTDIR)\include\ActiveQt" -I".moc" -I"." -I$(QTDIR)\mkspecs\win32-msvc2005 -D_MSC_VER=1400 -DWIN32 kriging_type_selector_base.h -o .moc\moc_kriging_type_selector_base.cpp
+</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(QTDIR)\bin\moc.exe;kriging_type_selector_base.h;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.moc\moc_kriging_type_selector_base.cpp;%(Outputs)</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="neighborhood_filter_input.h">
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">MOC neighborhood_filter_input.cpp</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQTPLUGINS_EXPORTS -DQT_DLL -DQT_PLUGIN -DQT_XML_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -DQDESIGNER_EXPORT_WIDGETS -I"$(QTDIR)\include\QtDesigner" -I"$(QTDIR)\include\QtUiTools" -I"$(QTDIR)\include\QtCore" -I"$(QTDIR)\include\QtGui" -I"$(QTDIR)\include\QtXml" -I"$(QTDIR)\include" -I"." -I"$(QTDIR)\tools\designer\interfaces" -I"$(QTDIR)\include\ActiveQt" -I".moc" -I"." -D_MSC_VER=1400 -DWIN32 neighborhood_filter_input.h -o .moc\moc_neighborhood_filter_input.cpp
+</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\moc.exe;neighborhood_filter_input.h;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.moc\moc_neighborhood_filter_input.cpp;%(Outputs)</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">MOC neighborhood_filter_input.cpp</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(QTDIR)\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQTPLUGINS_EXPORTS -DQT_DLL -DQT_PLUGIN -DQT_XML_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -DQDESIGNER_EXPORT_WIDGETS -I"$(QTDIR)\include\QtDesigner" -I"$(QTDIR)\include\QtUiTools" -I"$(QTDIR)\include\QtCore" -I"$(QTDIR)\include\QtGui" -I"$(QTDIR)\include\QtXml" -I"$(QTDIR)\include" -I"." -I"$(QTDIR)\tools\designer\interfaces" -I"$(QTDIR)\include\ActiveQt" -I".moc" -I"." -D_MSC_VER=1400 -DWIN32 neighborhood_filter_input.h -o .moc\moc_neighborhood_filter_input.cpp
+</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(QTDIR)\bin\moc.exe;neighborhood_filter_input.h;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.moc\moc_neighborhood_filter_input.cpp;%(Outputs)</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MOC neighborhood_filter_input.cpp</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(QTDIR)\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQTPLUGINS_EXPORTS -DQT_DLL -DQT_NO_DEBUG -DQT_PLUGIN -DQT_XML_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -DQDESIGNER_EXPORT_WIDGETS -I"$(QTDIR)\include\QtDesigner" -I"$(QTDIR)\include\QtUiTools" -I"$(QTDIR)\include\QtCore" -I"$(QTDIR)\include\QtGui" -I"$(QTDIR)\include\QtXml" -I"$(QTDIR)\include" -I"." -I"$(QTDIR)\tools\designer\interfaces" -I"$(QTDIR)\include\ActiveQt" -I".moc" -I"." -D_MSC_VER=1400 -DWIN32 neighborhood_filter_input.h -o .moc\moc_neighborhood_filter_input.cpp
+</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(QTDIR)\bin\moc.exe;neighborhood_filter_input.h;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.moc\moc_neighborhood_filter_input.cpp;%(Outputs)</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">MOC neighborhood_filter_input.cpp</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(QTDIR)\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQTPLUGINS_EXPORTS -DQT_DLL -DQT_NO_DEBUG -DQT_PLUGIN -DQT_XML_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -DQDESIGNER_EXPORT_WIDGETS -I"$(QTDIR)\include\QtDesigner" -I"$(QTDIR)\include\QtUiTools" -I"$(QTDIR)\include\QtCore" -I"$(QTDIR)\include\QtGui" -I"$(QTDIR)\include\QtXml" -I"$(QTDIR)\include" -I"." -I"$(QTDIR)\tools\designer\interfaces" -I"$(QTDIR)\include\ActiveQt" -I".moc" -I"." -D_MSC_VER=1400 -DWIN32 neighborhood_filter_input.h -o .moc\moc_neighborhood_filter_input.cpp
+</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(QTDIR)\bin\moc.exe;neighborhood_filter_input.h;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.moc\moc_neighborhood_filter_input.cpp;%(Outputs)</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="non_param_cdf_input.h">
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">MOC non_param_cdf_input.h</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQTPLUGINS_EXPORTS -DQT_DLL -DQT_PLUGIN -DQT_XML_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -DQDESIGNER_EXPORT_WIDGETS -I"$(QTDIR)\include\QtDesigner" -I"$(QTDIR)\include\QtUiTools" -I"$(QTDIR)\include\QtCore" -I"$(QTDIR)\include\QtCore" -I"$(QTDIR)\include\QtGui" -I"$(QTDIR)\include\QtGui" -I"$(QTDIR)\include\QtXml" -I"$(QTDIR)\include\QtXml" -I"$(QTDIR)\include" -I"." -I"$(QTDIR)\tools\designer\interfaces" -I"$(QTDIR)\include\ActiveQt" -I".moc" -I"." -I$(QTDIR)\mkspecs\win32-msvc2005 -D_MSC_VER=1400 -DWIN32 non_param_cdf_input.h -o .moc\moc_non_param_cdf_input.cpp
+</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\moc.exe;non_param_cdf_input.h;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.moc\moc_non_param_cdf_input.cpp;%(Outputs)</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">MOC non_param_cdf_input.h</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(QTDIR)\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQTPLUGINS_EXPORTS -DQT_DLL -DQT_PLUGIN -DQT_XML_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -DQDESIGNER_EXPORT_WIDGETS -I"$(QTDIR)\include\QtDesigner" -I"$(QTDIR)\include\QtUiTools" -I"$(QTDIR)\include\QtCore" -I"$(QTDIR)\include\QtCore" -I"$(QTDIR)\include\QtGui" -I"$(QTDIR)\include\QtGui" -I"$(QTDIR)\include\QtXml" -I"$(QTDIR)\include\QtXml" -I"$(QTDIR)\include" -I"." -I"$(QTDIR)\tools\designer\interfaces" -I"$(QTDIR)\include\ActiveQt" -I".moc" -I"." -I$(QTDIR)\mkspecs\win32-msvc2005 -D_MSC_VER=1400 -DWIN32 non_param_cdf_input.h -o .moc\moc_non_param_cdf_input.cpp
+</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(QTDIR)\bin\moc.exe;non_param_cdf_input.h;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.moc\moc_non_param_cdf_input.cpp;%(Outputs)</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MOC non_param_cdf_input.h</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(QTDIR)\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQTPLUGINS_EXPORTS -DQT_DLL -DQT_NO_DEBUG -DQT_PLUGIN -DQT_XML_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -DQDESIGNER_EXPORT_WIDGETS -I"$(QTDIR)\include\QtDesigner" -I"$(QTDIR)\include\QtUiTools" -I"$(QTDIR)\include\QtCore" -I"$(QTDIR)\include\QtCore" -I"$(QTDIR)\include\QtGui" -I"$(QTDIR)\include\QtGui" -I"$(QTDIR)\include\QtXml" -I"$(QTDIR)\include\QtXml" -I"$(QTDIR)\include" -I"." -I"$(QTDIR)\tools\designer\interfaces" -I"$(QTDIR)\include\ActiveQt" -I".moc" -I"." -I$(QTDIR)\mkspecs\win32-msvc2005 -D_MSC_VER=1400 -DWIN32 non_param_cdf_input.h -o .moc\moc_non_param_cdf_input.cpp
+</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(QTDIR)\bin\moc.exe;non_param_cdf_input.h;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.moc\moc_non_param_cdf_input.cpp;%(Outputs)</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">MOC non_param_cdf_input.h</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(QTDIR)\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQTPLUGINS_EXPORTS -DQT_DLL -DQT_NO_DEBUG -DQT_PLUGIN -DQT_XML_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -DQDESIGNER_EXPORT_WIDGETS -I"$(QTDIR)\include\QtDesigner" -I"$(QTDIR)\include\QtUiTools" -I"$(QTDIR)\include\QtCore" -I"$(QTDIR)\include\QtCore" -I"$(QTDIR)\include\QtGui" -I"$(QTDIR)\include\QtGui" -I"$(QTDIR)\include\QtXml" -I"$(QTDIR)\include\QtXml" -I"$(QTDIR)\include" -I"." -I"$(QTDIR)\tools\designer\interfaces" -I"$(QTDIR)\include\ActiveQt" -I".moc" -I"." -I$(QTDIR)\mkspecs\win32-msvc2005 -D_MSC_VER=1400 -DWIN32 non_param_cdf_input.h -o .moc\moc_non_param_cdf_input.cpp
+</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(QTDIR)\bin\moc.exe;non_param_cdf_input.h;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.moc\moc_non_param_cdf_input.cpp;%(Outputs)</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="selectors.h">
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">MOC selectors.h</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQTPLUGINS_EXPORTS -DQT_DLL -DQT_PLUGIN -DQT_XML_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -DQDESIGNER_EXPORT_WIDGETS -I"$(QTDIR)\include\QtDesigner" -I"$(QTDIR)\include\QtUiTools" -I"$(QTDIR)\include\QtCore" -I"$(QTDIR)\include\QtCore" -I"$(QTDIR)\include\QtGui" -I"$(QTDIR)\include\QtGui" -I"$(QTDIR)\include\QtXml" -I"$(QTDIR)\include\QtXml" -I"$(QTDIR)\include" -I"." -I"$(QTDIR)\tools\designer\interfaces" -I"$(QTDIR)\include\ActiveQt" -I".moc" -I"." -I$(QTDIR)\mkspecs\win32-msvc2005 -D_MSC_VER=1400 -DWIN32 selectors.h -o .moc\moc_selectors.cpp
+</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\moc.exe;selectors.h;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.moc\moc_selectors.cpp;%(Outputs)</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">MOC selectors.h</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(QTDIR)\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQTPLUGINS_EXPORTS -DQT_DLL -DQT_PLUGIN -DQT_XML_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -DQDESIGNER_EXPORT_WIDGETS -I"$(QTDIR)\include\QtDesigner" -I"$(QTDIR)\include\QtUiTools" -I"$(QTDIR)\include\QtCore" -I"$(QTDIR)\include\QtCore" -I"$(QTDIR)\include\QtGui" -I"$(QTDIR)\include\QtGui" -I"$(QTDIR)\include\QtXml" -I"$(QTDIR)\include\QtXml" -I"$(QTDIR)\include" -I"." -I"$(QTDIR)\tools\designer\interfaces" -I"$(QTDIR)\include\ActiveQt" -I".moc" -I"." -I$(QTDIR)\mkspecs\win32-msvc2005 -D_MSC_VER=1400 -DWIN32 selectors.h -o .moc\moc_selectors.cpp
+</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(QTDIR)\bin\moc.exe;selectors.h;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.moc\moc_selectors.cpp;%(Outputs)</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MOC selectors.h</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(QTDIR)\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQTPLUGINS_EXPORTS -DQT_DLL -DQT_NO_DEBUG -DQT_PLUGIN -DQT_XML_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -DQDESIGNER_EXPORT_WIDGETS -I"$(QTDIR)\include\QtDesigner" -I"$(QTDIR)\include\QtUiTools" -I"$(QTDIR)\include\QtCore" -I"$(QTDIR)\include\QtCore" -I"$(QTDIR)\include\QtGui" -I"$(QTDIR)\include\QtGui" -I"$(QTDIR)\include\QtXml" -I"$(QTDIR)\include\QtXml" -I"$(QTDIR)\include" -I"." -I"$(QTDIR)\tools\designer\interfaces" -I"$(QTDIR)\include\ActiveQt" -I".moc" -I"." -I$(QTDIR)\mkspecs\win32-msvc2005 -D_MSC_VER=1400 -DWIN32 selectors.h -o .moc\moc_selectors.cpp
+</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(QTDIR)\bin\moc.exe;selectors.h;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.moc\moc_selectors.cpp;%(Outputs)</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">MOC selectors.h</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(QTDIR)\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQTPLUGINS_EXPORTS -DQT_DLL -DQT_NO_DEBUG -DQT_PLUGIN -DQT_XML_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -DQDESIGNER_EXPORT_WIDGETS -I"$(QTDIR)\include\QtDesigner" -I"$(QTDIR)\include\QtUiTools" -I"$(QTDIR)\include\QtCore" -I"$(QTDIR)\include\QtCore" -I"$(QTDIR)\include\QtGui" -I"$(QTDIR)\include\QtGui" -I"$(QTDIR)\include\QtXml" -I"$(QTDIR)\include\QtXml" -I"$(QTDIR)\include" -I"." -I"$(QTDIR)\tools\designer\interfaces" -I"$(QTDIR)\include\ActiveQt" -I".moc" -I"." -I$(QTDIR)\mkspecs\win32-msvc2005 -D_MSC_VER=1400 -DWIN32 selectors.h -o .moc\moc_selectors.cpp
+</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(QTDIR)\bin\moc.exe;selectors.h;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.moc\moc_selectors.cpp;%(Outputs)</Outputs>
+    </CustomBuild>
+    <ClInclude Include="icons\selectors_icons.h" />
+    <CustomBuild Include="variogram_input.h">
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">MOC variogram_input.h</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQTPLUGINS_EXPORTS -DQT_DLL -DQT_PLUGIN -DQT_XML_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -DQDESIGNER_EXPORT_WIDGETS -I"$(QTDIR)\include\QtDesigner" -I"$(QTDIR)\include\QtUiTools" -I"$(QTDIR)\include\QtCore" -I"$(QTDIR)\include\QtCore" -I"$(QTDIR)\include\QtGui" -I"$(QTDIR)\include\QtGui" -I"$(QTDIR)\include\QtXml" -I"$(QTDIR)\include\QtXml" -I"$(QTDIR)\include" -I"." -I"$(QTDIR)\tools\designer\interfaces" -I"$(QTDIR)\include\ActiveQt" -I".moc" -I"." -I$(QTDIR)\mkspecs\win32-msvc2005 -D_MSC_VER=1400 -DWIN32 variogram_input.h -o .moc\moc_variogram_input.cpp
+</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\moc.exe;variogram_input.h;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.moc\moc_variogram_input.cpp;%(Outputs)</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">MOC variogram_input.h</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(QTDIR)\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQTPLUGINS_EXPORTS -DQT_DLL -DQT_PLUGIN -DQT_XML_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -DQDESIGNER_EXPORT_WIDGETS -I"$(QTDIR)\include\QtDesigner" -I"$(QTDIR)\include\QtUiTools" -I"$(QTDIR)\include\QtCore" -I"$(QTDIR)\include\QtCore" -I"$(QTDIR)\include\QtGui" -I"$(QTDIR)\include\QtGui" -I"$(QTDIR)\include\QtXml" -I"$(QTDIR)\include\QtXml" -I"$(QTDIR)\include" -I"." -I"$(QTDIR)\tools\designer\interfaces" -I"$(QTDIR)\include\ActiveQt" -I".moc" -I"." -I$(QTDIR)\mkspecs\win32-msvc2005 -D_MSC_VER=1400 -DWIN32 variogram_input.h -o .moc\moc_variogram_input.cpp
+</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(QTDIR)\bin\moc.exe;variogram_input.h;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.moc\moc_variogram_input.cpp;%(Outputs)</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MOC variogram_input.h</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(QTDIR)\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQTPLUGINS_EXPORTS -DQT_DLL -DQT_NO_DEBUG -DQT_PLUGIN -DQT_XML_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -DQDESIGNER_EXPORT_WIDGETS -I"$(QTDIR)\include\QtDesigner" -I"$(QTDIR)\include\QtUiTools" -I"$(QTDIR)\include\QtCore" -I"$(QTDIR)\include\QtCore" -I"$(QTDIR)\include\QtGui" -I"$(QTDIR)\include\QtGui" -I"$(QTDIR)\include\QtXml" -I"$(QTDIR)\include\QtXml" -I"$(QTDIR)\include" -I"." -I"$(QTDIR)\tools\designer\interfaces" -I"$(QTDIR)\include\ActiveQt" -I".moc" -I"." -I$(QTDIR)\mkspecs\win32-msvc2005 -D_MSC_VER=1400 -DWIN32 variogram_input.h -o .moc\moc_variogram_input.cpp
+</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(QTDIR)\bin\moc.exe;variogram_input.h;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.moc\moc_variogram_input.cpp;%(Outputs)</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">MOC variogram_input.h</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(QTDIR)\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQTPLUGINS_EXPORTS -DQT_DLL -DQT_NO_DEBUG -DQT_PLUGIN -DQT_XML_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -DQDESIGNER_EXPORT_WIDGETS -I"$(QTDIR)\include\QtDesigner" -I"$(QTDIR)\include\QtUiTools" -I"$(QTDIR)\include\QtCore" -I"$(QTDIR)\include\QtCore" -I"$(QTDIR)\include\QtGui" -I"$(QTDIR)\include\QtGui" -I"$(QTDIR)\include\QtXml" -I"$(QTDIR)\include\QtXml" -I"$(QTDIR)\include" -I"." -I"$(QTDIR)\tools\designer\interfaces" -I"$(QTDIR)\include\ActiveQt" -I".moc" -I"." -I$(QTDIR)\mkspecs\win32-msvc2005 -D_MSC_VER=1400 -DWIN32 variogram_input.h -o .moc\moc_variogram_input.cpp
+</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(QTDIR)\bin\moc.exe;variogram_input.h;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.moc\moc_variogram_input.cpp;%(Outputs)</Outputs>
+    </CustomBuild>
+    <ClInclude Include="ui_order_properties_dialog.h" />
+    <ClInclude Include="ui_variogram_input_base.h" />
+    <ClInclude Include="ui_variogram_structure_base.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="order_properties_dialog.ui">
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">UIC order_properties_dialog.ui</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\uic.exe order_properties_dialog.ui -o ui_order_properties_dialog.h
+</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\uic.exe;order_properties_dialog.ui;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">ui_order_properties_dialog.h;%(Outputs)</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">UIC order_properties_dialog.ui</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(QTDIR)\bin\uic.exe order_properties_dialog.ui -o ui_order_properties_dialog.h
+</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(QTDIR)\bin\uic.exe;order_properties_dialog.ui;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">ui_order_properties_dialog.h;%(Outputs)</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">UIC order_properties_dialog.ui</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(QTDIR)\bin\uic.exe order_properties_dialog.ui -o ui_order_properties_dialog.h
+</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(QTDIR)\bin\uic.exe;order_properties_dialog.ui;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">ui_order_properties_dialog.h;%(Outputs)</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">UIC order_properties_dialog.ui</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(QTDIR)\bin\uic.exe order_properties_dialog.ui -o ui_order_properties_dialog.h
+</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(QTDIR)\bin\uic.exe;order_properties_dialog.ui;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">ui_order_properties_dialog.h;%(Outputs)</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="variogram_input_base.ui">
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">UIC variogram_input_base.ui</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\uic.exe variogram_input_base.ui -o ui_variogram_input_base.h
+</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\uic.exe;variogram_input_base.ui;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">ui_variogram_input_base.h;%(Outputs)</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">UIC variogram_input_base.ui</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(QTDIR)\bin\uic.exe variogram_input_base.ui -o ui_variogram_input_base.h
+</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(QTDIR)\bin\uic.exe;variogram_input_base.ui;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">ui_variogram_input_base.h;%(Outputs)</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">UIC variogram_input_base.ui</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(QTDIR)\bin\uic.exe variogram_input_base.ui -o ui_variogram_input_base.h
+</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(QTDIR)\bin\uic.exe;variogram_input_base.ui;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">ui_variogram_input_base.h;%(Outputs)</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">UIC variogram_input_base.ui</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(QTDIR)\bin\uic.exe variogram_input_base.ui -o ui_variogram_input_base.h
+</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(QTDIR)\bin\uic.exe;variogram_input_base.ui;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">ui_variogram_input_base.h;%(Outputs)</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="variogram_structure_base.ui">
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">UIC variogram_structure_base.ui</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\uic.exe variogram_structure_base.ui -o ui_variogram_structure_base.h
+</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\uic.exe;variogram_structure_base.ui;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">ui_variogram_structure_base.h;%(Outputs)</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">UIC variogram_structure_base.ui</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(QTDIR)\bin\uic.exe variogram_structure_base.ui -o ui_variogram_structure_base.h
+</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(QTDIR)\bin\uic.exe;variogram_structure_base.ui;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">ui_variogram_structure_base.h;%(Outputs)</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">UIC variogram_structure_base.ui</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(QTDIR)\bin\uic.exe variogram_structure_base.ui -o ui_variogram_structure_base.h
+</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(QTDIR)\bin\uic.exe;variogram_structure_base.ui;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">ui_variogram_structure_base.h;%(Outputs)</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">UIC variogram_structure_base.ui</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(QTDIR)\bin\uic.exe variogram_structure_base.ui -o ui_variogram_structure_base.h
+</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(QTDIR)\bin\uic.exe;variogram_structure_base.ui;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">ui_variogram_structure_base.h;%(Outputs)</Outputs>
+    </CustomBuild>
+    <None Include="icons\down.png" />
+    <CustomBuild Include="icons.qrc">
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">RCC icons.qrc</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\rcc.exe -name icons icons.qrc -o .rcc\qrc_icons.cpp
+</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\rcc.exe;icons.qrc;icons\down.png;icons\left.png;icons\right.png;icons\up.png;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.rcc\qrc_icons.cpp;%(Outputs)</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">RCC icons.qrc</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(QTDIR)\bin\rcc.exe -name icons icons.qrc -o .rcc\qrc_icons.cpp
+</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(QTDIR)\bin\rcc.exe;icons.qrc;icons\down.png;icons\left.png;icons\right.png;icons\up.png;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.rcc\qrc_icons.cpp;%(Outputs)</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">RCC icons.qrc</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(QTDIR)\bin\rcc.exe -name icons icons.qrc -o .rcc\qrc_icons.cpp
+</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(QTDIR)\bin\rcc.exe;icons.qrc;icons\down.png;icons\left.png;icons\right.png;icons\up.png;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.rcc\qrc_icons.cpp;%(Outputs)</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">RCC icons.qrc</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(QTDIR)\bin\rcc.exe -name icons icons.qrc -o .rcc\qrc_icons.cpp
+</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(QTDIR)\bin\rcc.exe;icons.qrc;icons\down.png;icons\left.png;icons\right.png;icons\up.png;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.rcc\qrc_icons.cpp;%(Outputs)</Outputs>
+    </CustomBuild>
+    <None Include="icons\left.png" />
+    <None Include="icons\right.png" />
+    <None Include="icons\up.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\appli\appli.vcxproj">
+      <Project>{63ca8d00-3af4-4755-85cb-deea94742de1}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\..\utils\utils.vcxproj">
+      <Project>{c52740f0-2a21-4416-997a-ac11d019b75f}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

@@ -33,6 +33,7 @@
 #include <algorithm>
 #include <stdio.h>
 #include <QDomElement>
+#include <QFile>
 
 const float GsTLGridProperty::no_data_value = -9966699;
 
@@ -53,7 +54,8 @@ accessor_ = new DiskAccessor( size, name, in_filename );
 GsTLGridProperty::~GsTLGridProperty() {
 	std::vector<GsTLGridPropertyGroup*> groups = this->groups();
 	for(int i=0; i<groups.size(); ++i ) {
-		this->remove_group_membership(groups[i]->name());
+    groups[i]->remove_property(this);
+		//this->remove_group_membership(groups[i]->name());
 	}
   delete accessor_;
 }
@@ -348,7 +350,7 @@ DiskAccessor::DiskAccessor( GsTLInt size, const std::string& filename,
   }
   else {
     // write arbitrary values
-    float arbitrary = -9966699;
+    float arbitrary = GsTLGridProperty::no_data_value;
     for(GsTLInt i=0; i< size; i++ )
       cache_stream_.write( (char*) &arbitrary, 1 );
   }
@@ -446,20 +448,25 @@ DiskAccessor::DiskAccessor( GsTLInt size, const std::string& filename,
 
 	  cache_filename_ = DiskAccessor::cache_filename( filename );
 
+    QFile file(in_filename.c_str());
+    file.copy(cache_filename_.c_str());
+/*
 	  // if the file already exists, erase its content by opening it in write mode
 	  // (I don't know any other easy way to do that...)
 	  std::ofstream eraser( cache_filename_.c_str() );
 	  eraser.close();
-
+    close_cache_stream();
 	  // Open a stream to the cache file in read/write mode
 	  cache_stream_.open( cache_filename_.c_str(),
 			      std::ios::in | std::ios::out | std::ios::binary );
+	 // cache_stream_.open( cache_filename_.c_str(),
+		//	                  std::ios::out | std::ios::binary );
 	  if( !cache_stream_ ) {
 	    GsTLcerr << "Can't write temporary file. Check that the directory is writable\n"
 	             << "and that there is enough disk space left" << gstlIO::end;
 	  }
 
-
+    */
 	  flags_position_begin_ = static_cast<long int>( sizeof( float ) ) *
 	                          static_cast<long int>( size );
 
@@ -473,19 +480,36 @@ DiskAccessor::DiskAccessor( GsTLInt size, const std::string& filename,
 	  val_buffer_ = new float[buffer_size_];
 	  flags_buffer_ = new bool[buffer_size_];
 
-
+    /*
 	  std::fstream in_stream(in_filename.c_str());
 
 	  // If property values or flags were supplied, write them to file
 	  if( !in_stream.bad() ) {
-	  	cache_stream_ << in_stream.rdbuf();
-//	    long int remaining = static_cast<long int>( size_ ) *
-//	                         static_cast<long int>( sizeof(float) );
-//	    cache_stream_.write( (char*) in_stream., remaining );
+      in_stream.seekg(0);
+
+  //    long int remaining = size*sizeof(float);
+  //    float* values_ = new(std::nothrow) float[size]; 
+      //float* values_ = new float[size];
+  //    in_stream.read( (char*) values_, remaining );
+
+ 
+ //     float val;
+ //     for(int i=0; i< size; ++i) {
+        //in_stream>>val;
+      //  in_stream.read( (char*)&val, sizeof(float));
+       // cache_stream_.write((char*)&val, sizeof(float));
+       // cache_stream_.write((char*)&values_[i], sizeof(float));
+        //cache_stream_<<values_[i];
+ //     }
+  
+      //For some reason this does not work; some data are not imported;
+
+	  	cache_stream_ << in_stream.rdbuf();  // 
+
 	  }
 	  else {
 	    // write arbitrary values
-	    float arbitrary = -9966699;
+      float arbitrary = GsTLGridProperty::no_data_value;
 	    for(GsTLInt i=0; i< size; i++ )
 	      cache_stream_.write( (char*) &arbitrary, 1 );
 	  }
@@ -503,6 +527,8 @@ DiskAccessor::DiskAccessor( GsTLInt size, const std::string& filename,
 	  }
 
 	  close_cache_stream();
+    in_stream.close();
+    */
 
 }
 

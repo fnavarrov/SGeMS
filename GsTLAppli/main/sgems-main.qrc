@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/sgems-main">
+        <file>new_splash2-beta.bmp</file>
+        <file>new_icon6_32x32.bmp</file>
+    </qresource>
+</RCC>

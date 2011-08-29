@@ -153,8 +153,8 @@ class GUI_DECL QSP_application : public QMainWindow {
   void show_script_editor();
   void run_script();
 
-  void about_slot();
-  void about_qt() { QApplication::aboutQt(); }
+  void about_sgems();
+  void about_version();
   void quit_slot();
   void save_app_preferences();
 
@@ -205,14 +205,13 @@ class GUI_DECL QSP_application : public QMainWindow {
 }; 
  
 
-
 //-----------------------------------------------
 /** Dialog box to display about sgems 
  */
-class GUI_DECL About_sgems : public QDialog
+class GUI_DECL About_sgems_version : public QDialog
 {
 public:
-  About_sgems(QWidget * parent = 0);
+  About_sgems_version(QWidget * parent = 0);
   QSize picSize() { return _pixmap.size(); }
 protected:
   virtual void paintEvent(QPaintEvent *);
@@ -221,6 +220,9 @@ private:
   QPixmap _pixmap;
   
 };
+
+
+
 
 //-----------------------------------------------
 /** Dialog box to save a grid. 

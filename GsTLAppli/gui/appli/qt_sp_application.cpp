@@ -25,6 +25,11 @@
 ** if any conditions of this licensing are not clear to you.
 **
 **********************************************************************/
+/*
+  Modified Aboucher; ar2tech
+*/
+
+
 #include <GsTLAppli/gui/appli/oinv_project_view.h>
 
 #ifdef _DEBUG
@@ -54,6 +59,7 @@
 #include <GsTLAppli/gui/appli/qt_algo_control_panel.h>
 #include <GsTLAppli/gui/appli/new_cartesian_grid_dialog.h>
 #include <GsTLAppli/gui/appli/scatterplot_gui.h>
+#include <GsTLAppli/gui/appli/about_sgems.h>
 
 #include <GsTLAppli/gui/appli/cli_commands_panel.h>
 #include <GsTLAppli/gui/variogram2/variogram_modeler_gui.h>
@@ -88,6 +94,11 @@
 #include <QMenu>
 #include <QVBoxLayout>
 #include <QCloseEvent>
+#include <QTextDocument>
+#include <QTextEdit>
+#include <QTextBrowser>
+#include <QTextImageFormat>
+#include <QUrl>
 #include <cstdio>
 #include <qsettings.h>
 #include <qlistwidget.h>
@@ -279,7 +290,7 @@ void QSP_application::init_menu_bar() {
   region->addAction( "New Region", this, SLOT( new_region_from_property() ), Qt::CTRL+Qt::Key_R );
   region->addAction( "Merge Regions", this, SLOT( merge_object_regions() ), Qt::CTRL+Qt::Key_M );
   region->addSeparator();
-  region->addAction( "Delete Regions", this, SLOT( delete_object_regions() ), Qt::CTRL+Qt::Key_E );
+  region->addAction( "Delete Regions", this, SLOT( delete_object_regions() ),  Qt::CTRL+Qt::SHIFT+Qt::Key_E );
   
 
 
@@ -306,20 +317,20 @@ void QSP_application::init_menu_bar() {
   ap_->setCheckable(true);
   ap_->setChecked(true);
   cli_panel_id_ =
-    view_menu_->addAction( "Commands Panel", this, SLOT(show_commands_panel() ),Qt::CTRL+Qt::Key_C );
+    view_menu_->addAction( "Commands Panel", this, SLOT(show_commands_panel() ),Qt::ALT+Qt::Key_C );
   cli_panel_id_->setCheckable(true);
   cli_panel_id_->setChecked(false);
 
 
   QMenu* scripts_menu = menuBar()->addMenu("&Scripts");
-  scripts_menu->addAction( "Show Scripts Editor", this , SLOT(show_script_editor()) );
+  scripts_menu->addAction( "Show Scripts Editor", this , SLOT(show_script_editor()),Qt::CTRL+Qt::ALT+Qt::Key_P );
   scripts_menu->addAction( "Run Script...", this, SLOT(run_script() ) );
 
 
 
   QMenu* help_menu = menuBar()->addMenu("&Help");
-  help_menu->addAction( "What's &This", this , SLOT(about_qt()), Qt::SHIFT+Qt::Key_F1);
-  help_menu->addAction( "About SGeMS", this, SLOT(about_slot() ) );
+  help_menu->addAction( "Version", this , SLOT(about_version()));
+  help_menu->addAction( "About SGeMS", this, SLOT(about_sgems() ), Qt::SHIFT+Qt::Key_F1 );
 
 
 
@@ -1065,46 +1076,39 @@ void QSP_application::run_script() {
 
 
 
-
-
-
-QString generate_build_number() {
-//  QString date_str = QString( "Sat " ) + QString( __DATE__ );
-//  QDate date = QDate::fromString( date_str );
-//  return date.toString( "yyyyMMdd" );
-  return QString( __DATE__ );
-}
-
-
-About_sgems::About_sgems(QWidget * p) : QDialog(p)
-{
-  QVBoxLayout* _vlayout = new QVBoxLayout( );
-  _vlayout->addStretch();
-  setLayout(_vlayout);
-  _pixmap.load( "new_splash2-beta.png" );
-  
-}
-
-void About_sgems::paintEvent(QPaintEvent *)
-{
-  QPainter painter( this);
-  painter.setFont(QFont("Times", 10, QFont::Bold) );
-  painter.drawPixmap(QPoint(0,0),_pixmap);
-  
-  std::ostringstream version;
-  version << "v" << GEMS_VERSION_STR << "\nBuild " 
-          << qstring2string(generate_build_number());
-  
-  painter.setPen( Qt::black );
-  QRect r = rect();
-  r.setRect( r.x() + 350, r.y() +20, r.width() - 20, r.height() - 20 );
-  painter.drawText( r, Qt::AlignLeft, version.str().c_str() );
-  
-}
-
-void QSP_application::about_slot() {
+void QSP_application::about_sgems() {
 
   About_sgems* about_screen = new About_sgems( this);
+  about_screen->setModal(true);
+/*
+  about_screen->resize( about_screen->picSize());
+  about_screen->setMinimumSize( about_screen->size() );
+  about_screen->setMaximumSize( about_screen->size() );
+*/
+  
+  QHBoxLayout* button_layout = new QHBoxLayout( about_screen );
+  QPushButton* close = new QPushButton( "&Close", about_screen);
+  close->setSizePolicy( QSizePolicy( QSizePolicy::Fixed, QSizePolicy::Fixed ) );
+  button_layout->addStretch();
+  button_layout->addWidget( close );
+  button_layout->addStretch();
+ 
+  about_screen->layout()->addItem( button_layout );
+
+  QVBoxLayout * v = (QVBoxLayout*)about_screen->layout();
+  v->addSpacing( 12 );
+  
+  QObject::connect( close, SIGNAL( clicked() ),
+                    about_screen, SLOT( reject() ) );
+  about_screen->exec();
+}
+
+
+
+
+void QSP_application::about_version() {
+
+  About_sgems_version* about_screen = new About_sgems_version( this);
   about_screen->setModal(true);
 
   about_screen->resize( about_screen->picSize());
@@ -1770,3 +1774,62 @@ bool Copy_property_dialog::overwrite() const {
 bool Copy_property_dialog::mark_as_hard() const { 
   return mark_as_hard_->isChecked(); 
 }
+
+
+
+
+QString generate_build_number() {
+//  QString date_str = QString( "Sat " ) + QString( __DATE__ );
+//  QDate date = QDate::fromString( date_str );
+//  return date.toString( "yyyyMMdd" );
+  return QString( __DATE__ );
+}
+
+
+About_sgems_version::About_sgems_version(QWidget * p) : QDialog(p)
+{
+  QVBoxLayout* _vlayout = new QVBoxLayout( );
+  _vlayout->addStretch();
+  setLayout(_vlayout);
+  _pixmap.load( ":/icons/appli/Pixmaps/new_splash2-beta.bmp" );
+  
+}
+
+void About_sgems_version::paintEvent(QPaintEvent *)
+{
+  QPainter painter( this);
+  painter.setFont(QFont("Times", 14, QFont::Bold) );
+  painter.drawPixmap(QPoint(0,0),_pixmap);
+  
+  std::ostringstream version;
+  version << "v" << GEMS_VERSION_STR << "\nBuild " 
+          << qstring2string(generate_build_number());
+  
+  painter.setPen( Qt::black );
+  QRect r = rect();
+  //r.setRect( r.x() + 350, r.y() +20, r.width() - 20, r.height() - 20 );
+  r.setRect( r.x() + 25, r.y() +220, r.width() - 20, r.height() - 20 );
+  painter.drawText( r, Qt::AlignLeft, version.str().c_str() );
+  
+}
+
+
+
+/*
+void About_sgems::paintEvent(QPaintEvent *)
+{
+  QPainter painter( this);
+  painter.setFont(QFont("Times", 10, QFont::Bold) );
+  painter.drawPixmap(QPoint(0,0),_pixmap);
+  
+  std::ostringstream version;
+  version << "v" << GEMS_VERSION_STR << "\nBuild " 
+          << qstring2string(generate_build_number());
+  
+  painter.setPen( Qt::black );
+  QRect r = rect();
+  r.setRect( r.x() + 350, r.y() +20, r.width() - 20, r.height() - 20 );
+  painter.drawText( r, Qt::AlignLeft, version.str().c_str() );
+  
+}
+*/

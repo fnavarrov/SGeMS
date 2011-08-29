@@ -25,7 +25,7 @@
  ** if any conditions of this licensing are not clear to you.
  **
  **********************************************************************/
-
+/*
 #ifdef _DEBUG
 #undef _DEBUG
 #include <Python.h>
@@ -33,6 +33,9 @@
 #else
 #include <Python.h>
 #endif
+*/
+
+#include <Python.h>
 
 #include <GsTLAppli/actions/library_actions_init.h>
 #include <GsTLAppli/actions/python_commands.h>
@@ -181,6 +184,7 @@ bool library_actions_init::bind_action_factories(Manager* dir)
 	dir->factory(Log_transform_action().name(), Log_transform_action::create_new_interface);
 	dir->factory(Log10_transform_action().name(), Log10_transform_action::create_new_interface);
 	dir->factory(Exponential_transform_action().name(), Exponential_transform_action::create_new_interface);
+  dir->factory(Power10_transform_action().name(), Power10_transform_action::create_new_interface);
 	dir->factory(Sine_transform_action().name(), Sine_transform_action::create_new_interface);
 	dir->factory(Cosine_transform_action().name(), Cosine_transform_action::create_new_interface);
 	dir->factory(Sqrt_transform_action().name(), Sqrt_transform_action::create_new_interface);
@@ -213,7 +217,7 @@ int libGsTLAppli_actions_release()
 void init_python_interpreter()
 {
 	//TODO : Needed for python 64bits distribution.  Not practical
-	Py_NoSiteFlag = 1;  // Do not load external libraries such as scipy.   
+//	Py_NoSiteFlag = 1;  // Do not load external libraries such as scipy.   
 	Py_Initialize();
 	Py_InitModule("sgems", SGemsMethods);
 	Py_InitModule("redirect", RedirectMethods);

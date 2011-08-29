@@ -142,7 +142,7 @@ Geostat_grid* Csv_poinset_infilter::read( std::ifstream& infile ) {
   }
 
   bool use_no_data_value = dialog_->use_no_data_value();
-  float no_data_value;
+  float no_data_value = GsTLGridProperty::no_data_value;
   if( dialog_->use_no_data_value() ) {
     no_data_value = dialog_->no_data_value();
   }
@@ -153,9 +153,12 @@ Geostat_grid* Csv_poinset_infilter::read( std::ifstream& infile ) {
   QString qstr(str.c_str());
   QStringList property_names = qstr.split(",");
 
-  property_names.removeOne(dialog_->X_column_name());
-  property_names.removeOne(dialog_->Y_column_name());
-  property_names.removeOne(dialog_->Z_column_name());
+  bool is_x_provided = dialog_->X_column_name() != "None";
+  bool is_y_provided = dialog_->Y_column_name() != "None";
+  bool is_z_provided = dialog_->Z_column_name() != "None";
+  if(is_x_provided) property_names.removeOne(dialog_->X_column_name());
+  if(is_y_provided) property_names.removeOne(dialog_->Y_column_name());
+  if(is_z_provided) property_names.removeOne(dialog_->Z_column_name());
 
 
   std::vector< std::vector< QString > > property_values( property_names.size() );
@@ -167,9 +170,9 @@ Geostat_grid* Csv_poinset_infilter::read( std::ifstream& infile ) {
     QStringList fields = qstr.split(",");
 
     Point_set::location_type loc;
-    loc[0] = fields[X_col_id].toDouble();
-    loc[1] = fields[Y_col_id].toDouble();
-    loc[2] = fields[Z_col_id].toDouble();
+    if(is_x_provided) loc[0] = fields[X_col_id].toDouble();
+    if(is_y_provided) loc[1] = fields[Y_col_id].toDouble();
+    if(is_z_provided) loc[2] = fields[Z_col_id].toDouble();
     point_locations.push_back(loc);
 
     unsigned int i=0;
@@ -226,7 +229,10 @@ Geostat_grid* Csv_poinset_infilter::read( std::ifstream& infile ) {
     if(!is_categ) {
       GsTLGridProperty* prop = pset->add_property( property_names[k].toStdString() );
       for( int l=0; l < point_set_size; l++ ) {
-        prop->set_value( property_values[k][l].toFloat(), l );
+        float val = property_values[k][l].toFloat();
+        if(use_no_data_value && val == no_data_value) 
+          val = GsTLGridProperty::no_data_value;
+        prop->set_value( val, l );
       }
     }
     else {
@@ -243,8 +249,14 @@ Geostat_grid* Csv_poinset_infilter::read( std::ifstream& infile ) {
       }
       GsTLGridCategoricalProperty* prop = pset->add_categorical_property( property_names[k].toStdString(),cat_def->name() );
 //      prop->set_category_definition(cat_def->name());
+      QString no_data_value_str = QString().arg( no_data_value);
       for( int i=0; i < point_set_size; i++ ) {
-        prop->set_value( property_values[k][i].toStdString(), i );
+        QString val =  property_values[k][i];
+        if(use_no_data_value && val == no_data_value_str)  {
+          prop->set_value( GsTLGridProperty::no_data_value, i );
+        }
+        else 
+          prop->set_value( val.toStdString(), i );
       }
     }
   }
@@ -289,6 +301,16 @@ Geostat_grid* Csv_grid_infilter::read( std::ifstream& infile ) {
   float Ox = dialog_->Ox();
   float Oy = dialog_->Oy();
   float Oz = dialog_->Oz();
+
+  bool use_no_data_value = dialog_->use_no_data_value();
+  float no_data_value = GsTLGridProperty::no_data_value;
+  QString no_data_value_str = QString().arg(no_data_value);
+  if( dialog_->use_no_data_value() ) {
+    no_data_value = dialog_->no_data_value();
+    no_data_value_str = QString::number(no_data_value);
+
+  }
+
 
   QByteArray tmp = dialog_->name().simplified().toLatin1();
   std::string name( tmp.constData() );
@@ -366,7 +388,13 @@ Geostat_grid* Csv_grid_infilter::read( std::ifstream& infile ) {
       while( std::getline(infile, buffer) ) {
         QString qstr(buffer.c_str());
         QStringList values_qstr = qstr.split(",");
-        prop->set_value(values_qstr[j].toStdString(),node_id);
+        QString val = values_qstr[j];
+        if(use_no_data_value && val == no_data_value_str)  {
+          prop->set_value( GsTLGridProperty::no_data_value, node_id );
+        }
+        else {
+          prop->set_value( val.toStdString(), node_id );
+        }
         node_id++;
       }
     }
@@ -380,7 +408,7 @@ Geostat_grid* Csv_grid_infilter::read( std::ifstream& infile ) {
         if(!values_qstr[j].isEmpty()) {
           bool ok;
           float val = values_qstr[j].toFloat(&ok);
-          if(ok) prop->set_value(val,node_id);
+          if(ok  && val != no_data_value) prop->set_value(val,node_id);
         }
         node_id++;
       }
@@ -414,10 +442,12 @@ Csv_mgrid_infilter::~Csv_mgrid_infilter() {
   dialog_ = 0;
 }
 
-QWidget* Csv_mgrid_infilter::init_dialog( std::ifstream& ) {
-  dialog_ = new Csv_input_mgrid_dialog( qApp->activeWindow() );
+QWidget* Csv_mgrid_infilter::init_dialog( std::ifstream& infile) {
+  dialog_ = new Csv_input_mgrid_dialog(infile, qApp->activeWindow() );
   return dialog_;
 }
+
+
 
 
 bool Csv_mgrid_infilter::get_mgrid_xyz_dimensions(
@@ -463,13 +493,15 @@ bool Csv_mgrid_infilter::get_mgrid_xyz_dimensions(
          x_size, y_size, z_size, xyz, origin);
   
 
-  infile.seekg(0, ios::beg);
   return true;
 }
 
 
 Geostat_grid* Csv_mgrid_infilter::readRegularGridFormat(std::ifstream& infile,Reduced_grid * grid)
 {
+
+  infile.clear();
+  infile.seekg(0, ios::beg);
 	std::vector<std::string> nums;
 
 	int nx = dialog_->nx();
@@ -492,6 +524,15 @@ Geostat_grid* Csv_mgrid_infilter::readRegularGridFormat(std::ifstream& infile,Re
   int X_col_id = dialog_->X_column_index();
   int Y_col_id = dialog_->Y_column_index();
   int Z_col_id = dialog_->Z_column_index();
+
+
+  bool use_no_data_value = dialog_->use_no_data_value();
+  float no_data_value = GsTLGridProperty::no_data_value;
+  QString no_data_value_str = QString().arg(no_data_value);
+  if( dialog_->use_no_data_value() ) {
+    no_data_value = dialog_->no_data_value();
+    no_data_value_str = QString::number(no_data_value);
+  }
 
 	//-------------------------
 	//   now, read the file
@@ -560,29 +601,39 @@ Geostat_grid* Csv_mgrid_infilter::readRegularGridFormat(std::ifstream& infile,Re
 
       // Read the data
       int node_id=0;
+      int index = 0;
       while( std::getline(infile, buffer) ) {
-        QString qstr(buffer.c_str());
-        QStringList values_qstr = qstr.split(",");
-        if(!values_qstr[j].isEmpty()) {
-          prop->set_value(values_qstr[j].toStdString(),node_id);
+        if( mask[index] ) {
+          QString qstr(buffer.c_str());
+          QStringList values_qstr = qstr.split(",");
+          QString val = values_qstr[j];
+          if(!val.isEmpty() && val != no_data_value_str ) {
+            prop->set_value(values_qstr[j].toStdString(),node_id);
+          }
+          node_id++;
         }
-        node_id++;
+        index++;
       }
     }
     else {
       GsTLGridProperty* prop = 
         grid->add_property(property_names[j]);
       int node_id=0;
+      int index = 0;
       while( std::getline(infile, buffer) ) {
-        QString qstr(buffer.c_str());
-        QStringList values_qstr = qstr.split(",");
-        if(!values_qstr[j].isEmpty()) {
-          bool ok;
-          float val = values_qstr[j].toFloat(&ok);
-          if(ok) prop->set_value(val,node_id);
+        if(mask[index]) {
+          QString qstr(buffer.c_str());
+          QStringList values_qstr = qstr.split(",");
+          if(!values_qstr[j].isEmpty()) {
+            bool ok;
+            float val = values_qstr[j].toFloat(&ok);
+            if(ok && val != no_data_value ) prop->set_value(val,node_id);
+          }
+          node_id++;
         }
-        node_id++;
+        index++;
       }
+      
     }
   }
 	return grid;
@@ -608,9 +659,19 @@ Geostat_grid* Csv_mgrid_infilter::readPointsetFormat(std::ifstream& infile, Redu
     return NULL;
   }
 
+  bool use_no_data_value = dialog_->use_no_data_value();
+  float no_data_value = GsTLGridProperty::no_data_value;
+  QString no_data_value_str = QString().arg(no_data_value);
+  if( dialog_->use_no_data_value() ) {
+    no_data_value = dialog_->no_data_value();
+    no_data_value_str = QString::number(no_data_value);
+  }
+
   get_mgrid_xyz_dimensions(infile,grid,X_col_id,Y_col_id,Z_col_id,
                              x_size,y_size,z_size);
 
+  infile.clear();
+  infile.seekg(0, ios::beg);
 
   std::string buffer;
   std::getline(infile, buffer);
@@ -668,7 +729,9 @@ Geostat_grid* Csv_mgrid_infilter::readPointsetFormat(std::ifstream& infile, Redu
           grid->geometry()->grid_coordinates(ijk,loc);
           int node_id = grid->cursor()->node_id(ijk[0],ijk[1],ijk[2]);
           if( node_id < 0 ) continue;
-          prop->set_value(values_qstr[j].toStdString(),node_id);
+          QString val = values_qstr[j];
+          if( !val.isEmpty() && val != no_data_value_str)
+            prop->set_value(values_qstr[j].toStdString(),node_id);
         }
         node_id++;
       }
@@ -691,7 +754,7 @@ Geostat_grid* Csv_mgrid_infilter::readPointsetFormat(std::ifstream& infile, Redu
           if( node_id < 0 ) continue;
           bool ok;
           float val = values_qstr[j].toFloat(&ok);
-          if(ok) prop->set_value(val,node_id);
+          if(ok && val != no_data_value) prop->set_value(val,node_id);
         }
         node_id++;
       }

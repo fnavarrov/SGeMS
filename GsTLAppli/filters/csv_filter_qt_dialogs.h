@@ -84,7 +84,9 @@ class FILTERS_DECL Csv_input_mgrid_dialog : public QWidget, public Ui::CsvMasked
 {
 	Q_OBJECT
 public:
-    Csv_input_mgrid_dialog( QWidget* parent , const char* name = 0 ); 
+  Csv_input_mgrid_dialog( QWidget* parent , const char* name = 0 ); 
+  Csv_input_mgrid_dialog( std::ifstream& infile, 
+			       QWidget* parent , const char* name = 0 ); 
 //	bool is_ijk() { return is_ijk_coords_->isChecked(); }
     bool is_xyz_file() { return is_xyz_locations_->isChecked(); }
 

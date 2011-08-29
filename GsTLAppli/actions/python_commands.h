@@ -29,7 +29,7 @@
 #ifndef __GSTLAPPLI_ACTIONS_PYTHON_COMMANDS_H__ 
 #define __GSTLAPPLI_ACTIONS_PYTHON_COMMANDS_H__ 
  
-
+/*
 #ifdef _DEBUG
 #undef _DEBUG
 #include <Python.h>
@@ -38,6 +38,9 @@
 
 #include <Python.h>
 #endif
+*/
+#include <Python.h>
+
 #include <GsTLAppli/actions/common.h>
 #include <GsTLAppli/actions/python_wrapper.h>
 #include <GsTLAppli/actions/defines.h>

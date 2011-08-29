@@ -1,0 +1,367 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectName>GsTLAppli_geostat</ProjectName>
+    <ProjectGuid>{5DB0851B-7598-4E3D-BB9F-A72EC154129D}</ProjectGuid>
+    <Keyword>Qt4VSv1.0</Keyword>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseOfMfc>false</UseOfMfc>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseOfMfc>false</UseOfMfc>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseOfMfc>false</UseOfMfc>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseOfMfc>false</UseOfMfc>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.30319.1</_ProjectFileVersion>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">debug\</IntDir>
+    <IgnoreImportLibrary Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</IgnoreImportLibrary>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(Platform)\$(Configuration)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(Platform)\$(Configuration)\</IntDir>
+    <IgnoreImportLibrary Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</IgnoreImportLibrary>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">release\</IntDir>
+    <IgnoreImportLibrary Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</IgnoreImportLibrary>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" />
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(Platform)\$(Configuration)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(Platform)\$(Configuration)\</IntDir>
+    <IgnoreImportLibrary Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</IgnoreImportLibrary>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|x64'" />
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Midl>
+      <WarningLevel>0</WarningLevel>
+      <DefaultCharType>Unsigned</DefaultCharType>
+      <EnableErrorChecks>None</EnableErrorChecks>
+    </Midl>
+    <ClCompile>
+      <AdditionalOptions>-Zm300 -w34100 -w34189 -Zm300 -w34100 -w34189 -w34100 -w34189 %(AdditionalOptions)</AdditionalOptions>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>$(SGEMS_BUILD)\GsTL;$(SGEMS_BUILD)\GsTLAppli-qt4;$(BOOSTDIR);$(QTDIR)\include\QtCore;$(QTDIR)\include\QtXml;$(QTDIR)\include\QtGui;$(QTDIR)\include;.;filtersim_std;snesim_std;$(QTDIR)\include\ActiveQt;debug;$(PYTHONDIR)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>GSTL_NOWARNING_2;GSTL_NOCHECK_2;WIN32;_DEBUG;_WINDOWS;_USRDLL;UNICODE;QT_DLL;SOQT_DLL;COIN_DLL;QWT_DLL;GEOSTAT_EXPORTS;QT_THREAD_SUPPORT;GSTL_DEBUG_1;GSTL_DEBUG_2;QT_LARGEFILE_SUPPORT;QT_GUI_LIB;QT_CORE_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessToFile>false</PreprocessToFile>
+      <PreprocessSuppressLineNumbers>false</PreprocessSuppressLineNumbers>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <AssemblerListingLocation>debug\</AssemblerListingLocation>
+      <ObjectFileName>debug\</ObjectFileName>
+      <ProgramDataBaseFileName>.\</ProgramDataBaseFileName>
+      <WarningLevel>Level3</WarningLevel>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>_WINDOWS;UNICODE;WIN32;QT_LARGEFILE_SUPPORT;GEOSTAT_EXPORTS;QT_DLL;QT_GUI_LIB;QT_CORE_LIB;QT_THREAD_SUPPORT;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ResourceCompile>
+    <Link>
+      <AdditionalDependencies>GsTLAppli_grid.lib;GsTLAppli_appli.lib;GsTLAppli_utils.lib;GsTLAppli_math.lib;QtGuid4.lib;QtCored4.lib;python27.lib;QtXmld4.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <OutputFile>$(SGEMS_BUILD)\GsTLAppli-qt4\lib\win32\debug\GsTLAppli_geostat.dll</OutputFile>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <AdditionalLibraryDirectories>$(QTDIR)\lib;$(SGEMS_BUILD)\GsTLAppli-qt4\lib\win32\debug;$(PYTHONDIR)\libs;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <ProgramDatabaseFile>
+      </ProgramDatabaseFile>
+      <SubSystem>Windows</SubSystem>
+      <RandomizedBaseAddress>false</RandomizedBaseAddress>
+      <DataExecutionPrevention>
+      </DataExecutionPrevention>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Midl>
+      <WarningLevel>0</WarningLevel>
+      <DefaultCharType>Unsigned</DefaultCharType>
+      <TargetEnvironment>X64</TargetEnvironment>
+      <EnableErrorChecks>None</EnableErrorChecks>
+    </Midl>
+    <ClCompile>
+      <AdditionalOptions>-Zm300 -w34100 -w34189 -Zm300 -w34100 -w34189 -w34100 -w34189 %(AdditionalOptions)</AdditionalOptions>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>$(SGEMS_BUILD)\GsTL;$(SGEMS_BUILD)\GsTLAppli-qt4;$(BOOSTDIR);$(QTDIRx64)\include\QtCore;$(QTDIRx64)\include\QtXml;$(QTDIRx64)\include\QtGui;$(QTDIRx64)\include;.;filtersim_std;snesim_std;$(QTDIRx64)\include\ActiveQt;debug;c:\code-dev\Python-2.7.1\PC;c:\code-dev\Python-2.7.1\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>GSTL_NOWARNING_2;GSTL_NOCHECK_2;WIN32;_DEBUG;_WINDOWS;_USRDLL;UNICODE;QT_DLL;SOQT_DLL;COIN_DLL;QWT_DLL;GEOSTAT_EXPORTS;QT_THREAD_SUPPORT;GSTL_DEBUG_1;GSTL_DEBUG_2;QT_LARGEFILE_SUPPORT;QT_GUI_LIB;QT_CORE_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessToFile>false</PreprocessToFile>
+      <PreprocessSuppressLineNumbers>false</PreprocessSuppressLineNumbers>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <WarningLevel>Level3</WarningLevel>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>_WINDOWS;UNICODE;WIN32;QT_LARGEFILE_SUPPORT;GEOSTAT_EXPORTS;QT_DLL;QT_GUI_LIB;QT_CORE_LIB;QT_THREAD_SUPPORT;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ResourceCompile>
+    <Link>
+      <AdditionalDependencies>GsTLAppli_grid.lib;GsTLAppli_appli.lib;GsTLAppli_utils.lib;GsTLAppli_math.lib;QtGuid4.lib;QtCored4.lib;python27_d.lib;QtXmld4.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <OutputFile>$(SGEMS_BUILD)\GsTLAppli-qt4\lib\x64\debug\GsTLAppli_geostat.dll</OutputFile>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <AdditionalLibraryDirectories>c:\code-dev\Python-2.7.1\PCbuild\amd64;$(QTDIRx64)\lib;$(SGEMS_BUILD)\GsTLAppli-qt4\lib\x64\debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <ProgramDatabaseFile>
+      </ProgramDatabaseFile>
+      <SubSystem>Windows</SubSystem>
+      <RandomizedBaseAddress>false</RandomizedBaseAddress>
+      <DataExecutionPrevention>
+      </DataExecutionPrevention>
+      <TargetMachine>MachineX64</TargetMachine>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Midl>
+      <WarningLevel>0</WarningLevel>
+      <DefaultCharType>Unsigned</DefaultCharType>
+      <EnableErrorChecks>None</EnableErrorChecks>
+    </Midl>
+    <ClCompile>
+      <AdditionalOptions>-Zm300 -w34100 -w34189 -Zm300 -w34100 -w34189 -w34100 -w34189 %(AdditionalOptions)</AdditionalOptions>
+      <Optimization>MaxSpeed</Optimization>
+      <AdditionalIncludeDirectories>$(PYTHONDIR)\include;$(SGEMS_BUILD)\GsTL;$(SGEMS_BUILD)\GsTLAppli-qt4;$(BOOSTDIR);$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtXml;$(QTDIR)\include;.;filtersim_std;snesim_std;$(QTDIR)\include\ActiveQt;release;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>GSTL_NDEBUG;GSTLAPPLI_NDEBUG;WIN32;NDEBUG;_WINDOWS;_USRDLL;UNICODE;QT_DLL;SOQT_DLL;COIN_DLL;SIMVOLEON_DLL;QWT_DLL;GEOSTAT_EXPORTS;QT_THREAD_SUPPORT;QT_NO_DEBUG;QT_LARGEFILE_SUPPORT;QT_GUI_LIB;QT_CORE_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessToFile>false</PreprocessToFile>
+      <PreprocessSuppressLineNumbers>false</PreprocessSuppressLineNumbers>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <AssemblerListingLocation>release\</AssemblerListingLocation>
+      <ObjectFileName>release\</ObjectFileName>
+      <ProgramDataBaseFileName>.\</ProgramDataBaseFileName>
+      <WarningLevel>Level3</WarningLevel>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <DebugInformationFormat>
+      </DebugInformationFormat>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>QT_NO_DEBUG;NDEBUG;_WINDOWS;UNICODE;WIN32;QT_LARGEFILE_SUPPORT;GEOSTAT_EXPORTS;QT_DLL;QT_NO_DEBUG;QT_GUI_LIB;QT_CORE_LIB;QT_THREAD_SUPPORT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ResourceCompile>
+    <Link>
+      <AdditionalDependencies>GsTLAppli_grid.lib;GsTLAppli_appli.lib;GsTLAppli_utils.lib;GsTLAppli_math.lib;QtCore4.lib;QtXml4.lib;python27.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <OutputFile>$(SGEMS_BUILD)\GsTLAppli-qt4\lib\win32\release\GsTLAppli_geostat.dll</OutputFile>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <AdditionalLibraryDirectories>c:\Python27-win32\libs\;$(SGEMS_BUILD)\GsTLAppli-qt4\lib\win32\release;$(PYTHONDIR)\libs;$(QTDIR)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <ProgramDatabaseFile>
+      </ProgramDatabaseFile>
+      <SubSystem>Windows</SubSystem>
+      <RandomizedBaseAddress>false</RandomizedBaseAddress>
+      <DataExecutionPrevention>
+      </DataExecutionPrevention>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Midl>
+      <WarningLevel>0</WarningLevel>
+      <DefaultCharType>Unsigned</DefaultCharType>
+      <TargetEnvironment>X64</TargetEnvironment>
+      <EnableErrorChecks>None</EnableErrorChecks>
+    </Midl>
+    <ClCompile>
+      <AdditionalOptions>-Zm300 -w34100 -w34189 -Zm300 -w34100 -w34189 -w34100 -w34189 %(AdditionalOptions)</AdditionalOptions>
+      <Optimization>MaxSpeed</Optimization>
+      <AdditionalIncludeDirectories>$(SGEMS_BUILD)\GsTL;$(SGEMS_BUILD)\GsTLAppli-qt4;$(BOOSTDIR);$(QTDIRx64)\include\QtCore;$(QTDIRx64)\include\QtXml;$(QTDIRx64)\include\QtGui;$(QTDIRx64)\include;.;filtersim_std;snesim_std;$(QTDIRx64)\include\ActiveQt;debug;c:\code-dev\Python-2.7.1\PC;c:\code-dev\Python-2.7.1\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>GSTL_NDEBUG;GSTLAPPLI_NDEBUG;WIN32;NDEBUG;_WINDOWS;_USRDLL;UNICODE;QT_DLL;SOQT_DLL;COIN_DLL;SIMVOLEON_DLL;QWT_DLL;GEOSTAT_EXPORTS;QT_THREAD_SUPPORT;QT_NO_DEBUG;QT_LARGEFILE_SUPPORT;QT_GUI_LIB;QT_CORE_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessToFile>false</PreprocessToFile>
+      <PreprocessSuppressLineNumbers>false</PreprocessSuppressLineNumbers>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <WarningLevel>Level3</WarningLevel>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <DebugInformationFormat>
+      </DebugInformationFormat>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>QT_NO_DEBUG;NDEBUG;_WINDOWS;UNICODE;WIN32;QT_LARGEFILE_SUPPORT;GEOSTAT_EXPORTS;QT_DLL;QT_NO_DEBUG;QT_GUI_LIB;QT_CORE_LIB;QT_THREAD_SUPPORT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ResourceCompile>
+    <Link>
+      <AdditionalDependencies>GsTLAppli_grid.lib;GsTLAppli_appli.lib;GsTLAppli_utils.lib;GsTLAppli_math.lib;QtCore4.lib;QtXml4.lib;python27.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <OutputFile>$(SGEMS_BUILD)\GsTLAppli-qt4\lib\x64\release\GsTLAppli_geostat.dll</OutputFile>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <AdditionalLibraryDirectories>$(SGEMS_BUILD)\GsTLAppli-qt4\lib\x64\release;$(PYTHONDIRx64)\libs;$(QTDIRx64)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <ProgramDatabaseFile>
+      </ProgramDatabaseFile>
+      <SubSystem>Windows</SubSystem>
+      <RandomizedBaseAddress>false</RandomizedBaseAddress>
+      <DataExecutionPrevention>
+      </DataExecutionPrevention>
+      <TargetMachine>MachineX64</TargetMachine>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="cokriging.cpp" />
+    <ClCompile Include="cosgsim.cpp" />
+    <ClCompile Include="cosisim.cpp" />
+    <ClCompile Include="filtersim_std\dev_finder.cpp" />
+    <ClCompile Include="difference_with_base.cpp" />
+    <ClCompile Include="dssim.cpp" />
+    <ClCompile Include="filtersim_std\filters.cpp" />
+    <ClCompile Include="filtersim_std\filtersim.cpp" />
+    <ClCompile Include="filtersim_std\filtersim_cate.cpp" />
+    <ClCompile Include="filtersim_std\filtersim_cont.cpp" />
+    <ClCompile Include="grid_variog_computer.cpp" />
+    <ClCompile Include="ImageProcess.cpp" />
+    <ClCompile Include="indicator_kriging.cpp" />
+    <ClCompile Include="kriging.cpp" />
+    <ClCompile Include="kriging_mean.cpp" />
+    <ClCompile Include="library_geostat_init.cpp" />
+    <ClCompile Include="LU_sim.cpp" />
+    <ClCompile Include="filtersim_std\mapping_pattern_id.cpp" />
+    <ClCompile Include="moving_window.cpp" />
+    <ClCompile Include="snesim_std\NodeDropped.cpp" />
+    <ClCompile Include="nuTauModel.cpp" />
+    <ClCompile Include="parameters_handler_impl.cpp" />
+    <ClCompile Include="filtersim_std\partition.cpp" />
+    <ClCompile Include="filtersim_std\patch_helper.cpp" />
+    <ClCompile Include="filtersim_std\pattern_paster.cpp" />
+    <ClCompile Include="PostKriging.cpp" />
+    <ClCompile Include="Postsim.cpp" />
+    <ClCompile Include="Postsim_categorical.cpp" />
+    <ClCompile Include="pset_variog_computer.cpp" />
+    <ClCompile Include="sgsim.cpp" />
+    <ClCompile Include="sisim.cpp" />
+    <ClCompile Include="snesim_std\snesim_std.cpp" />
+    <ClCompile Include="filtersim_std\TI_manipulation.cpp" />
+    <ClCompile Include="trans.cpp" />
+    <ClCompile Include="transcat.cpp" />
+    <ClCompile Include="utilities.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="cokriging.h" />
+    <ClInclude Include="common.h" />
+    <ClInclude Include="cosgsim.h" />
+    <ClInclude Include="cosisim.h" />
+    <ClInclude Include="filtersim_std\dev_finder.h" />
+    <ClInclude Include="difference_with_base.h" />
+    <ClInclude Include="filtersim_std\distance.h" />
+    <ClInclude Include="filtersim_std\distance_kernels.h" />
+    <ClInclude Include="dssim.h" />
+    <ClInclude Include="filtersim_std\filters.h" />
+    <ClInclude Include="filtersim_std\filtersim.h" />
+    <ClInclude Include="filtersim_std\filtersim_cate.h" />
+    <ClInclude Include="filtersim_std\filtersim_cont.h" />
+    <ClInclude Include="Filtersim_filters.h" />
+    <ClInclude Include="filtersim_std\filtersim_servo_system.h" />
+    <ClInclude Include="filtersim_std\filtersim_tau_updating.h" />
+    <ClInclude Include="geostat_algo.h" />
+    <ClInclude Include="grid_variog_computer.h" />
+    <ClInclude Include="GsTL_filters.h" />
+    <ClInclude Include="ImageProcess.h" />
+    <ClInclude Include="indicator_kriging.h" />
+    <ClInclude Include="filtersim_std\is_categorical.h" />
+    <ClInclude Include="snesim_std\is_categorical.h" />
+    <ClInclude Include="snesim_std\is_categorical.hpp" />
+    <ClInclude Include="filtersim_std\kernelized_kmeans.h" />
+    <ClInclude Include="kriging.h" />
+    <ClInclude Include="kriging_mean.h" />
+    <ClInclude Include="snesim_std\layer_sequential_simulation.h" />
+    <ClInclude Include="snesim_std\layer_servo_system_sampler.h" />
+    <ClInclude Include="library_geostat_init.h" />
+    <ClInclude Include="LU_sim.h" />
+    <ClInclude Include="filtersim_std\mapping_pattern_id.h" />
+    <ClInclude Include="moving_window.h" />
+    <ClInclude Include="snesim_std\NodeDropped.h" />
+    <ClInclude Include="nuTauModel.h" />
+    <ClInclude Include="parameters_handler.h" />
+    <ClInclude Include="parameters_handler_impl.h" />
+    <ClInclude Include="filtersim_std\partition.h" />
+    <ClInclude Include="filtersim_std\patch_helper.h" />
+    <ClInclude Include="filtersim_std\pattern.h" />
+    <ClInclude Include="filtersim_std\pattern_paster.h" />
+    <ClInclude Include="PostKriging.h" />
+    <ClInclude Include="Postsim.h" />
+    <ClInclude Include="Postsim_categorical.h" />
+    <ClInclude Include="filtersim_std\prototype.h" />
+    <ClInclude Include="filtersim_std\prototype_help.h" />
+    <ClInclude Include="filtersim_std\Prototype_kernelized_kmeans.h" />
+    <ClInclude Include="filtersim_std\prototype_list.h" />
+    <ClInclude Include="pset_variog_computer.h" />
+    <ClInclude Include="snesim_mti\search_tree_mti.h" />
+    <ClInclude Include="filtersim_std\sequential_patch_simulation.h" />
+    <ClInclude Include="sgsim.h" />
+    <ClInclude Include="sisim.h" />
+    <ClInclude Include="snesim_std\snesim_std.h" />
+    <ClInclude Include="filtersim_std\tau_updating.h" />
+    <ClInclude Include="snesim_std\tau_updating.h" />
+    <ClInclude Include="filtersim_std\TI_manipulation.h" />
+    <ClInclude Include="trans.h" />
+    <ClInclude Include="transcat.h" />
+    <ClInclude Include="snesim_std\tree_list.h" />
+    <ClInclude Include="snesim_mti\tree_list_mti.h" />
+    <ClInclude Include="utilities.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\appli\appli.vcxproj">
+      <Project>{63ca8d00-3af4-4755-85cb-deea94742de1}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\grid\grid.vcxproj">
+      <Project>{88a6e076-083b-4e1a-b46b-6fcd8a6d5d34}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\math\math.vcxproj">
+      <Project>{5e5c4004-873f-465b-a28b-648b603fa3d1}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\utils\utils.vcxproj">
+      <Project>{c52740f0-2a21-4416-997a-ac11d019b75f}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

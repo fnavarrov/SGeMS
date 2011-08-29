@@ -26,7 +26,7 @@
 **
 **********************************************************************/
 
-
+/*
 #ifdef _DEBUG
 #undef _DEBUG
 #include <Python.h>
@@ -35,6 +35,8 @@
 
 #include <Python.h>
 #endif
+*/
+#include <Python.h>
 
 #include <GsTLAppli/actions/obj_manag_actions.h>
 #include <GsTLAppli/actions/defines.h>

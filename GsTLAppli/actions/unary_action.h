@@ -82,6 +82,22 @@ public:
 	}
 };
 
+
+class Power10_transform_action: public Unary_action {
+public:
+	static Named_interface* create_new_interface(std::string&) {
+		return new Power10_transform_action();
+	}
+
+public:
+	Power10_transform_action(): Unary_action("power10"){}
+	virtual ~Power10_transform_action(){}
+	bool transform(const Geovalue::property_type& _val, Geovalue::property_type& _new_val){
+		_new_val = std::pow(static_cast<double>(_val), 10);
+		return true;
+	}
+};
+
 class Sqrt_transform_action: public Unary_action {
 public:
 	static Named_interface* create_new_interface(std::string&) {

@@ -35,6 +35,7 @@
 #endif
 */
 
+
 #include <GsTLAppli/main/lib_initializer.h>
 #include <GsTLAppli/gui/oinv_description/gstl_SoNode.h>
 #include <GsTLAppli/gui/oinv_description/gstl_SoClipPlaneManip.h>
@@ -66,6 +67,7 @@
 #include <fstream>
 #include <cstdio>
 
+/*
 #ifdef _DEBUG
 #undef _DEBUG
 #include <Python.h>
@@ -73,7 +75,8 @@
 #else
 #include <Python.h>
 #endif
-
+*/
+#include <Python.h>
 using namespace String_Op;
 
 // Std_scribe is a scribe that writes to standard output or standard error
@@ -307,9 +310,11 @@ int gui_main(int argc, char **argv) {
 	QApplication app(argc, argv);
 	QApplication::addLibraryPath(path_to_plugins());
 
-	QPixmap pixmap(path_to_splash_image());
+	//QPixmap pixmap(path_to_splash_image());
+  QPixmap pixmap(":/sgems-main/new_splash2-beta.bmp");
 
 	QSplashScreen* splash = new QSplashScreen(pixmap);
+  splash->show();
 
 	splash->setFont(QFont("Times", 8, QFont::Bold));
 	splash->showMessage("Initializing...");
@@ -350,7 +355,7 @@ int gui_main(int argc, char **argv) {
 	statusbar_scribe->subscribe(GsTLcerr);
 	statusbar_scribe->subscribe(GsTLcout);
 
-	appli->init();
+	appli->init();  
 	appli->setWindowTitle("SGeMS beta");
 
 	// restore preferences
@@ -363,11 +368,12 @@ int gui_main(int argc, char **argv) {
 	bool show_algo_panel = settings.value("/panels/algo", true).toBool();
 	bool show_cli_panel = settings.value("/panels/cli", false).toBool();
 
-	appli->setWindowIcon(QIcon("d:/code-dev/GsTLAppli-qt4/GsTLAppli/main/new_icon6_32x32.bmp"));
+	appli->setWindowIcon(QIcon(":/sgems-main/new_icon6_32x32.bmp"));
   //QIcon windowIcon("d:/code-dev/GsTLAppli-qt4/GsTLAppli/main/new_icon6_32x32.bmp");
   //appli->setWindowIcon(windowIcon);
+  
 	appli->show();
-	appli->show_algo_panel(show_algo_panel);
+  appli->show_algo_panel(show_algo_panel);
 	appli->show_commands_panel(show_cli_panel);
 
 	//------------------
@@ -417,7 +423,9 @@ int gui_main(int argc, char **argv) {
 	return 0;
 }
 
+//int WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, char*, int nShowCmd) {
 int main(int argc, char **argv) {
+
 	if (argc == 1) {
 		return gui_main(argc, argv);
 	} else {
