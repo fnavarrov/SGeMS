@@ -17,6 +17,7 @@ INCLUDEPATH += . oinv_description utils variogram2
 # Input
 HEADERS += common.h \
            library_gui_init.h \
+           appli/about_sgems.h \
            appli/cli_commands_panel.h \
            appli/data_analysis_gui.h \
            appli/display_pref_panel.h \
@@ -117,6 +118,7 @@ FORMS += appli/controls_widget.ui \
          variogram2/variogram_print_plots_dialog.ui \
          variogram2/variogram_structure_controls_base.ui
 SOURCES += library_gui_init.cpp \
+           appli/about_sgems.cpp \
            appli/cli_commands_panel.cpp \
            appli/data_analysis_gui.cpp \
            appli/display_pref_panel.cpp \
