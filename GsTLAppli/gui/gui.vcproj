@@ -391,6 +391,10 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
+				RelativePath=".\appli\about_sgems.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\utils\categorical_definition_dialog.cpp"
 				>
 			</File>
@@ -684,6 +688,10 @@
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
+			<File
+				RelativePath=".\appli\about_sgems.h"
+				>
+			</File>
 			<File
 				RelativePath=".\utils\categorical_definition_dialog.h"
 				>
@@ -2158,6 +2166,10 @@
 			</File>
 			<File
 				RelativePath="utils\qwidget_value_collector.h"
+				>
+			</File>
+			<File
+				RelativePath=".\resource.h"
 				>
 			</File>
 			<File
@@ -4065,32 +4077,292 @@
 			ParseFiles="false"
 			>
 			<File
+				RelativePath=".\appli\Pixmaps\ar2tech-sgems.png"
+				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|x64"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|x64"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
 				RelativePath="appli\Pixmaps\camera.png"
 				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|x64"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|x64"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="appli\Pixmaps\eye.png"
 				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|x64"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|x64"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="appli\Pixmaps\eye4.png"
 				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|x64"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|x64"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="appli\Pixmaps\eyes.png"
 				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|x64"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|x64"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="appli\Pixmaps\global.png"
 				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|x64"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|x64"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="appli\Pixmaps\home.png"
 				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|x64"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|x64"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="appli\Pixmaps\home.xpm"
 				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|x64"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|x64"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="icons.qrc"
@@ -4100,10 +4372,10 @@
 					>
 					<Tool
 						Name="VCCustomBuildTool"
-						Description="RCC icons.qrc"
-						CommandLine="$(QTDIR)\bin\rcc.exe -name icons icons.qrc -o debug\qrc_icons.cpp&#x0D;&#x0A;"
-						AdditionalDependencies="$(QTDIR)\bin\rcc.exe;appli\Pixmaps\camera.png;appli\Pixmaps\eye.png;appli\Pixmaps\eye4.png;appli\Pixmaps\eyes.png;appli\Pixmaps\global.png;appli\Pixmaps\home.png;appli\Pixmaps\home.xpm;appli\Pixmaps\noeye.png;appli\Pixmaps\noeye4.png;appli\Pixmaps\sethome.png;appli\Pixmaps\sethome.xpm;appli\Pixmaps\xy.png;appli\Pixmaps\xz.png;appli\Pixmaps\yz.png;icons.qrc"
-						Outputs="debug\qrc_icons.cpp"
+						Description="Rcc&apos;ing $(InputFileName)..."
+						CommandLine="&quot;$(QTDIR)\bin\rcc.exe&quot; -name &quot;$(InputName)&quot; -no-compress &quot;$(InputPath)&quot; -o .\debug\qrc_$(InputName).cpp&#x0D;&#x0A;"
+						AdditionalDependencies="$(InputPath);.\appli\Pixmaps\eye4.png;.\appli\Pixmaps\eye.png;.\appli\Pixmaps\eyes.png;.\appli\Pixmaps\home.xpm;.\appli\Pixmaps\noeye4.png;.\appli\Pixmaps\noeye.png;.\appli\Pixmaps\sethome.xpm;.\appli\Pixmaps\camera.png;.\appli\Pixmaps\global.png;.\appli\Pixmaps\home.png;.\appli\Pixmaps\sethome.png;.\appli\Pixmaps\xy.png;.\appli\Pixmaps\xz.png;.\appli\Pixmaps\yz.png;.\appli\Pixmaps\ar2tech-sgems.png"
+						Outputs=".\debug\qrc_$(InputName).cpp"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -4111,10 +4383,10 @@
 					>
 					<Tool
 						Name="VCCustomBuildTool"
-						Description="RCC icons.qrc"
-						CommandLine="$(QTDIR)\bin\rcc.exe -name icons icons.qrc -o debug\qrc_icons.cpp&#x0D;&#x0A;"
-						AdditionalDependencies="$(QTDIR)\bin\rcc.exe;appli\Pixmaps\camera.png;appli\Pixmaps\eye.png;appli\Pixmaps\eye4.png;appli\Pixmaps\eyes.png;appli\Pixmaps\global.png;appli\Pixmaps\home.png;appli\Pixmaps\home.xpm;appli\Pixmaps\noeye.png;appli\Pixmaps\noeye4.png;appli\Pixmaps\sethome.png;appli\Pixmaps\sethome.xpm;appli\Pixmaps\xy.png;appli\Pixmaps\xz.png;appli\Pixmaps\yz.png;icons.qrc"
-						Outputs="debug\qrc_icons.cpp"
+						Description="Rcc&apos;ing $(InputFileName)..."
+						CommandLine="&quot;$(QTDIR)\bin\rcc.exe&quot; -name &quot;$(InputName)&quot; -no-compress &quot;$(InputPath)&quot; -o .\debug\qrc_$(InputName).cpp&#x0D;&#x0A;"
+						AdditionalDependencies="$(InputPath);.\appli\Pixmaps\eye4.png;.\appli\Pixmaps\eye.png;.\appli\Pixmaps\eyes.png;.\appli\Pixmaps\home.xpm;.\appli\Pixmaps\noeye4.png;.\appli\Pixmaps\noeye.png;.\appli\Pixmaps\sethome.xpm;.\appli\Pixmaps\camera.png;.\appli\Pixmaps\global.png;.\appli\Pixmaps\home.png;.\appli\Pixmaps\sethome.png;.\appli\Pixmaps\xy.png;.\appli\Pixmaps\xz.png;.\appli\Pixmaps\yz.png;.\appli\Pixmaps\ar2tech-sgems.png"
+						Outputs=".\debug\qrc_$(InputName).cpp"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -4122,10 +4394,10 @@
 					>
 					<Tool
 						Name="VCCustomBuildTool"
-						Description="RCC icons.qrc"
-						CommandLine="$(QTDIR)\bin\rcc.exe -name icons icons.qrc -o release\qrc_icons.cpp&#x0D;&#x0A;"
-						AdditionalDependencies="$(QTDIR)\bin\rcc.exe;appli\Pixmaps\camera.png;appli\Pixmaps\eye.png;appli\Pixmaps\eye4.png;appli\Pixmaps\eyes.png;appli\Pixmaps\global.png;appli\Pixmaps\home.png;appli\Pixmaps\home.xpm;appli\Pixmaps\noeye.png;appli\Pixmaps\noeye4.png;appli\Pixmaps\sethome.png;appli\Pixmaps\sethome.xpm;appli\Pixmaps\xy.png;appli\Pixmaps\xz.png;appli\Pixmaps\yz.png;icons.qrc"
-						Outputs="release\qrc_icons.cpp"
+						Description="Rcc&apos;ing $(InputFileName)..."
+						CommandLine="&quot;$(QTDIR)\bin\rcc.exe&quot; -name &quot;$(InputName)&quot; -no-compress &quot;$(InputPath)&quot; -o .\debug\qrc_$(InputName).cpp&#x0D;&#x0A;"
+						AdditionalDependencies="$(InputPath);.\appli\Pixmaps\eye4.png;.\appli\Pixmaps\eye.png;.\appli\Pixmaps\eyes.png;.\appli\Pixmaps\home.xpm;.\appli\Pixmaps\noeye4.png;.\appli\Pixmaps\noeye.png;.\appli\Pixmaps\sethome.xpm;.\appli\Pixmaps\camera.png;.\appli\Pixmaps\global.png;.\appli\Pixmaps\home.png;.\appli\Pixmaps\sethome.png;.\appli\Pixmaps\xy.png;.\appli\Pixmaps\xz.png;.\appli\Pixmaps\yz.png;.\appli\Pixmaps\ar2tech-sgems.png"
+						Outputs=".\debug\qrc_$(InputName).cpp"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -4133,42 +4405,270 @@
 					>
 					<Tool
 						Name="VCCustomBuildTool"
-						Description="RCC icons.qrc"
-						CommandLine="$(QTDIR)\bin\rcc.exe -name icons icons.qrc -o release\qrc_icons.cpp&#x0D;&#x0A;"
-						AdditionalDependencies="$(QTDIR)\bin\rcc.exe;appli\Pixmaps\camera.png;appli\Pixmaps\eye.png;appli\Pixmaps\eye4.png;appli\Pixmaps\eyes.png;appli\Pixmaps\global.png;appli\Pixmaps\home.png;appli\Pixmaps\home.xpm;appli\Pixmaps\noeye.png;appli\Pixmaps\noeye4.png;appli\Pixmaps\sethome.png;appli\Pixmaps\sethome.xpm;appli\Pixmaps\xy.png;appli\Pixmaps\xz.png;appli\Pixmaps\yz.png;icons.qrc"
-						Outputs="release\qrc_icons.cpp"
+						Description="Rcc&apos;ing $(InputFileName)..."
+						CommandLine="&quot;$(QTDIR)\bin\rcc.exe&quot; -name &quot;$(InputName)&quot; -no-compress &quot;$(InputPath)&quot; -o .\debug\qrc_$(InputName).cpp&#x0D;&#x0A;"
+						AdditionalDependencies="$(InputPath);.\appli\Pixmaps\eye4.png;.\appli\Pixmaps\eye.png;.\appli\Pixmaps\eyes.png;.\appli\Pixmaps\home.xpm;.\appli\Pixmaps\noeye4.png;.\appli\Pixmaps\noeye.png;.\appli\Pixmaps\sethome.xpm;.\appli\Pixmaps\camera.png;.\appli\Pixmaps\global.png;.\appli\Pixmaps\home.png;.\appli\Pixmaps\sethome.png;.\appli\Pixmaps\xy.png;.\appli\Pixmaps\xz.png;.\appli\Pixmaps\yz.png;.\appli\Pixmaps\ar2tech-sgems.png"
+						Outputs=".\debug\qrc_$(InputName).cpp"
 					/>
 				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="appli\Pixmaps\noeye.png"
 				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|x64"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|x64"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="appli\Pixmaps\noeye4.png"
 				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|x64"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|x64"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="appli\Pixmaps\sethome.png"
 				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|x64"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|x64"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="appli\Pixmaps\sethome.xpm"
 				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|x64"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|x64"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="appli\Pixmaps\xy.png"
 				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|x64"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|x64"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="appli\Pixmaps\xz.png"
 				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|x64"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|x64"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="appli\Pixmaps\yz.png"
 				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|x64"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|x64"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+					/>
+				</FileConfiguration>
 			</File>
 		</Filter>
+		<File
+			RelativePath=".\GsTLAppli_gui.rc"
+			>
+		</File>
 	</Files>
 	<Globals>
 	</Globals>

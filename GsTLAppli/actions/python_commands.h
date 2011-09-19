@@ -308,13 +308,15 @@ static PyObject* sgems_set_categorical_property_integer( PyObject *self, PyObjec
   std::string cat_def_name;
   bool cat_def_provided = false;
 
-  if( !PyArg_ParseTuple(args, "sssO", &obj_str, &prop_str, &category_str, &tuple ) ) {
+
+  if( PyArg_ParseTuple(args, "ssO", &obj_str, &prop_str, &tuple) ) {
+    cat_def_name = "Default";
+  }
+  else if( PyArg_ParseTuple(args, "sssO", &obj_str, &prop_str, &category_str, &tuple ) ) {
 	  cat_def_provided = true;
     cat_def_name = std::string(category_str);
   }
-  else if( !PyArg_ParseTuple(args, "ssO", &obj_str, &prop_str, &tuple) )
-    cat_def_name = "Default";
-
+  
 
   if( !PyList_Check( tuple ) ) return NULL;
 

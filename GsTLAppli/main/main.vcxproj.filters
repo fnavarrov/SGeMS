@@ -9,9 +9,6 @@
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
     </Filter>
-    <Filter Include="Resouce Files">
-      <UniqueIdentifier>{04ee318e-915a-4804-8dc1-be3dcc22629b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Resource Files">
       <UniqueIdentifier>{D9D6E242-F8AF-46E4-B9FD-80ECBC20BA3E}</UniqueIdentifier>
       <Extensions>qrc;*</Extensions>
@@ -38,19 +35,13 @@
     <ClInclude Include="lib_initializer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="resource.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="main1.rc" />
   </ItemGroup>
   <ItemGroup>
     <None Include="new_icon6_32x32.bmp">
-      <Filter>Resouce Files</Filter>
+      <Filter>Resource Files</Filter>
     </None>
     <None Include="new_splash2-beta.bmp">
-      <Filter>Resouce Files</Filter>
+      <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

@@ -56,6 +56,8 @@ Kriging::Kriging() {
   simul_grid_ = 0;
   neighborhood_ = 0;
   min_neigh_ = 0;
+  rhs_covar_blk_ = 0;
+  rhs_covar_ = 0;
 }
  
 
@@ -101,10 +103,11 @@ int Kriging::execute( GsTL_project* ) {
   iterator begin = simul_grid_->begin();
   iterator end = simul_grid_->end();
 
+  /*
   Block_covariance<Location>* rhs_covar_blk = 0;
   if(do_block_kriging_)  
     rhs_covar_blk = static_cast<Block_covariance<Location>*>(rhs_covar_);
-  
+  */
   for( ; begin != end; ++begin ) {
     if( !progress_notifier->notify() ) {
       clean( property_name_ );
@@ -131,11 +134,12 @@ int Kriging::execute( GsTL_project* ) {
 
 
     int status;
-    
-    if(rhs_covar_blk) {
+  
+
+    if(rhs_covar_blk_) {
       status  = kriging_weights_2( kriging_weights_, variance,
                                    begin->location(), *(neighborhood_.raw_ptr()),
-                      				     covar_,*rhs_covar_blk, *Kconstraints_ );
+                      				     covar_,*rhs_covar_blk_, *Kconstraints_ );
     } 
     else {
       status = kriging_weights_2( kriging_weights_, variance,
@@ -265,7 +269,7 @@ bool Kriging::initialize( const Parameters_handler* parameters,
     errors->report(nblock_pts_[2] <= 0,"npoints_z","At least one point is necessary");
     if(!errors->empty()) return false;
 
-    rhs_covar_ = new Block_covariance<Location>(covar_,nblock_pts_,block_grid->geometry()->cell_dims());
+    rhs_covar_blk_ = new Block_covariance<Location>(covar_,nblock_pts_,block_grid->geometry()->cell_dims());
   }
   else rhs_covar_ = new Covariance<Location>(covar_);
 

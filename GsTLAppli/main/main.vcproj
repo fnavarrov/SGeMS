@@ -166,7 +166,7 @@
 				Name="VCLinkerTool"
 				IgnoreImportLibrary="true"
 				AdditionalDependencies="qtmaind.lib python27.lib GsTLAppli_utils.lib GsTLAppli_appli.lib GsTLAppli_math.lib GsTLAppli_grid.lib GsTLAppli_geostat.lib GsTLAppli_filters.lib GsTLAppli_gui.lib GsTLAppli_actions.lib GsTLAppli_extragui.lib qwt.lib GsTLwidgets.lib coin3d.lib SoQt1d.lib SimVoleon2d.lib QtXmld4.lib QtGuid4.lib QtCored4.lib QtUiToolsd.lib"
-				OutputFile="$(SGEMS_BUILD)\GsTLappli-qt4\lib\x64\debug\sgemsd(x64).exe"
+				OutputFile="$(SGEMS_BUILD)\GsTLappli-qt4\lib\x64\debug\sgemsd-x64.exe"
 				SuppressStartupBanner="true"
 				AdditionalLibraryDirectories="&quot;$(COINDIR)\lib\x64&quot;;&quot;$(SGEMS_BUILD)\GsTLappli-qt4\lib\x64\debug\&quot;;&quot;$(PYTHONDIRx64)\libs&quot;;&quot;$(QTDIRx64)\lib&quot;;&quot;$(QTDIRx64)/tools/designer/uilib&quot;"
 				GenerateDebugInformation="true"

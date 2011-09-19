@@ -311,7 +311,6 @@ Geostat_grid* Csv_grid_infilter::read( std::ifstream& infile ) {
 
   }
 
-
   QByteArray tmp = dialog_->name().simplified().toLatin1();
   std::string name( tmp.constData() );
 
@@ -524,7 +523,6 @@ Geostat_grid* Csv_mgrid_infilter::readRegularGridFormat(std::ifstream& infile,Re
   int X_col_id = dialog_->X_column_index();
   int Y_col_id = dialog_->Y_column_index();
   int Z_col_id = dialog_->Z_column_index();
-
 
   bool use_no_data_value = dialog_->use_no_data_value();
   float no_data_value = GsTLGridProperty::no_data_value;

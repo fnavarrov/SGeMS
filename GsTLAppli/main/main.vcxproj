@@ -187,7 +187,7 @@
     </ResourceCompile>
     <Link>
       <AdditionalDependencies>qtmain.lib;python27.lib;GsTLAppli_utils.lib;GsTLAppli_appli.lib;GsTLAppli_math.lib;GsTLAppli_grid.lib;GsTLAppli_geostat.lib;GsTLAppli_filters.lib;GsTLAppli_gui.lib;GsTLAppli_actions.lib;GsTLAppli_extragui.lib;qwt.lib;GsTLwidgets.lib;Coin3.lib;SoQt1.lib;SimVoleon2.lib;QtXml4.lib;QtGui4.lib;QtCore4.lib;QtUiTools.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <OutputFile>$(SGEMS_BUILD)\GsTLAppli-qt4\lib\win32\release\sgems.exe</OutputFile>
+      <OutputFile>$(SGEMS_BUILD)\GsTLAppli-qt4\lib\win32\release\sgems-win32.exe</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <AdditionalLibraryDirectories>$(QTDIR)\lib;$(SGEMS_BUILD)\GsTLAppli-qt4\lib\win32\\release;$(PYTHONDIRwin32)\libs;$(COINDIR)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>false</GenerateDebugInformation>

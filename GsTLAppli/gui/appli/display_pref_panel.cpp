@@ -575,9 +575,9 @@ Display_pref_panel::Display_pref_panel( Oinv_description* oinv_desc,
     add_slice( Oinv::Z_AXIS );
 
 // Hack to solve the simvoleon crash 
-//    oinv_strati_desc_->hide_volume( true );
-//    hide_volume_checkbox_->setChecked(true);
-//    hide_volume_checkbox_->setDisabled(true);
+  //  oinv_strati_desc_->hide_volume( true );
+  //  hide_volume_checkbox_->setChecked(true);
+  //  hide_volume_checkbox_->setDisabled(true);
   }
 
   //parent->layout()->addWidget(this);

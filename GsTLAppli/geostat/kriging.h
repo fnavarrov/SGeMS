@@ -78,6 +78,7 @@ class GEOSTAT_DECL Kriging : public Geostat_algo {
  
   Covariance<Location> covar_;
   Covariance<Location>*  rhs_covar_;
+  Block_covariance<Location>* rhs_covar_blk_;
 //Block_covariance<Location>*  rhs_covar_;
   KrigingCombiner* combiner_; 
   KrigingConstraints* Kconstraints_; 
