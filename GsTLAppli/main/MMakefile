@@ -12,5 +12,5 @@ LIBS += -lGsTLAppli_grid -lGsTLAppli_geostat -lGsTLAppli_filters
 LIBS += -lGsTLAppli_gui -lGsTLAppli_actions
 LIBS += -lGsTLAppli_extragui -lqwt
 LIBS += -L$$GSTLAPPLI_HOME/plugins/designer -lGsTLwidgets
-LIBS += -L$$INVENTOR_LIB -lCoin -lSoQt -lSimVoleon
+LIBS += -L$$INVENTOR_LIB -framework Inventor -framework SoQt -framework VolumeViz
 

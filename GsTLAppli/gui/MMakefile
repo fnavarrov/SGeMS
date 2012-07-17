@@ -11,7 +11,7 @@ MOC_DIR = .moc
 LIBS += -lGsTLAppli_appli -lGsTLAppli_utils -lGsTLAppli_grid 
 LIBS += -lGsTLAppli_math -lGsTLAppli_actions -lGsTLAppli_geostat
 LIBS += -L$$GSTLAPPLI_HOME/plugins/designer -lGsTLwidgets
-LIBS += -L$$INVENTOR_LIB -lSoQt -lCoin -lSimVoleon
+LIBS += -L$$INVENTOR_LIB -framework SoQt -framework Inventor -framework VolumeViz -lQtUiTools
 
 win32 {
   DEFINES += GUI_EXPORTS

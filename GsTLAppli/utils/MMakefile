@@ -1,5 +1,7 @@
 #CONFIG -= qt
 
+LIBS += -lqwt
+
 win32 {
   DEFINES += UTILS_EXPORTS
 }
