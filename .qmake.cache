@@ -12,14 +12,14 @@
 # PYTHON_SO: the name of the python .so file, eg python2.4 if the .so file is libpython2.4.so
 
 
-GSTLHOME = /home/aboucher/data/code-dev/linux/GsTL
-GSTLAPPLI_HOME =  /home/aboucher/data/code-dev/linux/sgems
+GSTLHOME = /Users/fnv/Projects/GsTL
+GSTLAPPLI_HOME =  /Users/fnv/Projects/sgems
 INVENTOR_LIB = /usr/lib
 INVENTOR_INCLUDE = /usr/include
 BOOST_INCLUDE = /usr/include
-PYTHON_LIB = /usr/lib
-PYTHON_INCLUDE = /usr/include/python2.6
-PYTHON_SO = python2.6
+PYTHON_LIB = /Library/Frameworks/Python.framework/Versions/Current/lib
+PYTHON_INCLUDE = /Library/Frameworks/Python.framework/Headers
+PYTHON_SO = python2.7
 
 
 
@@ -29,7 +29,7 @@ PYTHON_SO = python2.6
 # QMAKESPEC: define this variable if you want Qt to use a specific
 # compiler configuration (see the Qt documentation)
 
-CUR_PLATFORM = linux
+CUR_PLATFORM = osx
 #QMAKESPEC = /usr/share/qt4/mkspecs/default
 
 

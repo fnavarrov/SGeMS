@@ -1,7 +1,7 @@
 TARGET = GsTLAppli_extragui
 LIBS += -lGsTLAppli_utils -lGsTLAppli_appli
 LIBS += -lGsTLAppli_gui
-LIBS += -L$$GSTLAPPLI_HOME/plugins/designer -lGsTLwidgets
+LIBS += -L$$GSTLAPPLI_HOME/plugins/designer -lGsTLwidgets -framework SoQt -framework Inventor -framework VolumeViz
 
 win32 {
   DEFINES += EXTRAGUI_EXPORTS

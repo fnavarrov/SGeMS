@@ -1,0 +1,8 @@
+*.o
+.moc
+.DS_Store
+*.log
+*.pro.user
+bin/
+lib/
+plugins/designer/

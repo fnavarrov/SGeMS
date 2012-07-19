@@ -4,7 +4,9 @@ INCLUDEPATH += $$GSTLHOME $$GSTLAPPLI_HOME $$PYTHON_INCLUDE
 CONFIG += qt
 LIBS += -lGsTLAppli_utils -lGsTLAppli_math
 LIBS += -lGsTLAppli_grid -lGsTLAppli_appli
-LIBS += -u _PyMac_Error /Library/Frameworks/Python.framework/Versions/2.7/Python
+#LIBS += -u _PyMac_Error /Library/Frameworks/EPD64.framework/Versions/Current/Python
+CFLAGS += -m32
+LIBS += -m32 -u _PyMac_Error /Library/Frameworks/Python.framework/Versions/Current/Python
 #LIBS += -lQtXml
 
 
